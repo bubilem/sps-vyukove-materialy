@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHR: Počítačové hry | Výukové materiály SPŠ</title>
+  
+  <!-- Společné styly pro katalogy a rozcestníky -->
+  <link rel="stylesheet" href="../assets/css/dashboard-core.css">
+  <style>
+    :root {
+      --accent: #ec4899;
+      --accent-glow: rgba(236, 72, 153, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(236, 72, 153, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="dashboard-container">
+    
+    <!-- 1. Drobečková navigace (SPŠ 4-úrovňový standard) -->
+    <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+      <a href="../index.html" class="breadcrumb-link" title="Zpět na centrální rozcestník SPŠ">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Rozcestník SPŠ
+      </a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Počítačové hry (PHR)</span>
+    </nav>
+
+    <!-- 2. Hlavička předmětu -->
+    <header class="dashboard-header">
+      <div class="brand-box">
+        <div class="brand-icon" style="background: rgba(236, 72, 153, 0.15); border-color: rgba(236, 72, 153, 0.3); color: #ec4899;">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect x="2" y="6" width="20" height="12" rx="4"></rect>
+            <line x1="6" y1="12" x2="10" y2="12"></line>
+            <line x1="8" y1="10" x2="8" y2="14"></line>
+            <line x1="15" y1="11" x2="15.01" y2="11"></line>
+            <line x1="18" y1="13" x2="18.01" y2="13"></line>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Předmět PHR: Počítačové hry</h1>
+          <p>Střední průmyslová škola &bull; Vývoj her, herní architektura, historie a multimediální technologie</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <!-- Ikona vložena JS -->
+        </button>
+      </div>
+    </header>
+
+    <!-- 3. Vyhledávací pole -->
+    <div class="search-container">
+      <svg class="search-icon-svg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech PHR (např. úvod, platformy, žánry, osciloskop, časová osa, esport, enginy, design)..." autocomplete="off">
+    </div>
+
+    <!-- 4. Mřížka témat (Katalog témat SPŠ PHR) -->
+    <div class="lessons-grid" id="lessonsGrid">
+      
+      <!-- Téma 010: Úvod do počítačových her -->
+      <div class="lesson-card" data-keywords="010 uvod pocitacove hry platformy zanry fenomeny game loop mda vlivy psychologie distribuce byznys phr">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #ec4899; border-color: rgba(236, 72, 153, 0.3); background: rgba(236, 72, 153, 0.12);">TÉMA 010</span>
+            <span class="lesson-exam-badge" style="color: #ec4899; background: rgba(236, 72, 153, 0.12); border-color: rgba(236, 72, 153, 0.3);">Základy herního oboru</span>
+          </div>
+          <h2>Úvod do počítačových her</h2>
+          <p class="lesson-desc">
+            Definice videohry, herní smyčka (Game Loop), herní platformy a hardware, taxonomie žánrů, globální popkulturní fenomény, ekonomické a distribuční modely, multidisciplinární týmy a pozitivní i negativní vlivy na člověka.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků</span>
+          <a href="010-Uvod-do-pocitacovych-her/index.html" class="btn-launch-lesson" style="color: #ec4899;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 020: Časová osa a milníky videoher -->
+      <div class="lesson-card" data-keywords="020 casova osa milniky historie tenis osciloskop tennis for two spacewar atari doom quake esport rekordy 3dfx voodoo playstation phr">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.12);">TÉMA 020</span>
+            <span class="lesson-exam-badge" style="color: #f43f5e; background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.3);">Historie a technologické revoluce</span>
+          </div>
+          <h2>Kronika videoher: Časová osa a milníky</h2>
+          <p class="lesson-desc">
+            Od první hry na osciloskopu Tennis for Two (1958) až po éru fotorealismu, real-time ray-tracingu a miliardového esportu. 52 klíčových historických a technologických milníků, interaktivní osciloskop a síň herních rekordů.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 11 snímků &bull; 52 milníků</span>
+          <a href="020-Casova-osa-a-milniky/index.html" class="btn-launch-lesson" style="color: #f43f5e;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 030: Herní enginy a architektura (V přípravě) -->
+      <div class="lesson-card" data-keywords="030 herni enginy architektura unity unreal engine godot ecs fyzika render loop plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 030</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Herní enginy a softwarová architektura</h2>
+          <p class="lesson-desc">
+            Struktura a komponenty herního enginu, porovnání Unity, Unreal Engine a Godot, systém Entity-Component-System (ECS), fyzikální knihovny, kolize a grafická renderovací pipeline.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravované téma</span>
+          <span class="btn-launch-lesson" style="opacity: 0.6; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 040: Herní design a mechaniky (V přípravě) -->
+      <div class="lesson-card" data-keywords="040 herni design mechaniky balancing gdd prototypovani pacing flow level design plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 040</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Herní design a tvorba mechanik</h2>
+          <p class="lesson-desc">
+            Metodika tvorby herního designu, psychologie toku (Flow state), vyvažování obtížnosti (balancing), návrh úrovní (level design) a tvorba herní designové dokumentace (GDD).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravované téma</span>
+          <span class="btn-launch-lesson" style="opacity: 0.6; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 050: 2D a 3D grafika ve hrách (V přípravě) -->
+      <div class="lesson-card" data-keywords="050 grafika 2d 3d sprajty modely textury shadery rigging animace lod plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 050</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Počítačová grafika a animace ve hrách</h2>
+          <p class="lesson-desc">
+            2D sprite grafika a dlaždicové mapy (tilemaps), 3D polygonální modelování, UV mapování, PBR materiály a textury, skeletální animace, inverzní kinematika a optimalizace LOD.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravované téma</span>
+          <span class="btn-launch-lesson" style="opacity: 0.6; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 060: Zvuk, hudba a distribuce (V přípravě) -->
+      <div class="lesson-card" data-keywords="060 zvuk hudba audio foley wwise fmod distribuce steam lokalizace plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 060</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Zvuk, adaptivní hudba a distribuce</h2>
+          <p class="lesson-desc">
+            Zvukový design a nahrávání foley efektů, interaktivní adaptivní hudba (FMOD, Wwise), marketing, lokalizace, proces vydání a certifikace na platformách Steam, PlayStation a Xbox.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravované téma</span>
+          <span class="btn-launch-lesson" style="opacity: 0.6; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 5. Footer katalogu -->
+    <footer class="site-footer">
+      <div class="footer-nav">
+        <a href="../index.html" class="btn-footer-back" title="Návrat na hlavní rozcestník SPŠ">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Zpět na centrální rozcestník SPŠ
+        </a>
+      </div>
+      <p>Střední průmyslová škola &copy; 2026 &bull; Předmět Počítačové hry (PHR)</p>
+    </footer>
+
+  </div>
+
+  <!-- Společný engine pro katalogy (správa motivu, vyhledávání, klikatelnost dlaždic) -->
+  <script src="../assets/js/dashboard-core.js"></script>
+</body>
+
+</html>

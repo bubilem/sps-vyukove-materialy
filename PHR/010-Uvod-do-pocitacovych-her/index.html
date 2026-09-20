@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 010: Úvod do počítačových her | PHR &bull; SPŠ</title>
+  
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #ec4899;
+      --accent-glow: rgba(236, 72, 153, 0.25);
+    }
+
+    /* Specifické styly pro téma 010 */
+    .game-loop-container {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+      align-items: stretch;
+    }
+
+    .loop-canvas-panel {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .loop-canvas-panel canvas {
+      width: 100%;
+      height: 220px;
+      border-radius: var(--radius-sm);
+      background: #090d16;
+      display: block;
+    }
+
+    .loop-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-loop-action {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+
+    .btn-loop-action:hover, .btn-loop-action.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(236, 72, 153, 0.1);
+    }
+
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Interaktivní tabulka platforem */
+    .platform-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .platform-tab-btn {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .platform-tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .platform-tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .platform-detail-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .metric-pills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .metric-pill-item {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+    }
+
+    .metric-pill-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .metric-pill-val {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 0.15rem;
+    }
+
+    /* Radar typologie hráče */
+    .radar-widget-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      align-items: center;
+    }
+
+    .radar-canvas-wrap {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .radar-canvas-wrap canvas {
+      width: 100%;
+      max-width: 320px;
+      height: 280px;
+      display: block;
+    }
+
+    .bartle-sliders {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .bartle-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .bartle-row-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .bartle-range {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border-color);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .bartle-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .bartle-range::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
+    /* FAQ akordeon */
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.65rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-question {
+      padding: 0.85rem 1.15rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .faq-question .icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question .icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.15rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: -0.25rem;
+      padding-top: 0.75rem;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .game-loop-container,
+      .platform-detail-box,
+      .radar-widget-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(236, 72, 153, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+    
+    <!-- Horní lišta s drobečkovou navigací -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PHR">PHR</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">010 Úvod do her</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hlavní prezentační plocha se snímky -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: TITULNÍ SNÍMEK
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do počítačových her">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět PHR &bull; Téma 010</span>
+            <span class="badge">Vývoj her a digitální média SPŠ</span>
+          </div>
+          <h1 class="hero-title">Úvod do počítačových her a digitální zábavy</h1>
+          <p class="hero-subtitle">
+            Videohra jako nejrychleji rostoucí odvětví digitálního průmyslu. Spojení softwarového inženýrství, grafiky, psychologie a interaktivního vyprávění příběhu.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4 style="color: var(--accent);">Interaktivita a hardware</h4>
+              <p>Proč jsou hry jedinečné médium, jak funguje herní smyčka (Game Loop) a na jakém hardwaru dnes běží.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #38bdf8;">Žánry, byznys a fenomény</h4>
+              <p>Přehled klíčových žánrů, ekonomické modely (F2P, předplatná) a hry, které změnily globální kulturu.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #a855f7;">Člověk a společnost</h4>
+              <p>Přesah technologií do AI, medicíny a filmu, pozitivní rozvoj mozku i rizika závislosti a digitální hygiena.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: ANATOMIE HRY A GAME LOOP
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Co je hra a herní smyčka">
+        <div class="slide-content">
+          <h2>Co dělá hru hrou? Anatomie a herní smyčka (Game Loop)</h2>
+          <p class="slide-lead">Na rozdíl od statického programu, který čeká na kliknutí, v herním světě <strong>čas neustále plyne</strong>:</p>
+
+          <div class="game-loop-container">
+            <div class="loop-canvas-panel">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700; font-size: 0.9rem; color: var(--accent);">Interaktivní demonstrace Game Loopu</span>
+                <span class="stat-badge" id="frameStats">60 FPS | 16.6 ms</span>
+              </div>
+              <canvas id="gameLoopCanvas" width="480" height="220"></canvas>
+              <div class="loop-controls">
+                <button class="btn-loop-action active" id="btnFps60" onclick="setSimFps(60)">60 FPS (Plynulé)</button>
+                <button class="btn-loop-action" id="btnFps30" onclick="setSimFps(30)">30 FPS (Konzolové)</button>
+                <button class="btn-loop-action" id="btnFps15" onclick="setSimFps(15)">15 FPS (Trhané / Lag)</button>
+                <button class="btn-loop-action" id="btnSimJump" onclick="triggerSimJump()">Vstup: Skok!</button>
+              </div>
+            </div>
+
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h3 style="color: var(--accent); margin-bottom: 0.5rem;">Čtyři fáze herní smyčky</h3>
+                <ul class="styled-list" style="font-size: 0.88rem; gap: 0.5rem;">
+                  <li><strong>1. Zpracování vstupů (Process Input):</strong> Čtení klávesnice, myši, gamepadu nebo dotykového displeje bez zpoždění.</li>
+                  <li><strong>2. Aktualizace světa (Update / Physics):</strong> Výpočet pohybu těles, gravitace, kolizí, umělé inteligence protivníků a časovačů ($\Delta t$).</li>
+                  <li><strong>3. Vykreslení scény (Render):</strong> Odeslání geometrie na GPU, stínování, částicové efekty a zobrazení snímku do framebufferu.</li>
+                  <li><strong>4. Audio a zpětná vazba:</strong> Přehrání 3D prostorového zvuku a odeslání haptické vibrace do ovladače.</li>
+                </ul>
+              </div>
+              <div style="background: rgba(236, 72, 153, 0.08); border: 1px solid rgba(236, 72, 153, 0.25); border-radius: var(--radius-sm); padding: 0.6rem 0.85rem; font-size: 0.82rem; margin-top: 0.75rem;">
+                <strong>MDA Framework:</strong> Herní design se skládá z <em>Mechanics</em> (pravidla), <em>Dynamics</em> (systémové chování za běhu) a <em>Aesthetics</em> (emoce hráče).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: HERNÍ PLATFORMY A HARDWARE
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Herní platformy a hardware">
+        <div class="slide-content">
+          <h2>Herní platformy: Hardware, limity a ekosystémy</h2>
+          <p class="slide-lead">Každá platforma vyžaduje jinou architekturu, optimalizaci výkonu i ergonomii ovládání:</p>
+
+          <div class="platform-tabs">
+            <button class="platform-tab-btn active" onclick="switchPlatform('pc')">Osobní počítače (PC)</button>
+            <button class="platform-tab-btn" onclick="switchPlatform('console')">Herní konzole</button>
+            <button class="platform-tab-btn" onclick="switchPlatform('mobile')">Mobily &amp; Tablety</button>
+            <button class="platform-tab-btn" onclick="switchPlatform('handheld')">Hybridní handheldy</button>
+            <button class="platform-tab-btn" onclick="switchPlatform('cloud')">Cloudové hraní</button>
+            <button class="platform-tab-btn" onclick="switchPlatform('vr')">VR a prostorové systémy</button>
+          </div>
+
+          <div class="platform-detail-box" id="platformDetail">
+            <div>
+              <h3 id="platTitle" style="color: var(--accent); margin-bottom: 0.5rem;">Osobní počítače (PC Gaming)</h3>
+              <p id="platDesc" style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;">
+                Otevřený ekosystém s obrovskou variabilitou hardwaru. Hráč má plnou svobodu v nastavení detailů, volbě monitoru (od 60 Hz po 360 Hz) a ovládacích periferií (klávesnice, myš, volanty, HOTAS). Základna pro esport, modding a nezávislé vývojáře.
+              </p>
+              <div style="margin-top: 1rem;">
+                <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">KLÍČOVÉ PŘEDNOSTI:</span>
+                <p id="platPros" style="font-size: 0.88rem; color: var(--text-primary); margin-top: 0.25rem;">
+                  Nekonečná zpětná kompatibilita, uživatelské modifikace (módy), nejvyšší grafický strop (Ray-tracing, DLSS), absence poplatků za multiplayer.
+                </p>
+              </div>
+            </div>
+
+            <div class="metric-pills-grid">
+              <div class="metric-pill-item">
+                <div class="metric-pill-title">Výkonnostní strop</div>
+                <div class="metric-pill-val" id="platPerf">Extrémní (4K 144+ FPS)</div>
+              </div>
+              <div class="metric-pill-item">
+                <div class="metric-pill-title">Typické ovládání</div>
+                <div class="metric-pill-val" id="platCtrl">Klávesnice + Myš / Pad</div>
+              </div>
+              <div class="metric-pill-item">
+                <div class="metric-pill-title">Pořizovací náklady</div>
+                <div class="metric-pill-val" id="platCost">Střední až velmi vysoké</div>
+              </div>
+              <div class="metric-pill-item">
+                <div class="metric-pill-title">Distribuce</div>
+                <div class="metric-pill-val" id="platDist">Steam, Epic, GOG</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: TAXONOMIE ŽÁNRŮ
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Kategorie a žánry her">
+        <div class="slide-content">
+          <h2>Taxonomie videoherních žánrů a produkční škála</h2>
+          <p class="slide-lead">Žánr definuje základní herní smyčku, očekávání hráče i technologické nároky na engine:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Akční hry &amp; Střílečky</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                Důraz na reakční dobu, prostorovou orientaci a koordinaci ruka-oko.
+              </p>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.5rem;">
+                <li><strong>FPS (First-Person):</strong> <em>DOOM, Counter-Strike</em>.</li>
+                <li><strong>TPS (Third-Person):</strong> <em>Gears of War, Fortnite</em>.</li>
+                <li><strong>Battle Royale:</strong> Přežití 100 hráčů na zmenšující se mapě.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">RPG &amp; Příběhové hry</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                Vývoj statistik postavy, inventář, větvené dialogy a morální volby.
+              </p>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.5rem;">
+                <li><strong>cRPG / Akční RPG:</strong> <em>Baldur's Gate 3, Zaklínač 3</em>.</li>
+                <li><strong>JRPG:</strong> Tahové souboje a lineární eposy (<em>Final Fantasy</em>).</li>
+                <li><strong>Soulslike:</strong> Nemilosrdná obtížnost a čtení animací nepřátel.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #10b981;">Strategie &amp; Simulátory</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                Makroekonomika, taktické plánování a simulace fyzikálních systémů.
+              </p>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.5rem;">
+                <li><strong>RTS / TBS:</strong> <em>StarCraft</em> (v reálném čase), <em>Civilization</em> (tahová).</li>
+                <li><strong>MOBA:</strong> 5v5 arény s hrdiny (<em>League of Legends, Dota 2</em>).</li>
+                <li><strong>Simulace:</strong> <em>MS Flight Simulator, Euro Truck Simulator</em>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem;">
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+              <strong style="color: #f59e0b;">Indie scéna (Nezávislé hry):</strong> Malé týmy (1 až 15 lidí), tvůrčí svoboda, originální mechaniky a experimenty (<em>Hollow Knight, Undertale, Celeste</em>).
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+              <strong style="color: #ec4899;">AAA / AAAA produkce:</strong> Stovky vývojářů, rozpočty v řádu stovek milionů dolarů, špičkový motion-capture a hollywoodská filmovost (<em>Cyberpunk 2077, GTA V</em>).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: POPKULTURNÍ FENOMÉNY
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Kultovní herní fenomény">
+        <div class="slide-content">
+          <h2>Kultovní fenomény: Hry, které přepsaly dějiny</h2>
+          <p class="slide-lead">Tituly, které se staly celospolečenským kulturním dědictvím a posunuly možnosti média:</p>
+
+          <div class="grid-4" style="margin-top: 1rem; gap: 0.85rem;">
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: var(--accent);">Tetris (1984)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Matematicky dokonalá logická smyčka. Vědecky popsaný „Tetris efekt“ – mozek reorganizuje myšlení i ve spánku.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: #38bdf8;">Super Mario (1985)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Naučil svět jazyk plošinovek. Vizuální gramotnost: první obrazovka učí skákat, sbírat houbičky a vyhýbat se nepřátelům bez jediného slova.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: #ef4444;">DOOM (1993)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Zrodil pojem Deathmatch a modding. Hráči tvořili vlastní úrovně a id Software otevřel zdrojové kódy.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: #10b981;">Minecraft (2009)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Digitální stavebnice a nejprodávanější hra v historii (300+ mil. kopií). Nekonečný voxelový svět zrozený v Javě.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: #f59e0b;">World of Warcraft (2004)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                První masová virtuální společnost. 12 milionů platících předplatitelů tvořilo gildy, přátelství i manželství.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: #a855f7;">Grand Theft Auto (1997–)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Interaktivní satira západní společnosti. GTA V vydělalo miliardu dolarů za 3 dny – nejvýnosnější zábavní dílo dějin.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: #06b6d4;">Dark Souls (2011)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Důkaz, že hráči touží po výzvě. Smrt není selhání, nýbrž výukový mechanismus. Zrod nového žánru.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 1rem;">
+              <h4 style="color: #ec4899;">Fortnite (2017)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Transformace hry v metaverse. Virtuální koncerty s desítkami milionů sledujících a globální popkulturní křižovatka.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: EKONOMIKA A DISTRIBUCE
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Ekonomické modely a distribuce">
+        <div class="slide-content">
+          <h2>Herní byznys: Modely monetizace a digitální distribuce</h2>
+          <p class="slide-lead">Herní průmysl s ročním obratem přes <strong>185 miliard dolarů</strong> překonává film a hudbu dohromady:</p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Monetizační modely</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.5rem; font-size: 0.88rem;">
+                <div>
+                  <strong>Prémiový nákup (Buy-to-Play):</strong> Tradiční model – hráč zaplatí plnou cenu ($60–$70) za ucelený zážitek bez dodatečných bariér.
+                </div>
+                <div>
+                  <strong>Free-to-Play (F2P) + Mikrotransakce:</strong> Hra je zdarma pro všechny. Výdělek tvoří kosmetické skiny, animace a <strong>Battle Pass</strong> (sezónní postup).
+                </div>
+                <div>
+                  <strong>Předplatné služby (Subscription):</strong> Herní obdoba Netflixu (<em>Xbox Game Pass, PlayStation Plus</em>) – za měsíční paušál přístup ke stovkám titulů.
+                </div>
+                <div style="color: #ef4444; font-size: 0.82rem; border-left: 2px solid #ef4444; padding-left: 0.5rem;">
+                  <strong>Pozor na Pay-to-Win:</strong> Neetický model, kdy si hráč může za reálné peníze koupit přímou výhodu v soutěži nad ostatními.
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Digitální distribuce a DRM</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.5rem; font-size: 0.88rem;">
+                <div>
+                  <strong>Konec fyzických médií:</strong> Přes 90 % PC her a přes 70 % konzolových her se dnes prodává digitálně přes internetové obchody.
+                </div>
+                <div>
+                  <strong>Platformy:</strong> Valve Steam (lídr na PC od roku 2003), Epic Games Store (konkurence s nižším poplatkem pro vývojáře – 12 % vs 30 %), GOG (hry 100% bez DRM ochran).
+                </div>
+                <div>
+                  <strong>DRM (Digital Rights Management):</strong> Protipirátské ochrany (např. Denuvo). Chrání první týdny prodejů, ale mohou mít negativní dopad na výkon a archivaci her.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: MULTIDISCIPLINÁRNÍ VÝVOJ
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Kdo tvoří hru?">
+        <div class="slide-content">
+          <h2>Kdo tvoří hru? Multidisciplinární vývojářský tým</h2>
+          <p class="slide-lead">Tvorba moderní hry spojuje desítky specializovaných profesí od informatiky po umění:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Programování &amp; Architektura</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Engine Programmer:</strong> Optimalizace C++, rendering a správa paměti.</li>
+                <li><strong>Gameplay Programmer:</strong> Implementace mechanik, chování a ovládání.</li>
+                <li><strong>AI Programmer:</strong> Rozhodovací stromy, chování NPC a pathfinding (A*).</li>
+                <li><strong>Network Programmer:</strong> Síťová replikace, kompenzace lagu, klientská predikce.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Design &amp; Narativ</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Game Designer:</strong> Definice pravidel, systémů, ekonomiky a zábavnosti.</li>
+                <li><strong>Level Designer:</strong> Architektura herních prostor, pacing a navigace hráče.</li>
+                <li><strong>Narrative Designer:</strong> Psaní dialogů, scénářů a větvených voleb.</li>
+                <li><strong>UI/UX Designer:</strong> Přehlednost ovládání, HUD a přístupnost (accessibility).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #10b981;">Grafika, Audio &amp; QA</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>3D Modeler &amp; Animator:</strong> Tvorba modelů, UV map, textur a motion capture.</li>
+                <li><strong>Technical Artist:</strong> Most mezi grafiky a programátory, shadery a pipeline.</li>
+                <li><strong>Sound Designer:</strong> Foley efekty, syntezátory a adaptivní hudba (FMOD).</li>
+                <li><strong>QA Tester:</strong> Systematické hledání chyb, testování kompatibility a balancu.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: PŘESAH DO JINÝCH ODVĚTVÍ
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Přesah her do jiných oborů">
+        <div class="slide-content">
+          <h2>Přesah her do jiných odvětví: Technologický motor</h2>
+          <p class="slide-lead">Technologie vyvinuté původně pro hry dnes mění vědu, průmysl i medicínu:</p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Vývoj polovodičů a revoluce AI</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                Hlad hráčů po fotorealismu stvořil specializované paralelní procesory – <strong>grafické karty (GPU)</strong> od NVIDIA a AMD. Právě tyto tisíce malých jader architektury CUDA/Tensor se ukázaly jako ideální pro trénování hlubokých neuronových sítí. <em>Bez herního průmyslu by dnešní vlna umělé inteligence (ChatGPT, Midjourney) nevznikla.</em>
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Virtuální filmová produkce</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                Filmová studia nahrazují zelená plátna obřími LED stěnami, na kterých v reálném čase běží herní engine <strong>Unreal Engine</strong> (tzv. StageCraft). Pozadí dynamicky reaguje na pohyb kamery v reálném čase, včetně realistických odlesků na hercích (využito u seriálů <em>The Mandalorian</em> či filmu <em>The Batman</em>).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #10b981;">Gamifikace a vědecký výzkum</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                Projekt <strong>Foldit</strong> ukázal sílu davu: hráči řešili skládání 3D struktur proteinů jako prostorovou hádanku a za 3 týdny rozluštili enzym viru způsobujícího AIDS, na kterém vědci marně pracovali 15 let.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #f59e0b;">Profesionální simulátory a obrana</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                Armády a letectva cvičí personál ve virtuálních prostředích. Česká společnost <em>Bohemia Interactive Simulations (VBS)</em> je světovým lídrem v taktických vojenských simulátorech vycházejících z herního enginu série Operace Flashpoint a Arma.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: POZITIVNÍ VLIVY HRANÍ
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Pozitivní vlivy hraní">
+        <div class="slide-content">
+          <h2>Pozitivní vlivy: Co hraní her rozvíjí v lidském mozku?</h2>
+          <p class="slide-lead">Moderní neurověda potvrzuje, že aktivní hraní stimuluje neuroplasticitu mozku:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: #10b981;">Kognice a reflexy</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Prostorová orientace:</strong> Lepší mentální rotace 3D těles a čtení map.</li>
+                <li><strong>Reakční doba:</strong> Akční hráči reagují na vizuální podněty až o 20 % rychleji než nehráči.</li>
+                <li><strong>Multitasking:</strong> Efektivnější rozdělování pozornosti mezi více zdrojů informací (minimapa, stav munice, zvukové kroky).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Jazyky a komunikace</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Přirozená angličtina:</strong> Žáci, kteří hrají hry s dialogy, mají prokazatelně bohatší slovní zásobu a lepší poslech než z pouhých učebnic.</li>
+                <li><strong>Kooperace a vedení:</strong> Hraní v online týmu učí delegovat úkoly, podávat stručná taktická hlášení a nést zodpovědnost za tým.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #a855f7;">Logika a vytrvalost</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Algoritmické myšlení:</strong> Hledání nejefektivnějšího řešení, optimalizace sestavení postavy (min-maxing).</li>
+                <li><strong>Odolnost vůči chybě:</strong> Hra učí, že prohra je normální součást procesu učení – zanalyzovat chybu, upravit strategii a zkusit to znovu.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: RIZIKA A DIGITÁLNÍ HYGIENA
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Rizika a digitální hygiena">
+        <div class="slide-content">
+          <h2>Rizika, negativní dopady a zásady zodpovědného hraní</h2>
+          <p class="slide-lead">Jako každá silná stimulace přináší i gaming vážná rizika, pokud chybí sebeovládání:</p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: #ef4444;">Rizikové faktory a nebezpečí</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Herní porucha (Gaming Disorder dle WHO):</strong> Neschopnost kontrolovat čas strávený u her, upřednostňování hraní před spánkem, jídlem, školou a osobními vztahy.</li>
+                <li><strong>Manipulativní praktiky (Dark Patterns):</strong> Loot boxy (náhodné balíčky fungující na principu kasina), umělé vytváření FOMO (strach ze zmeškání časově omezených odměn).</li>
+                <li><strong>Fyzické opotřebení:</strong> Dlouhé sezení, syndrom karpálního tunelu ze špatného úchopu myši, bolesti krční páteře a narušení spánku modrým světlem.</li>
+                <li><strong>Toxicita v komunitách:</strong> Kyberšikana, agrese při prohrách a anonymní verbální útoky v chatu.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #10b981;">Zásady digitální hygieny</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Pravidlo 20-20-20:</strong> Každých 20 minut se podívejte na 20 sekund na předmět vzdálený alespoň 6 metrů (20 stop) pro uvolnění očních svalů.</li>
+                <li><strong>Ergonomie pracoviště:</strong> Horní hrana monitoru ve výšce očí, předloktí opřená na stole v úhlu 90°, kvalitní židle s bederní opěrou.</li>
+                <li><strong>Spánkový režim:</strong> Vypnout obrazovky alespoň 45 minut před spaním, aby tělo mohlo začít produkovat melatonin.</li>
+                <li><strong>Rovnováha:</strong> Hra má být odměnou a zábavou po splnění povinností, nikoli únikem před reálným světem.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: INTERAKTIVNÍ PROFIL HRÁČE
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Interaktivní profil hráče (Bartle)">
+        <div class="slide-content">
+          <h2>Interaktivní analýza: Jaký jste typ hráče? (Bartleova typologie)</h2>
+          <p class="slide-lead">Nastavte posuvníky podle toho, co vás ve hrách nejvíce baví, a sledujte svůj herní radar:</p>
+
+          <div class="radar-widget-grid">
+            <div class="radar-canvas-wrap">
+              <canvas id="bartleCanvas" width="300" height="280"></canvas>
+              <div id="bartleVerdict" style="font-weight: 700; color: var(--accent); margin-top: 0.5rem; font-size: 0.95rem; text-align: center;">
+                Dominantní typ: Dobyvatel (Achiever)
+              </div>
+            </div>
+
+            <div class="bartle-sliders">
+              <div class="bartle-row">
+                <div class="bartle-row-head">
+                  <span style="color: #ec4899;">Achiever (Dobyvatel / Sběratel úspěchů)</span>
+                  <span id="valAchiever">70 %</span>
+                </div>
+                <input type="range" class="bartle-range" id="rangeAchiever" min="10" max="100" value="70" oninput="updateBartleRadar()">
+                <div style="font-size: 0.78rem; color: var(--text-muted);">Sbírání achievementů, 100% dokončení hry, žebříčky a trofeje.</div>
+              </div>
+
+              <div class="bartle-row">
+                <div class="bartle-row-head">
+                  <span style="color: #38bdf8;">Explorer (Průzkumník / Zkoumatel)</span>
+                  <span id="valExplorer">60 %</span>
+                </div>
+                <input type="range" class="bartle-range" id="rangeExplorer" min="10" max="100" value="60" oninput="updateBartleRadar()">
+                <div style="font-size: 0.78rem; color: var(--text-muted);">Objevování skrytých míst na mapě, lore příběhů, herní fyzika a easter eggy.</div>
+              </div>
+
+              <div class="bartle-row">
+                <div class="bartle-row-head">
+                  <span style="color: #10b981;">Socializer (Společenský hráč)</span>
+                  <span id="valSocializer">45 %</span>
+                </div>
+                <input type="range" class="bartle-range" id="rangeSocializer" min="10" max="100" value="45" oninput="updateBartleRadar()">
+                <div style="font-size: 0.78rem; color: var(--text-muted);">Komunikace s přáteli v klanu, pomoc ostatním, chatování a společné zážitky.</div>
+              </div>
+
+              <div class="bartle-row">
+                <div class="bartle-row-head">
+                  <span style="color: #f59e0b;">Killer (Bojovník / Predátor)</span>
+                  <span id="valKiller">50 %</span>
+                </div>
+                <input type="range" class="bartle-range" id="rangeKiller" min="10" max="100" value="50" oninput="updateBartleRadar()">
+                <div style="font-size: 0.78rem; color: var(--text-muted);">Přímé PvP souboje, porážení živých oponentů, dominance a kompetitivní hraní.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: SHRNUTÍ A KONTROLNÍ OTÁZKY
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Závěrečné opakování</span>
+            <span class="badge">Otázky SPŠ</span>
+          </div>
+          <h2>Shrnutí tématu a kontrolní otázky</h2>
+          <p class="slide-lead">Ověřte si své znalosti ze světa videoherního inženýrství a kultury:</p>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>1. Co je to Game Loop a proč se liší od klasického cyklu událostí v kancelářské aplikaci?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Kancelářská aplikace čeká nečinně v paměti na vstup uživatele (Event-Driven). Herní smyčka (Game Loop) běží neustále v nekonečném cyklu (typicky 60× až 144× za sekundu), i když hráč na nic nesahá – počítá fyziku, animace, umělou inteligenci nepřátel a renderuje scénu v reálném čase.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>2. Jaký je principiální rozdíl mezi PC architekturou a herními konzolemi pro vývojáře?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Herní konzole mají unifikovaný a neměnný hardware (stejné APU, paměť i ovladač pro všechny hráče), což umožňuje programátorům optimalizovat kód na doraz přímo pro danou architekturu. PC má naopak tisíce různých kombinací grafických karet, procesorů a ovladačů, což vyžaduje abstrakční vrstvy (DirectX, Vulkan) a škálovatelné grafické nastavení.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>3. Jak herní průmysl historicky napomohl nástupu moderní umělé inteligence (AI)?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Hráčská poptávka po fotorealistické 3D grafice vedla společnosti NVIDIA a AMD k vývoji masivně paralelních procesorů (GPU). Když výzkumníci AI zjistili, že maticové operace pro neuronové sítě jsou matematicky identické s transformacemi 3D polygonů a shaderů, využili herní GPU, což nastartovalo celou dnešní revoluci hlubokého učení.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>4. Co jsou to Dark Patterns v herním designu a jaké psychologické mechanismy zneužívají?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Jedná se o záměrné manipulativní prvky v uživatelském rozhraní a ekonomice hry. Zneužívají psychologii závislosti (dopaminové smyčky, loot boxy fungující jako hazard s nepředvídatelnou odměnou), časovou tíseň (FOMO – Fear of Missing Out) a záměrně frustrující překážky, které hráče nutí zaplatit za přeskočení čekání.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>5. Co znamená zkratka AAA v označení her a jak se liší od nezávislých (Indie) her?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              AAA (Triple-A) označuje hry s nejvyššími rozpočty (stovky milionů USD), na kterých pracují stovky lidí pod velkými vydavateli (Sony, EA, Ubisoft), s důrazem na špičkový vizuál a masový trh. Indie hry jsou tvořeny malými nezávislými týmy s nízkým rozpočtem, ale díky tomu mají plnou tvůrčí svobodu přinášet neotřelé nápady a inovativní herní mechaniky.
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: center;">
+            <a href="../020-Casova-osa-a-milniky/index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #ec4899 0%, #a855f7 100%); color: #fff; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Pokračovat na navazující téma: 020 Časová osa a milníky videoher
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Spodní ovládací lišta prezentace -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="#" class="control-btn disabled" id="prevLessonBtn" aria-disabled="true" tabindex="-1" title="Předchozí téma (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PHR">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../020-Casova-osa-a-milniky/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 020 Časová osa a milníky (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Fullscreen (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <!-- Postranní panel osnovy -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Úvod do her
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Jádro frameworku prezentací -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Skript specifických interaktivních prvků tématu 010 -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ==========================================================
+         1. INTERAKTIVNÍ GAME LOOP SIMULÁTOR
+         ========================================================== */
+      const canvas = document.getElementById('gameLoopCanvas');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let targetFps = 60;
+        let lastTime = performance.now();
+        let accumulator = 0;
+        let ball = { x: 50, y: 160, vx: 140, vy: 0, r: 14, isGrounded: true };
+        const gravity = 550;
+        const groundY = 180;
+
+        window.setSimFps = function (fps) {
+          targetFps = fps;
+          document.querySelectorAll('.btn-loop-action').forEach(b => {
+            if (b.id.startsWith('btnFps')) b.classList.remove('active');
+          });
+          const activeBtn = document.getElementById(`btnFps${fps}`);
+          if (activeBtn) activeBtn.classList.add('active');
+          const statBadge = document.getElementById('frameStats');
+          if (statBadge) {
+            statBadge.textContent = `${fps} FPS | ${(1000 / fps).toFixed(1)} ms`;
+          }
+        };
+
+        window.triggerSimJump = function () {
+          if (ball.isGrounded) {
+            ball.vy = -260;
+            ball.isGrounded = false;
+          }
+        };
+
+        function simLoop(now) {
+          const rawDelta = (now - lastTime) / 1000;
+          lastTime = now;
+          const frameDuration = 1 / targetFps;
+
+          accumulator += rawDelta;
+          if (accumulator >= frameDuration) {
+            // Update fáze
+            const dt = frameDuration;
+            ball.x += ball.vx * dt;
+            if (ball.x > canvas.width - ball.r) {
+              ball.x = canvas.width - ball.r;
+              ball.vx *= -1;
+            } else if (ball.x < ball.r) {
+              ball.x = ball.r;
+              ball.vx *= -1;
+            }
+
+            if (!ball.isGrounded) {
+              ball.vy += gravity * dt;
+              ball.y += ball.vy * dt;
+              if (ball.y >= groundY - ball.r) {
+                ball.y = groundY - ball.r;
+                ball.vy = 0;
+                ball.isGrounded = true;
+              }
+            }
+
+            // Render fáze
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Mřížka
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) {
+              ctx.beginPath();
+              ctx.moveTo(x, 0);
+              ctx.lineTo(x, canvas.height);
+              ctx.stroke();
+            }
+
+            // Podlaha
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, groundY);
+            ctx.lineTo(canvas.width, groundY);
+            ctx.stroke();
+
+            // Míček
+            ctx.save();
+            ctx.shadowColor = '#ec4899';
+            ctx.shadowBlur = targetFps >= 60 ? 15 : 4;
+            ctx.fillStyle = '#ec4899';
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // Popis stavu
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '11px ui-monospace, monospace';
+            ctx.fillText(`Loop Tick: ${(frameDuration * 1000).toFixed(1)}ms | Pos: (${Math.round(ball.x)}, ${Math.round(ball.y)})`, 10, 20);
+
+            accumulator -= frameDuration;
+          }
+
+          requestAnimationFrame(simLoop);
+        }
+
+        requestAnimationFrame(simLoop);
+      }
+
+      /* ==========================================================
+         2. INTERAKTIVNÍ PŘEPÍNAČ PLATFOREM
+         ========================================================== */
+      const platformData = {
+        pc: {
+          title: 'Osobní počítače (PC Gaming)',
+          desc: 'Otevřený ekosystém s obrovskou variabilitou hardwaru. Hráč má plnou svobodu v nastavení detailů, volbě monitoru (od 60 Hz po 360 Hz) a ovládacích periferií (klávesnice, myš, volanty, HOTAS). Základna pro esport, modding a nezávislé vývojáře.',
+          pros: 'Nekonečná zpětná kompatibilita, modifikace (módy), nejvyšší grafický strop (Ray-tracing, DLSS), žádné poplatky za online multiplayer.',
+          perf: 'Extrémní (4K 144+ FPS)',
+          ctrl: 'Klávesnice + Myš / Pad',
+          cost: 'Střední až velmi vysoké',
+          dist: 'Steam, Epic, GOG'
+        },
+        console: {
+          title: 'Herní konzole (PlayStation 5, Xbox Series X)',
+          desc: 'Uzavřený ekosystém s unifikovanou architekturou. Vývojáři optimalizují kód přímo na míru jedinému hardwaru. Hraní v obývacím pokoji na velké televizi, pohodlí bez nutnosti ladit ovladače nebo grafická nastavení.',
+          pros: 'Garantovaný plynulý běh her, prvotřídní first-party exkluzivity, pokročilá haptická odezva ovladačů (DualSense), plug & play.',
+          perf: 'Vysoký (4K 60 FPS / 120 FPS)',
+          ctrl: 'Gamepad s haptikou',
+          cost: 'Dostupné (střední)',
+          dist: 'PlayStation Store, Xbox Store'
+        },
+        mobile: {
+          title: 'Mobilní zařízení (Smartphony & Tablety)',
+          desc: 'Globálně nejrozšířenější herní platforma s více než 3 miliardami hráčů. Dotykové rozhraní a akcelerometry, dominují hry s krátkými herními seancemi na cestách (hyper-casual, gacha, match-3).',
+          pros: 'Zařízení má každý stále v kapse, okamžitá dostupnost kdekoli, masivní Free-to-Play nabídka.',
+          perf: 'Střední (bateriově limitováno)',
+          ctrl: 'Dotykový displej, gyro',
+          cost: 'Nízké (vlastněný telefon)',
+          dist: 'Google Play, Apple App Store'
+        },
+        handheld: {
+          title: 'Hybridní handheldy (Nintendo Switch, Steam Deck)',
+          desc: 'Spojení přenositelnosti mobilu a plnohodnotných her z PC/konzolí. Lze hrát na cestách ve vlaku i během vteřiny vložit do dokovací stanice a pokračovat na televizi či monitoru.',
+          pros: 'Kompletní PC knihovna Steamu v kapse, okamžité uspání a probuzení hry, hybridní flexibilita.',
+          perf: 'Optimalizovaný (720p/800p)',
+          ctrl: 'Integrované páčky + gyro',
+          cost: 'Střední',
+          dist: 'Nintendo eShop, Steam'
+        },
+        cloud: {
+          title: 'Cloudové hraní (GeForce Now, Xbox Cloud)',
+          desc: 'Výpočet hry probíhá na superpočítačích ve vzdáleném datacentru a k hráči se streamuje pouze videoobraz. Hráč odesílá zpět stisky tlačítek. Klíčovým parametrem je minimální síťová latence (RTT).',
+          pros: 'Možnost hrát nejnovější hry na starém notebooku, televizi či mobilu bez drahé grafické karty a bez stahování desítek GB dat.',
+          perf: 'Dle serveru (až RTX 4080)',
+          ctrl: 'Libovolné',
+          cost: 'Předplatné měsíčně',
+          dist: 'Streamovací klient'
+        },
+        vr: {
+          title: 'VR a prostorové systémy (Meta Quest, PSVR2)',
+          desc: 'Plné pohlcení hráče do virtuálního světa pomocí náhlavní soupravy (headsetu) a 6 stupňů volnosti (6DoF). Sledování očí, rukou a prostorový 3D zvuk. Vyžaduje stabilních 90 až 120 FPS pro prevenci kinetózy.',
+          pros: 'Nenapodobitelný pocit skutečné přítomnosti v prostoru, přirozené zapojení celého těla a pohybů rukou.',
+          perf: 'Extrémně náročné na FPS',
+          ctrl: 'Pohybové ovladače / ruce',
+          cost: 'Střední až vysoké',
+          dist: 'Meta Horizon, SteamVR'
+        }
+      };
+
+      window.switchPlatform = function (key) {
+        const data = platformData[key];
+        if (!data) return;
+
+        document.querySelectorAll('.platform-tab-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.getElementById('platTitle').textContent = data.title;
+        document.getElementById('platDesc').textContent = data.desc;
+        document.getElementById('platPros').textContent = data.pros;
+        document.getElementById('platPerf').textContent = data.perf;
+        document.getElementById('platCtrl').textContent = data.ctrl;
+        document.getElementById('platCost').textContent = data.cost;
+        document.getElementById('platDist').textContent = data.dist;
+      };
+
+      /* ==========================================================
+         3. BARTLEŮV RADAR TYPOLOGIE HRÁČŮ
+         ========================================================== */
+      const bCanvas = document.getElementById('bartleCanvas');
+      window.updateBartleRadar = function () {
+        if (!bCanvas) return;
+        const bCtx = bCanvas.getContext('2d');
+
+        const ach = parseInt(document.getElementById('rangeAchiever').value, 10);
+        const exp = parseInt(document.getElementById('rangeExplorer').value, 10);
+        const soc = parseInt(document.getElementById('rangeSocializer').value, 10);
+        const kil = parseInt(document.getElementById('rangeKiller').value, 10);
+
+        document.getElementById('valAchiever').textContent = `${ach} %`;
+        document.getElementById('valExplorer').textContent = `${exp} %`;
+        document.getElementById('valSocializer').textContent = `${soc} %`;
+        document.getElementById('valKiller').textContent = `${kil} %`;
+
+        // Určení vítěze
+        const scores = [
+          { name: 'Dobyvatel (Achiever)', val: ach },
+          { name: 'Průzkumník (Explorer)', val: exp },
+          { name: 'Společenský hráč (Socializer)', val: soc },
+          { name: 'Bojovník (Killer)', val: kil }
+        ];
+        scores.sort((a, b) => b.val - a.val);
+        document.getElementById('bartleVerdict').textContent = `Dominantní typ: ${scores[0].name}`;
+
+        // Vykreslení radarového grafu
+        bCtx.clearRect(0, 0, bCanvas.width, bCanvas.height);
+        const cx = bCanvas.width / 2;
+        const cy = bCanvas.height / 2;
+        const radius = 95;
+
+        // Soustředné kroužky
+        bCtx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        bCtx.lineWidth = 1;
+        for (let r = 25; r <= radius; r += 25) {
+          bCtx.beginPath();
+          bCtx.arc(cx, cy, r, 0, Math.PI * 2);
+          bCtx.stroke();
+        }
+
+        // Osy
+        const angles = [-Math.PI / 2, 0, Math.PI / 2, Math.PI]; // Nahoře, Vpravo, Dole, Vlevo
+        const labels = ['Achiever', 'Explorer', 'Socializer', 'Killer'];
+        const colors = ['#ec4899', '#38bdf8', '#10b981', '#f59e0b'];
+
+        angles.forEach((ang, i) => {
+          bCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+          bCtx.beginPath();
+          bCtx.moveTo(cx, cy);
+          bCtx.lineTo(cx + Math.cos(ang) * radius, cy + Math.sin(ang) * radius);
+          bCtx.stroke();
+
+          // Textové popisky
+          bCtx.fillStyle = colors[i];
+          bCtx.font = 'bold 11px system-ui, sans-serif';
+          bCtx.textAlign = 'center';
+          bCtx.textBaseline = 'middle';
+          const lx = cx + Math.cos(ang) * (radius + 20);
+          const ly = cy + Math.sin(ang) * (radius + 15);
+          bCtx.fillText(labels[i], lx, ly);
+        });
+
+        // Polygon hodnot
+        const vals = [ach, exp, soc, kil];
+        bCtx.beginPath();
+        vals.forEach((v, i) => {
+          const r = (v / 100) * radius;
+          const px = cx + Math.cos(angles[i]) * r;
+          const py = cy + Math.sin(angles[i]) * r;
+          if (i === 0) bCtx.moveTo(px, py);
+          else bCtx.lineTo(px, py);
+        });
+        bCtx.closePath();
+        bCtx.fillStyle = 'rgba(236, 72, 153, 0.35)';
+        bCtx.fill();
+        bCtx.strokeStyle = '#ec4899';
+        bCtx.lineWidth = 2.5;
+        bCtx.stroke();
+
+        // Tečky
+        vals.forEach((v, i) => {
+          const r = (v / 100) * radius;
+          const px = cx + Math.cos(angles[i]) * r;
+          const py = cy + Math.sin(angles[i]) * r;
+          bCtx.fillStyle = '#fff';
+          bCtx.beginPath();
+          bCtx.arc(px, py, 4, 0, Math.PI * 2);
+          bCtx.fill();
+        });
+      };
+
+      if (bCanvas) {
+        updateBartleRadar();
+      }
+
+    })();
+  </script>
+</body>
+
+</html>

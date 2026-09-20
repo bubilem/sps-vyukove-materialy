@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 020: Časová osa a milníky videoher | PHR &bull; SPŠ</title>
+  
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #f43f5e;
+      --accent-glow: rgba(244, 63, 94, 0.25);
+    }
+
+    /* =========================================
+       OSCILOSKOP SIMULÁTOR: TENNIS FOR TWO (1958)
+       ========================================= */
+    .oscilloscope-station {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .crt-bezel {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 4px solid #334155;
+      border-radius: 28px;
+      padding: 1.25rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .crt-screen-wrap {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #022c22 0%, #01140e 80%, #000000 100%);
+      border: 6px solid #1e293b;
+      box-shadow: inset 0 0 35px rgba(34, 197, 94, 0.45), 0 0 20px rgba(34, 197, 94, 0.2);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Rastr osciloskopu */
+    .crt-screen-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(34, 197, 94, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 197, 94, 0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: center center;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Kříž středu */
+    .crt-screen-wrap::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle, transparent 65%, rgba(0,0,0,0.6) 100%),
+        linear-gradient(to right, transparent 49.5%, rgba(34, 197, 94, 0.35) 50%, transparent 50.5%),
+        linear-gradient(to bottom, transparent 49.5%, rgba(34, 197, 94, 0.35) 50%, transparent 50.5%);
+      pointer-events: none;
+      border-radius: 50%;
+    }
+
+    .crt-screen-wrap canvas {
+      width: 280px;
+      height: 280px;
+      display: block;
+      border-radius: 50%;
+    }
+
+    .crt-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-crt {
+      background: #0f172a;
+      border: 1px solid #34d399;
+      color: #34d399;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
+      box-shadow: 0 0 8px rgba(52, 211, 153, 0.15);
+    }
+
+    .btn-crt:hover, .btn-crt.active {
+      background: #34d399;
+      color: #022c22;
+      box-shadow: 0 0 16px rgba(52, 211, 153, 0.5);
+    }
+
+    /* =========================================
+       INTERAKTIVNÍ ČASOVÁ OSA A FILTRY
+       ========================================= */
+    .timeline-filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .timeline-search-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.85rem;
+    }
+
+    .timeline-search-input {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      width: 100%;
+      outline: none;
+    }
+
+    .timeline-category-tabs, .timeline-decade-tabs {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .t-filter-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .t-filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .t-filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .timeline-scroll-box {
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .milestone-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.15rem;
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 1rem;
+      align-items: start;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .milestone-card:hover {
+      transform: translateX(4px);
+      border-color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .milestone-year {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+
+    .milestone-cat-badge {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 0.25rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .cat-tech { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+    .cat-game { background: rgba(244, 63, 94, 0.12); color: #f43f5e; border-color: rgba(244, 63, 94, 0.3); }
+    .cat-esport { background: rgba(168, 85, 247, 0.12); color: #a855f7; border-color: rgba(168, 85, 247, 0.3); }
+    .cat-record { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3); }
+
+    .milestone-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .milestone-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* FAQ akordeon */
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.65rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-question {
+      padding: 0.85rem 1.15rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .faq-question .icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question .icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.15rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: -0.25rem;
+      padding-top: 0.75rem;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .oscilloscope-station {
+        grid-template-columns: 1fr;
+      }
+      .milestone-card {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(244, 63, 94, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+    
+    <!-- Horní lišta s drobečkovou navigací -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PHR">PHR</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">020 Časová osa her</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hlavní prezentační plocha se snímky -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: TITULNÍ SNÍMEK
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Kronika videoher a časová osa">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět PHR &bull; Téma 020</span>
+            <span class="badge">Historie, technologie a rekordy</span>
+          </div>
+          <h1 class="hero-title">Kronika videoher: Časová osa, technologie a rekordy</h1>
+          <p class="hero-subtitle">
+            Cesta od první analogové hry na osciloskopu (1958) přes polygonovou revoluci a vznik esportu až po fotorealismus, ray-tracing a miliardové rozpočty.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4 style="color: var(--accent);">52 klíčových milníků</h4>
+              <p>Komplexní chronologický přehled průlomových okamžiků, které definovaly hardware i herní průmysl.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #38bdf8;">Interaktivní osciloskop</h4>
+              <p>Plně funkční vědecká simulace první videohry <em>Tennis for Two</em> z roku 1958 přímo v prohlížeči.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #f59e0b;">Síň herních rekordů</h4>
+              <p>Nejdražší aukce, největší mapy, nejvýdělečnější tituly a extrémy, kterým se těžko věří.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: VELKÁ INTERAKTIVNÍ ČASOVÁ OSA
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Prohlížeč milníků (52 bodů)">
+        <div class="slide-content">
+          <h2>Centrální chronologický prohlížeč videoherní historie</h2>
+          <p class="slide-lead">Filtrujte mezi <strong>52 klíčovými milníky</strong> dle kategorií, dekád nebo vyhledávejte konkrétní pojem:</p>
+
+          <div class="timeline-filter-bar">
+            <div class="timeline-search-row">
+              <svg class="icon" viewBox="0 0 24 24" style="width: 18px; height: 18px; color: var(--text-muted);"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="timelineSearch" class="timeline-search-input" placeholder="Hledat v milnících (např. osciloskop, DOOM, 3dfx, Quake, Steam, GTA, esport)..." oninput="filterMilestones()">
+            </div>
+
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+              <div class="timeline-category-tabs">
+                <button class="t-filter-btn active" data-cat="all" onclick="setCategoryFilter('all')">Všechny kategorie</button>
+                <button class="t-filter-btn" data-cat="tech" onclick="setCategoryFilter('tech')">Hardware &amp; Tech</button>
+                <button class="t-filter-btn" data-cat="game" onclick="setCategoryFilter('game')">Herní design &amp; Žánry</button>
+                <button class="t-filter-btn" data-cat="esport" onclick="setCategoryFilter('esport')">Esport &amp; Komunita</button>
+                <button class="t-filter-btn" data-cat="record" onclick="setCategoryFilter('record')">Rekordy &amp; Průmysl</button>
+              </div>
+
+              <div class="timeline-decade-tabs">
+                <button class="t-filter-btn active" data-dec="all" onclick="setDecadeFilter('all')">Všechny dekády</button>
+                <button class="t-filter-btn" data-dec="5060" onclick="setDecadeFilter('5060')">1950–69</button>
+                <button class="t-filter-btn" data-dec="70" onclick="setDecadeFilter('70')">70. léta</button>
+                <button class="t-filter-btn" data-dec="80" onclick="setDecadeFilter('80')">80. léta</button>
+                <button class="t-filter-btn" data-dec="90" onclick="setDecadeFilter('90')">90. léta</button>
+                <button class="t-filter-btn" data-dec="00" onclick="setDecadeFilter('00')">2000–09</button>
+                <button class="t-filter-btn" data-dec="10" onclick="setDecadeFilter('10')">2010+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-scroll-box" id="timelineList">
+            <!-- Dynamicky generováno javascriptem -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: ÉRA ZRODU (1950–1969) + OSCILOSKOP
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="1950–1969: Zrod a Tennis for Two">
+        <div class="slide-content">
+          <h2>1950–1969: Éra zrodu na sálových počítačích a osciloskopu</h2>
+          <p class="slide-lead">Před zavedením mikroprocesorů vznikaly hry ve vědeckých ústavech jako vedlejší demonstrace technologie:</p>
+
+          <div class="oscilloscope-station">
+            <div class="crt-bezel">
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #34d399; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-transform: uppercase;">
+                DONNER MODEL 30 &bull; DUMONT CRT 5"
+              </div>
+              <div class="crt-screen-wrap">
+                <canvas id="crtCanvas" width="280" height="280"></canvas>
+              </div>
+              <div class="crt-controls">
+                <button class="btn-crt" onclick="triggerP1Hit()">Hráč 1: Odpal</button>
+                <button class="btn-crt" onclick="triggerP2Hit()">Hráč 2: Odpal</button>
+                <button class="btn-crt active" id="btnAutoRally" onclick="toggleAutoRally()">Auto-Rally: ZAP</button>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                <span class="milestone-year" style="font-size: 1.4rem;">1958</span>
+                <span class="milestone-cat-badge cat-tech">První hra na světě</span>
+              </div>
+              <h3 style="color: var(--accent); margin-bottom: 0.5rem;">Tennis for Two (William Higinbotham)</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+                V národní laboratoři Brookhaven (New York) sestrojil fyzik William Higinbotham hru pro Den otevřených dveří. 
+                Využil <strong>analogový počítač Donner Model 30</strong> (operační zesilovače počítaly rovnice šikmého vrhu a odporu vzduchu) a <strong>5palcový osciloskop</strong> jako obrazovku.
+              </p>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.75rem;">
+                <li>Hráči ovládali úhel odpalu otočným potenciometrem a míček odpalovali tlačítkem.</li>
+                <li>Míček se odrážel od země i od sítě uprostřed – první fyzikální simulace v dějinách.</li>
+                <li><strong>1962: Spacewar! (MIT)</strong> – Steve Russell naprogramoval na sálovém digitálním počítači DEC PDP-1 souboj dvou vesmírných lodí s gravitační studnou.</li>
+                <li><strong>1966–1968: The Brown Box (Ralph Baer)</strong> – První funkční prototyp domácí televizní konzole.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: 70. LÉTA – ARKÁDY A ATARI
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="70. léta: Arkády a vzestup Atari">
+        <div class="slide-content">
+          <h2>70. léta: Mincovní automaty, první konzole a zrod Atari</h2>
+          <p class="slide-lead">Z laboratoří do barů a obývacích pokojů – vzniká komerční videoherní průmysl:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <span class="milestone-year">1972</span>
+              <h3 style="color: var(--accent); margin-top: 0.25rem;">Magnavox Odyssey</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                První komerčně prodávaná domácí konzole na světě, založená na patentech Ralpha Baera. Neměla mikroprocesor (běžela na diskrétní tranzistorové logice).
+              </p>
+              <div style="background: rgba(255, 255, 255, 0.04); padding: 0.5rem; border-radius: 4px; font-size: 0.78rem; margin-top: 0.5rem;">
+                Protože konzole neuměla vykreslit grafiku, hráči si na televizní obrazovku lepili barevné statické plastové fólie!
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="milestone-year">1972</span>
+              <h3 style="color: var(--accent); margin-top: 0.25rem;">Pong a zrod Atari</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                Nolan Bushnell a Allan Alcorn postavili mincovní automat Pong. První testovací automat v baru Andy Capp's v Kalifornii se po pár dnech porouchal – <em>schránka byla doslova přecpaná čtvrťáky</em>.
+              </p>
+              <div style="background: rgba(255, 255, 255, 0.04); padding: 0.5rem; border-radius: 4px; font-size: 0.78rem; margin-top: 0.5rem;">
+                Pong dokázal, že videohry mohou být astronomicky ziskovým globálním byznysem.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="milestone-year">1977</span>
+              <h3 style="color: var(--accent); margin-top: 0.25rem;">Atari 2600 (VCS)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                Revoluce výměnných cartridgí s procesorem MOS 6507 (1,19 MHz) a 128 bajty RAM. Hráči si už nemuseli kupovat konzoli na jednu hru – stačilo koupit novou kazetu.
+              </p>
+              <div style="background: rgba(255, 255, 255, 0.04); padding: 0.5rem; border-radius: 4px; font-size: 0.78rem; margin-top: 0.5rem;">
+                <strong>1978: Space Invaders</strong> – fenomén, který způsobil nedostatek mincí v Japonsku a zavedl tabulku High Score.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: 80. LÉTA – KRACH A VZKŘÍŠENÍ
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="80. léta: Krach Atari a příchod NES">
+        <div class="slide-content">
+          <h2>80. léta: Velký videoherní krach 1983 a záchrana Nintendem</h2>
+          <p class="slide-lead">Nejdivočejší dekáda: pád amerického trhu o 97 % a zrod legendárních japonských značek:</p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="milestone-year">1983</span>
+                <span class="milestone-cat-badge cat-record">Kolaps trhu</span>
+              </div>
+              <h3 style="color: #ef4444; margin-top: 0.25rem;">Video Game Crash of 1983</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem;">
+                Trh zaplavily tisíce nekvalitních, narychlo slátaných her bez jakékoli kontroly kvality. Důvěra zákazníků zkolabovala.
+              </p>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.5rem;">
+                <li><strong>E.T. the Extra-Terrestrial:</strong> Hra vytvořená za 5 týdnů pro vánoční trh. Byla tak nehratelná, že Atari tajně zakopalo 700 000 neprodaných cartridgí v poušti u Alamogorda v Novém Mexiku (vykopány až v roce 2014!).</li>
+                <li>Tržby amerického videoherního průmyslu spadly z 3,2 miliardy USD na pouhých 100 milionů USD.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="milestone-year">1985</span>
+                <span class="milestone-cat-badge cat-game">Záchrana oboru</span>
+              </div>
+              <h3 style="color: #10b981; margin-top: 0.25rem;">Nintendo NES &amp; Super Mario Bros.</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem;">
+                Japonské Nintendo vstoupilo do USA a zachránilo celý obor.
+              </p>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.5rem;">
+                <li><strong>Nintendo Seal of Quality:</strong> Zavedení bezpečnostního 10NES čipu a přísné certifikace vydavatelů – žádná hra nesměla vyjít bez schválení Nintenda.</li>
+                <li><strong>1984: Tetris (Alexej Pažitnov)</strong> – logický fenomén z Moskvy.</li>
+                <li><strong>1989: Game Boy</strong> – přenosná konzole, jejíž skvělá výdrž na baterie a Tetris převálcovaly technicky vyspělejší barevnou konkurenci.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: 90. LÉTA – 3D REVOLUCE A DOOM
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="90. léta: 3D grafika, DOOM a PlayStation">
+        <div class="slide-content">
+          <h2>90. léta: Nástup CD-ROM, raycastingu a válka konzolí</h2>
+          <p class="slide-lead">Přechod od 2D pixel-artu k trojrozměrným polygonům a multiplayerovému propojení:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <span class="milestone-year">1993</span>
+              <h3 style="color: var(--accent); margin-top: 0.25rem;">DOOM a id Software</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                John Carmack a John Romero vytvořili milník výpočetní techniky. Raycasting engine, textury měnící výšku, síťový deathmatch a podpora modifikací (WAD soubory).
+              </p>
+              <div style="background: rgba(255, 255, 255, 0.04); padding: 0.5rem; border-radius: 4px; font-size: 0.78rem; margin-top: 0.5rem;">
+                DOOM byl instalován na více firemních PC než operační systém Windows 95!
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="milestone-year">1994</span>
+              <h3 style="color: #38bdf8; margin-top: 0.25rem;">Sony PlayStation</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                Sony vstoupilo na herní trh s levným CD médiem (650 MB oproti drahým cartridgím Nintenda s 16–64 MB) a vyhrazeným čipem pro 3D geometrii.
+              </p>
+              <div style="background: rgba(255, 255, 255, 0.04); padding: 0.5rem; border-radius: 4px; font-size: 0.78rem; margin-top: 0.5rem;">
+                Zacílila na dospívající a dospělé hráče – videohry přestaly být vnímány jako pouhé dětské hračky.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="milestone-year">1996</span>
+              <h3 style="color: #10b981; margin-top: 0.25rem;">Super Mario 64</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                Shigeru Miyamoto vyřešil základní problém 3D her: jak ovládat pohyb postavy a volnou kameru v prostoru.
+              </p>
+              <div style="background: rgba(255, 255, 255, 0.04); padding: 0.5rem; border-radius: 4px; font-size: 0.78rem; margin-top: 0.5rem;">
+                Zavedení <strong>analogové páčky</strong> na ovladači N64 se stalo nesmrtelným standardem veškerého hardwaru dodnes.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: 1996–2000: AKCELERÁTORY A ESPORT
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="1996–2000: 3dfx Voodoo a zrod esportu">
+        <div class="slide-content">
+          <h2>1996–2000: Grafické akcelerátory, zrod esportu a Counter-Strike</h2>
+          <p class="slide-lead">Okamžik, kdy grafické karty opustily CPU a online hraní se stalo profesionálním sportem:</p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="milestone-year">1996</span>
+                <span class="milestone-cat-badge cat-tech">Hardwarový zlom</span>
+              </div>
+              <h3 style="color: var(--accent); margin-top: 0.25rem;">3dfx Voodoo Graphics (Glide API)</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem;">
+                První dedikovaný přídavný 3D akcelerátor pro PC. Přinesl hardwarové bilineární filtrování textur, vyhlazování hran a Z-buffer. Konec kostičkovaného softwarového renderování – odstartoval éru GPU.
+              </p>
+              <div style="background: rgba(255, 255, 255, 0.04); padding: 0.6rem; border-radius: 4px; font-size: 0.82rem; margin-top: 0.5rem;">
+                <strong>1996: Quake</strong> – první plně polygonální 3D engine s TCP/IP síťovým kódem (QuakeWorld).
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="milestone-year">1997–99</span>
+                <span class="milestone-cat-badge cat-esport">Zrození esportu</span>
+              </div>
+              <h3 style="color: #a855f7; margin-top: 0.25rem;">Turnaj Red Annihilation &amp; Counter-Strike</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem;">
+                V Quake turnaji <strong>Red Annihilation (1997)</strong> vyhrál Dennis „Thresh“ Fong osobní Ferrari 328 GTS Johna Carmacka – zapsán do Guinessovy knihy jako <em>první profesionální progamer světa</em>.
+              </p>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.5rem;">
+                <li><strong>1998: StarCraft (Blizzard)</strong> – celonárodní esportový fenomén v Jižní Koreji s televizními stanicemi OGN a zápasy na stadionech.</li>
+                <li><strong>1999: Counter-Strike</strong> – bezplatný studentský mód pro Half-Life (Minh Le &amp; Jess Cliffe), který ovládl online FPS scénu na čtvrt století.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: 2001–2009: STEAM, WOW A MINECRAFT
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="2001–2009: Otevřené světy a Steam">
+        <div class="slide-content">
+          <h2>2001–2009: Otevřené světy, digitální revoluce a Minecraft</h2>
+          <p class="slide-lead">Hry překračují fyzické nosiče a sandboxové světy mění pojetí svobody:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <span class="milestone-year">2001</span>
+              <h3 style="color: var(--accent); margin-top: 0.25rem;">GTA III &amp; Halo na Xboxu</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                GTA III definovalo moderní městskou akci ve volném 3D prostoru. Microsoft vstoupil s konzolí Xbox a hrou <em>Halo</em> dokázal, že střílečky lze dokonale ovládat dvěma páčkami na gamepadu.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="milestone-year">2003–04</span>
+              <h3 style="color: #38bdf8; margin-top: 0.25rem;">Steam &amp; World of Warcraft</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                Valve spustilo platformu <strong>Steam</strong> – zpočátku nenáviděný klient na patche se stal králem digitální distribuce. Blizzard vydal <strong>World of Warcraft</strong>, který přitáhl 12 milionů předplatitelů.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="milestone-year">2009</span>
+              <h3 style="color: #10b981; margin-top: 0.25rem;">Minecraft &amp; League of Legends</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                Markus „Notch“ Persson vydal v Javě voxelový <strong>Minecraft</strong> – nejprodávanější hru historie. Riot Games vydali <strong>League of Legends</strong>, základ moderních esportových megaturnajů.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: 2010–SOUČASNOST: RAY-TRACING A REKORDY
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="2010–současnost: Twitch, RTX a arény">
+        <div class="slide-content">
+          <h2>2010–současnost: Streamování, fotorealismus a miliardové arény</h2>
+          <p class="slide-lead">Videohry jako globální divácký sport a technologická výkladní skříň fotorealismu:</p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="milestone-year">2011–17</span>
+                <span class="milestone-cat-badge cat-game">Stream &amp; Battle Royale</span>
+              </div>
+              <h3 style="color: var(--accent); margin-top: 0.25rem;">Twitch.tv, GTA V a Fortnite</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem;">
+                <strong>Twitch (2011)</strong> změnil sledování her v plnohodnotné televizní médium. <strong>GTA V (2013)</strong> utržilo 1 miliardu dolarů za pouhé 3 dny od vydání. <strong>Fortnite (2017)</strong> odstartoval šílenství Battle Royale a uspořádal první virtuální metaverse koncerty (Travis Scott – 12,3 mil. diváků naráz).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span class="milestone-year">2018–24</span>
+                <span class="milestone-cat-badge cat-tech">RTX &amp; $40M Esport</span>
+              </div>
+              <h3 style="color: #f59e0b; margin-top: 0.25rem;">Real-time Ray-tracing a The International 10</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-top: 0.5rem;">
+                <strong>2018: NVIDIA RTX</strong> přinesla hardwarový ray-tracing v reálném čase. <strong>2021: Turnaj The International 10 (Dota 2)</strong> vyplatil rekordní prizepool <strong>$40 018 195</strong>. 
+                <strong>2023:</strong> Microsoft dokončil akvizici Activision Blizzard za rekordních <strong>68,7 miliardy dolarů</strong> – největší obchod v IT historii.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: SÍŇ REKORDŮ A KURIOZIT
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Síň videoherních rekordů">
+        <div class="slide-content">
+          <h2>Síň videoherních rekordů a technologických extrémů</h2>
+          <p class="slide-lead">Zajímavosti a neuvěřitelná čísla ze světa digitální interaktivní zábavy:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <div class="stat-badge" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3);">Prodejní rekord</div>
+              <h3 style="color: var(--accent); margin-top: 0.35rem;">Nejprodávanější hry</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>1. Minecraft:</strong> přes 300 milionů kopií.</li>
+                <li><strong>2. GTA V:</strong> přes 200 milionů kopií.</li>
+                <li><strong>3. Tetris (EA mobile):</strong> přes 100 milionů.</li>
+                <li><strong>Nejprodávanější konzole:</strong> PlayStation 2 (přes 155 milionů kusů).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="stat-badge" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">Délka a rozpočet</div>
+              <h3 style="color: var(--accent); margin-top: 0.35rem;">Nejdelší vývoj &amp; Finance</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Nejdelší vývoj:</strong> <em>Duke Nukem Forever</em> (14 let vývoje, 1997–2011).</li>
+                <li><strong>Nejvíce vybraných peněz:</strong> <em>Star Citizen</em> (přes $700 milionů z crowdfundingu, ve vývoji od 2012).</li>
+                <li><strong>Nejdražší hra:</strong> Připravované <em>GTA VI</em> s odhadovaným rozpočtem přesahujícím 1–2 miliardy dolarů.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="stat-badge" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);">Extrémy a aukce</div>
+              <h3 style="color: var(--accent); margin-top: 0.35rem;">Kuriozity &amp; Aukce</h3>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong>Nejdražší prodaná hra v aukci:</strong> Zapečetěná cartridge <em>Super Mario 64</em> prodána v roce 2021 za <strong>1 560 000 USD</strong>!</li>
+                <li><strong>Největší herní mapa:</strong> <em>No Man's Sky</em> – 18 trilionů procedurálních planet (vyžadovalo by 584 miliard let k navštívení všech).</li>
+                <li><strong>Největší vesmírná bitva:</strong> <em>EVE Online (M2-XFE)</em> – zničeno 3 404 lodí v hodnotě $378 000 USD.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: SHRNUTÍ A KONTROLNÍ OTÁZKY
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Závěrečné opakování</span>
+            <span class="badge">Otázky SPŠ</span>
+          </div>
+          <h2>Shrnutí historického vývoje a kontrolní otázky</h2>
+          <p class="slide-lead">Ověřte si pochopení klíčových technologických zlomů a milníků herní historie:</p>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>1. Na jakém principu a hardwaru fungovala první videohra Tennis for Two z roku 1958?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Běžela na analogovém počítači Donner Model 30, kde operační zesilovače a rezistory v reálném čase řešily diferenciální rovnice pro balistickou křivku gravitačního vrhu míčku s odporem vzduchu. Obraz vykresloval katodový paprsek na 5palcovém laboratorním osciloskopu.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>2. Co způsobilo krach videoherního trhu v USA v roce 1983 a jak Nintendo situaci vyřešilo?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Trh zkolaboval kvůli přesycení nekvalitními hrami bez kontroly (symbolem byl propadák E.T.). Nintendo při uvedení NES v roce 1985 zavedlo hardwarový bezpečnostní čip 10NES a pečeť kvality (Nintendo Seal of Quality), která garantovala přísnou kontrolu nad všemi hrami a obnovila důvěru hráčů i obchodníků.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>3. Jaký zásadní technologický přínos měla karta 3dfx Voodoo Graphics pro počítačové hry?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Byla to první cenově dostupná přídavná 3D akcelerační karta pro PC. Převzala výpočty 3D geometrie a textur z procesoru (CPU), zavedla hardwarové bilineární filtrování a vyhlazování hran. Hry přestaly být kostičkované a odstartovala éra dedikovaných GPU grafických karet.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>4. Kdo je považován za prvního profesionálního esportovce na světě a co vyhrál v turnaji Red Annihilation?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Byl to Dennis Fong s přezdívkou „Thresh“, který v roce 1997 zvítězil v celoamerickém turnaji ve hře Quake s názvem Red Annihilation a jako hlavní cenu získal osobní sportovní automobil Ferrari 328 GTS hlavního vývojáře Johna Carmacka.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>5. Která herní konzole drží historický rekord v prodejích a jaká funkce přispěla k jejímu úspěchu?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Historickým rekordmanem je konzole PlayStation 2 od společnosti Sony s více než 155 miliony prodaných kusů. Zásadním faktorem úspěchu bylo, že kromě her fungovala také jako cenově nejdostupnější přehrávač tehdy nového filmového formátu DVD pro celou rodinu.
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: center;">
+            <a href="../index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%); color: #fff; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Zpět na katalog předmětu PHR
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Spodní ovládací lišta prezentace -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../010-Uvod-do-pocitacovych-her/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 010 Úvod do her (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PHR">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (v přípravě)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 11</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Fullscreen (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <!-- Postranní panel osnovy -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Časová osa
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Jádro frameworku prezentací -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Skript specifických interaktivních prvků tématu 020 -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ==========================================================
+         1. DATABÁZE 52 MILNÍKŮ VIDEOHERNÍ HISTORIE
+         ========================================================== */
+      const milestonesData = [
+        { year: 1958, dec: "5060", cat: "tech", title: "Tennis for Two (William Higinbotham)", desc: "První interaktivní hra pro zábavu na analogovém počítači Donner Model 30 a 5\" osciloskopu v laboratoři Brookhaven." },
+        { year: 1962, dec: "5060", cat: "game", title: "Spacewar! na sálovém počítači DEC PDP-1", desc: "Steve Russell na MIT vytvořil souboj dvou lodí u gravitační studny. První celosvětově sdílená digitální hra." },
+        { year: 1968, dec: "5060", cat: "tech", title: "The Brown Box (Ralph Baer)", desc: "První funkční prototyp domácí televizní herní konzole se světelnou pistolí a hrami ping-pongu." },
+        { year: 1971, dec: "70", cat: "tech", title: "Computer Space (Bushnell & Dabney)", desc: "První komerčně vyráběný mincovní arkádový automat ve sklolaminátovém futuristickém šasi." },
+        { year: 1972, dec: "70", cat: "tech", title: "Magnavox Odyssey", desc: "První komerční domácí konzole v prodeji; pracovala s diskrétní diodovo-tranzistorovou logikou a fóliemi na TV." },
+        { year: 1972, dec: "70", cat: "game", title: "Pong (Atari)", desc: "První celosvětový komerční arkádový megahit, který nastartoval moderní herní průmysl." },
+        { year: 1974, dec: "70", cat: "tech", title: "Maze War & D&D", desc: "První 3D bludišťová střílečka v síti ARPANET a zavedení konceptu síťového avatara." },
+        { year: 1977, dec: "70", cat: "tech", title: "Atari 2600 (VCS)", desc: "Masové zavedení výměnných cartridgí s procesorem MOS 6507; konec jednoúčelových hardwarových systémů." },
+        { year: 1978, dec: "70", cat: "game", title: "Space Invaders (Taito)", desc: "Hra, která způsobila nedostatek mincí v Japonsku a zavedla koncept dynamického zrychlování hudby s napětím." },
+        { year: 1979, dec: "70", cat: "tech", title: "Asteroids (Atari)", desc: "Vektorová CRT grafika s ostrými liniemi a první automat s ukládáním třípísmenných iniciál do High Score." },
+        { year: 1980, dec: "80", cat: "game", title: "Pac-Man (Namco / Toru Iwatani)", desc: "První globální herní popkulturní ikona, zrod merchandisingu a oslovení masového publika včetně žen." },
+        { year: 1980, dec: "80", cat: "esport", title: "Space Invaders Championship (Atari)", desc: "První velký celoamerický herní turnaj v historii s více než 10 000 účastníky – oficiální zrod kompetitivního hraní." },
+        { year: 1982, dec: "80", cat: "record", title: "Zrození Activision & Electronic Arts", desc: "Vznik prvních nezávislých vydavatelů (third-party vývojářů) na protest proti anonymitě programátorů v Atari." },
+        { year: 1983, dec: "80", cat: "record", title: "Velký videoherní krach (Video Game Crash)", desc: "Pád amerického trhu o 97 % způsobený záplavou nekvalitního softwaru; symbolické pohřbení hry E.T. v poušti." },
+        { year: 1984, dec: "80", cat: "game", title: "Tetris (Alexej Pažitnov)", desc: "Vytvořen v Moskvě na počítači Elektronika 60; nejprodávanější a matematicky nejdokonalejší logická hra světa." },
+        { year: 1985, dec: "80", cat: "game", title: "Nintendo NES & Super Mario Bros.", desc: "Vzkříšení celého videoherního průmyslu, zavedení 'Nintendo Seal of Quality' a bible 2D plošinovek." },
+        { year: 1986, dec: "80", cat: "tech", title: "The Legend of Zelda (Bateriová Save RAM)", desc: "První cartridge s interní baterií napájenou RAM pamětí pro ukládání herního postupu v obřím světě." },
+        { year: 1989, dec: "80", cat: "tech", title: "Nintendo Game Boy", desc: "Přenosná revoluce: černobílý úsporný displej a přibalený Tetris zničily barevnou konkurenci díky výdrži." },
+        { year: 1989, dec: "80", cat: "game", title: "SimCity (Will Wright / Maxis)", desc: "Zrod systémových budovatelských simulací bez předem daného konce či vítězné podmínky." },
+        { year: 1991, dec: "90", cat: "esport", title: "Street Fighter II (Capcom)", desc: "Náhodný objev mechaniky komb v animacích; zrod moderních kompetitivních bojovek a renesance heren." },
+        { year: 1991, dec: "90", cat: "record", title: "Sonic the Hedgehog & Válka konzolí", desc: "Agresivní marketing 'Genesis does what Nintendon't' rozpoutal slavnou technologickou válku Sega vs. Nintendo." },
+        { year: 1992, dec: "90", cat: "tech", title: "Wolfenstein 3D (id Software)", desc: "John Carmack implementoval rychlý raycasting v reálném čase na PC a položil základy žánru stříleček (FPS)." },
+        { year: 1993, dec: "90", cat: "tech", title: "DOOM (id Software)", desc: "Globální zjevení: Deathmatch po síti, variabilní výška stěn, shareware model a otevření moddingu komunitě." },
+        { year: 1993, dec: "90", cat: "tech", title: "Myst (Cyan Worlds)", desc: "Fotorealisticky renderovaný svět na CD-ROM disku, který donutil miliony domácností dokoupit CD-ROM mechaniku." },
+        { year: 1993, dec: "90", cat: "record", title: "Slyšení v americkém Senátu & vznik ESRB", desc: "Kontroverze kolem násilí v Mortal Kombat a Night Trap vedla k zavedení věkového ratingového systému ESRB." },
+        { year: 1994, dec: "90", cat: "tech", title: "Sony PlayStation", desc: "Vstup Sony na trh, přechod na levnější CD média, podpora 3D polygonů a zacílení na dospělejší publikum." },
+        { year: 1994, dec: "90", cat: "game", title: "Warcraft: Orcs & Humans (Blizzard)", desc: "Položení základů moderních RTS strategií a jednoho z nejvlivnějších fantasy světů v IT historii." },
+        { year: 1996, dec: "90", cat: "tech", title: "Super Mario 64 & Analogová páčka", desc: "Definice volného pohybu a kamery ve 3D prostoru; standard analogového ovládání pro veškeré gamepady." },
+        { year: 1996, dec: "90", cat: "tech", title: "3dfx Voodoo Graphics (Glide API)", desc: "První cenově dostupný 3D akcelerátor pro PC; hardwarové filtrování textur a konec softwarového CPU vykreslování." },
+        { year: 1996, dec: "90", cat: "tech", title: "Quake (id Software)", desc: "První plně polygonální 3D engine se světly, TCP/IP síťovým kódem (QuakeWorld) a internetovým multiplayerem." },
+        { year: 1997, dec: "90", cat: "esport", title: "Red Annihilation: Ferrari pro Threshe", desc: "Dennis Fong vyhrál v Quake turnaji Ferrari Johna Carmacka – první profesionální esportovec historie." },
+        { year: 1997, dec: "90", cat: "game", title: "Ultima Online", desc: "První masivní MMORPG; vznik živoucí virtuální ekonomiky, klanů a slavný incident zavraždění lorda Britisha." },
+        { year: 1998, dec: "90", cat: "game", title: "Half-Life (Valve)", desc: "Revoluce ve vyprávění příběhu: děj plyne v reálném čase přímo očima Gordona Freemana bez nutnosti cutscén." },
+        { year: 1998, dec: "90", cat: "esport", title: "StarCraft (Blizzard)", desc: "Geniální asymetrický balanc tří ras a celonárodní esportový boom v Jižní Koreji s televizními ligami." },
+        { year: 1999, dec: "90", cat: "esport", title: "Counter-Strike", desc: "Studentský bezplatný mód pro Half-Life (Minh Le & Jess Cliffe) se stal králem taktických stříleček na 25 let." },
+        { year: 2000, dec: "00", cat: "record", title: "PlayStation 2", desc: "Nejprodávanější konzole všech dob (155+ milionů kusů); díky DVD mechanice urychlila celosvětový nástup formátu DVD." },
+        { year: 2001, dec: "00", cat: "game", title: "Grand Theft Auto III", desc: "Přechod do plně trojrozměrného otevřeného města; definice moderní městské akce a absolutní hráčské svobody." },
+        { year: 2001, dec: "00", cat: "tech", title: "Xbox & Halo: Combat Evolved", desc: "Microsoft vstupuje na konzolový trh; Halo dokázalo, že FPS hry lze perfektně ovládat na gamepadu se dvěma páčkami." },
+        { year: 2003, dec: "00", cat: "tech", title: "Spuštění platformy Steam (Valve)", desc: "Přechod od fyzických krabic k digitální distribuci na PC; základna moderního digitálního trhu." },
+        { year: 2004, dec: "00", cat: "game", title: "World of Warcraft (Blizzard)", desc: "Zpřístupnění MMORPG masám, vrchol 12 milionů platících předplatitelů a obrovský společenský fenomén." },
+        { year: 2006, dec: "00", cat: "tech", title: "Nintendo Wii (Pohybové ovládání)", desc: "Intuitivní ovladač Wii Remote přilákal k hraní seniory i nehráče; důkaz, že nápad vítězí nad hrubým výkonem." },
+        { year: 2007, dec: "00", cat: "tech", title: "Crysis ('Can it run Crysis?')", desc: "Technologický milník s fotorealistickou vegetací a fyzikou, který svou náročností předběhl hardware o 5 let." },
+        { year: 2007, dec: "00", cat: "game", title: "Call of Duty 4: Modern Warfare", desc: "Zavedení perkového systému, XP postupu a killstreaků do multiplayeru – vzor stříleček na příštích 15 let." },
+        { year: 2009, dec: "00", cat: "game", title: "Minecraft (Markus 'Notch' Persson)", desc: "Voxelový nezávislý projekt v Javě se stal nejprodávanější hrou historie (přes 300 milionů kopií)." },
+        { year: 2009, dec: "00", cat: "esport", title: "League of Legends (Riot Games)", desc: "Adaptace žánru MOBA do Free-to-Play modelu; vyprodávání olympijských stadionů a největší esport planety." },
+        { year: 2011, dec: "10", cat: "record", title: "Spuštění platformy Twitch.tv", desc: "Zásadní zlom v konzumaci her: hry se staly diváckým sportem a zrodila se profese herních streamerů." },
+        { year: 2013, dec: "10", cat: "record", title: "Grand Theft Auto V", desc: "Nejvýnosnější audiovizuální produkt lidských dějin: tržby 1 miliarda dolarů za pouhé 3 dny od uvedení." },
+        { year: 2016, dec: "10", cat: "tech", title: "Pokémon GO (Niantic)", desc: "Nejmasovější globální nasazení rozšířené reality (AR); stovky milionů lidí vyrazily hledat pokémony v ulicích." },
+        { year: 2017, dec: "10", cat: "game", title: "Fortnite Battle Royale (Epic Games)", desc: "Globální šílenství Battle Royale, multiplatformní cross-play a metaverse koncerty s desítkami milionů diváků." },
+        { year: 2018, dec: "10", cat: "tech", title: "NVIDIA RTX (Hardware Ray-Tracing)", desc: "Fyzikálně přesné sledování paprsků světla, odrazů a globálního osvětlení v reálném čase na spotřebitelských GPU." },
+        { year: 2021, dec: "10", cat: "esport", title: "The International 10: Prizepool $40M+", desc: "Absolutní esportový rekord: komunitní crowdfunding Compendia vynesl prizepool $40 018 195 USD." },
+        { year: 2023, dec: "10", cat: "record", title: "Akvizice Activision Blizzard za $68,7 mld", desc: "Microsoft dokončil historicky největší akvizici v herním i softwarovém průmyslu; rozpočty AAA her překračují $300M+." }
+      ];
+
+      let currentCat = 'all';
+      let currentDec = 'all';
+
+      window.setCategoryFilter = function (cat) {
+        currentCat = cat;
+        document.querySelectorAll('.timeline-category-tabs .t-filter-btn').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-cat') === cat);
+        });
+        filterMilestones();
+      };
+
+      window.setDecadeFilter = function (dec) {
+        currentDec = dec;
+        document.querySelectorAll('.timeline-decade-tabs .t-filter-btn').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-dec') === dec);
+        });
+        filterMilestones();
+      };
+
+      window.filterMilestones = function () {
+        const query = (document.getElementById('timelineSearch').value || '').toLowerCase().trim();
+        const listEl = document.getElementById('timelineList');
+        if (!listEl) return;
+
+        const filtered = milestonesData.filter(m => {
+          const matchCat = currentCat === 'all' || m.cat === currentCat;
+          const matchDec = currentDec === 'all' || m.dec === currentDec;
+          const matchQ = !query || 
+            m.title.toLowerCase().includes(query) || 
+            m.desc.toLowerCase().includes(query) || 
+            m.year.toString().includes(query);
+          return matchCat && matchDec && matchQ;
+        });
+
+        if (filtered.length === 0) {
+          listEl.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Žádné milníky neodpovídají zadanému filtru.</div>';
+          return;
+        }
+
+        const catNames = {
+          tech: 'Hardware & Tech',
+          game: 'Design & Žánry',
+          esport: 'Esport & Komunita',
+          record: 'Rekordy & Průmysl'
+        };
+
+        listEl.innerHTML = filtered.map(m => `
+          <div class="milestone-card">
+            <div>
+              <div class="milestone-year">${m.year}</div>
+              <span class="milestone-cat-badge cat-${m.cat}">${catNames[m.cat] || m.cat}</span>
+            </div>
+            <div>
+              <div class="milestone-title">${m.title}</div>
+              <div class="milestone-desc">${m.desc}</div>
+            </div>
+          </div>
+        `).join('');
+      };
+
+      filterMilestones();
+
+      /* ==========================================================
+         2. TENNIS FOR TWO (1958) – SIMULACE OSCILOSKOPU
+         ========================================================== */
+      const crt = document.getElementById('crtCanvas');
+      if (crt) {
+        const ctx = crt.getContext('2d');
+        const W = crt.width;
+        const H = crt.height;
+
+        // Fyzikální model kurtu
+        const groundY = H * 0.78;
+        const netX = W * 0.5;
+        const netTopY = groundY - 32;
+        const courtLeft = W * 0.15;
+        const courtRight = W * 0.85;
+
+        let ball = {
+          x: courtLeft + 15,
+          y: groundY - 45,
+          vx: 110,
+          vy: -130,
+          trail: []
+        };
+
+        const g = 190;
+        let autoRally = true;
+        let lastTime = performance.now();
+
+        window.toggleAutoRally = function () {
+          autoRally = !autoRally;
+          const btn = document.getElementById('btnAutoRally');
+          if (btn) {
+            btn.textContent = `Auto-Rally: ${autoRally ? 'ZAP' : 'VYP'}`;
+            btn.classList.toggle('active', autoRally);
+          }
+        };
+
+        window.triggerP1Hit = function () {
+          if (ball.x <= netX) {
+            ball.vx = Math.abs(ball.vx) > 50 ? Math.abs(ball.vx) : 120;
+            ball.vy = -120 - Math.random() * 40;
+          }
+        };
+
+        window.triggerP2Hit = function () {
+          if (ball.x >= netX) {
+            ball.vx = -Math.abs(ball.vx) < -50 ? -Math.abs(ball.vx) : -120;
+            ball.vy = -120 - Math.random() * 40;
+          }
+        };
+
+        function resetServe(fromLeft) {
+          ball.x = fromLeft ? courtLeft + 10 : courtRight - 10;
+          ball.y = groundY - 50;
+          ball.vx = fromLeft ? (105 + Math.random() * 30) : (-105 - Math.random() * 30);
+          ball.vy = -120 - Math.random() * 30;
+          ball.trail = [];
+        }
+
+        function loopOscilloscope(now) {
+          const dt = Math.min((now - lastTime) / 1000, 0.05);
+          lastTime = now;
+
+          // Pohyb
+          ball.vy += g * dt;
+          ball.x += ball.vx * dt;
+          ball.y += ball.vy * dt;
+
+          // Stopa
+          ball.trail.push({ x: ball.x, y: ball.y });
+          if (ball.trail.length > 22) ball.trail.shift();
+
+          // Kolize s podlahou
+          if (ball.y >= groundY) {
+            ball.y = groundY;
+            ball.vy = -ball.vy * 0.72; // Tlumený odraz
+            if (Math.abs(ball.vy) < 25) {
+              // Míček se zastavil -> nové podání
+              resetServe(ball.x < netX);
+            }
+          }
+
+          // Kolize se sítí
+          if (Math.abs(ball.x - netX) < 4 && ball.y >= netTopY) {
+            ball.vx = -ball.vx * 0.6;
+          }
+
+          // Auto rally logika hráče
+          if (autoRally) {
+            if (ball.x < courtLeft + 20 && ball.vx < 0) {
+              ball.vx = 115 + Math.random() * 25;
+              ball.vy = -125 - Math.random() * 30;
+            } else if (ball.x > courtRight - 20 && ball.vx > 0) {
+              ball.vx = -115 - Math.random() * 25;
+              ball.vy = -125 - Math.random() * 30;
+            }
+          }
+
+          // Hranice kurtu
+          if (ball.x < courtLeft - 10) {
+            resetServe(false);
+          } else if (ball.x > courtRight + 10) {
+            resetServe(true);
+          }
+
+          // Vykreslení fosforového CRT obrazu
+          ctx.fillStyle = 'rgba(2, 44, 34, 0.35)'; // Dozvuk luminoforu
+          ctx.fillRect(0, 0, W, H);
+
+          // 1. Země (kurt)
+          ctx.strokeStyle = '#4ade80';
+          ctx.lineWidth = 2.5;
+          ctx.shadowColor = '#22c55e';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.moveTo(courtLeft, groundY);
+          ctx.lineTo(courtRight, groundY);
+          ctx.stroke();
+
+          // 2. Síť
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(netX, groundY);
+          ctx.lineTo(netX, netTopY);
+          ctx.stroke();
+
+          // 3. Stopa paprsku
+          if (ball.trail.length > 1) {
+            ctx.lineWidth = 1.5;
+            for (let i = 0; i < ball.trail.length - 1; i++) {
+              const alpha = (i / ball.trail.length) * 0.75;
+              ctx.strokeStyle = `rgba(74, 222, 128, ${alpha})`;
+              ctx.shadowBlur = alpha * 8;
+              ctx.beginPath();
+              ctx.moveTo(ball.trail[i].x, ball.trail[i].y);
+              ctx.lineTo(ball.trail[i + 1].x, ball.trail[i + 1].y);
+              ctx.stroke();
+            }
+          }
+
+          // 4. Samotný bod katodového paprsku (míček)
+          ctx.fillStyle = '#bbf7d0';
+          ctx.shadowColor = '#4ade80';
+          ctx.shadowBlur = 16;
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          requestAnimationFrame(loopOscilloscope);
+        }
+
+        requestAnimationFrame(loopOscilloscope);
+      }
+
+    })();
+  </script>
+</body>
+
+</html>
