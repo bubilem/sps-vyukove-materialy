@@ -1,0 +1,10 @@
+# Automatická normalizace konců řádků (LF pro textové soubory napříč OS)
+* text=auto eol=lf
+
+# Explicitní typy pro webové a dokumentační soubory
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.svg text eol=lf

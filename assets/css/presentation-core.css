@@ -1,0 +1,1659 @@
+/* ==========================================================================
+   SPŠ Výukové materiály - Core Presentation Framework Stylesheet
+   sdílené jádro pro všechny předměty SPŠ (KYME, ELT, AUT, ZIT...)
+   100% Offline & Pure Vanilla CSS
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Dark Theme (Default) */
+  --bg-primary: #0a0f1d;
+  --bg-secondary: #111827;
+  --bg-card: rgba(17, 24, 39, 0.85);
+  --bg-card-hover: rgba(31, 41, 55, 0.9);
+  --bg-glass: rgba(15, 23, 42, 0.82);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  /* Výchozí akcent - přetížitelné modulem */
+  --accent: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.25);
+
+  --accent-cyan: #06b6d4;
+  --accent-blue: #3b82f6;
+  --accent-indigo: #6366f1;
+  --accent-purple: #a855f7;
+  --accent-amber: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+
+  --code-bg: #030712;
+  --code-border: #1f2937;
+  --code-text: #e2e8f0;
+
+  /* Gradients */
+  --grad-primary: linear-gradient(135deg, var(--accent) 0%, #3b82f6 50%, #6366f1 100%);
+  --grad-accent: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  --grad-warm: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+  --grad-card: linear-gradient(145deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+
+  /* UI Tokens */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, Monaco, monospace;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 35px -5px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 25px var(--accent-glow);
+  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light Theme overrides */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --bg-card-hover: #f1f5f9;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  --code-bg: #1e293b;
+  --code-border: #cbd5e1;
+  --code-text: #f8fafc;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.2);
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.icon {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+
+/* Background Atmosphere */
+.app-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-glow-1 {
+  position: absolute;
+  top: -15%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(56, 189, 248, 0) 70%);
+  filter: blur(60px);
+}
+
+.bg-glow-2 {
+  position: absolute;
+  bottom: -15%;
+  right: -10%;
+  width: 55vw;
+  height: 55vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(99, 102, 241, 0) 70%);
+  filter: blur(70px);
+}
+
+.bg-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+[data-theme="light"] .bg-grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+/* Presentation Container */
+.presentation-container {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Top Progress Bar */
+.progress-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  z-index: 100;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--grad-primary);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+  transition: width 0.3s ease;
+}
+
+/* Header / Meta Bar */
+.presentation-header {
+  height: 56px;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(12px);
+  background: var(--bg-glass);
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Drobečková navigace v záhlaví prezentace (SPŠ Standard) */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex-wrap: nowrap;
+}
+
+.breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  transition: var(--transition);
+}
+
+.breadcrumb-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.breadcrumb-separator {
+  color: var(--text-muted);
+  opacity: 0.6;
+  font-size: 0.78rem;
+}
+
+.breadcrumb-item {
+  color: var(--text-secondary);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.breadcrumb-current {
+  color: var(--accent);
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--radius-sm);
+}
+
+.course-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.course-badge:hover {
+  background: rgba(56, 189, 248, 0.2);
+}
+
+.lesson-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.lesson-indicator .divider {
+  color: var(--text-muted);
+}
+
+/* Technické a pravdivostní tabulky (pro SPŠ číslicovou techniku a logiku) */
+.truth-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+
+.truth-table th,
+.truth-table td {
+  padding: 0.55rem 0.85rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.truth-table th {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.truth-table tr:last-child td {
+  border-bottom: none;
+}
+
+.truth-table td:last-child,
+.truth-table th:last-child {
+  border-right: none;
+}
+
+.val-0 {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.val-1 {
+  color: var(--accent-emerald);
+  font-weight: 700;
+}
+
+.val-out {
+  color: var(--accent);
+  font-weight: 800;
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-btn .icon,
+.theme-toggle-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tag-exam {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* ==========================================================================
+   Slides Viewport & Slide Positioning
+   ========================================================================== */
+.slide-viewport,
+.slides-viewport {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 3rem 5.5rem;
+}
+
+.slide {
+  position: absolute;
+  inset: 1.5rem 3rem 5.5rem;
+  width: calc(100% - 6rem);
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(16px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.slide::-webkit-scrollbar {
+  width: 6px;
+}
+
+.slide::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slide::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  z-index: 10;
+}
+
+/* Title Slide (.title-slide a .slide--title) */
+.title-slide,
+.slide--title {
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+.slide-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-slide .slide-content,
+.slide--title .slide-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.hero-badge,
+.meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title,
+.slide--title h1,
+.title-slide h1 {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+  max-width: 950px;
+  background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .hero-title,
+[data-theme="light"] .slide--title h1,
+[data-theme="light"] .title-slide h1 {
+  background: linear-gradient(135deg, #0f172a 30%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-desc,
+.slide--title .subtitle,
+.title-slide p.subtitle {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 820px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.hero-meta,
+.title-footer {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 1.5rem;
+}
+
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-meta-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero-meta-val {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0.2rem;
+}
+
+.module-pill {
+  padding: 0.35rem 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.okruh-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: var(--accent-emerald);
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Běžné Snímky (Slide Header & Typografie)
+   ========================================================================== */
+.slide-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.slide-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.slide-category {
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.slide-number {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.slide-title,
+.slide h2 {
+  font-size: 1.95rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.slide-subtitle,
+.slide p.lead,
+.slide-lead {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin-top: 0.4rem;
+  margin-bottom: 1.5rem;
+  max-width: 100%;
+  line-height: 1.6;
+}
+
+.slide-tags {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Slide Body & Grids */
+.slide-body {
+  flex: 1;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  width: 100%;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .slide-viewport,
+  .slides-viewport {
+    padding: 1rem 1.25rem 5.25rem;
+  }
+
+  .slide {
+    inset: 1rem 1.25rem 5.25rem;
+  }
+
+  .presentation-header {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .hero-title,
+  .slide--title h1,
+  .title-slide h1 {
+    font-size: 2.1rem;
+  }
+
+  .slide-title,
+  .slide h2 {
+    font-size: 1.55rem;
+  }
+
+  .controls-bar,
+  .presentation-controls {
+    bottom: 0.75rem;
+    padding: 0.35rem 0.6rem;
+    gap: 0.35rem;
+  }
+
+  .control-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.95rem;
+  }
+
+  .slide-counter {
+    font-size: 0.8rem;
+    min-width: 5.2rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Karty – .card je base, .content-card je alias pro obsah snímků */
+.card,
+.content-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.65rem 1.85rem;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card:hover,
+.content-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-md);
+}
+
+/* Svislý oddělovač v controls-bar */
+.controls-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-color);
+  flex-shrink: 0;
+  margin: 0 0.1rem;
+}
+
+/* SVG ikona v nadpisu karty */
+.card-icon {
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.card-title,
+.card h3,
+.content-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.card-desc,
+.card p,
+.content-card > p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.card h4,
+.content-card h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+/* Stylizovaný seznam (odrážkový) – používáno ve všech modulech */
+.styled-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.85rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.styled-list li {
+  padding-left: 1.35rem;
+  position: relative;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.styled-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.7;
+}
+
+/* Callouty & Alerty */
+.callout,
+.alert-box {
+  display: flex;
+  gap: 0.85rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 1rem 0;
+  align-items: flex-start;
+}
+
+.callout-icon {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.callout-icon .icon,
+.alert-box svg {
+  width: 20px;
+  height: 20px;
+}
+
+.callout-content {
+  flex: 1;
+}
+
+.callout-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.callout-tip,
+.alert-box--info {
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: var(--text-primary);
+}
+
+.callout-tip .callout-icon,
+.alert-box--info svg {
+  color: var(--accent);
+}
+
+.callout-warning,
+.alert-box--warning {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: var(--text-primary);
+}
+
+.callout-warning .callout-icon,
+.alert-box--warning svg {
+  color: var(--accent-amber);
+}
+
+.callout-exam {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: var(--text-primary);
+}
+
+.callout-exam .callout-icon {
+  color: var(--accent-emerald);
+}
+
+/* Code box & Kopírování */
+.code-wrapper,
+.code-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin: 0.75rem 0;
+}
+
+.code-header,
+.code-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.9rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--code-border);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.btn-copy {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: var(--transition);
+}
+
+.btn-copy:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+
+pre,
+pre.code-block {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--code-text);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Tabulky */
+.comparison-table,
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  margin: 0.75rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+caption {
+  caption-side: top;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border-color);
+}
+
+th, td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+thead th {
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 700;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+}
+
+tbody tr:last-child td,
+tbody tr:last-child th {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Summary Grid & Checklist */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.summary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.summary-card h4 {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.summary-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Zkušební otázka */
+.exam-question-box {
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.exam-question-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-emerald);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.exam-question-text {
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.45;
+}
+
+.exam-answer-hint {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.65rem;
+}
+
+/* ==========================================================================
+   Plovoucí spodní lišta (.controls-bar & .presentation-controls)
+   ========================================================================== */
+.controls-bar,
+.presentation-controls {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.8rem;
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  max-width: calc(100vw - 2rem);
+}
+
+.controls-left,
+.controls-center,
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.controls-center {
+  padding: 0 0.4rem;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+}
+
+.control-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1.05rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+}
+
+.control-btn.disabled,
+.control-btn[aria-disabled="true"] {
+  opacity: 0.32;
+  pointer-events: none;
+  cursor: not-allowed;
+  filter: grayscale(1);
+}
+
+.control-btn.btn-nav-primary {
+  background: var(--grad-primary);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+.slide-counter {
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+  padding: 0.25rem 0.65rem;
+  min-width: 6.2rem;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 6px;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.slide-counter:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent);
+}
+
+/* ==========================================================================
+   Modální okna a Zásuvka osnovy (TOC & Help)
+   Zásadní: Výchozí stav je skrytý (display: none / opacity: 0)!
+   ========================================================================== */
+.toc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toc-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.toc-drawer {
+  position: relative;
+  width: 420px;
+  max-width: 88vw;
+  height: 100%;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.5);
+}
+
+.toc-overlay.active .toc-drawer {
+  transform: translateX(0);
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.toc-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.toc-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toc-close:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.toc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.4rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.toc-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.toc-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.toc-item {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.toc-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.toc-item.active {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.toc-item-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.toc-item-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.toc-item-btn.active {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.toc-item-num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  min-width: 2.1rem;
+  text-align: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="light"] .toc-item-num {
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(14, 165, 233, 0.25);
+  color: #0284c7;
+}
+
+.toc-item.active .toc-item-num,
+.toc-item-btn.active .toc-item-num {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* Modální okno nápovědy klávesových zkratek (.modal-overlay & .modal) */
+.modal-overlay,
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.modal-overlay.active,
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal-dialog,
+.modal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: 90%;
+  max-width: 520px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.25s ease;
+}
+
+.modal-overlay.active .modal-dialog,
+.modal.active .modal-content {
+  transform: scale(1);
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3,
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+
+.shortcut-row span {
+  color: var(--text-secondary);
+}
+
+.key-badge,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.2rem 0.55rem;
+  color: var(--accent);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Matematické a technické vzorce (Math & Formula Typography)
+   100% Offline, bez externích závislostí
+   ========================================================================== */
+.formula-inline,
+.formula,
+.math-inline {
+  font-family: 'Cambria Math', 'KaTeX_Math', 'STIX Two Math', 'Latin Modern Math', 'Times New Roman', Georgia, serif;
+  font-size: 1.04em;
+  letter-spacing: normal;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  display: inline;
+  vertical-align: baseline;
+}
+
+[data-theme="light"] .formula-inline,
+[data-theme="light"] .formula,
+[data-theme="light"] .math-inline {
+  background: transparent;
+  border: none;
+}
+
+.formula-overline {
+  text-decoration: overline;
+  text-decoration-thickness: 1.5px;
+  display: inline-block;
+  line-height: 1.15;
+  padding-top: 0.08em;
+}
+
+.formula-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 1.02rem;
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  color: var(--text-primary);
+  margin: 0.5rem 0;
+  line-height: 1.45;
+}
+
+[data-theme="light"] .formula-badge {
+  background: rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.25);
+  color: #0369a1;
+}
+
+.formula-display,
+.formula-box,
+.math-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0.8rem 0;
+  padding: 1rem 1.4rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent, #38bdf8);
+  border-radius: var(--radius-md, 14px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  font-family: 'Cambria Math', 'KaTeX_Math', 'STIX Two Math', 'Latin Modern Math', 'Times New Roman', Georgia, serif;
+  text-align: center;
+}
+
+[data-theme="light"] .formula-display,
+[data-theme="light"] .formula-box,
+[data-theme="light"] .math-display {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.04) 100%);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.formula-main {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--accent, #38bdf8);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.formula-desc,
+.formula-note {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* Zlomky */
+.formula-frac {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0 0.2rem;
+  font-size: 0.9em;
+}
+
+.formula-num {
+  border-bottom: 1.5px solid currentColor;
+  padding: 0 0.15rem 0.1rem;
+}
+
+.formula-den {
+  padding: 0.1rem 0.15rem 0;
+}
+
+/* Odmocniny */
+.formula-sqrt {
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+}
+
+.formula-surd {
+  font-size: 1.2em;
+  line-height: 1;
+  padding-right: 0.1rem;
+}
+
+.formula-radicand {
+  border-top: 1.5px solid currentColor;
+  padding: 0 0.2rem;
+}
+
+/* Text uvnitř vzorce */
+.formula-text {
+  font-family: var(--font-sans);
+  font-style: normal;
+  padding: 0 0.15rem;
+  font-size: 0.9em;
+}
+
+.formula-fn {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: 600;
+  padding: 0 0.15rem;
+}
+
+.formula-inline i,
+.formula-display i,
+.formula i {
+  font-style: italic;
+  padding-right: 0.05rem;
+}
+
+.formula-inline sup,
+.formula-display sup,
+.formula sup,
+.formula-inline sub,
+.formula-display sub,
+.formula sub {
+  font-size: 0.72em;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   Tiskový režim (Print styles)
+   ========================================================================== */
+@media print {
+  body, html {
+    overflow: visible !important;
+    height: auto !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .controls-bar,
+  .presentation-controls,
+  .app-background,
+  .progress-bar-container,
+  .presentation-header,
+  .modal,
+  .modal-overlay,
+  .toc-overlay {
+    display: none !important;
+  }
+  .slides-viewport {
+    padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+  .slide {
+    position: relative !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    page-break-after: always;
+    height: auto !important;
+    padding: 2.5rem !important;
+  }
+}

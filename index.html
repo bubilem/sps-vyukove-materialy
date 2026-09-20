@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Výukové materiály SPŠ | Kybernetika, Mechatronika a IT</title>
+  <style>
+    :root {
+      --bg: #0a0f1d;
+      --bg-card: rgba(17, 24, 39, 0.85);
+      --bg-card-hover: rgba(24, 33, 53, 0.95);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.2);
+      --text: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --accent-kyme: #06b6d4;
+      --accent-kyme-glow: rgba(6, 182, 212, 0.2);
+      --accent-pos: #3b82f6;
+      --accent-pos-glow: rgba(59, 130, 246, 0.2);
+      --accent-web: #f97316;
+      --accent-web-glow: rgba(249, 115, 22, 0.2);
+      --accent-prg: #a855f7;
+      --accent-prg-glow: rgba(168, 85, 247, 0.2);
+      --accent-dbs: #10b981;
+      --accent-dbs-glow: rgba(16, 185, 129, 0.2);
+      --accent-gam: #ec4899;
+      --accent-gam-glow: rgba(236, 72, 153, 0.2);
+
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, "JetBrains Mono", Consolas, monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --bg-card-hover: #ffffff;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.18);
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.55;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Ambientní technologické pozadí */
+    .bg-grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    [data-theme="light"] .bg-grid-overlay {
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    }
+
+    .bg-glow-1 {
+      position: fixed;
+      top: -10%;
+      left: 15%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, rgba(56, 189, 248, 0.02) 70%, transparent 100%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-glow-2 {
+      position: fixed;
+      bottom: -10%;
+      right: 15%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, rgba(236, 72, 153, 0.02) 70%, transparent 100%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .main-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    /* Horní navigace */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.18), rgba(168, 85, 247, 0.18));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-kyme);
+    }
+
+    .brand-text h1 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .brand-text p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 9999px;
+      color: #10b981;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+
+    /* Hero sekce */
+    .hero {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: 3.1rem;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, var(--text) 20%, #06b6d4 65%, #a855f7 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 840px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.65;
+    }
+
+    /* Metriky */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 2rem;
+      max-width: 920px;
+      margin: 0 auto 3rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .metric-col {
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .metric-col:last-child {
+      border-right: none;
+    }
+
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text);
+      display: block;
+      line-height: 1.2;
+    }
+
+    .metric-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 0.2rem;
+    }
+
+    /* Vyhledávání & Filtry */
+    .search-filter-box {
+      margin-bottom: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .search-input-wrapper svg {
+      position: absolute;
+      left: 1.1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.9rem 1rem 0.9rem 3rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-tab {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-tab:hover,
+    .filter-tab.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-tab.active {
+      font-weight: 600;
+      border-color: #06b6d4;
+      color: #06b6d4;
+    }
+
+    /* Mřížka předmětů */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-bottom: 4.5rem;
+    }
+
+    .subject-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
+      backdrop-filter: blur(12px);
+    }
+
+    .subject-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--subject-accent, #06b6d4);
+      box-shadow: 0 16px 36px -8px var(--subject-glow, rgba(6, 182, 212, 0.2));
+    }
+
+    .subject-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--subject-accent, #06b6d4);
+    }
+
+    .subject-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .subject-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: var(--subject-bg, rgba(6, 182, 212, 0.1));
+      border: 1px solid var(--subject-accent);
+      color: var(--subject-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .subject-icon-box svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .subject-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      background: var(--subject-bg, rgba(6, 182, 212, 0.1));
+      color: var(--subject-accent);
+      border: 1px solid var(--subject-accent);
+    }
+
+    .subject-badge.badge-plan {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+
+    .subject-code {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--subject-accent);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .subject-name {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .subject-desc {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    .subject-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+      margin-top: auto;
+    }
+
+    .btn-portal {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--subject-accent);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+
+    .subject-card:hover .btn-portal {
+      gap: 0.75rem;
+    }
+
+    .lesson-counter {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Vlastnosti a standardy frameworku */
+    .features-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .features-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .features-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: rgba(6, 182, 212, 0.1);
+      color: #06b6d4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .feature-desc {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #06b6d4;
+    }
+
+    /* Responzivita */
+    @media (max-width: 900px) {
+      .subjects-grid {
+        grid-template-columns: 1fr;
+      }
+      .metrics-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem 1rem;
+      }
+      .metric-col:nth-child(2) {
+        border-right: none;
+      }
+      .hero-title {
+        font-size: 2.3rem;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .metrics-bar {
+        grid-template-columns: 1fr;
+      }
+      .metric-col {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.75rem;
+      }
+      .metric-col:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .hero-title {
+        font-size: 1.95rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-grid-overlay"></div>
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+
+  <div class="main-wrapper">
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Výukové materiály SPŠ</h1>
+          <p>Střední průmyslová škola &bull; Kybernetika, Mechatronika a Informační technologie</p>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <span class="nav-pill">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          100% Offline &amp; GitHub Ready
+        </span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero Header -->
+    <section class="hero">
+      <div class="hero-eyebrow">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        Centrální rozcestník výukových prezentací a interaktivních materiálů SPŠ
+      </div>
+      <h2 class="hero-title">Odborné vzdělávání pro střední průmyslové školy</h2>
+      <p class="hero-desc">
+        Moderní modulární platforma interaktivních webových prezentací, laboratorních demonstrací a vizualizačních appletů. Tříciferné členění témat s prostorem pro interaktivní trenažéry, ucelená výuková témata střední školy pokrývající teorii, simulace i praktická cvičení.
+      </p>
+
+      <!-- Metriky portálu -->
+      <!-- Metriky portálu -->
+      <div class="metrics-bar">
+        <div class="metric-col">
+          <span class="metric-value">KYME</span>
+          <span class="metric-label">Aktivní předmět</span>
+        </div>
+        <div class="metric-col">
+          <span class="metric-value">5</span>
+          <span class="metric-label">Předmětů v přípravě</span>
+        </div>
+        <div class="metric-col">
+          <span class="metric-value">8</span>
+          <span class="metric-label">Témat a trenažérů</span>
+        </div>
+        <div class="metric-col">
+          <span class="metric-value">100%</span>
+          <span class="metric-label">Offline &amp; Responzivní</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vyhledávání a filtry -->
+    <section class="search-filter-box">
+      <div class="search-input-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Hledat v tématech a předmětech (např. sítě, CCNA, web, SQL, databáze, hry, Booleova algebra)..." autocomplete="off">
+      </div>
+
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">Všechny předměty</button>
+        <button class="filter-tab" data-filter="kyme">KYME (Aktivní)</button>
+        <button class="filter-tab" data-filter="pos">Počítačové sítě</button>
+        <button class="filter-tab" data-filter="web">Webové technologie</button>
+        <button class="filter-tab" data-filter="prg">Programování</button>
+        <button class="filter-tab" data-filter="dbs">Databáze</button>
+        <button class="filter-tab" data-filter="gam">Počítačové hry</button>
+        <button class="filter-tab" data-filter="plan">Všechny v přípravě</button>
+      </div>
+    </section>
+
+    <!-- Mřížka předmětů -->
+    <section class="subjects-grid" id="subjectsGrid">
+      
+      <!-- 1. KYME: Kybernetika a mechatronika (AKTIVNÍ PŘEDMĚT) -->
+      <a href="KYME/index.html" class="subject-card" data-subject="kyme" data-category="kyme aktivni" data-keywords="vyrokova logika booleova algebra robotika mechatronika karnaughovy mapy logicka hradla sekvencni obvody cislicova technika kyme" style="--subject-accent: var(--accent-kyme); --subject-bg: rgba(6, 182, 212, 0.12); --subject-glow: var(--accent-kyme-glow);">
+        <div>
+          <div class="subject-header">
+            <div class="subject-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <circle cx="12" cy="12" r="3"></circle>
+                <line x1="12" y1="1" x2="12" y2="4"></line>
+                <line x1="12" y1="20" x2="12" y2="23"></line>
+                <line x1="1" y1="12" x2="4" y2="12"></line>
+                <line x1="20" y1="12" x2="23" y2="12"></line>
+              </svg>
+            </div>
+            <span class="subject-badge">Aktivní předmět • Výukový katalog</span>
+          </div>
+
+          <div class="subject-code">Předmět KYME</div>
+          <h3 class="subject-name">Kybernetika a mechatronika</h3>
+          <p class="subject-desc">
+            Komplexní studium mechatronických systémů, průmyslové robotiky, číslicové techniky a logických obvodů. Od výrokové logiky a Booleovy algebry přes interaktivní trenažér Karnaughových map až po logická hradla a sekvenční automaty.
+          </p>
+        </div>
+
+        <div class="subject-footer">
+          <span class="lesson-counter">Témata 010–060 &bull; Interaktivní applety</span>
+          <span class="btn-portal">
+            Otevřít katalog předmětu
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- 2. POS: Počítačové sítě (V přípravě) -->
+      <div class="subject-card" data-subject="pos" data-category="pos site plan" data-keywords="pocitacove site ccna cisco int srwe ip adresace ipv4 ipv6 vlan switch router smerovani switching tcp ip pos net" style="--subject-accent: var(--accent-pos); --subject-bg: rgba(59, 130, 246, 0.12); --subject-glow: var(--accent-pos-glow); opacity: 0.9;">
+        <div>
+          <div class="subject-header">
+            <div class="subject-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <span class="subject-badge badge-plan">V přípravě</span>
+          </div>
+
+          <div class="subject-code">Předmět POS / NET</div>
+          <h3 class="subject-name">Počítačové sítě</h3>
+          <p class="subject-desc">
+            Architektura a principy síťové komunikace dle referenčních modelů ISO/OSI a TCP/IP. Příprava na certifikační kurikulum Cisco CCNA: Introduction to Networks (CCNA:INT) a Switching, Routing, and Wireless Essentials (CCNA:SRWE) – IP adresace (IPv4/IPv6), podsítě, VLANy, směrování a bezdrátové sítě.
+          </p>
+        </div>
+
+        <div class="subject-footer">
+          <span class="lesson-counter">CCNA:INT &bull; CCNA:SRWE &bull; Routing &amp; Switching</span>
+          <span class="btn-portal" style="opacity: 0.65;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- 3. WEB: Webové technologie (V přípravě) -->
+      <div class="subject-card" data-subject="web" data-category="web frontend plan" data-keywords="webove technologie technologie html css js javascript seo pristupnost a11y responzivita web" style="--subject-accent: var(--accent-web); --subject-bg: rgba(249, 115, 22, 0.12); --subject-glow: var(--accent-web-glow); opacity: 0.9;">
+        <div>
+          <div class="subject-header">
+            <div class="subject-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <span class="subject-badge badge-plan">V přípravě</span>
+          </div>
+
+          <div class="subject-code">Předmět WEB</div>
+          <h3 class="subject-name">Webové technologie</h3>
+          <p class="subject-desc">
+            Moderní tvorba webových stránek a webových aplikací. Základní technologie internetu, sémantický HTML5, pokročilé kaskádové styly CSS3 (Flexbox, Grid, animace), programovací jazyk JavaScript (DOM, ES6+), technická optimalizace pro vyhledávače (SEO) a standardy digitální přístupnosti (a11y/WCAG).
+          </p>
+        </div>
+
+        <div class="subject-footer">
+          <span class="lesson-counter">HTML &bull; CSS &bull; JS &bull; SEO &bull; Přístupnost</span>
+          <span class="btn-portal" style="opacity: 0.65;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- 4. PRG: Programování (V přípravě) -->
+      <div class="subject-card" data-subject="prg" data-category="prg dev plan" data-keywords="programovani algoritmizace paterny vzory design patterns oop architektura slozitost prg" style="--subject-accent: var(--accent-prg); --subject-bg: rgba(168, 85, 247, 0.12); --subject-glow: var(--accent-prg-glow); opacity: 0.9;">
+        <div>
+          <div class="subject-header">
+            <div class="subject-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <span class="subject-badge badge-plan">V přípravě</span>
+          </div>
+
+          <div class="subject-code">Předmět PRG</div>
+          <h3 class="subject-name">Programování</h3>
+          <p class="subject-desc">
+            Algoritmizace úloh, vyhodnocování časové a paměťové složitosti (Big-O), datové struktury a objektově orientované programování (OOP). Softwarové návrhové vzory (Design Patterns – GoF: Singleton, Factory, Observer, Strategy), čistý kód a architektura moderních aplikací.
+          </p>
+        </div>
+
+        <div class="subject-footer">
+          <span class="lesson-counter">Algoritmizace &bull; Návrhové vzory &bull; OOP</span>
+          <span class="btn-portal" style="opacity: 0.65;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- 5. DBS: Databáze (V přípravě) -->
+      <div class="subject-card" data-subject="dbs" data-category="dbs sql plan" data-keywords="databaze konceptualni model sql er diagram relace normalizace transakce dbs dat" style="--subject-accent: var(--accent-dbs); --subject-bg: rgba(16, 185, 129, 0.12); --subject-glow: var(--accent-dbs-glow); opacity: 0.9;">
+        <div>
+          <div class="subject-header">
+            <div class="subject-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+              </svg>
+            </div>
+            <span class="subject-badge badge-plan">V přípravě</span>
+          </div>
+
+          <div class="subject-code">Předmět DBS / DAT</div>
+          <h3 class="subject-name">Databáze</h3>
+          <p class="subject-desc">
+            Návrh, modelování a správa relačních databázových systémů. Tvorba konceptuálního modelu (ER diagramy, kardinalita a integritní omezení), transformace do relačního modelu a normalizace tabulek (1NF–3NF). Dotazovací jazyk SQL (DDL, DML, spojování JOIN, agregační funkce, indexy a transakční zpracování).
+          </p>
+        </div>
+
+        <div class="subject-footer">
+          <span class="lesson-counter">Konceptuální model &bull; SQL &bull; Normalizace</span>
+          <span class="btn-portal" style="opacity: 0.65;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- 6. GAM: Počítačové hry (V přípravě) -->
+      <div class="subject-card" data-subject="gam" data-category="gam hry plan" data-keywords="pocitacove hry hry herni enginy unity unreal godot multidisciplinary vyvoj hardware software gam" style="--subject-accent: var(--accent-gam); --subject-bg: rgba(236, 72, 153, 0.12); --subject-glow: var(--accent-gam-glow); opacity: 0.9;">
+        <div>
+          <div class="subject-header">
+            <div class="subject-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="6" width="20" height="12" rx="4"></rect>
+                <line x1="6" y1="12" x2="10" y2="12"></line>
+                <line x1="8" y1="10" x2="8" y2="14"></line>
+                <line x1="15" y1="11" x2="15.01" y2="11"></line>
+                <line x1="18" y1="13" x2="18.01" y2="13"></line>
+              </svg>
+            </div>
+            <span class="subject-badge badge-plan">V přípravě</span>
+          </div>
+
+          <div class="subject-code">Předmět GAM / HRY</div>
+          <h3 class="subject-name">Počítačové hry</h3>
+          <p class="subject-desc">
+            Komplexní přehled herního průmyslu a multidisciplinární charakter vývoje her (programování, herní design, grafika, zvuk a UX). Fáze vývoje od konceptu po vydání, architektura moderních herních enginů (Unity, Unreal Engine, Godot) a nároky na specializovaný hardware a software.
+          </p>
+        </div>
+
+        <div class="subject-footer">
+          <span class="lesson-counter">Herní enginy &bull; Multidisciplinarita &bull; Vývoj</span>
+          <span class="btn-portal" style="opacity: 0.65;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Vlastnosti a standardy platformy -->
+    <section class="features-section">
+      <div class="features-header">
+        <h3 class="features-title">Didaktické a technologické standardy SPŠ</h3>
+        <p class="features-subtitle">Vše běží čistě ve webovém standardu (HTML5 + CSS3 + Vanilla JS + inline SVG) bez závislostí</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"></path>
+              <path d="M12 5l7 7-7 7"></path>
+            </svg>
+          </div>
+          <h4 class="feature-title">100% Offline i GitHub Pages</h4>
+          <p class="feature-desc">Materiály fungují z lokálního disku (protokol <code>file://</code>), z flash disku v odborných učebnách i živě z GitHub Pages bez nutnosti serverového backendu.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"></path>
+            </svg>
+          </div>
+          <h4 class="feature-title">Klávesnice i dotyk</h4>
+          <p class="feature-desc">Rychlý posun šipkami a mezerníkem, režim celé obrazovky (<kbd>F</kbd>), interaktivní osnova (<kbd>M</kbd>/<kbd>O</kbd>), přepínání motivu (<kbd>T</kbd>) a nápověda (<kbd>?</kbd>).</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+            </svg>
+          </div>
+          <h4 class="feature-title">Tříciferné číslování &amp; Applety</h4>
+          <p class="feature-desc">Krokování témat po 10 (010, 020, 040...) umožňuje vkládat samostatné laboratorní a interaktivní ukázky (např. 041 Karnaughovy mapy) přímo do toku výuky.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            </svg>
+          </div>
+          <h4 class="feature-title">Strukturované shrnutí a checklisty</h4>
+          <p class="feature-desc">Každé téma obsahuje přehledný souhrn a opakovací checklist stěžejních konceptů i praktických úloh pro spolehlivé upevnění látky.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-links">
+        <a href="KYME/index.html">Předmět KYME (Kybernetika a mechatronika)</a>
+        <a href="KYME/040-Booleova-algebra/index.html">Téma 040: Booleova algebra</a>
+        <a href="KYME/041-Karnaughovy-mapy/index.html">Applet 041: Karnaughovy mapy</a>
+        <a href="docs/presentation-framework-guide.md">Metodický standard frameworku</a>
+      </div>
+      <p>Střední průmyslová škola &copy; 2026 &bull; Výukové materiály pro technické a kybernetické obory</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript pro vyhledávání, filtry a téma -->
+  <script>
+    (function () {
+      'use strict';
+
+      // 1. Správa motivu (Dark / Light)
+      const THEME_KEY = 'sps_presentation_theme';
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const savedTheme = localStorage.getItem(THEME_KEY) || 
+                         localStorage.getItem('sps_theme') || 
+                         localStorage.getItem('vos_presentation_theme') || 
+                         'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem(THEME_KEY, next);
+          localStorage.setItem('sps_theme', next);
+        });
+      }
+
+      // 2. Filtrování a vyhledávání předmětů
+      const searchInput = document.getElementById('searchInput');
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      const subjectCards = document.querySelectorAll('.subject-card');
+
+      let currentFilter = 'all';
+      let currentQuery = '';
+
+      function updateGrid() {
+        subjectCards.forEach((card) => {
+          const subject = card.getAttribute('data-subject') || '';
+          const category = card.getAttribute('data-category') || '';
+          const keywords = card.getAttribute('data-keywords') || '';
+          const text = (card.textContent + ' ' + keywords).toLowerCase();
+
+          const matchesFilter = (currentFilter === 'all' || 
+                                 currentFilter === subject || 
+                                 category.includes(currentFilter));
+          const matchesQuery = !currentQuery || text.includes(currentQuery);
+
+          if (matchesFilter && matchesQuery) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      filterTabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          filterTabs.forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentFilter = tab.getAttribute('data-filter');
+          updateGrid();
+        });
+      });
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          currentQuery = e.target.value.trim().toLowerCase();
+          updateGrid();
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

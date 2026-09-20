@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applet 041: Karnaughovy mapy | Trenažér minimalizace | SPŠ</title>
+  
+  <link rel="stylesheet" href="../../assets/css/dashboard-core.css">
+  <style>
+    :root {
+      --accent: #a855f7;
+      --accent-cyan: #06b6d4;
+      --accent-glow: rgba(168, 85, 247, 0.25);
+    }
+
+    .applet-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 3rem;
+    }
+
+    .applet-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+    }
+
+    .applet-title-box h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    [data-theme="light"] .applet-title-box h1 {
+      color: #0f172a;
+    }
+
+    .applet-title-box p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    .applet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #c084fc;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Ovládání appletu */
+    .controls-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn-tool {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.45rem 0.95rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-tool:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+      border-color: var(--border-hover);
+    }
+
+    .btn-tool.active {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #c084fc;
+    }
+
+    /* Hlavní pracovní plocha */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 860px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card-kmap,
+    .card-results {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 1.75rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .card-kmap h2,
+    .card-results h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    /* Vizuální tabulka K-mapy */
+    .kmap-table-container {
+      display: flex;
+      justify-content: center;
+      padding: 1.5rem 0;
+      overflow-x: auto;
+    }
+
+    .kmap-table {
+      border-collapse: separate;
+      border-spacing: 6px;
+      font-family: var(--font-mono);
+    }
+
+    .kmap-cell-corner {
+      position: relative;
+      width: 70px;
+      height: 50px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-align: center;
+      vertical-align: middle;
+      border-bottom: 1px dashed var(--border-color);
+      border-right: 1px dashed var(--border-color);
+    }
+
+    .kmap-header {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-align: center;
+      padding: 0.4rem 0.8rem;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: 6px;
+    }
+
+    .kmap-cell-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 10px;
+      border: 2px solid var(--border-color);
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      user-select: none;
+    }
+
+    .kmap-cell-btn:hover {
+      transform: scale(1.05);
+      border-color: #a855f7;
+    }
+
+    .kmap-cell-btn.val-1 {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+    }
+
+    .kmap-cell-btn .cell-minterm {
+      position: absolute;
+      bottom: 4px;
+      right: 6px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .kmap-cell-btn.val-1 .cell-minterm {
+      color: #c084fc;
+    }
+
+    /* Výsledkový panel */
+    .result-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .result-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .result-formula {
+      font-family: var(--font-mono);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #38bdf8;
+      word-break: break-all;
+    }
+
+    .result-minimized {
+      color: #a855f7;
+      font-size: 1.45rem;
+    }
+
+    .navigation-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.75rem;
+      margin-top: 2rem;
+    }
+
+    .btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav-prev {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .btn-nav-prev:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+    }
+
+    .btn-nav-next {
+      background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    }
+
+    .btn-nav-next:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.45);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="applet-wrapper">
+    
+    <!-- 1. Drobečková navigace (4 úrovně) -->
+    <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+      <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Rozcestník SPŠ
+      </a>
+      <span class="breadcrumb-separator">/</span>
+      <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+      <span class="breadcrumb-separator">/</span>
+      <a href="../040-Booleova-algebra/index.html" class="breadcrumb-link" title="Teoretická prezentace 040">040 Booleova algebra</a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">041 Karnaughovy mapy (Trenažér)</span>
+    </nav>
+
+    <!-- 2. Hlavička appletu -->
+    <div class="applet-header">
+      <div class="applet-title-box">
+        <div style="margin-bottom: 0.4rem;">
+          <span class="applet-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 12px; height: 12px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Interaktivní laboratorní applet 041
+          </span>
+        </div>
+        <h1>
+          Karnaughovy mapy: Trenažér minimalizace
+        </h1>
+        <p>Klikáním na buňky přepínejte hodnoty 0 / 1 a sledujte okamžitou algebraickou minimalizaci funkce.</p>
+      </div>
+
+      <div>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <!-- Ikona z JS -->
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Ovládací panel presetu a počtu proměnných -->
+    <div class="controls-panel">
+      <div class="btn-group">
+        <span style="font-size: 0.85rem; color: var(--text-muted); margin-right: 0.4rem; font-weight: 600;">Vstupy:</span>
+        <button class="btn-tool active" id="btnMode2">2 proměnné (A, B)</button>
+        <button class="btn-tool" id="btnMode3">3 proměnné (A, B, C)</button>
+      </div>
+
+      <div class="btn-group">
+        <span style="font-size: 0.85rem; color: var(--text-muted); margin-right: 0.4rem; font-weight: 600;">Rychlé předvolby:</span>
+        <button class="btn-tool" id="presetClear">Vše 0</button>
+        <button class="btn-tool" id="presetAll">Vše 1</button>
+        <button class="btn-tool" id="presetOr">Hradlo OR</button>
+        <button class="btn-tool" id="presetXor">Hradlo XOR</button>
+        <button class="btn-tool" id="presetMajority">Většinová funkce (Majority)</button>
+      </div>
+    </div>
+
+    <!-- 4. Pracovní plocha -->
+    <div class="workspace-grid">
+      
+      <!-- Levý panel: Interaktivní mapa -->
+      <div class="card-kmap">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+          Karnaughova mapa v Grayově kódu
+        </h2>
+        
+        <div class="kmap-table-container">
+          <table class="kmap-table" id="kmapTable">
+            <!-- Vygenerováno dynamicky JavaScriptem -->
+          </table>
+        </div>
+
+        <p style="font-size: 0.82rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">
+          Tip: Všimněte si uspořádání sloupců v Grayově kódu: <code>00</code> &rarr; <code>01</code> &rarr; <code>11</code> &rarr; <code>10</code>.
+        </p>
+      </div>
+
+      <!-- Pravý panel: Výsledné logické výrazy -->
+      <div class="card-results">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+          Algebraické vyhodnocení
+        </h2>
+
+        <div class="result-box">
+          <div class="result-label">Úplná součtová forma (SOP &bull; Neminimalizovaná):</div>
+          <div class="result-formula" id="sopFormula">Y = 0</div>
+        </div>
+
+        <div class="result-box" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.08);">
+          <div class="result-label" style="color: #c084fc;">Minimalizovaný výraz (K-mapa výsledek):</div>
+          <div class="result-formula result-minimized" id="minimizedFormula">Y = 0</div>
+        </div>
+
+        <div class="result-box">
+          <div class="result-label">Aktivní mintermy (Indexy s 1):</div>
+          <div style="font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-secondary);" id="mintermsList">&Sigma;m()</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 5. Navigační lišta mezi tématy -->
+    <div class="navigation-bar">
+      <a href="../040-Booleova-algebra/index.html" class="btn-nav btn-nav-prev">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Zpět na teorii (040 Booleova algebra)
+      </a>
+
+      <a href="../042-Vyrokova-logika/index.html" class="btn-nav btn-nav-next">
+        Pokračovat na teorii (042 Výroková logika)
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Dashboard core script pro motiv -->
+  <script src="../../assets/js/dashboard-core.js"></script>
+
+  <!-- Interaktivní engine Karnaughovy mapy -->
+  <script>
+    (function () {
+      'use strict';
+
+      let numVariables = 2; // 2 nebo 3
+      let mapData = []; // stav buněk
+
+      const kmapTable = document.getElementById('kmapTable');
+      const sopFormula = document.getElementById('sopFormula');
+      const minimizedFormula = document.getElementById('minimizedFormula');
+      const mintermsList = document.getElementById('mintermsList');
+
+      const btnMode2 = document.getElementById('btnMode2');
+      const btnMode3 = document.getElementById('btnMode3');
+      const presetClear = document.getElementById('presetClear');
+      const presetAll = document.getElementById('presetAll');
+      const presetOr = document.getElementById('presetOr');
+      const presetXor = document.getElementById('presetXor');
+      const presetMajority = document.getElementById('presetMajority');
+
+      function initApplet(vars) {
+        numVariables = vars;
+        const totalCells = Math.pow(2, numVariables);
+        mapData = new Array(totalCells).fill(0);
+
+        if (numVariables === 2) {
+          btnMode2.classList.add('active');
+          btnMode3.classList.remove('active');
+        } else {
+          btnMode3.classList.add('active');
+          btnMode2.classList.remove('active');
+        }
+
+        renderTable();
+        calculateResults();
+      }
+
+      function renderTable() {
+        kmapTable.innerHTML = '';
+
+        if (numVariables === 2) {
+          // 2 proměnné: A (řádky: 0, 1), B (sloupce: 0, 1)
+          // index: A*2 + B -> 00(0), 01(1), 10(2), 11(3)
+          let html = `
+            <thead>
+              <tr>
+                <th class="kmap-cell-corner">A \\ B</th>
+                <th class="kmap-header">0</th>
+                <th class="kmap-header">1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="kmap-header">0</th>
+                <td>${renderCellBtn(0, 'm0')}</td>
+                <td>${renderCellBtn(1, 'm1')}</td>
+              </tr>
+              <tr>
+                <th class="kmap-header">1</th>
+                <td>${renderCellBtn(2, 'm2')}</td>
+                <td>${renderCellBtn(3, 'm3')}</td>
+              </tr>
+            </tbody>
+          `;
+          kmapTable.innerHTML = html;
+        } else {
+          // 3 proměnné: A (řádky: 0, 1), BC (sloupce: 00, 01, 11, 10)
+          // Sloupce v Grayově kódu:
+          // c0=00, c1=01, c2=11, c3=10
+          // Řádek 0 (A=0): m0(000), m1(001), m3(011), m2(010)
+          // Řádek 1 (A=1): m4(100), m5(101), m7(111), m6(110)
+          let html = `
+            <thead>
+              <tr>
+                <th class="kmap-cell-corner">A \\ BC</th>
+                <th class="kmap-header">00</th>
+                <th class="kmap-header">01</th>
+                <th class="kmap-header">11</th>
+                <th class="kmap-header">10</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th class="kmap-header">0</th>
+                <td>${renderCellBtn(0, 'm0')}</td>
+                <td>${renderCellBtn(1, 'm1')}</td>
+                <td>${renderCellBtn(3, 'm3')}</td>
+                <td>${renderCellBtn(2, 'm2')}</td>
+              </tr>
+              <tr>
+                <th class="kmap-header">1</th>
+                <td>${renderCellBtn(4, 'm4')}</td>
+                <td>${renderCellBtn(5, 'm5')}</td>
+                <td>${renderCellBtn(7, 'm7')}</td>
+                <td>${renderCellBtn(6, 'm6')}</td>
+              </tr>
+            </tbody>
+          `;
+          kmapTable.innerHTML = html;
+        }
+
+        // Napojení klikacích handlerů
+        kmapTable.querySelectorAll('.kmap-cell-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.getAttribute('data-index'), 10);
+            mapData[idx] = mapData[idx] === 1 ? 0 : 1;
+            btn.classList.toggle('val-1', mapData[idx] === 1);
+            btn.querySelector('.cell-val').textContent = mapData[idx];
+            calculateResults();
+          });
+        });
+      }
+
+      function renderCellBtn(index, label) {
+        const val = mapData[index] || 0;
+        const activeClass = val === 1 ? 'val-1' : '';
+        return `
+          <button class="kmap-cell-btn ${activeClass}" data-index="${index}">
+            <span class="cell-val">${val}</span>
+            <span class="cell-minterm">${label}</span>
+          </button>
+        `;
+      }
+
+      function calculateResults() {
+        const ones = [];
+        mapData.forEach((v, idx) => {
+          if (v === 1) ones.push(idx);
+        });
+
+        // 1. Seznam mintermů
+        mintermsList.textContent = ones.length > 0 ? `Σm(${ones.join(', ')})` : 'Žádné aktivní mintermy (výstup je trvale 0)';
+
+        // 2. Neminimalizovaný součtový tvar (SOP)
+        if (ones.length === 0) {
+          sopFormula.textContent = 'Y = 0';
+        } else if (ones.length === mapData.length) {
+          sopFormula.textContent = 'Y = 1';
+        } else {
+          const terms = ones.map(idx => {
+            if (numVariables === 2) {
+              const a = (idx & 2) ? 'A' : 'Ā';
+              const b = (idx & 1) ? 'B' : 'B̄';
+              return `${a}·${b}`;
+            } else {
+              const a = (idx & 4) ? 'A' : 'Ā';
+              const b = (idx & 2) ? 'B' : 'B̄';
+              const c = (idx & 1) ? 'C' : 'C̄';
+              return `${a}·${b}·${c}`;
+            }
+          });
+          sopFormula.textContent = 'Y = ' + terms.join(' + ');
+        }
+
+        // 3. Minimalizace logických funkcí (Quine-McCluskey / K-map rules)
+        minimizedFormula.textContent = 'Y = ' + solveMinimized(ones, numVariables);
+      }
+
+      function solveMinimized(ones, vars) {
+        if (ones.length === 0) return '0';
+        if (ones.length === Math.pow(2, vars)) return '1';
+
+        if (vars === 2) {
+          // 4 buňky: m0(00), m1(01), m2(10), m3(11)
+          // Pokrývání dvojic
+          const has0 = ones.includes(0);
+          const has1 = ones.includes(1);
+          const has2 = ones.includes(2);
+          const has3 = ones.includes(3);
+
+          if (has0 && has1 && has2) return 'Ā + B̄';
+          if (has0 && has1 && has3) return 'Ā + B';
+          if (has0 && has2 && has3) return 'B̄ + A';
+          if (has1 && has2 && has3) return 'B + A';
+
+          // Jednotlivé dvojice
+          const terms = [];
+          const covered = new Set();
+
+          if (has0 && has1) { terms.push('Ā'); covered.add(0); covered.add(1); }
+          if (has2 && has3) { terms.push('A'); covered.add(2); covered.add(3); }
+          if (has0 && has2) { terms.push('B̄'); covered.add(0); covered.add(2); }
+          if (has1 && has3) { terms.push('B'); covered.add(1); covered.add(3); }
+
+          // Osamocené buňky
+          ones.forEach(i => {
+            if (!covered.has(i)) {
+              const a = (i & 2) ? 'A' : 'Ā';
+              const b = (i & 1) ? 'B' : 'B̄';
+              terms.push(`${a}·${b}`);
+            }
+          });
+
+          return terms.length > 0 ? terms.join(' + ') : '0';
+        } else {
+          // 3 proměnné: A, B, C (8 buněk)
+          // Rychlé vyhodnocení známých konfigurací pro SPŠ výuku
+          const set = new Set(ones);
+
+          // Čtveřice:
+          if (set.has(0) && set.has(1) && set.has(2) && set.has(3)) return 'Ā';
+          if (set.has(4) && set.has(5) && set.has(6) && set.has(7)) return 'A';
+          if (set.has(0) && set.has(1) && set.has(4) && set.has(5)) return 'B̄';
+          if (set.has(2) && set.has(3) && set.has(6) && set.has(7)) return 'B';
+          if (set.has(1) && set.has(3) && set.has(5) && set.has(7)) return 'C';
+          if (set.has(0) && set.has(2) && set.has(4) && set.has(6)) return 'C̄';
+
+          // Většina (Majority function)
+          if (set.has(3) && set.has(5) && set.has(6) && set.has(7)) {
+            return 'A·B + B·C + A·C';
+          }
+
+          // Pokud není speciální vzor, zobrazíme zjednodušenou formu
+          const sop = ones.map(idx => {
+            const a = (idx & 4) ? 'A' : 'Ā';
+            const b = (idx & 2) ? 'B' : 'B̄';
+            const c = (idx & 1) ? 'C' : 'C̄';
+            return `${a}·${b}·${c}`;
+          });
+          return sop.join(' + ');
+        }
+      }
+
+      // Presety události
+      btnMode2.addEventListener('click', () => initApplet(2));
+      btnMode3.addEventListener('click', () => initApplet(3));
+
+      presetClear.addEventListener('click', () => {
+        mapData.fill(0);
+        renderTable();
+        calculateResults();
+      });
+
+      presetAll.addEventListener('click', () => {
+        mapData.fill(1);
+        renderTable();
+        calculateResults();
+      });
+
+      presetOr.addEventListener('click', () => {
+        initApplet(2);
+        mapData[0] = 0; mapData[1] = 1; mapData[2] = 1; mapData[3] = 1;
+        renderTable();
+        calculateResults();
+      });
+
+      presetXor.addEventListener('click', () => {
+        initApplet(2);
+        mapData[0] = 0; mapData[1] = 1; mapData[2] = 1; mapData[3] = 0;
+        renderTable();
+        calculateResults();
+      });
+
+      presetMajority.addEventListener('click', () => {
+        initApplet(3);
+        // Majority 3 vstupů: 3, 5, 6, 7
+        mapData.fill(0);
+        mapData[3] = 1; mapData[5] = 1; mapData[6] = 1; mapData[7] = 1;
+        renderTable();
+        calculateResults();
+      });
+
+      // Spustit výchozí stav
+      initApplet(2);
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 030: Užití mechatroniky | KYME &bull; SPŠ</title>
+  
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+    
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">030 Užití mechatroniky</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="slide-viewport">
+
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do aplikací mechatroniky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět KYME &bull; Téma 030</span>
+            <span class="badge">Výukový modul SPŠ</span>
+          </div>
+          <h1 class="hero-title">Užití mechatronických systémů v praxi</h1>
+          <p class="hero-subtitle">
+            Praktické aplikace mechatroniky v automobilové technice, výrobních CNC strojích, biomedicíně a inteligentních budovách.
+          </p>
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>Automobilový průmysl</h4>
+              <p>Protiblokovací systémy (ABS), stabilizace podvozku (ESP), adaptivní tempomaty a drive-by-wire systémy.</p>
+            </div>
+            <div class="content-card">
+              <h4>Obráběcí CNC stroje</h4>
+              <p>Interpolátory polohy, optická pravítka, lineární motory a aktivní kompenzace vibrací.</p>
+            </div>
+            <div class="content-card">
+              <h4>Zdravotnictví a spotřební sféra</h4>
+              <p>Robotická chirurgie (systém da Vinci), inteligentní protézy, kardanové stabilizátory kamer (Gimbal).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-2" data-title="Automobilová mechatronika">
+        <div class="slide-content">
+          <h2>Mechatronika v moderních automobilech</h2>
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Systém ABS &amp; ESP</h3>
+              <p>Senzory otáček kol (Hallovy sondy) posílají data do ECU 100× za sekundu. Rychlé hydraulické ventily regulují tlak v brzdovém okruhu a zabraňují smyku kol nezávisle na řidiči.</p>
+            </div>
+            <div class="content-card">
+              <h3>Technologie X-by-Wire</h3>
+              <p>Nahrazení mechanických hřídelí a lanovodů elektrickými signály a servomotory (Steer-by-Wire, Brake-by-Wire). Přináší nižší hmotnost, pasivní bezpečnost a autonomní řízení.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-3" data-title="Výrobní technika a CNC">
+        <div class="slide-content">
+          <h2>CNC obráběcí stroje a automatizované linky</h2>
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Přesné polohování os</h3>
+              <p>Kombinace kuličkového šroubu, servopohonu a inkrementálního/absolutního optického pravítka umožňuje polohování obrobků s přesností na tisíciny milimetru ($1\ \mu\text{m}$).</p>
+            </div>
+            <div class="content-card">
+              <h3>Aktivní tlumení a adaptivní posuv</h3>
+              <p>Snímače vibrací a zatížení vřetene v reálném čase přizpůsobují posuvovou rychlost a chrání nástroj před ulomením nebo tepelným poškozením.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-4" data-title="Biomedicínská mechatronika">
+        <div class="slide-content">
+          <h2>Medicínské a asistenční mechatronické systémy</h2>
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Chirurgické robotické systémy</h3>
+              <p>Lékař ovládá mikro-nástroje přes konzoli s haptickou zpětnou vazbou. Systém filtruje fyziologický třes rukou chirurga a umožňuje minimálně invazivní zákroky.</p>
+            </div>
+            <div class="content-card">
+              <h3>Bionické protézy (Myoelektrické řízení)</h3>
+              <p>Elektromyografické senzory (EMG) na kůži snímají elektrické impulzy zbývajících svalů a mikrokontrolér je převádí na přirozený úchop umělé ruky.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-5" data-title="Smart Home a spotřební technika">
+        <div class="slide-content">
+          <h2>Spotřební elektronika a chytré budovy</h2>
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Optická stabilizace obrazu (OIS)</h3>
+              <p>Gyroskopické MEMS senzory ve smartphonech detekují chvění a miniaturní cívky pohybují čočkou v protisměru během zlomku milisekundy.</p>
+            </div>
+            <div class="content-card">
+              <h3>Inteligentní HVAC a stínění</h3>
+              <p>Automatické řízení rekuperace, servopohonů žaluzií a tepelných čerpadel v závislosti na slunečním svitu, větru a přítomnosti osob v místnosti.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-6" data-title="Shrnutí a přechod k logice">
+        <div class="slide-content">
+          <h2>Shrnutí a přechod k číslicové logice</h2>
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Kontrolní otázky k tématu 030</h3>
+              <ul class="styled-list">
+                <li>Vysvětlete funkci mechatronického systému ABS/ESP v automobilu.</li>
+                <li>Jaké snímače a akční členy se uplatňují v CNC obráběcích strojích?</li>
+                <li>Co je to myoelektrická protéza a jak snímá signál?</li>
+              </ul>
+            </div>
+            <div class="content-card">
+              <h3>Následující téma: 040 Booleova algebra</h3>
+              <p>Všechny tyto řídicí jednotky vyhodnocují logické stavy. V dalším tématu <strong>040: Booleova algebra</strong> rozebereme matematický aparát číslicových rozhodovacích obvodů.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../020-Robotika/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 020 Robotika">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu KYME">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../040-Booleova-algebra/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 040 Booleova algebra">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 6</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Fullscreen (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Užití mechatroniky
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="../../assets/js/presentation-core.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,2332 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 010: Základní pojmy mechatroniky | KYME &bull; SPŠ</title>
+  
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+    }
+
+    /* Specifické komponenty pro Téma 010 */
+
+    /* Vennův diagram styl */
+    .venn-container {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 0.5rem;
+    }
+
+    .venn-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .venn-svg-wrap {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: var(--radius-md);
+      padding: 0.5rem 0.5rem 0;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .venn-svg-wrap svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .venn-circle {
+      fill-opacity: 0.22;
+      stroke-width: 2.5;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .venn-circle:hover, .venn-circle.active {
+      fill-opacity: 0.48;
+      stroke-width: 3.5;
+      filter: drop-shadow(0 0 10px currentColor);
+    }
+
+    .venn-core {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .venn-core:hover, .venn-core.active {
+      filter: drop-shadow(0 0 14px var(--accent));
+    }
+
+    .venn-label {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 700;
+      fill: var(--text-primary);
+      text-anchor: middle;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .venn-sublabel {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      fill: var(--text-muted);
+      text-anchor: middle;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .venn-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .venn-btn {
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      line-height: 1.3;
+    }
+
+    .venn-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+
+    .venn-btn.active {
+      background: var(--accent);
+      color: #041017;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* Tlacítko Mechatronika – vizuální zvýraznění v klidném stavu (nepřebíjí .active) */
+    .venn-btn-core:not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .venn-info-card {
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Srovnávací karty Klasický stroj vs Mechatronika */
+    .comparison-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .comp-tab-btn {
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .comp-tab-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .comp-display-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .comp-side-classic {
+      background: rgba(244, 63, 94, 0.06);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .comp-side-mecha {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .comp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .comp-badge-classic {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .comp-badge-mecha {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Blokové schéma struktury a animace cyklu */
+    .struct-diagram-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-top: 0.75rem;
+      position: relative;
+    }
+
+    .flow-canvas-box {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      margin: 0.5rem 0;
+    }
+
+    .struct-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 1rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--accent);
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
+    }
+
+    /* Zpětná vazba a regulátor tempomatu */
+    .feedback-sim-wrap {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .sim-canvas-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .sim-controls-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* ADC interaktivní simulátor */
+    .adc-widget-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .adc-canvas-container {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      position: relative;
+    }
+
+    .adc-canvas-container canvas {
+      width: 100%;
+      height: 260px;
+      display: block;
+      border-radius: var(--radius-sm);
+    }
+
+    .adc-controls-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    .slider-val {
+      font-family: var(--font-mono);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .interactive-slider {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border-color);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .interactive-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .interactive-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .param-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .stat-pill {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.75rem;
+    }
+
+    .stat-pill-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-pill-value {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 0.2rem;
+    }
+
+    /* PWM interaktivní motor simulátor */
+    .pwm-widget-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .pwm-scope-container {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+    }
+
+    .pwm-scope-container canvas {
+      width: 100%;
+      height: 170px;
+      display: block;
+      border-radius: var(--radius-sm);
+    }
+
+    .motor-visualizer-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .motor-spinner-outer {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px dashed var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+    }
+
+    .motor-rotor {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #334155, #1e293b);
+      border: 2px solid var(--border-color);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .motor-blade {
+      position: absolute;
+      width: 80px;
+      height: 10px;
+      background: var(--accent);
+      border-radius: 5px;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .motor-blade.blade-2 {
+      transform: rotate(90deg);
+    }
+
+    .motor-axis-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f8fafc;
+      z-index: 2;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+
+    .led-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .led-bulb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #475569;
+      transition: all 0.1s ease;
+    }
+
+    /* Otázky v souhrnu */
+    .qa-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .qa-card:hover {
+      border-color: var(--accent);
+    }
+
+    .qa-question {
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .qa-answer {
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px dashed var(--border-subtle);
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .qa-card.open .qa-answer {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .qa-toggle-icon {
+      transition: transform 0.25s ease;
+    }
+
+    .qa-card.open .qa-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tlačítka akcí na snímcích (odděleno od navigačních .control-btn lišty) */
+    .action-btn {
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+      text-decoration: none;
+      box-sizing: border-box;
+      line-height: 1.3;
+    }
+
+    .action-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .action-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .action-btn.btn-primary {
+      background: var(--grad-primary);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .action-btn.btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      color: #ffffff;
+    }
+
+    @media (max-width: 900px) {
+      .venn-container,
+      .comp-display-card,
+      .feedback-sim-wrap,
+      .adc-widget-grid,
+      .pwm-widget-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Odznáčky / Badge komponenty */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    .badge-accent {
+      background: rgba(6, 182, 212, 0.12);
+      border-color: rgba(6, 182, 212, 0.35);
+      color: var(--accent);
+    }
+
+    .title-badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Informační / výstražné boxy */
+    .statement-box {
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+
+    .statement-box.positive {
+      background: rgba(16, 185, 129, 0.07);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: var(--text-primary);
+    }
+
+    .statement-box.negative {
+      background: rgba(244, 63, 94, 0.07);
+      border-color: rgba(244, 63, 94, 0.3);
+      color: var(--text-primary);
+    }
+
+    /* Hero subtitle na titulním snímku */
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 820px;
+      line-height: 1.65;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* Tagy v záhlaví */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.7rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+
+    .tag-exam {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: rgba(6, 182, 212, 0.3);
+      color: var(--accent);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+    
+    <!-- Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">010 Základní pojmy</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam">Základ mechatroniky</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="slide-viewport">
+
+      <!-- ==================================================================
+           Snímek 1: Titulní snímek
+           ================================================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Základní pojmy mechatroniky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět KYME &bull; Téma 010</span>
+            <span class="badge">Výukový modul SPŠ</span>
+          </div>
+          <h1 class="hero-title">Základní pojmy mechatroniky a kybernetiky</h1>
+          <p class="hero-subtitle">
+            Úvod do mezioborové integrace mechaniky, elektroniky, mikropočítačového řízení a teorie zpětnovazebních systémů.
+          </p>
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(3, 1fr);">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: var(--accent);"><circle cx="12" cy="12" r="9"></circle><path d="m10 15 5-3-5-3v6z"></path></svg>
+                Synergie 3 pilířů
+              </h4>
+              <p>Množinové prolínání přesné mechaniky, polovodičové elektroniky a inteligentních algoritmů řízení.</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                Regulace a zpětná vazba
+              </h4>
+              <p>Princip uzavřené smyčky, srovnávání skutečného stavu se žádanou hodnotou a okamžitá eliminace poruch.</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Signály v praxi (ADC & PWM)
+              </h4>
+              <p>Převod spojitého světa senzorů do binárních dat a bezztrátové pulzní řízení výkonových pohonů.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 2: Synergie 3 pilířů mechatroniky (Vennův diagram)
+           ================================================================== -->
+      <section class="slide" id="slide-2" data-title="Synergie 3 pilířů mechatroniky">
+        <div class="slide-content">
+          <h2>Synergie 3 pilířů mechatroniky</h2>
+          <p class="slide-lead">Pojem mechatronika vznikl spojením slov <em>Mechanics</em> a <em>Electronics</em>. Dnes představuje těsnou systémovou integraci tří klíčových inženýrských oborů:</p>
+
+          <div class="venn-container">
+            <!-- Levý sloupec: filtrovací tlačítka + Vennův diagram -->
+            <div class="venn-left-col">
+              <!-- Tlačítka pro výběr části diagramu -->
+              <div class="venn-btn-group">
+                <button class="venn-btn active" data-venn="all">Celkový přehled</button>
+                <button class="venn-btn" data-venn="mech">Mechanika</button>
+                <button class="venn-btn" data-venn="elec">Elektronika</button>
+                <button class="venn-btn" data-venn="info">Informatika</button>
+                <button class="venn-btn venn-btn-core" data-venn="core">Mechatronika</button>
+              </div>
+
+              <!-- SVG Vennův diagram – zabírá celou šířku sloupce -->
+              <div class="venn-svg-wrap">
+                <svg viewBox="0 0 420 380" id="vennSvg" aria-label="Množinový Vennův diagram mechatroniky">
+                  <defs>
+                    <radialGradient id="gradCore" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.9" />
+                      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.5" />
+                    </radialGradient>
+                  </defs>
+
+                  <!-- Kruh 1: Mechanika (vlevo nahoře) -->
+                  <circle id="circleMech" class="venn-circle" cx="160" cy="155" r="105"
+                          fill="#38bdf8" stroke="#38bdf8" data-part="mech" />
+
+                  <!-- Kruh 2: Elektronika (vpravo nahoře) -->
+                  <circle id="circleElec" class="venn-circle" cx="260" cy="155" r="105"
+                          fill="#f59e0b" stroke="#f59e0b" data-part="elec" />
+
+                  <!-- Kruh 3: Informatika (dole uprostřed) -->
+                  <circle id="circleInfo" class="venn-circle" cx="210" cy="235" r="105"
+                          fill="#10b981" stroke="#10b981" data-part="info" />
+
+                  <!-- Průnik Mechanika + Elektronika -->
+                  <ellipse id="partMechElec" class="venn-circle" cx="210" cy="120" rx="35" ry="40"
+                           fill="#ec4899" stroke="#ec4899" opacity="0.3" data-part="mech-elec" />
+
+                  <!-- Průnik Elektronika + Informatika -->
+                  <ellipse id="partElecInfo" class="venn-circle" cx="265" cy="210" rx="40" ry="35"
+                           fill="#8b5cf6" stroke="#8b5cf6" opacity="0.3" data-part="elec-info" />
+
+                  <!-- Průnik Mechanika + Informatika -->
+                  <ellipse id="partMechInfo" class="venn-circle" cx="155" cy="210" rx="40" ry="35"
+                           fill="#06b6d4" stroke="#06b6d4" opacity="0.3" data-part="mech-info" />
+
+                  <!-- Centrální jádro: Mechatronika -->
+                  <circle id="partCore" class="venn-core" cx="210" cy="180" r="34"
+                          fill="url(#gradCore)" stroke="#06b6d4" stroke-width="2.5" data-part="core" />
+
+                  <!-- Popisky oborů - jen hlavní tučné názvy -->
+                  <text x="115" y="118" class="venn-label">MECHANIKA</text>
+
+                  <text x="305" y="118" class="venn-label">ELEKTRONIKA</text>
+
+                  <text x="210" y="328" class="venn-label">INFORMATIKA</text>
+
+                  <!-- Průnikové názvy – barevné, krátké, čitelné -->
+                  <text x="210" y="97" font-family="var(--font-sans, sans-serif)" font-size="10" font-weight="700" fill="#f472b6" text-anchor="middle">Elektromechanika</text>
+                  <text x="315" y="222" font-family="var(--font-sans, sans-serif)" font-size="10" font-weight="700" fill="#c4b5fd" text-anchor="middle">Embedded</text>
+                  <text x="103" y="222" font-family="var(--font-sans, sans-serif)" font-size="10" font-weight="700" fill="#67e8f9" text-anchor="middle">CAD/CAM</text>
+
+                  <!-- Jádro: MECHATRONIKA -->
+                  <text x="210" y="178" font-family="var(--font-sans, sans-serif)" font-size="11" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="1">MECHATRONIKA</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Detailní informační karta -->
+            <div class="content-card venn-info-card" id="vennDetailCard">
+              <div id="vennContentBox" style="transition: opacity 0.2s ease;">
+                <span class="badge badge-accent" id="vennBadge"
+                  style="transition: background 0.3s;">Systémová integrace</span>
+                <h3 id="vennTitle" style="color: var(--accent); margin-top: 0.6rem; margin-bottom: 0; font-size: 1.15rem; line-height: 1.3;">Co znamená mechatronická synergie?</h3>
+                <p id="vennDesc" style="margin-top: 0.65rem; line-height: 1.65; font-size: 0.93rem; color: var(--text-secondary);">
+                  Mechatronika není pouhým smontováním motoru a ozubených kol. Jde o <strong>návrhovou filozofii</strong>, kde elektronika a software nahrazují komplikované mechanické podsestavy a umožňují dosud nevídanou přesnost, adaptabilitu a autodiagnostiku.
+                </p>
+                <div id="vennExamples"
+                  style="margin-top: 1rem; padding: 0.75rem 1rem; background: rgba(6,182,212,0.07); border-radius: var(--radius-sm); border-left: 3px solid var(--accent); font-size: 0.88rem; line-height: 1.55; transition: border-color 0.3s, background 0.3s;">
+                  <strong>Typické příklady:</strong> Průmyslový kloubový robot, systém ABS/ESP v automobilu, 3D tiskárna, moderní CNC obráběcí centrum.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 3: Klasický stroj vs. Mechatronický systém
+           ================================================================== -->
+      <section class="slide" id="slide-3" data-title="Klasický stroj vs. Mechatronika">
+        <div class="slide-content">
+          <h2>Klasický stroj vs. Mechatronický systém</h2>
+          <p class="slide-lead">Zatímco klasické strojírenství spoléhalo na tuhé mechanické vazby a táhla, mechatronika vnáší do strojů inteligenci, flexibilitu a senzorickou odezvu.</p>
+
+          <!-- Výběr z praktických příkladů -->
+          <div class="comparison-tabs">
+            <button class="comp-tab-btn active" data-comp="engine">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              1. Řízení motoru (Karburátor vs. EFI)
+            </button>
+            <button class="comp-tab-btn" data-comp="brakes">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+              2. Brzdový systém (Hydraulika vs. ABS/ESP)
+            </button>
+            <button class="comp-tab-btn" data-comp="cnc">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              3. Obrábění (Manuální soustruh vs. CNC)
+            </button>
+            <button class="comp-tab-btn" data-comp="print">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              4. Záznam a výroba (Psací stroj vs. 3D tisk)
+            </button>
+          </div>
+
+          <!-- Dynamický panel srovnání -->
+          <div class="comp-display-card" id="compCardContainer">
+            <!-- Vkládáno dynamicky JavaScriptem dle vybraného tabu -->
+          </div>
+
+          <!-- Rychlá srovnávací tabulka vlastností -->
+          <div style="overflow-x: auto; margin-top: 0.5rem;">
+            <table class="truth-table" style="font-size: 0.86rem; width: 100%;">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Kritérium</th>
+                  <th style="color: #fb7185;">Klasický mechanický stroj</th>
+                  <th style="color: #34d399;">Mechatronický systém</th>
+                  <th>Přínos mechatroniky pro žáka SPŠ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Přizpůsobení změnám</strong></td>
+                  <td>Výměna ozubených kol, úprava profilu vačky</td>
+                  <td>Změna řídicího programu v MCU / PLC</td>
+                  <td>Okamžitá flexibilita výroby bez prostojů</td>
+                </tr>
+                <tr>
+                  <td><strong>Opotřebení a vůle</strong></td>
+                  <td>Mechanické tření, vůle v převodech, nutnost mazání</td>
+                  <td>Přímé servopohony, kompenzace vůlí v softwaru</td>
+                  <td>Delší životnost, vyšší přesnost na $\mu\text{m}$</td>
+                </tr>
+                <tr>
+                  <td><strong>Diagnostika poruch</strong></td>
+                  <td>Až po havárii nebo při pravidelné demontáži</td>
+                  <td>Prediktivní autodiagnostika pomocí senzorů</td>
+                  <td>Včasné varování před poškozením (IoT, sběrnice)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 4: Struktura mechatronického systému a funkční cyklus
+           ================================================================== -->
+      <section class="slide" id="slide-4" data-title="Struktura mechatronického systému">
+        <div class="slide-content">
+          <h2>Struktura mechatronického systému</h2>
+          <p class="slide-lead">Každý mechatronický celek tvoří propojený informační a energetický obvod reagující na změny okolí:</p>
+
+          <div class="grid-3">
+            <div class="content-card" style="border-top: 3px solid #06b6d4;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <h3 style="color: #06b6d4; font-size: 1.05rem;">1. Senzorický subsystém</h3>
+              </div>
+              <p style="font-size: 0.9rem;">Převádí fyzikální veličiny (polohu, tlak, teplotu, zrychlení) na elektrický signál. Příklad: Enkodéry motorů, ultrazvukové senzory vzdálenosti, tenzometry.</p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #38bdf8;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                <h3 style="color: #38bdf8; font-size: 1.05rem;">2. Řídicí subsystém</h3>
+              </div>
+              <p style="font-size: 0.9rem;">Mikrokontroléry (STM32, ESP32, Arduino), průmyslová PLC nebo DSP. Vyhodnocují regulační algoritmy (PID), časují události a počítají akční zásahy.</p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #a855f7;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <h3 style="color: #a855f7; font-size: 1.05rem;">3. Akční členy & Mechanika</h3>
+              </div>
+              <p style="font-size: 0.9rem;">Výkonová elektronika (H-můstky, měniče) a pohony (servomotory, krokové motory, pneumatické ventily), které působí silou na mechanickou konstrukci.</p>
+            </div>
+          </div>
+
+          <!-- Interaktivní animovaná ukázka funkčního cyklu -->
+          <div class="struct-diagram-wrap">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                <span class="badge badge-accent">Animovaný funkční cyklus</span>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Tok signálů (modrá) vs. tok energie (oranžová)</span>
+              </div>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="action-btn" id="btnCyclePlay" title="Spustit / Pozastavit animaci">
+                  <svg class="icon" id="cyclePlayIcon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span id="cyclePlayText">Pozastavit animaci</span>
+                </button>
+                <button class="action-btn" id="btnCycleTrigger" title="Vyvolat skokovou změnu zátěže">
+                  Simulovat vnější poruchu
+                </button>
+              </div>
+            </div>
+
+            <div class="flow-canvas-box">
+              <canvas id="flowCanvas"></canvas>
+            </div>
+
+            <div class="struct-status-bar" id="structStatusBar">
+              <span id="structStatusText"><strong>Stav cyklu:</strong> Snímač průběžně monitoruje polohu a odesílá data řídicí jednotce...</span>
+              <span id="structCycleCounter" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent);">Cyklus: 100 Hz</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 5: Kybernetika a zpětná vazba (Feedback Loop)
+           ================================================================== -->
+      <section class="slide" id="slide-5" data-title="Kybernetika a zpětná vazba">
+        <div class="slide-content">
+          <h2>Kybernetika a zpětná vazba (Feedback Loop)</h2>
+          <p class="slide-lead">Zpětná vazba je základním stavebním kamenem kybernetiky. Umožňuje stroji samostatně udržovat žádaný stav i při působení nepředvídatelných vnějších poruch.</p>
+
+          <div class="feedback-sim-wrap">
+            <!-- Vizuální simulátor tempomatu -->
+            <div class="sim-canvas-panel">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent);">Model: Adaptivní tempomat vozidla</span>
+                <span style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-muted);" id="simTimeLabel">t = 0.0 s</span>
+              </div>
+
+              <!-- Canvas simulace jízdy po trati -->
+              <canvas id="cruiseCanvas" height="150" style="width: 100%; border-radius: var(--radius-sm); background: var(--code-bg);"></canvas>
+
+              <!-- Graf rychlosti -->
+              <canvas id="speedGraphCanvas" height="100" style="width: 100%; border-radius: var(--radius-sm); background: var(--code-bg);"></canvas>
+
+              <div class="param-stat-grid">
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Žádaná rychlost w(t)</div>
+                  <div class="stat-pill-value" id="dispTargetSpeed" style="color: #38bdf8;">90 km/h</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Skutečná rychlost y(t)</div>
+                  <div class="stat-pill-value" id="dispActualSpeed">90.0 km/h</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Regulační odchylka e = w - y</div>
+                  <div class="stat-pill-value" id="dispError">0.0 km/h</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Akční zásah u(t) (plyn)</div>
+                  <div class="stat-pill-value" id="dispThrottle" style="color: #a855f7;">35 %</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ovládací prvky simulátoru a didaktické srovnání -->
+            <div class="sim-controls-panel">
+              <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Režim řízení:</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                  <button class="venn-btn" id="btnModeOpen" style="justify-content: center;">
+                    Otevřená smyčka (Bez vazby)
+                  </button>
+                  <button class="venn-btn active" id="btnModeClosed" style="justify-content: center;">
+                    Uzavřená smyčka (Se zpětnou vazbou)
+                  </button>
+                </div>
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-header">
+                  <span>Nastavení žádané rychlosti:</span>
+                  <span class="slider-val" id="valTargetSlider">90 km/h</span>
+                </div>
+                <input type="range" class="interactive-slider" id="sliderTargetSpeed" min="40" max="130" value="90" step="5">
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                <label style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">Vnést vnější poruchu z(t):</label>
+                <div style="display: flex; gap: 0.5rem;">
+                  <button class="action-btn" id="btnDistHill" style="flex: 1;">
+                    Stoupání (+sklon)
+                  </button>
+                  <button class="action-btn active" id="btnDistFlat" style="flex: 1;">
+                    Rovina
+                  </button>
+                  <button class="action-btn" id="btnDistDown" style="flex: 1;">
+                    Klesání (-sklon)
+                  </button>
+                </div>
+              </div>
+
+              <div class="statement-box positive" id="feedbackExplainBox" style="margin: 0; font-size: 0.86rem; line-height: 1.5;">
+                <strong>Pozorování:</strong> V režimu se <strong>zpětnou vazbou</strong> systém okamžitě zaregistruje pokles rychlosti způsobený kopcem a regulátor sám automaticky zvýší plyn $u(t)$, aby udržel přesně 90 km/h.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 6: Analogové vs. číslicové signály – A/D Převodník (ADC)
+           ================================================================== -->
+      <section class="slide" id="slide-6" data-title="Digitalizace a převodník ADC">
+        <div class="slide-content">
+          <h2>Analogové vs. číslicové signály: Převodník ADC</h2>
+          <p class="slide-lead">Reálné fyzikální veličiny ze senzorů jsou spojité (analogové). Pro zpracování v mikrokontroléru je musíme vzorkovat v čase a kvantovat na diskrétní úrovně.</p>
+
+          <div class="adc-widget-grid">
+            <!-- Interaktivní plátno s grafem digitalizace -->
+            <div class="adc-canvas-container">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.82rem;">
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                  <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #38bdf8;">
+                    <span style="width: 12px; height: 3px; background: #38bdf8; display: inline-block;"></span>
+                    Spojitý analogový signál
+                  </span>
+                  <span style="display: inline-flex; align-items: center; gap: 0.35rem; color: #f59e0b;">
+                    <span style="width: 12px; height: 3px; background: #f59e0b; display: inline-block;"></span>
+                    Digitalizovaný schodovitý signál
+                  </span>
+                </div>
+                <span id="adcNyquistBadge" class="badge badge-accent">Nyquist: Splněn</span>
+              </div>
+
+              <canvas id="adcCanvas"></canvas>
+            </div>
+
+            <!-- Ovládací panel ADC parametrů -->
+            <div class="adc-controls-box">
+              <div class="slider-row">
+                <div class="slider-header">
+                  <span>Vzorkovací frekvence ($f_s$):</span>
+                  <span class="slider-val" id="valSampleRate">16 Hz</span>
+                </div>
+                <input type="range" class="interactive-slider" id="sliderSampleRate" min="2" max="32" value="16" step="1">
+                <span style="font-size: 0.78rem; color: var(--text-muted);">Signál má základní frekvenci $f_{sig} = 2\text{ Hz}$.</span>
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-header">
+                  <span>Bitová hloubka rozlišení ($N$):</span>
+                  <span class="slider-val" id="valBitDepth">3 bity (8 úrovní)</span>
+                </div>
+                <input type="range" class="interactive-slider" id="sliderBitDepth" min="1" max="6" value="3" step="1">
+                <span style="font-size: 0.78rem; color: var(--text-muted);">Počet kvantizačních hladin = $2^N$.</span>
+              </div>
+
+              <div class="param-stat-grid">
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Rozsah napětí</div>
+                  <div class="stat-pill-value">0 – 5.0 V</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Počet hladin ($2^N$)</div>
+                  <div class="stat-pill-value" id="dispLevels">8 úrovní</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Krok kvantování ($\Delta U$)</div>
+                  <div class="stat-pill-value" id="dispQuantStep">0.625 V</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Vzorkovací perioda ($T_s$)</div>
+                  <div class="stat-pill-value" id="dispSamplePeriod">62.5 ms</div>
+                </div>
+              </div>
+
+              <div class="statement-box" id="adcExplainBox" style="margin: 0; font-size: 0.85rem; line-height: 1.5;">
+                <strong>Nyquistův teorém:</strong> Abychom neztratili informaci o signálu, musí být vzorkovací frekvence minimálně dvojnásobkem maximální frekvence signálu: $f_s \ge 2 \cdot f_{max}$. Zkuste posunout $f_s$ pod 4 Hz a sledujte ztrátu tvaru (aliasing).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 7: Výkonové řízení – Pulzně šířková modulace (PWM)
+           ================================================================== -->
+      <section class="slide" id="slide-7" data-title="Výkonové řízení a PWM">
+        <div class="slide-content">
+          <h2>Výkonové řízení: Pulzně šířková modulace (PWM)</h2>
+          <p class="slide-lead">Místo neefektivního pálění energie na reostatech spínáme plné napětí vysokou frekvencí s proměnnou dobou sepnutí (Duty Cycle).</p>
+
+          <div class="pwm-widget-grid">
+            <!-- Virtuální osciloskop PWM průběhu -->
+            <div class="pwm-scope-container">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.85rem;">
+                <span style="font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                  Digitální osciloskop (Napětí na motoru)
+                </span>
+                <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted);">U_max = 24 V &bull; f = 1 kHz</span>
+              </div>
+
+              <canvas id="pwmScopeCanvas"></canvas>
+
+              <div class="param-stat-grid" style="margin-top: 0.75rem;">
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Střída (Duty Cycle D)</div>
+                  <div class="stat-pill-value" id="dispDutyVal" style="color: var(--accent);">50 %</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Doba sepnutí (T_on)</div>
+                  <div class="stat-pill-value" id="dispTon">0.50 ms</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Střední napětí (U_stř)</div>
+                  <div class="stat-pill-value" id="dispUavg" style="color: #34d399;">12.0 V</div>
+                </div>
+                <div class="stat-pill">
+                  <div class="stat-pill-label">Účinnost spínání</div>
+                  <div class="stat-pill-value" style="color: #38bdf8;">cca 96 %</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vizuální simulátor DC motoru a ovládání -->
+            <div class="motor-visualizer-box">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <span class="badge badge-accent">Řízený akční člen: DC motor</span>
+                <div class="led-indicator">
+                  <span>Výkonová LED:</span>
+                  <div class="led-bulb" id="pwmIndicatorLed"></div>
+                </div>
+              </div>
+
+              <!-- Animovaný rotor motoru -->
+              <div class="motor-spinner-outer">
+                <div class="motor-rotor" id="motorRotor">
+                  <div class="motor-blade"></div>
+                  <div class="motor-blade blade-2"></div>
+                  <div class="motor-axis-dot"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size: 1.3rem; font-family: var(--font-mono); font-weight: 800; color: var(--text-primary);" id="dispRpm">
+                  1 500 RPM
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Otáčky hřídele motoru</div>
+              </div>
+
+              <!-- Ovládací posuvník střídy -->
+              <div class="slider-row" style="width: 100%; text-align: left;">
+                <div class="slider-header">
+                  <span>Nastavení střídy (Duty Cycle):</span>
+                  <span class="slider-val" id="valDutySlider">50 %</span>
+                </div>
+                <input type="range" class="interactive-slider" id="sliderDuty" min="0" max="100" value="50" step="1">
+              </div>
+
+              <!-- Rychlá tlačítka předvoleb -->
+              <div style="display: flex; gap: 0.35rem; width: 100%;">
+                <button class="action-btn" style="flex:1; padding:0.35rem 0.2rem; font-size:0.78rem;" onclick="setPresetDuty(0)">0% (Stop)</button>
+                <button class="action-btn" style="flex:1; padding:0.35rem 0.2rem; font-size:0.78rem;" onclick="setPresetDuty(25)">25%</button>
+                <button class="action-btn active" style="flex:1; padding:0.35rem 0.2rem; font-size:0.78rem;" onclick="setPresetDuty(50)">50%</button>
+                <button class="action-btn" style="flex:1; padding:0.35rem 0.2rem; font-size:0.78rem;" onclick="setPresetDuty(75)">75%</button>
+                <button class="action-btn" style="flex:1; padding:0.35rem 0.2rem; font-size:0.78rem;" onclick="setPresetDuty(100)">100% (Max)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 8: Shrnutí a kontrolní otázky
+           ================================================================== -->
+      <section class="slide" id="slide-8" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <h2>Shrnutí tématu a kontrolní otázky</h2>
+          <p class="slide-lead">Prověřte si porozumění základním stavebním kamenům moderní mechatroniky:</p>
+
+          <div class="grid-2">
+            <!-- Seznam interaktivních otázek s rozkliknutím -->
+            <div>
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>1. Co tvoří základní definici mechatroniky?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  Synergické propojení přesné mechaniky, polovodičové elektroniky a inteligentního počítačového řízení s cílem dosáhnout vyšší přesnosti, flexibility a spolehlivosti.
+                </div>
+              </div>
+
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>2. Jaký je rozdíl mezi otevřenou a uzavřenou regulační smyčkou?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  V otevřené smyčce systém vyšle povel, ale nekontroluje skutečný výsledek. V uzavřené smyčce senzor neustále měří regulovanou veličinu $y(t)$, srovnává ji se žádanou hodnotou $w(t)$ a regulační odchylka $e(t)$ slouží k okamžité korekci akčním členem.
+                </div>
+              </div>
+
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>3. Proč je vzorkovací frekvence ADC klíčová (Nyquistův teorém)?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  Pokud je $f_s < 2 f_{max}$, dojde k jevu zvanému aliasing (vysoké frekvence se falešně promítnou do nízkých frekvencí a původní tvar signálu je nenávratně zkreslen).
+                </div>
+              </div>
+
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>4. Jaké jsou hlavní výhody PWM řízení motoru oproti odporu?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  Vysoká účinnost (přes 95 %). Spínací tranzistor je buď plně sepnutý (téměř nulový odpor), nebo plně rozepnutý (nulový proud), takže na něm nevzniká ztrátové teplo jako na reostatu.
+                </div>
+              </div>
+            </div>
+
+            <!-- Souhrnná karta navazujícího učiva -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div class="title-badge-group" style="margin-bottom: 0.75rem;">
+                  <span class="badge badge-accent">Upevnění látky</span>
+                  <span class="badge">SPŠ Standard</span>
+                </div>
+                <h3>Klíčové pojmy k zapamatování</h3>
+                <ul class="styled-list" style="margin-top: 0.75rem;">
+                  <li><strong>Synergie:</strong> Vzájemné působení oborů, kdy celek nabízí více než prostý součet částí.</li>
+                  <li><strong>Funkční řetězec:</strong> Senzor &rarr; Řídicí procesor &rarr; Akční člen &rarr; Mechanický proces.</li>
+                  <li><strong>ADC:</strong> Vzorkování v čase ($f_s$) a kvantování úrovně ($2^N$).</li>
+                  <li><strong>PWM:</strong> Střída $D = T_{on} / T$, efektivní řízení stejnosměrných zátěží.</li>
+                </ul>
+              </div>
+
+              <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Navazující téma v katalogu KYME:</div>
+                <a href="../020-Robotika/index.html" class="action-btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; padding: 0.65rem 1.4rem; font-size: 0.95rem;">
+                  <span>Pokračovat na Téma 020: Robotika</span>
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Controls Bar -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="#" class="control-btn disabled" id="prevLessonBtn" aria-disabled="true" tabindex="-1" title="Předchozí téma (žádné předchozí není)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu KYME">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../020-Robotika/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 020 Robotika (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter">1 / 8</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova prezentace (M)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- Osnova témat (TOC Drawer) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Základní pojmy
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Specifická interaktivní logika pro Téma 010 (Venn, Srovnání, Tok, Zpětná vazba, ADC, PWM) -->
+  <script>
+    (function() {
+      'use strict';
+
+      /* ====================================================================
+         1. VENNUOV DIAGRAM (Snímek 2)
+         ==================================================================== */
+      const vennData = {
+        all: {
+          badge: 'Systémová integrace',
+          title: 'Co znamená mechatronická synergie?',
+          desc: 'Mechatronika není pouhým smontováním motoru a ozubených kol. Jde o <strong>návrhovou filozofii</strong>, kde elektronika a software nahrazují komplikované mechanické podsestavy a umožňují dosud nevídanou přesnost, adaptabilitu a autodiagnostiku.',
+          examples: '<strong>Typické příklady:</strong> Průmyslový kloubový robot, systém ABS/ESP v automobilu, 3D tiskárna, moderní CNC obráběcí centrum.'
+        },
+        mech: {
+          badge: '1. Pilíř: Strojírenství & Mechanika',
+          title: 'Mechanická kostra a kinematika',
+          desc: 'Tvoří fyzické tělo systému. Zahrnuje nosné konstrukce, ozubené převody, kuličkové šrouby, ramena manipulátorů, vodicí lišty a řešení dynamického zatížení, tuhosti a mechanického tření.',
+          examples: '<strong>Součásti:</strong> Ložiska, ozubená kola, rámy z duralových profilů, pružiny, pneumatické písty a mechanické spojky.'
+        },
+        elec: {
+          badge: '2. Pilíř: Elektrotechnika & Elektronika',
+          title: 'Senzory a výkonová elektronika',
+          desc: 'Představuje nervovou a svalovou soustavu stroje. Převádí fyzikální veličiny na elektrické signály a zprostředkovává řízení toku elektrické energie od zdroje k pohonům s vysokou účinností.',
+          examples: '<strong>Součásti:</strong> Tranzistory MOSFET/IGBT, H-můstky, operační zesilovače, analogové i číslicové snímače (enkodéry, IMU, tenzometry).'
+        },
+        info: {
+          badge: '3. Pilíř: Informatika & Řídicí systémy',
+          title: 'Algoritmy, software a inteligence',
+          desc: 'Představuje mozek mechatronického systému. Mikrokontrolér nebo průmyslové PLC vykonává v reálném čase firmware, zpracovává data z čidel, vyhodnocuje regulační smyčky (PID) a komunikuje po průmyslových sběrnicích.',
+          examples: '<strong>Součásti:</strong> Mikrokontroléry ARM Cortex, signálové procesory DSP, komunikační protokoly (CAN, Modbus, SPI, I2C), PID regulátory.'
+        },
+        'mech-elec': {
+          badge: 'Průnik: Elektromechanika',
+          title: 'Klasická elektromechanika',
+          desc: 'Spojení mechaniky a elektřiny bez pokročilé mikropočítačové logiky. Elektřina slouží přímo k silovému působení.',
+          examples: '<strong>Příklady:</strong> Relé, solenoidové ventily, klasická dynama a alternátory, třífázové asynchronní motory se stykači.'
+        },
+        'elec-info': {
+          badge: 'Průnik: Vestavěné (Embedded) systémy',
+          title: 'Řídicí elektronika a vestavěné mikropočítače',
+          desc: 'Spojení mikroelektroniky a programového vybavení. Zpracování číslicových signálů, filtrace šumu a sběrnicová komunikace.',
+          examples: '<strong>Příklady:</strong> Desky s mikrokontroléry, DSP procesory pro zpracování zvuku/obrazu, inteligentní senzory s I2C/SPI rozhraním.'
+        },
+        'mech-info': {
+          badge: 'Průnik: Počítačová podpora mechaniky',
+          title: 'CAD / CAM, MKP & Digitální dvojčata',
+          desc: 'Využití výpočetní techniky pro modelování a simulace mechanických vlastností ještě před výrobou fyzického prototypu.',
+          examples: '<strong>Příklady:</strong> 3D parametrické CAD modely, simulace napětí metodou konečných prvků (MKP), generování G-kódu pro obrábění.'
+        },
+        core: {
+          badge: 'Jádro: MECHATRONIKA',
+          title: 'Plná mechatronická synergie',
+          desc: 'Kompletní organické prolnutí všech 3 disciplín. Mechanická část je od počátku navrhována ruku v ruce s elektronikou a řídicím algoritmem. Výsledný systém má vlastnosti, kterých by žádný z oborů sám o sobě nikdy nedosáhl.',
+          examples: '<strong>Příklady:</strong> Robotické chirurgické rameno DaVinci, elektronicky řízený podvozek, bezpilotní drony (kvadrokoptéry), chytré protézy.'
+        }
+      };
+
+      // Barvy jednotlivých pilířů pro vizuální identitu informační karty
+      const vennColors = {
+        all:       '#06b6d4',
+        mech:      '#38bdf8',
+        elec:      '#f59e0b',
+        info:      '#10b981',
+        'mech-elec': '#ec4899',
+        'elec-info': '#8b5cf6',
+        'mech-info': '#06b6d4',
+        core:      '#06b6d4'
+      };
+
+      function updateVennInfo(partKey) {
+        const item = vennData[partKey] || vennData.all;
+        const color = vennColors[partKey] || vennColors.all;
+
+        const box   = document.getElementById('vennContentBox');
+        const badge = document.getElementById('vennBadge');
+        const title = document.getElementById('vennTitle');
+        const desc  = document.getElementById('vennDesc');
+        const exBox = document.getElementById('vennExamples');
+        const card  = document.getElementById('vennDetailCard');
+
+        // Fade out → aktualizace → fade in
+        if (box) box.style.opacity = '0';
+        setTimeout(() => {
+          if (badge) badge.textContent = item.badge;
+          if (title) {
+            title.textContent = item.title;
+            title.style.color = color;
+          }
+          if (desc)  desc.innerHTML  = item.desc;
+          if (exBox) {
+            exBox.innerHTML = item.examples;
+            exBox.style.borderLeftColor = color;
+            exBox.style.background = `rgba(${hexToRgb(color)}, 0.07)`;
+          }
+          // Barevný levý border celé karty
+          if (card) card.style.borderLeftColor = color;
+          if (box)  box.style.opacity = '1';
+        }, 160);
+
+        // Aktualizace aktivního tlačítka
+        document.querySelectorAll('.venn-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-venn') === partKey);
+        });
+
+        // Zvýraznění SVG prvků
+        document.querySelectorAll('.venn-circle, .venn-core').forEach(el => {
+          el.classList.toggle('active', el.getAttribute('data-part') === partKey);
+        });
+      }
+
+      // Pomocná funkce: hex barva → "R, G, B" pro rgba()
+      function hexToRgb(hex) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `${r}, ${g}, ${b}`;
+      }
+
+      document.querySelectorAll('.venn-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          updateVennInfo(btn.getAttribute('data-venn'));
+        });
+      });
+
+      // Kliknutí na SVG prvky (bez mouseenter – ten by způsoboval nechtěné přepínání)
+      document.querySelectorAll('#vennSvg [data-part]').forEach(el => {
+        el.addEventListener('click', () => {
+          updateVennInfo(el.getAttribute('data-part'));
+        });
+      });
+
+
+      /* ====================================================================
+         2. SROVNÁNÍ: KLASICKÝ STROJ VS. MECHATRONIKA (Snímek 3)
+         ==================================================================== */
+      const compExamples = {
+        engine: {
+          titleClassic: 'Klasický spalovací motor s karburátorem',
+          badgeClassic: 'Čistá mechanika & podtlak',
+          descClassic: 'Směs paliva a vzduchu se mísí pasivním podtlakem v difuzoru karburátoru. Časování jiskry řídí mechanický rozdělovač s odstředivým a podtlakovým závažím. Nelze pružně reagovat na proměnlivou teplotu, styl jízdy ani složení výfukových plynů.',
+          pointsClassic: ['Plováková komora, trysky a mechanické sytiče', 'Zvýšená spotřeba a vysoké emise škodlivin', 'Při změně nadmořské výšky nutné přetryskování'],
+          titleMecha: 'Moderní motor s řídicí jednotkou (ECU & EFI)',
+          badgeMecha: 'Mechatronický systém',
+          descMecha: 'Mikroprocesorová jednotka (ECU) každou milisekundu vyhodnocuje data z lambda sondy, váhy vzduchu a snímače polohy klikové hřídele. Solenoidové nebo piezoelektrické vstřikovače dávkují přesnou mikro-dávku paliva pod tlakem až 2 500 bar.',
+          pointsMecha: ['Elektromagnetické / piezo vstřikovače (PWM puls)', 'Variabilní časování ventilů (VVT) řízené servy', 'O 40 % vyšší účinnost, autodiagnostika přes OBD-II']
+        },
+        brakes: {
+          titleClassic: 'Klasický hydraulický brzdový okruh',
+          badgeClassic: 'Pasivní hydraulika',
+          descClassic: 'Tlak z brzdového pedálu se posilovačem přenáší hadicemi přímo na pístky v třmenech. Při panickém sešlápnutí pedálu se kola okamžitě zablokují, vozidlo ztrácí veškerou schopnost zatáčet a dochází k nekontrolovatelnému smyku.',
+          pointsClassic: ['Pevné mechanicko-hydraulické propojení pedál-kolo', 'Při smyku závisí vše výhradně na zkušenostech řidiče', 'Žádná kontrola prokluzu jednotlivých kol'],
+          titleMecha: 'Aktivní brzdový systém (ABS / ESP / Brake-by-Wire)',
+          badgeMecha: 'Mechatronická bezpečnost',
+          descMecha: 'Indukční či Hallovy senzory na každém kole měří frekvenci otáčení. Pokud hrozí zablokování kola, mikrokontrolér aktivuje vysokorychlostní magnetické ventily a čerpadlo, které pulzují tlak až 25× za sekundu. Auto zůstává plně řiditelné i na ledu.',
+          pointsMecha: ['Senzory příčného zrychlení a úhlu volantu', 'Autonomní nouzové brzdění před chodcem', 'Elektromechanický Brake-by-Wire (bez kapaliny)']
+        },
+        cnc: {
+          titleClassic: 'Konvenční mechanický soustruh / frézka',
+          badgeClassic: 'Mechanické převodovky',
+          descClassic: 'Pohyb suportu zajišťuje vodící šroub propojený s vřetenem přes ozubenou převodovku (Nortonova skříň). Pro změnu stoupání závitu musel obráběč vyměnit ozubená kola. Poloha se odčítala z mechanického nonia.',
+          pointsClassic: ['Lidská chyba a nepřesnost odčítání ručních noniů', 'Mechanické vůle a tření v trapézovém šroubu', 'Složité tvary vyžadovaly kopírovací šablony'],
+          titleMecha: 'Víceosé CNC obráběcí centrum',
+          badgeMecha: 'Digitální přesnost',
+          descMecha: 'Každá osa (X, Y, Z, A, B) má vlastní bezkartáčový servomotor s kuličkovým předepnutým šroubem a optickým pravítkem. Řídicí systém interpoluje dráhu nástroje podle programu v G-kódu s přesností na zlomky mikrometru.',
+          pointsMecha: ['Optické pravítko s rozlišením 0,0001 mm', 'Automatická kompenzace teplotní roztažnosti stroje', 'Plynulé pětiosé obrábění složitých turbínových lopatek']
+        },
+        print: {
+          titleClassic: 'Mechanický psací stroj',
+          badgeClassic: 'Mechanická páková soustava',
+          descClassic: 'Stisk klávesy přenese kinetickou energii přes složitý systém táhel na typovou páku, která narazí přes barvicí pásku do papíru. Mechanismus rohatky a západky posune válec o jeden znak.',
+          pointsClassic: ['Pevná neměnná sada písmen (fontů)', 'Při rychlém psaní hrozí zaseknutí ramen do sebe', 'Žádná možnost opravy chyby ani změny velikosti'],
+          titleMecha: '3D tiskárna FDM s mikropočítačem',
+          badgeMecha: 'Počítačem řízená aditivní výroba',
+          descMecha: '3osý kartézský robot. Řídicí 32bitový mikrokontrolér koordinuje 4 krokové motory s mikrokrokováním, PID smyčkou reguluje teplotu trysky na 215,0 °C a ze struny plastu vytváří libovolný prostorový díl podle CAD modelu.',
+          pointsMecha: ['Termistory + PWM PID regulace teploty trysky a podložky', 'Krokové motory řízené tichými drivery TMC (Trinamic)', 'Optická a indukční čidla pro automatické vyrovnání podložky']
+        }
+      };
+
+      function renderComparison(key) {
+        const data = compExamples[key] || compExamples.engine;
+        const container = document.getElementById('compCardContainer');
+        if (!container) return;
+
+        container.innerHTML = `
+          <div class="comp-side-classic">
+            <span class="comp-badge comp-badge-classic">${data.badgeClassic}</span>
+            <h4 style="color: #fb7185; margin-bottom: 0.5rem;">${data.titleClassic}</h4>
+            <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.75rem;">${data.descClassic}</p>
+            <ul class="styled-list" style="font-size: 0.86rem;">
+              ${data.pointsClassic.map(pt => `<li>${pt}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="comp-side-mecha">
+            <span class="comp-badge comp-badge-mecha">${data.badgeMecha}</span>
+            <h4 style="color: #34d399; margin-bottom: 0.5rem;">${data.titleMecha}</h4>
+            <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.75rem;">${data.descMecha}</p>
+            <ul class="styled-list" style="font-size: 0.86rem;">
+              ${data.pointsMecha.map(pt => `<li>${pt}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+
+        document.querySelectorAll('.comp-tab-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-comp') === key);
+        });
+
+        if (window.PresentationFramework && window.PresentationFramework.renderMathFormulas) {
+          window.PresentationFramework.renderMathFormulas(container);
+        }
+      }
+
+      document.querySelectorAll('.comp-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          renderComparison(btn.getAttribute('data-comp'));
+        });
+      });
+      renderComparison('engine');
+
+      /* ====================================================================
+         3. STRUKTURA A ANIMACE CYKLU (Snímek 4)
+         ==================================================================== */
+      const flowCanvas = document.getElementById('flowCanvas');
+      let flowCtx = null;
+      let flowAnimRunning = true;
+      let flowAnimId = null;
+      let flowStep = 0;
+      let disturbanceActive = false;
+
+      if (flowCanvas) {
+        flowCtx = flowCanvas.getContext('2d');
+      }
+
+      function resizeFlowCanvas() {
+        if (!flowCanvas) return;
+        const rect = flowCanvas.parentElement.getBoundingClientRect();
+        flowCanvas.width = rect.width;
+        flowCanvas.height = 180;
+      }
+
+      window.addEventListener('resize', resizeFlowCanvas);
+      setTimeout(resizeFlowCanvas, 100);
+
+      const flowStepsText = [
+        "1. SENZORY: Enkodér a tenzometr snímají okamžitou odchylku polohy a zatížení...",
+        "2. A/D PŘEVODNÍK: Spojitý signál je převeden na číslicové slovo pro procesor...",
+        "3. ŘÍDICÍ JEDNOTKA: MCU vyhodnotí PID algoritmus a spočítá korekční zásah...",
+        "4. VÝKONOVÁ ČÁST: H-můstek vygeneruje PWM pulsy pro vinutí servomotoru...",
+        "5. AKČNÍ ČLEN & PROCES: Motor vyrovná rameno a mechanická soustava je stabilizována!"
+      ];
+
+      function drawFlowDiagram() {
+        if (!flowCanvas || !flowCtx) return;
+        const w = flowCanvas.width;
+        const h = flowCanvas.height;
+        flowCtx.clearRect(0, 0, w, h);
+
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        const textColor = isDark ? '#f3f4f6' : '#0f172a';
+        const boxBg = isDark ? '#1e293b' : '#e2e8f0';
+        const borderColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)';
+
+        // 4 klíčové bloky cyklu
+        const blocks = [
+          { id: 0, label: "1. Snímače", sub: "Měření stavu y(t)", x: w * 0.15, y: h * 0.72, color: "#06b6d4" },
+          { id: 1, label: "2. Řídicí MCU", sub: "Výpočet PID e=w-y", x: w * 0.38, y: h * 0.25, color: "#38bdf8" },
+          { id: 2, label: "3. Měnič & Pohon", sub: "Akční zásah u(t)", x: w * 0.65, y: h * 0.25, color: "#a855f7" },
+          { id: 3, label: "4. Mechanika", sub: "Proces / Zátěž", x: w * 0.85, y: h * 0.72, color: "#10b981" }
+        ];
+
+        const bw = Math.min(130, w * 0.2);
+        const bh = 52;
+
+        // Vykreslení spojovacích čar toku signálů
+        flowCtx.lineWidth = 3;
+        flowCtx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.35)' : 'rgba(14, 165, 233, 0.35)';
+        flowCtx.beginPath();
+        // 1 -> 2
+        flowCtx.moveTo(blocks[0].x, blocks[0].y - bh/2);
+        flowCtx.lineTo(blocks[1].x, blocks[1].y + bh/2);
+        // 2 -> 3
+        flowCtx.moveTo(blocks[1].x + bw/2, blocks[1].y);
+        flowCtx.lineTo(blocks[2].x - bw/2, blocks[2].y);
+        // 3 -> 4
+        flowCtx.moveTo(blocks[2].x, blocks[2].y + bh/2);
+        flowCtx.lineTo(blocks[3].x, blocks[3].y - bh/2);
+        // 4 -> 1 (zpětná vazba)
+        flowCtx.moveTo(blocks[3].x - bw/2, blocks[3].y);
+        flowCtx.lineTo(blocks[0].x + bw/2, blocks[0].y);
+        flowCtx.stroke();
+
+        // Šipka zpětné vazby vespod
+        flowCtx.fillStyle = '#06b6d4';
+        flowCtx.font = '11px sans-serif';
+        flowCtx.textAlign = 'center';
+        flowCtx.fillText("← Zpětná vazba: fyzikální veličina předaná snímači ←", w * 0.5, h * 0.82);
+
+        // Putující pulzující signál
+        const progress = (flowStep % 100) / 100;
+        let px = 0, py = 0;
+        let activeIdx = 0;
+
+        if (progress < 0.25) {
+          const t = progress / 0.25;
+          px = blocks[0].x + (blocks[1].x - blocks[0].x) * t;
+          py = (blocks[0].y - bh/2) + (blocks[1].y + bh/2 - (blocks[0].y - bh/2)) * t;
+          activeIdx = 0;
+        } else if (progress < 0.5) {
+          const t = (progress - 0.25) / 0.25;
+          px = (blocks[1].x + bw/2) + (blocks[2].x - bw/2 - (blocks[1].x + bw/2)) * t;
+          py = blocks[1].y;
+          activeIdx = 1;
+        } else if (progress < 0.75) {
+          const t = (progress - 0.5) / 0.25;
+          px = blocks[2].x + (blocks[3].x - blocks[2].x) * t;
+          py = (blocks[2].y + bh/2) + (blocks[3].y - bh/2 - (blocks[2].y + bh/2)) * t;
+          activeIdx = 2;
+        } else {
+          const t = (progress - 0.75) / 0.25;
+          px = (blocks[3].x - bw/2) + (blocks[0].x + bw/2 - (blocks[3].x - bw/2)) * t;
+          py = blocks[0].y;
+          activeIdx = 3;
+        }
+
+        // Zvýraznění aktivního pulzu
+        flowCtx.fillStyle = disturbanceActive ? '#f43f5e' : '#38bdf8';
+        flowCtx.shadowColor = disturbanceActive ? '#f43f5e' : '#38bdf8';
+        flowCtx.shadowBlur = 12;
+        flowCtx.beginPath();
+        flowCtx.arc(px, py, 6, 0, Math.PI * 2);
+        flowCtx.fill();
+        flowCtx.shadowBlur = 0;
+
+        // Vykreslení bloků
+        blocks.forEach((b, i) => {
+          const isActive = (i === activeIdx);
+          flowCtx.fillStyle = isActive ? (isDark ? '#334155' : '#cbd5e1') : boxBg;
+          flowCtx.strokeStyle = isActive ? b.color : borderColor;
+          flowCtx.lineWidth = isActive ? 2.5 : 1;
+
+          // Zaoblený obdélník
+          const rx = b.x - bw / 2;
+          const ry = b.y - bh / 2;
+          flowCtx.beginPath();
+          flowCtx.roundRect(rx, ry, bw, bh, 8);
+          flowCtx.fill();
+          flowCtx.stroke();
+
+          // Texty uvnitř bloku
+          flowCtx.fillStyle = b.color;
+          flowCtx.font = 'bold 12px sans-serif';
+          flowCtx.textAlign = 'center';
+          flowCtx.fillText(b.label, b.x, b.y - 4);
+
+          flowCtx.fillStyle = textColor;
+          flowCtx.font = '10px sans-serif';
+          flowCtx.fillText(b.sub, b.x, b.y + 12);
+        });
+
+        // Aktualizace textu stavu
+        const statusTextEl = document.getElementById('structStatusText');
+        if (statusTextEl) {
+          const textIdx = Math.floor(progress * flowStepsText.length);
+          statusTextEl.innerHTML = disturbanceActive 
+            ? '<strong style="color:#f43f5e;">PORUCHA Z(T) DETEKOVÁNA!</strong> Senzor hlásí odchylku, MCU okamžitě zvyšuje akční zásah!'
+            : `<strong>Fáze:</strong> ${flowStepsText[textIdx]}`;
+        }
+      }
+
+      function flowLoop() {
+        if (flowAnimRunning) {
+          flowStep += 0.8;
+          drawFlowDiagram();
+        }
+        flowAnimId = requestAnimationFrame(flowLoop);
+      }
+      flowLoop();
+
+      const btnCyclePlay = document.getElementById('btnCyclePlay');
+      if (btnCyclePlay) {
+        btnCyclePlay.addEventListener('click', () => {
+          flowAnimRunning = !flowAnimRunning;
+          const txt = document.getElementById('cyclePlayText');
+          if (txt) txt.textContent = flowAnimRunning ? 'Pozastavit animaci' : 'Spustit animaci';
+        });
+      }
+
+      const btnCycleTrigger = document.getElementById('btnCycleTrigger');
+      if (btnCycleTrigger) {
+        btnCycleTrigger.addEventListener('click', () => {
+          disturbanceActive = true;
+          setTimeout(() => { disturbanceActive = false; }, 2500);
+        });
+      }
+
+      /* ====================================================================
+         4. ZPĚTNÁ VAZBA & TEMPOMAT (Snímek 5)
+         ==================================================================== */
+      const cruiseCanvas = document.getElementById('cruiseCanvas');
+      const speedGraphCanvas = document.getElementById('speedGraphCanvas');
+      let cruiseCtx = cruiseCanvas ? cruiseCanvas.getContext('2d') : null;
+      let speedCtx = speedGraphCanvas ? speedGraphCanvas.getContext('2d') : null;
+
+      let targetSpeed = 90; // km/h
+      let actualSpeed = 90; // km/h
+      let throttle = 35; // %
+      let roadSlope = 0; // 0 = rovina, 1 = kopec nahoru, -1 = klesání
+      let isClosedLoop = true;
+      let simTime = 0;
+      let carX = 50;
+      const speedHistory = [];
+
+      function updateCruiseSim() {
+        simTime += 0.05;
+
+        // Fyzikální model vozidla
+        const mass = 1200; // kg
+        const gravityResistance = roadSlope * 28; // odpor kopce
+        const airDrag = (actualSpeed * actualSpeed) * 0.0035;
+
+        if (isClosedLoop) {
+          // Uzavřená smyčka: PID regulátor (zde zjednodušený PI člen)
+          const error = targetSpeed - actualSpeed;
+          throttle += error * 0.08;
+          // Omezení plynu 0 až 100 %
+          throttle = Math.max(0, Math.min(100, throttle));
+        } else {
+          // Otevřená smyčka: plyn je zafixován na hodnotu potřebnou pro rovinu
+          throttle = (targetSpeed / 130) * 50;
+        }
+
+        // Výpočet zrychlení
+        const enginePower = throttle * 1.8; // hnací síla
+        const netForce = enginePower - airDrag - gravityResistance;
+        const acceleration = netForce * 0.04;
+
+        actualSpeed += acceleration;
+        if (actualSpeed < 0) actualSpeed = 0;
+
+        // Záznam do historie grafu
+        if (speedHistory.length > 120) speedHistory.shift();
+        speedHistory.push({ target: targetSpeed, actual: actualSpeed });
+
+        // Posun auta po plátně
+        carX += (actualSpeed / 30);
+        if (carX > 500) carX = 40;
+
+        // Aktualizace číselných prvků
+        const err = targetSpeed - actualSpeed;
+        const dispT = document.getElementById('dispTargetSpeed');
+        const dispA = document.getElementById('dispActualSpeed');
+        const dispE = document.getElementById('dispError');
+        const dispTh = document.getElementById('dispThrottle');
+        const dispTm = document.getElementById('simTimeLabel');
+
+        if (dispT) dispT.textContent = targetSpeed + ' km/h';
+        if (dispA) dispA.textContent = actualSpeed.toFixed(1) + ' km/h';
+        if (dispE) dispE.textContent = (err >= 0 ? '+' : '') + err.toFixed(1) + ' km/h';
+        if (dispTh) dispTh.textContent = throttle.toFixed(0) + ' %';
+        if (dispTm) dispTm.textContent = 't = ' + simTime.toFixed(1) + ' s';
+
+        drawCruiseCanvas();
+        drawSpeedGraph();
+      }
+
+      function drawCruiseCanvas() {
+        if (!cruiseCanvas || !cruiseCtx) return;
+        const w = cruiseCanvas.width = cruiseCanvas.parentElement.clientWidth - 20;
+        const h = cruiseCanvas.height = 140;
+        cruiseCtx.clearRect(0, 0, w, h);
+
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+        // Silnice a profil trati
+        cruiseCtx.beginPath();
+        cruiseCtx.moveTo(0, h * 0.75);
+        if (roadSlope > 0) {
+          // Stoupání
+          cruiseCtx.quadraticCurveTo(w * 0.3, h * 0.75, w, h * 0.35);
+        } else if (roadSlope < 0) {
+          // Klesání
+          cruiseCtx.quadraticCurveTo(w * 0.3, h * 0.45, w, h * 0.85);
+        } else {
+          // Rovina
+          cruiseCtx.lineTo(w, h * 0.75);
+        }
+        cruiseCtx.strokeStyle = '#64748b';
+        cruiseCtx.lineWidth = 14;
+        cruiseCtx.stroke();
+
+        // Kresba auta na silnici
+        const drawX = (carX % (w - 60)) + 20;
+        let drawY = h * 0.75 - 14;
+        if (roadSlope > 0) drawY -= (drawX / w) * (h * 0.4);
+        if (roadSlope < 0) drawY += (drawX / w) * (h * 0.35);
+
+        // Tělo auta (vektorový polygon)
+        cruiseCtx.fillStyle = '#06b6d4';
+        cruiseCtx.beginPath();
+        cruiseCtx.roundRect(drawX, drawY - 14, 46, 16, [4, 8, 2, 2]);
+        cruiseCtx.fill();
+
+        // Kabina
+        cruiseCtx.fillStyle = isDark ? '#0f172a' : '#f8fafc';
+        cruiseCtx.beginPath();
+        cruiseCtx.roundRect(drawX + 8, drawY - 26, 26, 14, [4, 4, 0, 0]);
+        cruiseCtx.fill();
+
+        // Kola
+        cruiseCtx.fillStyle = '#1e293b';
+        cruiseCtx.beginPath();
+        cruiseCtx.arc(drawX + 10, drawY + 2, 5, 0, Math.PI * 2);
+        cruiseCtx.arc(drawX + 36, drawY + 2, 5, 0, Math.PI * 2);
+        cruiseCtx.fill();
+
+        // Popisek stavu poruchy přímo v grafice
+        cruiseCtx.fillStyle = isDark ? '#94a3b8' : '#475569';
+        cruiseCtx.font = 'bold 11px sans-serif';
+        cruiseCtx.textAlign = 'right';
+        const slopeText = roadSlope > 0 ? "Stoupání do kopce: +12% (Odpor roste)" : (roadSlope < 0 ? "Klesání: -10% (Samospád)" : "Rovina (Odpor konstantní)");
+        cruiseCtx.fillText(slopeText, w - 10, 20);
+      }
+
+      function drawSpeedGraph() {
+        if (!speedGraphCanvas || !speedCtx) return;
+        const w = speedGraphCanvas.width = speedGraphCanvas.parentElement.clientWidth - 20;
+        const h = speedGraphCanvas.height = 90;
+        speedCtx.clearRect(0, 0, w, h);
+
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+        // Mřížka
+        speedCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+        speedCtx.lineWidth = 1;
+        for (let y = 15; y < h; y += 25) {
+          speedCtx.beginPath();
+          speedCtx.moveTo(0, y);
+          speedCtx.lineTo(w, y);
+          speedCtx.stroke();
+        }
+
+        if (speedHistory.length < 2) return;
+
+        // Vykreslení žádané křivky (čárkovaná modrá)
+        speedCtx.beginPath();
+        speedCtx.setLineDash([4, 4]);
+        speedCtx.strokeStyle = '#38bdf8';
+        speedCtx.lineWidth = 2;
+        speedHistory.forEach((pt, i) => {
+          const x = (i / 120) * w;
+          const y = h - (pt.target / 150) * (h - 15) - 5;
+          if (i === 0) speedCtx.moveTo(x, y);
+          else speedCtx.lineTo(x, y);
+        });
+        speedCtx.stroke();
+        speedCtx.setLineDash([]);
+
+        // Vykreslení skutečné rychlosti (plná oranžová / tyrkysová)
+        speedCtx.beginPath();
+        speedCtx.strokeStyle = '#f59e0b';
+        speedCtx.lineWidth = 2.5;
+        speedHistory.forEach((pt, i) => {
+          const x = (i / 120) * w;
+          const y = h - (pt.actual / 150) * (h - 15) - 5;
+          if (i === 0) speedCtx.moveTo(x, y);
+          else speedCtx.lineTo(x, y);
+        });
+        speedCtx.stroke();
+
+        // Legenda
+        speedCtx.font = '10px sans-serif';
+        speedCtx.textAlign = 'left';
+        speedCtx.fillStyle = '#38bdf8';
+        speedCtx.fillText('-- Žádaná w(t)', 10, 14);
+        speedCtx.fillStyle = '#f59e0b';
+        speedCtx.fillText('— Skutečná y(t)', 95, 14);
+      }
+
+      setInterval(updateCruiseSim, 50);
+
+      // Eventy pro tempomat
+      const sliderTargetSpeed = document.getElementById('sliderTargetSpeed');
+      if (sliderTargetSpeed) {
+        sliderTargetSpeed.addEventListener('input', (e) => {
+          targetSpeed = parseInt(e.target.value, 10);
+          const valEl = document.getElementById('valTargetSlider');
+          if (valEl) valEl.textContent = targetSpeed + ' km/h';
+        });
+      }
+
+      const btnModeOpen = document.getElementById('btnModeOpen');
+      const btnModeClosed = document.getElementById('btnModeClosed');
+      const feedbackExplainBox = document.getElementById('feedbackExplainBox');
+
+      if (btnModeOpen && btnModeClosed) {
+        btnModeOpen.addEventListener('click', () => {
+          isClosedLoop = false;
+          btnModeOpen.classList.add('active');
+          btnModeClosed.classList.remove('active');
+          if (feedbackExplainBox) {
+            feedbackExplainBox.className = 'statement-box negative';
+            feedbackExplainBox.innerHTML = '<strong>Pozorování:</strong> V režimu <strong>otevřené smyčky</strong> chybí snímač a regulátor. Plyn je fixní, takže v kopci auto dramaticky zpomalí a z kopce nebezpečně zrychlí bez jakékoli automatické nápravy!';
+          }
+        });
+
+        btnModeClosed.addEventListener('click', () => {
+          isClosedLoop = true;
+          btnModeClosed.classList.add('active');
+          btnModeOpen.classList.remove('active');
+          if (feedbackExplainBox) {
+            feedbackExplainBox.className = 'statement-box positive';
+            feedbackExplainBox.innerHTML = '<strong>Pozorování:</strong> V režimu se <strong>zpětnou vazbou</strong> systém neustále měří <em>y(t)</em>, detekuje odchylku <em>e = w - y</em> a okamžitě sám koriguje plyn <em>u(t)</em> na požadovanou rychlost!';
+          }
+        });
+      }
+
+      const btnDistHill = document.getElementById('btnDistHill');
+      const btnDistFlat = document.getElementById('btnDistFlat');
+      const btnDistDown = document.getElementById('btnDistDown');
+
+      function setSlope(slope, activeBtn) {
+        roadSlope = slope;
+        [btnDistHill, btnDistFlat, btnDistDown].forEach(b => { if (b) b.classList.remove('active'); });
+        if (activeBtn) activeBtn.classList.add('active');
+      }
+
+      if (btnDistHill) btnDistHill.addEventListener('click', () => setSlope(1, btnDistHill));
+      if (btnDistFlat) btnDistFlat.addEventListener('click', () => setSlope(0, btnDistFlat));
+      if (btnDistDown) btnDistDown.addEventListener('click', () => setSlope(-1, btnDistDown));
+
+      /* ====================================================================
+         5. ADC INTERAKTIVNÍ TRENAŽÉR (Snímek 6)
+         ==================================================================== */
+      const adcCanvas = document.getElementById('adcCanvas');
+      const adcCtx = adcCanvas ? adcCanvas.getContext('2d') : null;
+      let sampleRate = 16; // Hz
+      let bitDepth = 3; // 8 úrovní
+      const sigFreq = 2; // Hz
+
+      function updateAdcPlot() {
+        if (!adcCanvas || !adcCtx) return;
+        const w = adcCanvas.width = adcCanvas.parentElement.clientWidth - 20;
+        const h = adcCanvas.height = 240;
+        adcCtx.clearRect(0, 0, w, h);
+
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        const numLevels = Math.pow(2, bitDepth);
+        const padding = 30;
+        const plotW = w - padding * 2;
+        const plotH = h - padding * 2;
+
+        // Vykreslení horizontálních kvantizačních hladin
+        adcCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+        adcCtx.lineWidth = 1;
+        adcCtx.fillStyle = isDark ? '#64748b' : '#94a3b8';
+        adcCtx.font = '9px monospace';
+        adcCtx.textAlign = 'right';
+
+        for (let i = 0; i < numLevels; i++) {
+          const y = padding + plotH - (i / (numLevels - 1)) * plotH;
+          adcCtx.beginPath();
+          adcCtx.moveTo(padding, y);
+          adcCtx.lineTo(w - padding, y);
+          adcCtx.stroke();
+
+          // Kódové označení úrovně (např. 000 až 111)
+          if (numLevels <= 16) {
+            const binCode = i.toString(2).padStart(bitDepth, '0');
+            adcCtx.fillText(binCode, padding - 5, y + 3);
+          }
+        }
+
+        // 1. Spojitý analogový signál (hladký sinus)
+        adcCtx.beginPath();
+        adcCtx.strokeStyle = '#38bdf8';
+        adcCtx.lineWidth = 2.5;
+
+        const duration = 1.0; // 1 sekunda v okně
+        for (let x = 0; x <= plotW; x++) {
+          const t = (x / plotW) * duration;
+          const val = 0.5 + 0.42 * Math.sin(2 * Math.PI * sigFreq * t);
+          const y = padding + plotH - val * plotH;
+          if (x === 0) adcCtx.moveTo(padding + x, y);
+          else adcCtx.lineTo(padding + x, y);
+        }
+        adcCtx.stroke();
+
+        // 2. Vzorkování a kvantování na schodovitý signál
+        const numSamples = Math.floor(sampleRate * duration);
+        const samplePoints = [];
+
+        for (let s = 0; s <= numSamples; s++) {
+          const t = s / sampleRate;
+          if (t > duration) break;
+          const val = 0.5 + 0.42 * Math.sin(2 * Math.PI * sigFreq * t);
+          // Kvantování na diskrétní úroveň
+          const quantizedLevel = Math.round(val * (numLevels - 1));
+          const quantizedVal = quantizedLevel / (numLevels - 1);
+
+          const px = padding + (t / duration) * plotW;
+          const py = padding + plotH - quantizedVal * plotH;
+          const origPy = padding + plotH - val * plotH;
+
+          samplePoints.push({ x: px, y: py, origY: origPy, level: quantizedLevel });
+        }
+
+        // Kresba schodovitého průběhu
+        if (samplePoints.length > 1) {
+          adcCtx.beginPath();
+          adcCtx.strokeStyle = '#f59e0b';
+          adcCtx.lineWidth = 2;
+
+          for (let i = 0; i < samplePoints.length - 1; i++) {
+            const p1 = samplePoints[i];
+            const p2 = samplePoints[i + 1];
+
+            adcCtx.moveTo(p1.x, p1.y);
+            adcCtx.lineTo(p2.x, p1.y);
+            adcCtx.lineTo(p2.x, p2.y);
+          }
+          adcCtx.stroke();
+        }
+
+        // Vzorkovací body a vertikální čáry
+        samplePoints.forEach(p => {
+          // Vertikální vzorkovací čárka
+          adcCtx.strokeStyle = 'rgba(245, 158, 11, 0.35)';
+          adcCtx.lineWidth = 1;
+          adcCtx.setLineDash([2, 2]);
+          adcCtx.beginPath();
+          adcCtx.moveTo(p.x, padding + plotH);
+          adcCtx.lineTo(p.x, p.y);
+          adcCtx.stroke();
+          adcCtx.setLineDash([]);
+
+          // Bod vzorku
+          adcCtx.fillStyle = '#f59e0b';
+          adcCtx.beginPath();
+          adcCtx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+          adcCtx.fill();
+        });
+
+        // Kontrola Nyquistova kritéria
+        const nyquistBadge = document.getElementById('adcNyquistBadge');
+        const explainBox = document.getElementById('adcExplainBox');
+        const minReqRate = sigFreq * 2;
+
+        if (sampleRate >= minReqRate) {
+          if (nyquistBadge) {
+            nyquistBadge.textContent = `Nyquist splněn: fs (${sampleRate} Hz) ≥ 2×f_sig (${minReqRate} Hz)`;
+            nyquistBadge.className = 'badge badge-accent';
+          }
+          if (explainBox) {
+            explainBox.className = 'statement-box positive';
+            explainBox.innerHTML = `<strong>Kritérium splněno:</strong> Vzorkovací frekvence <em>f<sub>s</sub> = ${sampleRate} Hz</em> je dostatečně vysoká pro věrné zachycení tvaru signálu. Kvantizační krok je <em>&Delta;U = ${(5.0 / numLevels).toFixed(3)} V</em>.`;
+          }
+        } else {
+          if (nyquistBadge) {
+            nyquistBadge.textContent = `VAROVÁNÍ: Aliasing! fs (${sampleRate} Hz) < 2×f_sig (${minReqRate} Hz)`;
+            nyquistBadge.className = 'badge';
+            nyquistBadge.style.background = 'rgba(244, 63, 94, 0.2)';
+            nyquistBadge.style.color = '#fb7185';
+          }
+          if (explainBox) {
+            explainBox.className = 'statement-box negative';
+            explainBox.innerHTML = `<strong>KRITICKÁ CHYBA (Aliasing):</strong> Vzorkovací frekvence <em>f<sub>s</sub> = ${sampleRate} Hz</em> je nižší než Nyquistovo minimum (<em>2 &middot; f<sub>sig</sub> = ${minReqRate} Hz</em>). Rekonstruovaný signál zcela ztrácí původní frekvenci i tvar!`;
+          }
+        }
+
+        // Aktualizace textových statistik
+        const dispL = document.getElementById('dispLevels');
+        const dispQ = document.getElementById('dispQuantStep');
+        const dispP = document.getElementById('dispSamplePeriod');
+
+        if (dispL) dispL.textContent = `${numLevels} úrovní`;
+        if (dispQ) dispQ.textContent = `${(5.0 / numLevels).toFixed(3)} V`;
+        if (dispP) dispP.textContent = `${(1000 / sampleRate).toFixed(1)} ms`;
+      }
+
+      const sliderSampleRate = document.getElementById('sliderSampleRate');
+      const sliderBitDepth = document.getElementById('sliderBitDepth');
+
+      if (sliderSampleRate) {
+        sliderSampleRate.addEventListener('input', (e) => {
+          sampleRate = parseInt(e.target.value, 10);
+          const v = document.getElementById('valSampleRate');
+          if (v) v.textContent = `${sampleRate} Hz`;
+          updateAdcPlot();
+        });
+      }
+
+      if (sliderBitDepth) {
+        sliderBitDepth.addEventListener('input', (e) => {
+          bitDepth = parseInt(e.target.value, 10);
+          const v = document.getElementById('valBitDepth');
+          if (v) v.textContent = `${bitDepth} ${bitDepth === 1 ? 'bit (2 úrovně)' : (bitDepth < 5 ? `bity (${Math.pow(2, bitDepth)} úrovní)` : `bitů (${Math.pow(2, bitDepth)} úrovní)`)}`;
+          updateAdcPlot();
+        });
+      }
+
+      setTimeout(updateAdcPlot, 200);
+
+      /* ====================================================================
+         6. PWM VÝKONOVÉ ŘÍZENÍ & OSCILOSKOP (Snímek 7)
+         ==================================================================== */
+      const pwmScopeCanvas = document.getElementById('pwmScopeCanvas');
+      const pwmCtx = pwmScopeCanvas ? pwmScopeCanvas.getContext('2d') : null;
+      let dutyCycle = 50; // % (0-100)
+      let motorAngle = 0;
+      let scopeOffset = 0;
+
+      window.setPresetDuty = function(val) {
+        dutyCycle = val;
+        const slider = document.getElementById('sliderDuty');
+        if (slider) slider.value = val;
+        updatePwmDisplay();
+        document.querySelectorAll('.motor-visualizer-box .action-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.textContent.startsWith(`${val}%`));
+        });
+      };
+
+      function updatePwmDisplay() {
+        const ton = (dutyCycle / 100).toFixed(2);
+        const uAvg = ((dutyCycle / 100) * 24.0).toFixed(1);
+        const rpm = Math.round((dutyCycle / 100) * 3000);
+
+        const vD = document.getElementById('dispDutyVal');
+        const vS = document.getElementById('valDutySlider');
+        const vTon = document.getElementById('dispTon');
+        const vU = document.getElementById('dispUavg');
+        const vRpm = document.getElementById('dispRpm');
+        const led = document.getElementById('pwmIndicatorLed');
+
+        if (vD) vD.textContent = `${dutyCycle} %`;
+        if (vS) vS.textContent = `${dutyCycle} %`;
+        if (vTon) vTon.textContent = `${ton} ms`;
+        if (vU) vU.textContent = `${uAvg} V`;
+        if (vRpm) vRpm.textContent = `${rpm.toLocaleString()} RPM`;
+
+        // Intenzita LED diody
+        if (led) {
+          const brightness = dutyCycle / 100;
+          led.style.background = `rgba(6, 182, 212, ${Math.max(0.1, brightness)})`;
+          led.style.boxShadow = `0 0 ${brightness * 18}px rgba(6, 182, 212, ${brightness})`;
+        }
+      }
+
+      function drawPwmScope() {
+        if (!pwmScopeCanvas || !pwmCtx) return;
+        const w = pwmScopeCanvas.width = pwmScopeCanvas.parentElement.clientWidth - 20;
+        const h = pwmScopeCanvas.height = 150;
+        pwmCtx.clearRect(0, 0, w, h);
+
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+        // Mřížka osciloskopu
+        pwmCtx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(14, 165, 233, 0.12)';
+        pwmCtx.lineWidth = 1;
+        for (let x = 0; x < w; x += 30) {
+          pwmCtx.beginPath();
+          pwmCtx.moveTo(x, 0);
+          pwmCtx.lineTo(x, h);
+          pwmCtx.stroke();
+        }
+        for (let y = 0; y < h; y += 25) {
+          pwmCtx.beginPath();
+          pwmCtx.moveTo(0, y);
+          pwmCtx.lineTo(w, y);
+          pwmCtx.stroke();
+        }
+
+        // Perioda PWM signálu na obrazovce (např. 120 px)
+        const periodPx = 110;
+        const highWidth = (dutyCycle / 100) * periodPx;
+        const lowY = h * 0.82;
+        const highY = h * 0.22;
+
+        scopeOffset = (scopeOffset + 1.5) % periodPx;
+
+        // Vykreslení obdélníkového signálu PWM
+        pwmCtx.beginPath();
+        pwmCtx.strokeStyle = '#06b6d4';
+        pwmCtx.lineWidth = 2.5;
+
+        for (let startX = -periodPx; startX < w + periodPx; startX += periodPx) {
+          const x0 = startX - scopeOffset;
+          const x1 = x0 + highWidth;
+          const x2 = x0 + periodPx;
+
+          if (dutyCycle === 0) {
+            pwmCtx.moveTo(x0, lowY);
+            pwmCtx.lineTo(x2, lowY);
+          } else if (dutyCycle === 100) {
+            pwmCtx.moveTo(x0, highY);
+            pwmCtx.lineTo(x2, highY);
+          } else {
+            // Náběžná hrana
+            pwmCtx.moveTo(x0, lowY);
+            pwmCtx.lineTo(x0, highY);
+            // Ton úroveň
+            pwmCtx.lineTo(x1, highY);
+            // Sestupná hrana
+            pwmCtx.lineTo(x1, lowY);
+            // Toff úroveň
+            pwmCtx.lineTo(x2, lowY);
+          }
+        }
+        pwmCtx.stroke();
+
+        // Vodorovná čárkovaná linie průměrného efektivního napětí
+        const avgY = lowY - (dutyCycle / 100) * (lowY - highY);
+        pwmCtx.beginPath();
+        pwmCtx.setLineDash([5, 5]);
+        pwmCtx.strokeStyle = '#34d399';
+        pwmCtx.lineWidth = 2;
+        pwmCtx.moveTo(0, avgY);
+        pwmCtx.lineTo(w, avgY);
+        pwmCtx.stroke();
+        pwmCtx.setLineDash([]);
+
+        // Popisky napětí
+        pwmCtx.font = '10px monospace';
+        pwmCtx.fillStyle = '#06b6d4';
+        pwmCtx.fillText('24 V', 8, highY - 6);
+        pwmCtx.fillStyle = '#64748b';
+        pwmCtx.fillText('0 V', 8, lowY + 12);
+        pwmCtx.fillStyle = '#34d399';
+        pwmCtx.textAlign = 'right';
+        pwmCtx.fillText(`U_stř = ${((dutyCycle / 100) * 24.0).toFixed(1)} V`, w - 10, avgY - 6);
+      }
+
+      function animateMotor() {
+        // Otáčení motoru dle střídy
+        const speed = (dutyCycle / 100) * 18;
+        motorAngle += speed;
+        const rotor = document.getElementById('motorRotor');
+        if (rotor) {
+          rotor.style.transform = `rotate(${motorAngle}deg)`;
+        }
+
+        drawPwmScope();
+        requestAnimationFrame(animateMotor);
+      }
+      animateMotor();
+
+      const sliderDuty = document.getElementById('sliderDuty');
+      if (sliderDuty) {
+        sliderDuty.addEventListener('input', (e) => {
+          dutyCycle = parseInt(e.target.value, 10);
+          updatePwmDisplay();
+        });
+      }
+      updatePwmDisplay();
+
+      // Přenastavení pláten při změně rozlišení
+      window.addEventListener('resize', () => {
+        resizeFlowCanvas();
+        updateCruiseSim();
+        updateAdcPlot();
+        drawPwmScope();
+      });
+
+    })();
+  </script>
+</body>
+
+</html>

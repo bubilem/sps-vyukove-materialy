@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 040: Booleova algebra | KYME &bull; SPŠ</title>
+  
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css?v=sps3">
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+    }
+
+    .logic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .logic-rule-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .logic-rule-card h4 {
+      color: var(--accent);
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .formula-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--text-primary);
+      margin: 0.4rem 0;
+    }
+
+    .formula-badge.formula-block {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0.3rem 0;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.98rem;
+    }
+
+    .formula-overline {
+      text-decoration: overline;
+      text-decoration-thickness: 1.5px;
+      display: inline-block;
+      line-height: 1.15;
+      padding-top: 0.08em;
+    }
+
+    .row-one {
+      background: rgba(6, 182, 212, 0.08);
+    }
+
+    .row-zero {
+      background: rgba(245, 158, 11, 0.05);
+    }
+
+    .term-sop {
+      color: var(--accent);
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .term-pos {
+      color: #f59e0b;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .cell-muted {
+      color: var(--text-muted);
+    }
+
+    .derived-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .derived-grid .content-card {
+      padding: 1.15rem 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .derived-grid .content-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .derived-grid .content-card p {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      margin-bottom: 0.5rem;
+    }
+
+    .derived-grid .formula-badge {
+      margin: 0.2rem 0 0.5rem 0;
+      font-size: 0.95rem;
+      padding: 0.3rem 0.5rem;
+      text-align: center;
+      display: block;
+    }
+
+    .derived-grid .truth-table th,
+    .derived-grid .truth-table td {
+      padding: 0.35rem 0.45rem;
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 1100px) {
+      .derived-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .derived-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .k-map-callout {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .btn-applet-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+      color: #ffffff;
+      padding: 0.65rem 1.25rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-applet-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.45);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Ambientní pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní lišta průběhu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Hlavní kontejner prezentace -->
+  <div class="presentation-container">
+    
+    <!-- Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">040 Booleova algebra</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Snímky prezentace -->
+    <main class="slide-viewport">
+
+      <!-- Snímek 1: Titulní -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do Booleovy algebry">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět KYME &bull; Téma 040</span>
+            <span class="badge">Výukový modul SPŠ</span>
+          </div>
+          <h1 class="hero-title">Booleova algebra a logické funkce</h1>
+          <p class="hero-subtitle">
+            Matematický a teoretický základ číslicové techniky, mechatronických řídicích systémů a kombinačních logických obvodů.
+          </p>
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>Dvouhodnotová logika</h4>
+              <p>Proměnné nabývají pouze dvou stavů: logické 0 (nepravda / Low) a logické 1 (pravda / High).</p>
+            </div>
+            <div class="content-card">
+              <h4>Tři elementární operace</h4>
+              <p>Logický součet (OR), logický součin (AND) a negace (NOT) tvoří úplný funkční systém.</p>
+            </div>
+            <div class="content-card">
+              <h4>Algebraická minimalizace</h4>
+              <p>Zjednodušování logických výrazů pro úsporu hradel v číslicovém obvodu s vazbou na trenažér 041.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 2: Dvouhodnotová logika & George Boole -->
+      <section class="slide" id="slide-2" data-title="Základy dvouhodnotové logiky">
+        <div class="slide-content">
+          <h2>Dvouhodnotová logika a binární proměnné</h2>
+          <p class="slide-lead">
+            Booleova algebra, formulovaná Georgem Boolem v roce 1854, popisuje algebraické operace nad množinou o dvou prvcích $B = \{0, 1\}$.
+          </p>
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Fyzikální reprezentace logických stavů</h3>
+              <p>V číslicových mechatronických obvodech odpovídají stavy 0 a 1 standardizovaným napěťovým úrovním:</p>
+              <ul class="styled-list">
+                <li><strong>TTL logika (5 V):</strong> Logická 0 je 0,0 V až 0,8 V, logická 1 je 2,0 V až 5,0 V.</li>
+                <li><strong>CMOS logika (3,3 V):</strong> Logická 0 je pod 0,8 V, logická 1 je nad 2,0 V.</li>
+                <li><strong>Spínací obvody:</strong> Rozpojený kontakt = 0, sepnutý kontakt = 1.</li>
+              </ul>
+            </div>
+            <div class="content-card">
+              <h3>Pravdivostní hodnota (Truth Value)</h3>
+              <p>Logická proměnná $X$ může nabývat výhradně jedné ze dvou hodnot:</p>
+              <div style="display: flex; gap: 1.25rem; margin-top: 1.25rem;">
+                <div style="flex: 1; padding: 1.25rem 1rem; background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); border: 1px solid var(--border-color); text-align: center;">
+                  <div style="font-size: 2.25rem; font-weight: 800; color: var(--text-muted); line-height: 1.2; margin-bottom: 0.35rem;">0</div>
+                  <div style="font-size: 0.88rem; font-weight: 600; color: var(--text-secondary);">False &bull; Vypnuto &bull; Low</div>
+                </div>
+                <div style="flex: 1; padding: 1.25rem 1rem; background: rgba(6, 182, 212, 0.12); border-radius: var(--radius-sm); border: 1px solid var(--accent); text-align: center;">
+                  <div style="font-size: 2.25rem; font-weight: 800; color: var(--accent); line-height: 1.2; margin-bottom: 0.35rem;">1</div>
+                  <div style="font-size: 0.88rem; font-weight: 600; color: var(--accent);">True &bull; Zapnuto &bull; High</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 3: Elementární logické operace -->
+      <section class="slide" id="slide-3" data-title="Základní logické operace">
+        <div class="slide-content">
+          <h2>Tři elementární logické operace</h2>
+          <p class="slide-lead">Každou libovolně složitou logickou funkci lze vyjádřit pomocí kombinace tří základních operací:</p>
+
+          <div class="logic-grid">
+            <!-- 1. Logický součin AND -->
+            <div class="content-card">
+              <h3 style="color: #06b6d4;">1. Logický součin (AND)</h3>
+              <p>Konjunkce: Výstup je 1 pouze tehdy, jsou-li <strong>všechny vstupy 1</strong>.</p>
+              <div class="formula-badge">$Y = A \cdot B = A \wedge B$</div>
+              <table class="truth-table" style="margin-top: 0.75rem;">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$Y = A \cdot B$</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-out">1</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 2. Logický součet OR -->
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">2. Logický součet (OR)</h3>
+              <p>Disjunkce: Výstup je 1, pokud je <strong>alespoň jeden vstup 1</strong>.</p>
+              <div class="formula-badge">$Y = A + B = A \vee B$</div>
+              <table class="truth-table" style="margin-top: 0.75rem;">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$Y = A + B$</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-out">1</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 3. Negace NOT -->
+            <div class="content-card">
+              <h3 style="color: #a855f7;">3. Negace (NOT)</h3>
+              <p>Inverze: Obrací hodnotu vstupu na opačnou hodnotu.</p>
+              <div class="formula-badge">$Y = \bar{A} = \neg A$</div>
+              <table class="truth-table" style="margin-top: 0.75rem;">
+                <thead>
+                  <tr><th>$A$</th><th>$Y = \bar{A}$</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 4: Odvozené logické operace -->
+      <section class="slide" id="slide-4" data-title="Odvozené logické operace">
+        <div class="slide-content">
+          <h2>Odvozené logické operace</h2>
+          <p class="slide-lead">Kombinací základních operací AND, OR a NOT vznikají klíčové odvozené funkce číslicové techniky:</p>
+
+          <div class="derived-grid">
+            <!-- 1. NAND -->
+            <div class="content-card">
+              <h3 style="color: #f43f5e;">1. NAND (Sheffer)</h3>
+              <p>Negovaný součin: Výstup je 0 pouze tehdy, jsou-li <strong>všechny vstupy 1</strong>. Tvoří úplný funkční systém.</p>
+              <div class="formula-badge">$Y = \overline{A \cdot B} = \neg(A \wedge B)$</div>
+              <table class="truth-table" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$Y$</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 2. NOR -->
+            <div class="content-card">
+              <h3 style="color: #f59e0b;">2. NOR (Peirce)</h3>
+              <p>Negovaný součet: Výstup je 1 pouze tehdy, jsou-li <strong>všechny vstupy 0</strong>. Tvoří úplný funkční systém.</p>
+              <div class="formula-badge">$Y = \overline{A + B} = \neg(A \vee B)$</div>
+              <table class="truth-table" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$Y$</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 3. XOR -->
+            <div class="content-card">
+              <h3 style="color: #10b981;">3. XOR (Non-ekvivalence)</h3>
+              <p>Exkluzivní OR: Výstup je 1 právě tehdy, když se <strong>vstupy liší</strong> (lichý počet jedniček). Klíčové pro sčítačky.</p>
+              <div class="formula-badge">$Y = A \oplus B = (\bar{A} \cdot B) + (A \cdot \bar{B})$</div>
+              <table class="truth-table" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$Y$</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 4. XNOR -->
+            <div class="content-card">
+              <h3 style="color: #a855f7;">4. XNOR (Ekvivalence)</h3>
+              <p>Rovnost stavů: Negace XOR. Výstup je 1, jsou-li <strong>všechny vstupy shodné</strong>. Základ číslicových komparátorů.</p>
+              <div class="formula-badge">$Y = \overline{A \oplus B} = (A \cdot B) + (\bar{A} \cdot \bar{B})$</div>
+              <table class="truth-table" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$Y$</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-out">1</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-out">1</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 5: Zákony Booleovy algebry -->
+      <section class="slide" id="slide-5" data-title="Zákony Booleovy algebry">
+        <div class="slide-content">
+          <h2>Pravidla a zákony Booleovy algebry</h2>
+          <p class="slide-lead">Při zjednodušování logických výrazů se uplatňují základní algebraické postuláty:</p>
+
+          <div class="grid-2">
+            <div class="logic-rule-card">
+              <h4>Komutativní zákon</h4>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.35rem;">Záměna pořadí proměnných nemění výsledek:</p>
+              <div class="formula-badge formula-block">$A + B = B + A$</div>
+              <div class="formula-badge formula-block">$A \cdot B = B \cdot A$</div>
+              
+              <h4 style="margin-top: 1.1rem;">Asociativní zákon</h4>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.35rem;">Nezávislost na sdružování operandů do závorek:</p>
+              <div class="formula-badge formula-block">$(A + B) + C = A + (B + C)$</div>
+              <div class="formula-badge formula-block">$(A \cdot B) \cdot C = A \cdot (B \cdot C)$</div>
+
+              <h4 style="margin-top: 1.1rem;">Distributivní zákon</h4>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.35rem;">Roznásobení a vytýkání (včetně duální formy součtu):</p>
+              <div class="formula-badge formula-block">$A \cdot (B + C) = (A \cdot B) + (A \cdot C)$</div>
+              <div class="formula-badge formula-block">$A + (B \cdot C) = (A + B) \cdot (A + C)$ &nbsp;<span style="color: var(--accent); font-size: 0.82rem; font-family: var(--font-sans);">(duální tvar!)</span></div>
+            </div>
+
+            <div class="logic-rule-card">
+              <h4 style="color: #f59e0b;">De Morganovy zákony (Základní postuláty)</h4>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.25rem;">1. Negace logického součinu je rovna součtu negací:</p>
+              <div class="formula-badge formula-block" style="border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1);">$\overline{A \cdot B} = \bar{A} + \bar{B}$</div>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.45rem; margin-bottom: 0.25rem;">2. Negace logického součtu je rovna součinu negací:</p>
+              <div class="formula-badge formula-block" style="border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1);">$\overline{A + B} = \bar{A} \cdot \bar{B}$</div>
+
+              <h4 style="margin-top: 1.1rem;">Zákony absorpce</h4>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.35rem;">Vstřebání nadbytečného závislého členu:</p>
+              <div class="formula-badge formula-block">$A + (A \cdot B) = A$</div>
+              <div class="formula-badge formula-block">$A \cdot (A + B) = A$</div>
+              <h4 style="margin-top: 1.1rem;">Zákony působení nuly a jedničky</h4>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.35rem;">Neutrální prvek (nemění hodnotu proměnné):</p>
+              <div class="formula-badge formula-block">$A + 0 = A$</div>
+              <div class="formula-badge formula-block">$A \cdot 1 = A$</div>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.55rem; margin-bottom: 0.35rem;">Agresivní prvek (anihilace / mezní stavy):</p>
+              <div class="formula-badge formula-block">$A + 1 = 1$</div>
+              <div class="formula-badge formula-block">$A \cdot 0 = 0$</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 6: Minimalizace logických výrazů -->
+      <section class="slide" id="slide-6" data-title="Minimalizace logických výrazů">
+        <div class="slide-content">
+          <h2>Minimalizace logických výrazů</h2>
+          <p class="slide-lead">Cílem minimalizace je najít algebraicky ekvivalentní výraz s minimálním počtem operací a hradel pro zjednodušení číslicového obvodu:</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Algebraická minimalizace (zákony Booleovy algebry)</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                Postupné algebraické zjednodušování výrazu pomocí pravidel ze snímku 5 (vytýkání, vyloučení třetího a neutrální prvek):
+              </p>
+              <div class="code-box">
+                <pre><code>Výchozí výraz:  Y = (A_not · B) + (A · B)
+1. Vytknutí B:  Y = B · (A_not + A)     -- distributivní zákon
+2. Vyloučení:   Y = B · 1               -- protože (A_not + A) = 1
+3. Neutrální:   Y = B                   -- výsledný minimalizovaný tvar!</code></pre>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.75rem;">
+                Původní obvod by vyžadoval 2× AND, 1× OR a 1× NOT hradlo. Po algebraické minimalizaci stačí pouhý přímý vodič signálu $B$!
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>Grafická metoda: Karnaughova mapa</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                Názorná 2D metoda nahrazující složité algebraické úpravy pro 2 až 4 vstupní proměnné:
+              </p>
+              <ul class="styled-list">
+                <li>Uspořádání pravdivostní tabulky do matice v <strong>Grayově kódu</strong> (sousední buňky se liší v jediném bitu).</li>
+                <li>Hledání sousedních jedniček ve smyčkách o velikostech $2^n$ (1, 2, 4, 8 buněk).</li>
+                <li>Čím větší smyčka, tím více proměnných se eliminuje a tím jednodušší je výsledný obvod.</li>
+                <li>Možnost překrývání smyček i spojování přes protilehlé vnější okraje mapy.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 7: Sestavení funkce z pravdivostní tabulky (SOP a POS) -->
+      <section class="slide" id="slide-7" data-title="Kanonické tvary (SOP/POS)">
+        <div class="slide-content">
+          <h2>Sestavení logické funkce z pravdivostní tabulky</h2>
+          <p class="slide-lead">Z každé technické specifikace či pravdivostní tabulky lze funkci přímo zapsat dvěma kanonickými postupy:</p>
+
+          <div class="grid-2">
+            <!-- Vlevo: Názorná vzorová pravdivostní tabulka -->
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Vzorová tabulka funkce $Y = f(A, B)$</h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.75rem;">
+                Příklad funkce se dvěma vstupy $A, B$ a jejích mintermů a maxtermů:
+              </p>
+              <table class="truth-table" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th>$A$</th>
+                    <th>$B$</th>
+                    <th>Výstup $Y$</th>
+                    <th>Minterm pro SOP ($Y=1$)</th>
+                    <th>Maxterm pro POS ($Y=0$)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="row-zero">
+                    <td class="val-0">0</td>
+                    <td class="val-0">0</td>
+                    <td class="val-0">0</td>
+                    <td class="cell-muted">—</td>
+                    <td class="term-pos">$A + B$</td>
+                  </tr>
+                  <tr class="row-one">
+                    <td class="val-0">0</td>
+                    <td class="val-1">1</td>
+                    <td class="val-out">1</td>
+                    <td class="term-sop">$\bar{A} \cdot B$</td>
+                    <td class="cell-muted">—</td>
+                  </tr>
+                  <tr class="row-zero">
+                    <td class="val-1">1</td>
+                    <td class="val-0">0</td>
+                    <td class="val-0">0</td>
+                    <td class="cell-muted">—</td>
+                    <td class="term-pos">$\bar{A} + B$</td>
+                  </tr>
+                  <tr class="row-one">
+                    <td class="val-1">1</td>
+                    <td class="val-1">1</td>
+                    <td class="val-out">1</td>
+                    <td class="term-sop">$A \cdot B$</td>
+                    <td class="cell-muted">—</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.75rem; line-height: 1.5;">
+                <span style="display: inline-block; width: 10px; height: 10px; background: var(--accent); border-radius: 2px; margin-right: 4px;"></span> <strong>Mintermy ($Y=1$):</strong> součiny vstupů pro řádky s jedničkou.<br>
+                <span style="display: inline-block; width: 10px; height: 10px; background: #f59e0b; border-radius: 2px; margin-right: 4px; margin-top: 3px;"></span> <strong>Maxtermy ($Y=0$):</strong> součty vstupů pro řádky s nulou.
+              </div>
+            </div>
+
+            <!-- Vpravo: Dva kanonické tvary SOP a POS -->
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+              <div class="content-card" style="padding: 1.15rem 1.25rem;">
+                <h4 style="color: var(--accent); margin-bottom: 0.35rem;">1. Součtová forma (SOP – Mintermy)</h4>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.4rem;">
+                  Úplná disjunktivní normální forma (ÚNDF). Vybíráme řádky tabulky, kde je <strong>výstup $Y = 1$</strong>. Vstup s 0 negujeme ($\bar{A}$), s 1 necháváme přímý ($A$). Součiny spojíme součtem (OR):
+                </p>
+                <div class="formula-badge formula-block">$Y = (\bar{A} \cdot B) + (A \cdot B)$</div>
+                <div style="font-size: 0.8rem; color: var(--accent); margin-top: 0.25rem;">
+                  &rarr; Tento výraz jsme na snímku 6 algebraicky zjednodušili na pouhé $Y = B$!
+                </div>
+              </div>
+
+              <div class="content-card" style="padding: 1.15rem 1.25rem;">
+                <h4 style="color: #f59e0b; margin-bottom: 0.35rem;">2. Součinová forma (POS – Maxtermy)</h4>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.4rem;">
+                  Úplná konjunktivní normální forma (ÚNKF). Vybíráme řádky tabulky, kde je <strong>výstup $Y = 0$</strong>. Vstup s 1 negujeme ($\bar{A}$), s 0 necháváme přímý ($A$). Součty spojíme součinem (AND):
+                </p>
+                <div class="formula-badge formula-block" style="border-color: rgba(245, 158, 11, 0.35); background: rgba(245, 158, 11, 0.1);">$Y = (A + B) \cdot (\bar{A} + B)$</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Speciální callout na vložený applet 041 -->
+          <div class="k-map-callout" style="margin-top: 1.15rem;">
+            <div>
+              <h4 style="color: #a855f7; font-size: 1.05rem; margin-bottom: 0.25rem;">Vyzkoušejte interaktivní trenažér minimalizace!</h4>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0;">
+                Přímo mezi témata 040 a 050 jsme vložili specializovanou interaktivní aplikaci <strong>041: Karnaughovy mapy</strong> – zadejte pravdivostní tabulku a sledujte generování mapy i minimalizovaného výrazu!
+              </p>
+            </div>
+            <a href="../041-Karnaughovy-mapy/index.html" class="btn-applet-link">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Spustit trenažér (041)
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 8: Závěrečné shrnutí tématu -->
+      <section class="slide" id="slide-8" data-title="Shrnutí a klíčové pojmy">
+        <div class="slide-content">
+          <h2>Shrnutí tématu a klíčové koncepty</h2>
+          <p class="slide-lead">Přehled stěžejních poznatků z Booleovy algebry a logických funkcí:</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Klíčové znalostní okruhy</h3>
+              <ul class="styled-list">
+                <li>Definice Booleovy algebry a elementárních funkcí (AND, OR, NOT).</li>
+                <li>Pravdivostní tabulky a De Morganovy zákony pro minimalizaci obvodů.</li>
+                <li>Převod pravdivostní tabulky na součtovou formu (SOP) a součinovou formu (POS).</li>
+                <li>Grafická minimalizace pomocí Karnaughových map pro 2, 3 a 4 vstupy.</li>
+                <li>Převod minimalizovaného výrazu do schematické realizace pomocí logických hradel.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Praktický příklad na procvičení</h3>
+              <p>Zjednodušte algebraicky i v Karnaughově mapě výraz:</p>
+              <div class="formula-badge" style="display: block; text-align: center; margin: 1rem 0;">
+                $Y = (\bar{A} \cdot \bar{B}) + (\bar{A} \cdot B) + (A \cdot B)$
+              </div>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">
+                <em>Správný výsledek:</em> $Y = \bar{A} + B$. Ověřte si výsledek v přiloženém interaktivním appletu 041!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Plovoucí spodní controls bar SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../030-Uziti-mechatroniky/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 030 Užití mechatroniky (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu KYME">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../041-Karnaughovy-mapy/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 041 Karnaughovy mapy (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 8</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova prezentace (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Booleova algebra
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální engine prezentací -->
+  <script src="../../assets/js/presentation-core.js?v=sps6"></script>
+</body>
+
+</html>

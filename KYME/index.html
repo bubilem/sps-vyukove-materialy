@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KYME: Kybernetika a mechatronika | Výukové materiály SPŠ</title>
+  
+  <!-- Společné styly pro katalogy a rozcestníky -->
+  <link rel="stylesheet" href="../assets/css/dashboard-core.css">
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="dashboard-container">
+    
+    <!-- 1. Drobečková navigace (SPŠ 4-úrovňový standard) -->
+    <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+      <a href="../index.html" class="breadcrumb-link" title="Zpět na centrální rozcestník SPŠ">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Rozcestník SPŠ
+      </a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Kybernetika a mechatronika (KYME)</span>
+    </nav>
+
+    <!-- 2. Hlavička předmětu -->
+    <header class="dashboard-header">
+      <div class="brand-box">
+        <div class="brand-icon" style="background: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.3); color: #06b6d4;">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+            <circle cx="12" cy="12" r="3"></circle>
+            <line x1="12" y1="1" x2="12" y2="4"></line>
+            <line x1="12" y1="20" x2="12" y2="23"></line>
+            <line x1="1" y1="12" x2="4" y2="12"></line>
+            <line x1="20" y1="12" x2="23" y2="12"></line>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Předmět KYME: Kybernetika a mechatronika</h1>
+          <p>Střední průmyslová škola &bull; Mechatronické systémy, robotika a číslicová technika</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <!-- Ikona vložena JS -->
+        </button>
+      </div>
+    </header>
+
+
+    <!-- 4. Vyhledávací pole -->
+    <div class="search-container">
+      <svg class="search-icon-svg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech KYME (např. Booleova algebra, robotika, hradla, Karnaughovy mapy, obvody)..." autocomplete="off">
+    </div>
+
+    <!-- 5. Mřížka témat (Katalog témat SPŠ KYME) -->
+    <div class="lessons-grid" id="lessonsGrid">
+      
+      <!-- Téma 010: Základní pojmy -->
+      <div class="lesson-card" data-keywords="010 zaklady pojmy mechatronika kybernetika struktura system zpetna vazba">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 010</span>
+            <span class="lesson-exam-badge">Základy mechatroniky</span>
+          </div>
+          <h2>Základní pojmy mechatroniky a kybernetiky</h2>
+          <p class="lesson-desc">
+            Definice mechatroniky, struktura moderního mechatronického systému (mechanická část, elektronika, akční členy a řízení), principy zpětné vazby a kybernetické regulace.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Ucelené téma &bull; 6 snímků</span>
+          <a href="010-Zakladni-pojmy/index.html" class="btn-launch-lesson">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 020: Robotika -->
+      <div class="lesson-card" data-keywords="020 robotika prumyslove manipulátory kinematika stupne volnosti scara kartezsky antropomorfni">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 020</span>
+            <span class="lesson-exam-badge">Průmyslová robotika</span>
+          </div>
+          <h2>Robotika a průmyslové manipulátory</h2>
+          <p class="lesson-desc">
+            Klasifikace průmyslových robotů, kinematické struktury (kartézské, cylindrické, SCARA, sférické a antropomorfní roboty), stupně volnosti, efektory, pohony a bezpečnostní zóny.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Ucelené téma &bull; 6 snímků</span>
+          <a href="020-Robotika/index.html" class="btn-launch-lesson">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 030: Užití mechatroniky -->
+      <div class="lesson-card" data-keywords="030 uziti mechatroniky aplikace praxe automobily abs esp cnc zdravotnictvi sklady">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 030</span>
+            <span class="lesson-exam-badge">Systémové aplikace</span>
+          </div>
+          <h2>Užití mechatronických systémů v praxi</h2>
+          <p class="lesson-desc">
+            Praktické nasazení mechatroniky v automobilovém průmyslu (ABS, ESP, adaptivní řízení), CNC obráběcích centrech, zdravotnické technice a automatizovaných logistických skladech.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Ucelené téma &bull; 6 snímků</span>
+          <a href="030-Uziti-mechatroniky/index.html" class="btn-launch-lesson">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 040: Booleova algebra -->
+      <div class="lesson-card" data-keywords="040 booleova algebra logika logicke funkce pravdivostni tabulka de morgan minimalizace soucet soucin">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 040</span>
+            <span class="lesson-exam-badge" style="color: #06b6d4; background: rgba(6, 182, 212, 0.12); border-color: rgba(6, 182, 212, 0.3);">Základ číslicové techniky</span>
+          </div>
+          <h2>Booleova algebra a logické funkce</h2>
+          <p class="lesson-desc">
+            Dvouhodnotová logika, logické operace (AND, OR, NOT), pravdivostní tabulky, axiomy a zákony Booleovy algebry, De Morganova pravidla, normální formy (SOP / POS) a příprava na minimalizaci.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 7 snímků</span>
+          <a href="040-Booleova-algebra/index.html" class="btn-launch-lesson">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 041: Karnaughovy mapy (VLOŽENÝ INTERAKTIVNÍ APPLET) -->
+      <div class="lesson-card is-interactive" data-keywords="041 karnaugh karnaughova mapa k-mapa minimalizace interaktivni applet trenazer trenink smycky">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #a855f7; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.12);">APPLET 041</span>
+            <span class="badge-applet">
+              <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Interaktivní trenažér
+            </span>
+          </div>
+          <h2 style="color: #c084fc;">Karnaughovy mapy – Interaktivní trenažér</h2>
+          <p class="lesson-desc">
+            Samostatná interaktivní aplikace vložená mezi témata 040 a 050. Interaktivní přepínání buněk 0/1, vizuální sestavování smyček a automatické odvozování minimalizovaného logického výrazu.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time" style="color: #c084fc;">Interaktivní laboratorní úloha</span>
+          <a href="041-Karnaughovy-mapy/index.html" class="btn-launch-lesson" style="color: #c084fc;">
+            Otevřít trenažér
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 042: Výroková logika -->
+      <div class="lesson-card" data-keywords="042 vyrokova logika vyrok konjunkce disjunkce negace implikace ekvivalence a soucasne nebo prave tehdy kdyz if podminky">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #818cf8; border-color: rgba(129, 140, 248, 0.3); background: rgba(129, 140, 248, 0.12);">TÉMA 042</span>
+            <span class="lesson-exam-badge" style="color: #818cf8; background: rgba(129, 140, 248, 0.12); border-color: rgba(129, 140, 248, 0.3);">Matematická a technická logika</span>
+          </div>
+          <h2>Výroková logika a logické myšlení</h2>
+          <p class="lesson-desc">
+            Most mezi lidským jazykem a číslicovými algoritmy. Definice výroku, spojky v přirozeném jazyce (a současně, nebo, jestliže... pak, právě tehdy, když), konjunkce, disjunkce, negace, implikace, ekvivalence a tvorba podmínek v technické praxi.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Rozšiřující téma &bull; 9 snímků</span>
+          <a href="042-Vyrokova-logika/index.html" class="btn-launch-lesson">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 050: Logická hradla -->
+      <div class="lesson-card" data-keywords="050 hradla logicka kombinacni schematicke znacky and or not nand nor xor xnor csn ansi ieee cmos ttl spinace zarovka simulace">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 050</span>
+            <span class="lesson-exam-badge">Číslicová technika</span>
+          </div>
+          <h2>Logická hradla a hardware číslicových obvodů</h2>
+          <p class="lesson-desc">
+            Podrobný přehled a interaktivní simulátory všech logických hradel (NOT, AND, OR, NAND, NOR, XOR, XNOR). Porovnání norem IEC vs ANSI, elektromechanické obvody se spínači a žárovkou, CMOS polovodičové struktury a univerzální báze.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 13 snímků</span>
+          <a href="050-Hradla/index.html" class="btn-launch-lesson">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 060: Logické obvody -->
+      <div class="lesson-card" data-keywords="060 obvody sekvencni klopne obvody pamet rs d jk t registry citace automaty">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 060</span>
+            <span class="lesson-exam-badge">Kombinační a sekvenční obvody</span>
+          </div>
+          <h2>Sekvenční a logické obvody</h2>
+          <p class="lesson-desc">
+            Rozdíl mezi kombinačními a sekvenčními obvody, zpětnovazební paměťové prvky, bistabilní klopné obvody (RS, D, JK, T), asynchronní a synchronní čítače, posuvné registry.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Ucelené téma &bull; 6 snímků</span>
+          <a href="060-Obvody/index.html" class="btn-launch-lesson">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 5. Footer katalogu -->
+    <footer class="site-footer">
+      <div class="footer-nav">
+        <a href="../index.html" class="btn-footer-back" title="Návrat na hlavní rozcestník SPŠ">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Zpět na centrální rozcestník SPŠ
+        </a>
+      </div>
+      <p>Střední průmyslová škola &copy; 2026 &bull; Předmět Kybernetika a mechatronika (KYME)</p>
+    </footer>
+
+  </div>
+
+  <!-- Společný engine pro katalogy (správa motivu, vyhledávání, klikatelnost dlaždic) -->
+  <script src="../assets/js/dashboard-core.js"></script>
+</body>
+
+</html>

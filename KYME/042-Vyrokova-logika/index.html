@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 042: Výroková logika | KYME &bull; SPŠ</title>
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css?v=sps3">
+  <style>
+    :root {
+      --accent: #818cf8;
+      --accent-glow: rgba(129, 140, 248, 0.25);
+    }
+
+    .logic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .logic-rule-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .logic-rule-card h4 {
+      color: var(--accent);
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .formula-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 1.02rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(129, 140, 248, 0.12);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      color: var(--text-primary);
+      margin: 0.4rem 0;
+    }
+
+    .formula-badge.formula-block {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 0.3rem 0;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.98rem;
+    }
+
+    .formula-overline {
+      text-decoration: overline;
+      text-decoration-thickness: 1.5px;
+      display: inline-block;
+      line-height: 1.15;
+      padding-top: 0.08em;
+    }
+
+    /* Větné příklady výroků */
+    .statement-box {
+      background: rgba(0, 0, 0, 0.22);
+      border-left: 3px solid var(--accent);
+      padding: 0.75rem 1rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 0.5rem 0;
+      font-size: 0.92rem;
+    }
+
+    .statement-box.negative {
+      border-left-color: #f43f5e;
+      background: rgba(244, 63, 94, 0.08);
+    }
+
+    .statement-box.positive {
+      border-left-color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .statement-box.warning {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .statement-quote {
+      font-style: italic;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .statement-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .connective-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-and {
+      background: rgba(6, 182, 212, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(6, 182, 212, 0.35);
+    }
+
+    .tag-or {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+
+    .tag-not {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+
+    .tag-imp {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .tag-eq {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.35);
+    }
+
+    /* Kvízové opakovací karty */
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      margin-top: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .quiz-question {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .quiz-answer {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 0.55rem 0.85rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Ambientní pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(129, 140, 248, 0.15) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní lišta průběhu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Hlavní kontejner prezentace -->
+  <div class="presentation-container">
+
+    <!-- Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">042 Výroková logika</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Snímky prezentace -->
+    <main class="slide-viewport">
+
+      <!-- Snímek 1: Titulní -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do výrokové logiky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět KYME &bull; Téma 042</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.35); color: #a5b4fc;">Matematická a technická logika</span>
+          </div>
+          <h1 class="hero-title">Výroková logika a logické myšlení</h1>
+          <p class="hero-subtitle">
+            Most mezi lidským jazykem, matematickým dokazováním a číslicovými algoritmy mechatroniky. Jak se z běžných vět stávají logické výrazy AND, OR, NOT a implikace.
+          </p>
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>1. Co je výrok</h4>
+              <p>Oznamovací věta, o níž má jednoznačný smysl říci, zda je pravdivá (1), nebo nepravdivá (0).</p>
+            </div>
+            <div class="content-card">
+              <h4>2. Logické spojky</h4>
+              <p>Propojení vět pomocí vazeb: <em>a současně</em>, <em>nebo</em>, <em>jestliže... pak</em> a <em>právě tehdy, když</em>.</p>
+            </div>
+            <div class="content-card">
+              <h4>3. Technická praxe</h4>
+              <p>Sestavování podmínek <code>if/else</code> v programování, blokování pohonů a řídicí bezpečnostní logika PLC.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 2: Co je výrok? -->
+      <section class="slide" id="slide-2" data-title="Co je výrok a pravdivostní hodnota">
+        <div class="slide-content">
+          <h2>Co je výrok a pravdivostní hodnota</h2>
+          <p class="slide-lead">Základním kamenem veškeré formální logiky a číslicové techniky je výrok – sdělení, jehož pravdivost lze objektivně ověřit.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: #10b981;">Co JE výrok (Výpověď s hodnotou 1 nebo 0)</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                Každá oznamovací věta, u které můžeme jednoznačně rozhodnout, zda platí ($1$ / True), nebo neplatí ($0$ / False):
+              </p>
+
+              <div class="statement-box positive">
+                <div class="statement-quote">„Číslo 12 je dělitelné třemi.“</div>
+                <div class="statement-meta">Pravdivostní hodnota: <strong style="color: #10b981;">1 (True)</strong> &bull; Matematický fakt</div>
+              </div>
+
+              <div class="statement-box positive">
+                <div class="statement-quote">„Praha je hlavní město Francie.“</div>
+                <div class="statement-meta">Pravdivostní hodnota: <strong style="color: #f43f5e;">0 (False)</strong> &bull; Je to výrok, i když je nepravdivý!</div>
+              </div>
+
+              <div class="statement-box positive">
+                <div class="statement-quote">„Teplota ložiska motoru překročila 85 °C.“</div>
+                <div class="statement-meta">Pravdivostní hodnota: <strong style="color: var(--accent);">0 nebo 1</strong> &bull; Stav binárního senzoru v PLC</div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #f43f5e;">Co NENÍ výrok (Nemá logickou hodnotu)</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                Věty a výrazy, u kterých nemá smysl ptát se, zda jsou pravdivé, nebo lživé:
+              </p>
+
+              <div class="statement-box negative">
+                <div class="statement-quote">„Kolik otáček za minutu má tento servomotor?“</div>
+                <div class="statement-meta">Otázka &bull; Nelze říci „to je pravda“ ani „to je lež“</div>
+              </div>
+
+              <div class="statement-box negative">
+                <div class="statement-quote">„Okamžitě vypni přívod stlačeného vzduchu!“</div>
+                <div class="statement-meta">Rozkaz / výzva &bull; Nemá pravdivostní hodnotu</div>
+              </div>
+
+              <div class="statement-box negative">
+                <div class="statement-quote">„Výraz x + 5 = 12“</div>
+                <div class="statement-meta">Výroková forma s neznámou &bull; Stane se výrokem až po dosazení konkrétního čísla za $x$</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 3: Negace výroku -->
+      <section class="slide" id="slide-3" data-title="Negace výroku (Zápor)">
+        <div class="slide-content">
+          <h2>Negace výroku (Inverze pravdivosti)</h2>
+          <p class="slide-lead">Negace obrací pravdivostní hodnotu původního tvrzení. Z pravdy dělá nepravdu a z nepravdy pravdu.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Tvorba negace v českém jazyce</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                Negaci tvoříme předponou <em>„ne-“</em> u slovesa, nebo univerzální předponou <em>„Není pravda, že...“</em>:
+              </p>
+
+              <div class="statement-box">
+                <div style="font-size: 0.84rem; color: var(--text-muted);">Původní výrok $A$:</div>
+                <div class="statement-quote">„Pneumatický válec je vysunutý.“</div>
+                <div style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.35rem;">Negovaný výrok $\neg A$ ($\bar{A}$):</div>
+                <div class="statement-quote" style="color: #f43f5e;">„Pneumatický válec není vysunutý.“</div>
+              </div>
+
+              <div class="statement-box warning">
+                <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.25rem;">Častá logická past – kvantifikátory!</div>
+                <p style="font-size: 0.86rem; margin: 0; color: var(--text-secondary);">
+                  Výrok: <em>„Všechny motory běží.“</em><br>
+                  Negace NENÍ: <em>„Žádný motor neběží.“</em> (to je extrémní opak!)<br>
+                  <strong>Správná negace:</strong> <em>„Alespoň jeden motor neběží.“</em>
+                </p>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Zápis a pravdivostní tabulka</h3>
+              <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                <span class="formula-badge">Matematika: $\neg A$</span>
+                <span class="formula-badge">Booleova algebra: $\bar{A}$</span>
+                <span class="formula-badge">Programování: <code>!A</code></span>
+              </div>
+
+              <table class="truth-table">
+                <thead>
+                  <tr><th>Původní výrok $A$</th><th>Negace $\neg A$ ($\bar{A}$)</th><th>Příklad v řídicím systému</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0 (Hladina nízká)</td><td class="val-out">1 (Není nízká &rarr; ZAPNI čerpadlo)</td><td>Rozpínací kontakt čidla (NC)</td></tr>
+                  <tr><td class="val-1">1 (Hladina plná)</td><td class="val-0">0 (Není plná &rarr; VYPNI čerpadlo)</td><td>Bezpečnostní limitní spínač</td></tr>
+                </tbody>
+              </table>
+
+              <div class="formula-badge formula-block" style="margin-top: 1rem; text-align: center;">
+                Zákon dvojí negace: $\neg(\neg A) = A$ &nbsp;&bull;&nbsp; „Není pravda, že robot nestojí“ = Robot stojí.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 4: Konjunkce (AND) -->
+      <section class="slide" id="slide-4" data-title="Konjunkce (AND / a současně)">
+        <div class="slide-content">
+          <h2>Konjunkce (AND) – Logické spojení „a současně“</h2>
+          <p class="slide-lead">Konjunkce dvou výroků je pravdivá právě tehdy, když jsou <strong>současně pravdivé oba dílčí výroky</strong>.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: #06b6d4;">
+                <span class="connective-tag tag-and">A současně</span>
+                Lidská intuice a jazyk
+              </h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                V češtině spojujeme výroky spojkami: <em>„a“</em>, <em>„a současně“</em>, <em>„i“</em>, <em>„aniž“</em>. Stačí jediná nepravda a celý složený výrok padá:
+              </p>
+
+              <div class="statement-box">
+                <div class="statement-quote">
+                  „Mám u sebe platný řidičský průkaz ($A$) <strong>A SOUČASNĚ</strong> vozidlo má platnou STK ($B$).“
+                </div>
+                <div class="statement-meta">
+                  Smím vyjet na silnici ($Y=1$) pouze tehdy, když platí obě podmínky naráz. Chybí-li řidičák nebo STK, jet nesmím ($Y=0$).
+                </div>
+              </div>
+
+              <div class="statement-box positive">
+                <div style="font-weight: 700; color: #10b981; margin-bottom: 0.25rem;">Zabezpečení v průmyslu (PLC logika):</div>
+                <div class="statement-quote" style="font-size: 0.88rem;">
+                  $Y = A \wedge B$: „Kryt lisu je zavřen ($A$) <strong>A SOUČASNĚ</strong> obsluha drží obouruční spínač ($B$).“
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #06b6d4;">Pravdivostní tabulka & operace</h3>
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                <span class="formula-badge">Logika: $A \wedge B$</span>
+                <span class="formula-badge">Algebra: $A \cdot B$</span>
+                <span class="formula-badge">C/C++: <code>A &amp;&amp; B</code></span>
+              </div>
+
+              <table class="truth-table">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$A \wedge B$ ($A \cdot B$)</th><th>Slovní vyhodnocení</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td><td>Ani jeden výrok neplatí</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0</td><td>Platí jen druhý &rarr; celkově nepravda</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td><td>Platí jen první &rarr; celkově nepravda</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-out">1</td><td>Platí OBA SOUČASNĚ &rarr; pravda!</td></tr>
+                </tbody>
+              </table>
+
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.75rem;">
+                V elektrotechnice odpovídá konjunkci <strong>sériové zapojení</strong> dvou kontaktů za sebou.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 5: Disjunkce (OR) -->
+      <section class="slide" id="slide-5" data-title="Disjunkce (OR / nebo)">
+        <div class="slide-content">
+          <h2>Disjunkce (OR) – Logické spojení „nebo“</h2>
+          <p class="slide-lead">Disjunkce je pravdivá, pokud platí <strong>alespoň jeden</strong> z dílčích výroků (klidně i oba současně).</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">
+                <span class="connective-tag tag-or">Nebo</span>
+                Inkluzivní „nebo“ vs. hovorová řeč
+              </h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.75rem;">
+                V běžném jazyce lidé občas myslí „nebo“ vylučovacím způsobem (<em>„Dáš si čaj, nebo kávu?“</em>). V matematice a technice je spojka „nebo“ vždy <strong>nevylučovací (inkluzivní)</strong>:
+              </p>
+
+              <div class="statement-box">
+                <div class="statement-quote">
+                  „Dnes je sobota ($A$) <strong>NEBO</strong> je státní svátek ($B$).“
+                </div>
+                <div class="statement-meta">
+                  Do školy nejdu, když je sobota, když je svátek, a samozřejmě ani tehdy, když svátek připadne na sobotu (platí obojí)!
+                </div>
+              </div>
+
+              <div class="statement-box positive">
+                <div style="font-weight: 700; color: #60a5fa; margin-bottom: 0.25rem;">Havarijní stop v mechatronice:</div>
+                <div class="statement-quote" style="font-size: 0.88rem;">
+                  $Y = A \vee B$: „Byl stisknut hřibový STOP ($A$) <strong>NEBO</strong> teplota měniče překročila limit ($B$).“
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">Pravdivostní tabulka & operace</h3>
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                <span class="formula-badge">Logika: $A \vee B$</span>
+                <span class="formula-badge">Algebra: $A + B$</span>
+                <span class="formula-badge">C/C++: <code>A || B</code></span>
+              </div>
+
+              <table class="truth-table">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>$A \vee B$ ($A + B$)</th><th>Slovní vyhodnocení</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-0">0</td><td>Neplatí ani jeden výrok</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-out">1</td><td>Platí druhý výrok &rarr; stačí k pravdě</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-out">1</td><td>Platí první výrok &rarr; stačí k pravdě</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-out">1</td><td>Platí OBA SOUČASNĚ &rarr; také pravda!</td></tr>
+                </tbody>
+              </table>
+
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.75rem;">
+                V elektrotechnice odpovídá disjunkci <strong>paralelní zapojení</strong> dvou kontaktů vedle sebe.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 6: Implikace -->
+      <section class="slide" id="slide-6" data-title="Implikace (jestliže... pak)">
+        <div class="slide-content">
+          <h2>Implikace – „Jestliže... pak...“ (Příčina a následek)</h2>
+          <p class="slide-lead">Implikace ($A \Rightarrow B$) vyjadřuje podmíněný vztah: z předpokladu $A$ nutně vyplývá tvrzení $B$.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: #f59e0b;">
+                <span class="connective-tag tag-imp">Jestliže &rarr; pak</span>
+                Jak rozumět implikaci: Metafora slibu
+              </h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.75rem;">
+                Proč je implikace pravdivá, i když předpoklad neplatí? Představte si slib vyučujícího:
+              </p>
+
+              <div class="statement-box warning">
+                <div class="statement-quote">
+                  „Jestliže získáte z testu plný počet bodů ($A$), pak vám dám jedničku ($B$).“
+                </div>
+              </div>
+
+              <ul class="styled-list" style="font-size: 0.88rem;">
+                <li><strong>$A=1, B=1$:</strong> Měli jste plný počet a dostali jedničku. Slib byl dodržen! (1)</li>
+                <li><strong>$A=1, B=0$:</strong> Měli jste plný počet, ale jedničku jste nedostali. Učitel lhal! (0)</li>
+                <li><strong>$A=0, B=1$:</strong> Neměli jste plný počet, ale za aktivitu jste jedničku dostali. Učitel slib neporušil! (1)</li>
+                <li><strong>$A=0, B=0$:</strong> Neměli jste plný počet a jedničku nemáte. Vše je v pořádku. (1)</li>
+              </ul>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.35rem;">
+                <em>Pravidlo:</em> Z nepravdivého předpokladu může vzejít cokoliv. Implikace je lživá v jediném případě: $1 \Rightarrow 0$.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #f59e0b;">Pravdivostní tabulka & Booleův ekvivalent</h3>
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                <span class="formula-badge">Logika: $A \Rightarrow B$</span>
+                <span class="formula-badge">Booleův tvar: $\bar{A} + B$</span>
+              </div>
+
+              <table class="truth-table">
+                <thead>
+                  <tr><th>Předpoklad $A$</th><th>Následek $B$</th><th>Implikace $A \Rightarrow B$</th><th>Význam v logice</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-out">1</td><td>Z nepravdy plyne nepravda (platí)</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-out">1</td><td>Z nepravdy plyne pravda (platí)</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0">0</td><td>Z PRAVDY PLYNE LEŽ &rarr; SPOR (0)!</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-out">1</td><td>Z pravdy plyne pravda (platí)</td></tr>
+                </tbody>
+              </table>
+
+              <div class="formula-badge formula-block" style="margin-top: 0.85rem; font-size: 0.9rem;">
+                Důležitý převod: $(A \Rightarrow B) \equiv (\bar{A} \vee B)$<br>
+                <span style="font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-sans);">
+                  „Buď neplatil předpoklad ($\bar{A}$), nebo platí závěr ($B$).“
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 7: Ekvivalence -->
+      <section class="slide" id="slide-7" data-title="Ekvivalence (právě tehdy, když)">
+        <div class="slide-content">
+          <h2>Ekvivalence – „Právě tehdy, když“ (Rovnost stavů)</h2>
+          <p class="slide-lead">Ekvivalence ($A \Leftrightarrow B$) vyjadřuje oboustrannou podmínku: oba výroky mají <strong>vždy stejnou pravdivostní hodnotu</strong>.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: #a855f7;">
+                <span class="connective-tag tag-eq">Právě tehdy, když</span>
+                Oboustranná závislost
+              </h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.75rem;">
+                Ekvivalence platí, když buď platí obě tvrzení současně, nebo neplatí ani jedno. V jazyce používáme spojení <em>„tehdy a jen tehdy, když“</em>:
+              </p>
+
+              <div class="statement-box">
+                <div class="statement-quote">
+                  „Geometrický útvar je čtverec ($A$) <strong>PRÁVĚ TEHDY, KDYŽ</strong> je to pravoúhlý rovnostranný rovnoběžník ($B$).“
+                </div>
+                <div class="statement-meta">Jedno bez druhého nemůže existovat &bull; vzájemná definice</div>
+              </div>
+
+              <div class="statement-box positive">
+                <div style="font-weight: 700; color: #a855f7; margin-bottom: 0.25rem;">Synchronizace v mechatronice:</div>
+                <div class="statement-quote" style="font-size: 0.88rem;">
+                  „Zelená LED svítí ($Y=1$) právě tehdy, když je výstupní napětí zdroje v toleranci 24 V &plusmn; 0,5 V.“
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #a855f7;">Pravdivostní tabulka & vztah k XNOR / XOR</h3>
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                <span class="formula-badge">Logika: $A \Leftrightarrow B$</span>
+                <span class="formula-badge">Číslicová technika: XNOR</span>
+                <span class="formula-badge">C/Java: <code>A == B</code></span>
+              </div>
+
+              <table class="truth-table">
+                <thead>
+                  <tr><th>$A$</th><th>$B$</th><th>Ekvivalence $A \Leftrightarrow B$</th><th>Rozdíl oproti XOR (různost)</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="val-0">0</td><td class="val-0">0</td><td class="val-out">1 (Shoda v nule)</td><td class="val-0">0 (Nejsou různé)</td></tr>
+                  <tr><td class="val-0">0</td><td class="val-1">1</td><td class="val-0">0 (Neshoda)</td><td class="val-out">1 (Jsou různé)</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-0">0</td><td class="val-0 (Neshoda)">0</td><td class="val-out">1 (Jsou různé)</td></tr>
+                  <tr><td class="val-1">1</td><td class="val-1">1</td><td class="val-out">1 (Shoda v jedničce)</td><td class="val-0">0 (Nejsou různé)</td></tr>
+                </tbody>
+              </table>
+
+              <div class="formula-badge formula-block" style="margin-top: 0.75rem; font-size: 0.88rem;">
+                Rozklad na implikace: $(A \Leftrightarrow B) \equiv (A \Rightarrow B) \wedge (B \Rightarrow A)$<br>
+                Booleův zápis (XNOR): $Y = (A \cdot B) + (\bar{A} \cdot \bar{B})$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 8: Složené výroky v technické praxi -->
+      <section class="slide" id="slide-8" data-title="Složené výroky v technické praxi">
+        <div class="slide-content">
+          <h2>Složené výroky a algoritmizace podmínek</h2>
+          <p class="slide-lead">V reálném programování mikrokontrolérů, PLC a mechatronických systémů kombinujeme logické spojky do složených podmínek.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3>Praktický příklad: Bezpečnostní buňka robota</h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.65rem;">
+                Technické zadání z provozu průmyslové robotické linky:
+              </p>
+
+              <div class="statement-box warning">
+                <div class="statement-quote" style="font-size: 0.92rem;">
+                  „Manipulátor smí zahájit sváření ($Y=1$), pokud je aktivní automatický cyklus ($A$) NEBO ruční servisní navádění ($B$), A SOUČASNĚ NENÍ narušen světelný bezpečnostní plot ($C$).“
+                </div>
+              </div>
+
+              <div style="margin-top: 0.75rem;">
+                <div style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 0.25rem;">Převod na formální výrokovou formuli:</div>
+                <div class="formula-badge formula-block" style="font-size: 1.05rem;">
+                  $Y = (A \vee B) \wedge \neg C$ &nbsp;&bull;&nbsp; $Y = (A + B) \cdot \bar{C}$
+                </div>
+                <div style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.4rem; margin-bottom: 0.25rem;">Zápis v programovacím jazyce C/C++ / Arduino:</div>
+                <div class="formula-badge formula-block" style="background: rgba(0,0,0,0.3); border-color: #374151; font-size: 0.88rem;">
+                  <code>bool motorEnable = (autoMode || manualMode) &amp;&amp; !safetyCurtainBreached;</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>Dva mezní stavy složených výroků</h3>
+              <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 0.75rem;">
+                Při návrhu algoritmů se hlídají situace, kdy výraz nezávisí na vstupech:
+              </p>
+
+              <div class="logic-rule-card" style="margin-bottom: 0.75rem;">
+                <h4 style="color: #10b981; font-size: 0.95rem;">1. Tautologie (Trvale pravdivý výrok)</h4>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
+                  Výrok, který má pravdivostní hodnotu <strong>vždy 1</strong> bez ohledu na pravdivost proměnných.<br>
+                  <em>Příklad:</em> $A \vee \neg A = 1$ („Snímač buď detekuje součástku, nebo ji nedetekuje“).
+                </p>
+              </div>
+
+              <div class="logic-rule-card">
+                <h4 style="color: #f43f5e; font-size: 0.95rem;">2. Kontradikce / Spor (Trvale nepravdivý výrok)</h4>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin: 0;">
+                  Výrok, který má pravdivostní hodnotu <strong>vždy 0</strong> za všech okolností.<br>
+                  <em>Příklad:</em> $A \wedge \neg A = 0$ („Snímač hlásí přítomnost a současně nepřítomnost součástky“ &rarr; indikace poruchy vodiče čidla).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Snímek 9: Shrnutí, srovnávací tabulka a kvíz -->
+      <section class="slide" id="slide-9" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-content">
+          <h2>Přehledné shrnutí a opakovací otázky</h2>
+          <p class="slide-lead">Kompletní srovnání spojek lidské logiky, Booleovy algebry a programování:</p>
+
+          <table class="truth-table" style="margin-bottom: 1.25rem;">
+            <thead>
+              <tr>
+                <th>Operace</th>
+                <th>Česká spojka</th>
+                <th>Matematická logika</th>
+                <th>Booleova algebra</th>
+                <th>Kód (C / Python)</th>
+                <th>Kdy je výrok pravdivý?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Negace</strong></td>
+                <td>Není pravda, že... (ne-)</td>
+                <td>$\neg A$</td>
+                <td>$\bar{A}$</td>
+                <td><code>!A</code> / <code>not A</code></td>
+                <td>Obrací hodnotu (z 0 na 1 a z 1 na 0)</td>
+              </tr>
+              <tr>
+                <td><strong>Konjunkce</strong></td>
+                <td>a, a současně, i</td>
+                <td>$A \wedge B$</td>
+                <td>$A \cdot B$</td>
+                <td><code>A &amp;&amp; B</code> / <code>and</code></td>
+                <td>Pouze pokud platí <strong>oba výroky naráz</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Disjunkce</strong></td>
+                <td>nebo (nevylučovací)</td>
+                <td>$A \vee B$</td>
+                <td>$A + B$</td>
+                <td><code>A || B</code> / <code>or</code></td>
+                <td>Pokud platí <strong>alespoň jeden</strong> z výroků</td>
+              </tr>
+              <tr>
+                <td><strong>Implikace</strong></td>
+                <td>jestliže..., pak...</td>
+                <td>$A \Rightarrow B$</td>
+                <td>$\bar{A} + B$</td>
+                <td><code>!A || B</code></td>
+                <td>Vždy, kromě situace $1 \Rightarrow 0$ (z pravdy lež)</td>
+              </tr>
+              <tr>
+                <td><strong>Ekvivalence</strong></td>
+                <td>právě tehdy, když</td>
+                <td>$A \Leftrightarrow B$</td>
+                <td>$A \cdot B + \bar{A} \cdot \bar{B}$</td>
+                <td><code>A == B</code></td>
+                <td>Pokud mají oba výroky <strong>shodnou hodnotu</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="grid-2">
+            <div class="quiz-card">
+              <div class="quiz-question">1. Výrok $A$ zní: „Všechny kontrolky na panelu svítí zeleně.“ Jak zní jeho správná negace?</div>
+              <div class="quiz-answer"><strong>Správná odpověď:</strong> „Alespoň jedna kontrolka na panelu nesvítí zeleně.“ (Pozor: formulace „žádná kontrolka nesvítí“ není správná negace!).</div>
+            </div>
+
+            <div class="quiz-card">
+              <div class="quiz-question">2. Kdy je výrok „Jestliže svítí červená LED ($A$), pak motor stojí ($B$)“ nepravdivý?</div>
+              <div class="quiz-answer"><strong>Správná odpověď:</strong> Pouze v situaci $A=1$ a $B=0$, tedy když svítí červená kontrolka, ale motor přesto dál běží (došlo k poruše pravidla).</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Plovoucí spodní controls bar SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../041-Karnaughovy-mapy/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 041 Karnaughovy mapy (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu KYME">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../050-Hradla/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 050 Logická hradla (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 9</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova prezentace (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Výroková logika
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální engine prezentací -->
+  <script src="../../assets/js/presentation-core.js?v=sps6"></script>
+</body>
+
+</html>

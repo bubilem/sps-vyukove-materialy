@@ -1,0 +1,38 @@
+/* ==========================================================================
+   Syntax Highlighting: SQL & Databázové entity
+   Použití pro předmět DAT (Databázové systémy)
+   ========================================================================== */
+
+.sql-keyword { color: #f43f5e; font-weight: 700; }
+.sql-func    { color: #38bdf8; font-weight: 600; }
+.sql-string  { color: #10b981; }
+.sql-num     { color: #f59e0b; }
+.sql-comment { color: #6b7280; font-style: italic; }
+.sql-type    { color: #a855f7; font-weight: 600; }
+
+/* Relační databázové odznaky pro tabulky a E-R modely */
+.db-pk {
+  color: #f59e0b;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.db-fk {
+  color: #38bdf8;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.db-badge {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+}
+.db-badge-pk { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+.db-badge-fk { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }

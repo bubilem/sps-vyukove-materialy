@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 020: Robotika a průmyslové manipulátory | KYME &bull; SPŠ</title>
+  
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+      --accent-rgb: 6, 182, 212;
+    }
+
+    /* Specifické layouty a komponenty pro téma 020: Robotika */
+    
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 840px;
+      line-height: 1.65;
+      margin: 0 auto 1.5rem;
+    }
+
+    .title-badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .action-btn {
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+
+    .action-btn .icon {
+      width: 16px !important;
+      height: 16px !important;
+      min-width: 16px !important;
+      min-height: 16px !important;
+      max-width: 16px !important;
+      max-height: 16px !important;
+      flex-shrink: 0;
+    }
+
+    .action-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .action-btn.active {
+      background: var(--accent);
+      color: #041017;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* Časová osa historie robotiky */
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .timeline-nav {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.4rem;
+    }
+
+    .timeline-tab-btn {
+      padding: 0.45rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .timeline-tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .timeline-tab-btn.active {
+      background: var(--accent);
+      color: #041017;
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    /* Asimovovy zákony interaktivní karty */
+    .asimov-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    .asimov-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .asimov-item-btn {
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .asimov-item-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+      background: var(--bg-card-hover);
+    }
+
+    .asimov-item-btn.active {
+      border-color: var(--accent);
+      background: rgba(6, 182, 212, 0.12);
+      color: var(--text-primary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .asimov-item-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .asimov-item-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .asimov-detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Interaktivní průzkumník kinematik */
+    .kin-explorer-wrap {
+      display: grid;
+      grid-template-columns: 220px 1.25fr 1fr;
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    .kin-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .kin-nav-btn {
+      padding: 0.65rem 0.9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kin-nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .kin-nav-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .kin-canvas-box {
+      background: #090d16;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-md);
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 380px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 0 50px rgba(6, 182, 212, 0.04);
+    }
+
+    .kin-canvas-box > svg#kinSvgModel {
+      width: 100%;
+      height: 275px;
+      display: block;
+    }
+
+    .kin-speed-btn {
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      font-size: 0.76rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+    }
+
+    .kin-speed-btn:hover {
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .kin-speed-btn.active {
+      background: rgba(6, 182, 212, 0.25);
+      border-color: var(--accent);
+      color: #38bdf8;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.35);
+    }
+
+    /* 6-DOF trenažér */
+    .dof-trainer-wrap {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 1.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .dof-view-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 330px;
+      position: relative;
+    }
+
+    .dof-controls-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 50px;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+    }
+
+    .slider-label {
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .slider-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      text-align: right;
+      color: var(--accent);
+    }
+
+    /* Harmonická převodovka a kloub */
+    .hd-visualizer-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    .hd-canvas-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 290px;
+    }
+
+    /* Koncové efektory a chapadla */
+    .effectors-wrap {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+    }
+
+    /* Bezpečnostní buňka simulátor */
+    .safety-sim-wrap {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.25rem;
+      margin-top: 0.6rem;
+    }
+
+    .safety-cell-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      position: relative;
+      min-height: 330px;
+      overflow: hidden;
+      padding: 0.5rem;
+    }
+
+    .safety-cell-box > svg#safetyCellSvg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .safety-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      letter-spacing: 0.03em;
+    }
+
+    .status-ok {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .status-warn {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .status-stop {
+      background: rgba(239, 68, 68, 0.18);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    /* QA akordeon pro kontrolní otázky */
+    .qa-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 0.65rem;
+      transition: var(--transition);
+    }
+
+    .qa-card:hover {
+      border-color: var(--accent);
+    }
+
+    .qa-question {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .qa-answer {
+      margin-top: 0.6rem;
+      padding-top: 0.6rem;
+      border-top: 1px dashed var(--border-subtle);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .qa-card.open .qa-answer {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .qa-toggle-icon {
+      transition: transform 0.25s ease;
+    }
+
+    .qa-card.open .qa-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Popisky os a barevné badge */
+    .badge-axis-x {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .badge-axis-y {
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .badge-axis-z {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+
+    /* Tag v záhlaví */
+    .header-tag {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--accent);
+      margin-right: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Responzivita */
+    @media (max-width: 1024px) {
+      .kin-explorer-wrap {
+        grid-template-columns: 1fr;
+      }
+      .dof-trainer-wrap,
+      .hd-visualizer-wrap,
+      .effectors-wrap,
+      .safety-sim-wrap,
+      .asimov-grid,
+      .timeline-card {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+    
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">020 Robotika</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="header-tag">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
+          Průmyslová robotika
+        </span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="slide-viewport">
+
+      <!-- ==================================================================
+           Snímek 1: Titulní snímek
+           ================================================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do robotiky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět KYME &bull; Téma 020</span>
+            <span class="badge">Výukový modul SPŠ</span>
+          </div>
+          <h1 class="hero-title">Robotika a průmyslové manipulátory</h1>
+          <p class="hero-subtitle">
+            Od Čapkova dramatu R.U.R. a Asimovových zákonů přes kinematické struktury a prostorových 6 stupňů volnosti až po harmonické převodovky, chapadla a certifikovanou bezpečnost v éře Průmyslu 4.0.
+          </p>
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: var(--accent);"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Původ &amp; etika
+              </h4>
+              <p>Český původ slova robot, historické milníky od Unimate k moderním cobotům a Asimovovy zákony promítnuté do norem ISO.</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Kinematika &amp; 6 DOF
+              </h4>
+              <p>Klasifikace vazeb $R$ a $P$, geometrie pracovních prostorů kartézských, SCARA, kloubových a Delta robotů a 3D polohování v prostoru.</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Pohony &amp; bezpečnost
+              </h4>
+              <p>Servomotory, bezvůlové harmonické převodovky, chapadla a laserové zónové bezpečnostní skenery buňky (STO, ISO 13849 PLr).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 2: Původ slova a historické milníky
+           ================================================================== -->
+      <section class="slide" id="slide-2" data-title="Původ slova a milníky">
+        <div class="slide-content">
+          <h2>Původ slova robot a klíčové historické milníky</h2>
+          <p class="slide-lead">Slovo „robot“ je nejznámějším příspěvkem českého jazyka světové vědě a technice. Pochází ze staročeského označení pro nevolnickou těžkou práci.</p>
+          
+          <div class="timeline-container">
+            <div class="timeline-nav" id="timelineNav">
+              <button class="timeline-tab-btn active" data-era="1920">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                1920: Bratři Čapkové &amp; R.U.R.
+              </button>
+              <button class="timeline-tab-btn" data-era="1942">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                1942: Isaac Asimov
+              </button>
+              <button class="timeline-tab-btn" data-era="1961">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path></svg>
+                1961: Unimate (1. průmyslový)
+              </button>
+              <button class="timeline-tab-btn" data-era="1978">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                1978: Vznik SCARA &amp; KUKA
+              </button>
+              <button class="timeline-tab-btn" data-era="2008">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                Současnost: Coboti a AI
+              </button>
+            </div>
+
+            <div class="timeline-card" id="timelineDisplay">
+              <div>
+                <span class="badge badge-accent" id="timelineBadge">Roku 1920 • Premiéra 1921</span>
+                <h3 id="timelineHeading" style="margin-top: 0.5rem; font-size: 1.3rem;">R.U.R. – Rossum's Universal Robots</h3>
+                <p id="timelineText" style="line-height: 1.6; margin-top: 0.5rem;">
+                  Spisovatel <strong>Karel Čapek</strong> ve své divadelní hře R.U.R. poprvé představil umělé dělníky. Původně je chtěl nazvat latinským slovem <em>laboři</em> (z labor = práce). Jeho bratr, malíř a spisovatel <strong>Josef Čapek</strong>, který zrovna maloval na štaflích, mu řekl: <em>„Tak jim říkej roboti.“</em> Slovo vychází ze slova <strong>robota</strong> (lopota, nevolnická povinnost pracovat na panském).
+                </p>
+                <div class="statement-box positive" style="margin-top: 0.75rem;" id="timelineNote">
+                  <strong>Čapkův vizionářský odkaz:</strong> Čapkovi roboti byli biologičtí androidi stvoření k nahrazení namáhavé lidské práce. Teprve pozdější sci-fi literatura z nich učinila mechanické kovové stroje.
+                </div>
+              </div>
+
+              <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 1rem; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.6rem;">
+                <h4 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  Technický kontext
+                </h4>
+                <p id="timelineDetails" style="font-size: 0.9rem; line-height: 1.55; color: var(--text-secondary);">
+                  Hra měla obrovský mezinárodní úspěch v Londýně, New Yorku i Tokiu. Pojem „robot“ byl během několika let přejat do všech světových jazyků a stal se základním kamenem nového technického oboru.
+                </p>
+                <div style="margin-top: 0.5rem; padding: 0.6rem 0.8rem; background: rgba(6,182,212,0.08); border-left: 3px solid var(--accent); font-size: 0.85rem; font-family: var(--font-mono);" id="timelineCode">
+                  Etymologie: praslovanské *orbota &rarr; staročeské robota &rarr; robot
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 3: Asimovovy zákony robotiky a etika
+           ================================================================== -->
+      <section class="slide" id="slide-3" data-title="Asimovovy zákony a etika">
+        <div class="slide-content">
+          <h2>Asimovovy zákony robotiky a jejich technický ekvivalent</h2>
+          <p class="slide-lead">Roku 1942 formuloval biochemik a spisovatel <strong>Isaac Asimov</strong> v povídce <em>Runaround (Hra na honěnou)</em> tři základní etická pravidla autonomních strojů, která později doplnil o nultý zákon.</p>
+          
+          <div class="asimov-grid">
+            <div class="asimov-selector" id="asimovSelector">
+              <button class="asimov-item-btn active" data-law="0">
+                <span class="asimov-item-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #eab308;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                  0. Nultý zákon robotiky (1985)
+                </span>
+                <span class="asimov-item-desc">Ochrana lidstva jako celku</span>
+              </button>
+
+              <button class="asimov-item-btn" data-law="1">
+                <span class="asimov-item-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  1. První zákon (Priorita člověka)
+                </span>
+                <span class="asimov-item-desc">Zákaz ublížení člověku a nečinnosti</span>
+              </button>
+
+              <button class="asimov-item-btn" data-law="2">
+                <span class="asimov-item-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #3b82f6;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                  2. Druhý zákon (Poslušnost)
+                </span>
+                <span class="asimov-item-desc">Plnění lidských příkazů v mezích 1. zákona</span>
+              </button>
+
+              <button class="asimov-item-btn" data-law="3">
+                <span class="asimov-item-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  3. Třetí zákon (Sebeochrana)
+                </span>
+                <span class="asimov-item-desc">Ochrana vlastní existence</span>
+              </button>
+            </div>
+
+            <div class="asimov-detail-card" id="asimovDisplay">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span class="badge badge-accent" id="asimovBadge">Nadřazený etický axiom</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">Asimovův kodex</span>
+                </div>
+                <h3 id="asimovHeading" style="color: #eab308; font-size: 1.25rem; margin-bottom: 0.75rem;">0. Nultý zákon robotiky</h3>
+                <blockquote id="asimovQuote" style="font-size: 1.05rem; font-style: italic; color: var(--text-primary); border-left: 3px solid var(--accent); padding-left: 1rem; margin-bottom: 1rem; line-height: 1.5;">
+                  „Robot nesmí ublížit lidstvu nebo svou nečinností dopustit, aby lidstvu bylo ublíženo.“
+                </blockquote>
+                <p id="asimovExplanation" style="line-height: 1.6; color: var(--text-secondary); font-size: 0.92rem;">
+                  Asimov tento zákon doplnil později v románu <em>Roboti a impérium</em>. Uvědomil si, že ochrana jednotlivého člověka (1. zákon) nesmí vést ke zkáze lidské společnosti jako celku. Všechny ostatní zákony jsou nultému podřízeny.
+                </p>
+              </div>
+
+              <div style="margin-top: 1rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem;">
+                <h4 style="font-size: 0.88rem; color: var(--accent); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.35rem;">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  Převod do moderních průmyslových norem (ISO)
+                </h4>
+                <p id="asimovNorms" style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+                  <strong>Norma ČSN EN ISO 10218 a ISO/TS 15066:</strong> Ochrana lidského zdraví má absolutní prioritu nad výrobním taktem i mechanickou integritou robota. V případě kolize s člověkem musí řídicí systém robota okamžitě uvolnit pohon a zastavit, i kdyby došlo k poškození nástroje.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 4: Kinematika – Teorie a vazby
+           ================================================================== -->
+      <section class="slide" id="slide-4" data-title="Kinematika: Teorie & vazby">
+        <div class="slide-content">
+          <h2>Kinematické struktury průmyslových robotů</h2>
+          <p class="slide-lead">Kinematická struktura určuje geometrii pohybů, tvar pracovního prostoru (Envelope) a tuhost manipulátoru. Skládá se ze sériově či paralelně řazených pevných článků spojených kinematickými dvojicemi.</p>
+          
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent);">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+                Základní typy kinematických vazeb
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.75rem;">
+                <div style="padding: 0.75rem; background: rgba(6,182,212,0.08); border-left: 3px solid var(--accent); border-radius: var(--radius-sm);">
+                  <strong style="color: var(--accent);">Rotační vazba (R – Revolute):</strong>
+                  <p style="font-size: 0.88rem; margin-top: 0.25rem;">Umožňuje vzájemné otáčení sousedních článků kolem jedné osy. Vyznačuje se kompaktní zástavbou a širokým úhlovým rozsahem (typicky $360^\circ$).</p>
+                </div>
+                <div style="padding: 0.75rem; background: rgba(56,189,248,0.08); border-left: 3px solid #38bdf8; border-radius: var(--radius-sm);">
+                  <strong style="color: #38bdf8;">Posuvná / Prizmatická vazba (P – Prismatic):</strong>
+                  <p style="font-size: 0.88rem; margin-top: 0.25rem;">Umožňuje přímočarý translační posuv podél jedné osy (lineární vedení, kuličkový šroub nebo ozubený hřeben). Vyniká vysokou tuhostí a přímočarým polohováním.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="display: flex; align-items: center; gap: 0.5rem; color: #38bdf8;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Stručný přehled 5 architektur
+              </h3>
+              <ul class="styled-list" style="margin-top: 0.5rem;">
+                <li><strong>Kartézský (PPP):</strong> 3 kolmé lineární osy $X, Y, Z$. Kvádr. 3D tisk, portály, CNC.</li>
+                <li><strong>Cylindrický / Válcový (RPP):</strong> 1 rotační + 2 posuvné osy. Válcový pracovní prostor.</li>
+                <li><strong>SCARA (RRP):</strong> 2 rotační horizontální klouby + vertikální posuv $Z$. Pick &amp; Place.</li>
+                <li><strong>Kloubový / Antropomorfní (RRR):</strong> 6 rotačních os jako lidská paže. Svařování, lakování.</li>
+                <li><strong>Delta robot (Paralelní):</strong> 3 ramena na společné základně. Extrémní zrychlení až $15\,\text{G}$.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 5: [VIZUALIZACE] Interaktivní průzkumník kinematik
+           ================================================================== -->
+      <section class="slide" id="slide-5" data-title="Průzkumník kinematik">
+        <div class="slide-content">
+          <h2>Interaktivní vizualizace kinematických architektur</h2>
+          <p class="slide-lead">Zvolte typ robota a prozkoumejte jeho kinematické uspořádání, tvar pracovního prostoru a reálnou animaci pohybu os.</p>
+          
+          <div class="kin-explorer-wrap">
+            <div class="kin-selector" id="kinNav">
+              <button class="kin-nav-btn active" data-kin="cartesian">
+                <span>1. Kartézský (PPP)</span>
+                <span class="badge">Portál</span>
+              </button>
+              <button class="kin-nav-btn" data-kin="scara">
+                <span>2. SCARA (RRP)</span>
+                <span class="badge">Montáž</span>
+              </button>
+              <button class="kin-nav-btn" data-kin="articulated">
+                <span>3. Kloubový 6-osý</span>
+                <span class="badge">Svařování</span>
+              </button>
+              <button class="kin-nav-btn" data-kin="delta">
+                <span>4. Delta robot</span>
+                <span class="badge">Balení</span>
+              </button>
+              <button class="kin-nav-btn" data-kin="cylindrical">
+                <span>5. Válcový (RPP)</span>
+                <span class="badge">Zásobník</span>
+              </button>
+            </div>
+
+            <!-- Vizuální schéma a animace robota -->
+            <div class="kin-canvas-box">
+              <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 0.4rem; padding: 0 0.2rem; min-height: 26px; height: 26px; overflow: hidden;">
+                <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap;">
+                  <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #22c55e;"></span>
+                  Živá telemetrie
+                </span>
+                <span id="kinTelemetry" style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; background: rgba(56, 189, 248, 0.1); padding: 0.18rem 0.55rem; border-radius: 4px; border: 1px solid rgba(56, 189, 248, 0.25); white-space: nowrap;">
+                  Inicializace os...
+                </span>
+              </div>
+              <svg id="kinSvgModel" viewBox="0 0 460 300"></svg>
+              <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; width: 100%; justify-content: space-between; align-items: center; z-index: 2; flex-wrap: wrap;">
+                <button class="action-btn" id="btnToggleKinAnim" style="padding: 0.35rem 0.85rem; font-size: 0.82rem;">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span id="btnKinAnimText">Pozastavit animaci</span>
+                </button>
+                <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted);">
+                  <span style="font-size: 0.74rem;">Rychlost:</span>
+                  <button class="kin-speed-btn active" id="btnKinSpeedSlow" data-speed="0.010" title="Zpomalená výuková rychlost">Pomalá (výuka)</button>
+                  <button class="kin-speed-btn" id="btnKinSpeedNormal" data-speed="0.022" title="Normální rychlost">Normální</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Parametry a pracovní prostor -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                  <span class="badge badge-accent" id="kinBadge">Kód vazeb: P - P - P</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);" id="kinTypeLabel">Kartézská kinematika</span>
+                </div>
+                <h3 id="kinTitle" style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.4rem;">Kartézský robot (Gantry / Portálový)</h3>
+                <p id="kinDesc" style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                  Tři nezávislé navzájem kolmé posuvné osy ($X, Y, Z$). Řídicí systém nemusí provádět složité trigonometrické transformace souřadnic – souřadnice v prostoru přímo odpovídají posuvům motorů.
+                </p>
+
+                <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--border-color); margin-bottom: 0.6rem;">
+                  <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Tvar pracovního prostoru (Envelope):</div>
+                  <div id="kinEnvelope" style="font-size: 0.92rem; font-weight: 600; color: #38bdf8; margin-top: 0.2rem;">
+                    Kvádr / Pravoúhlý hranol ($V = X \cdot Y \cdot Z$)
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.82rem;">
+                  <div style="background: rgba(16,185,129,0.08); padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(16,185,129,0.2);">
+                    <strong style="color: #34d399;">Hlavní výhody:</strong>
+                    <div id="kinPros" style="color: var(--text-secondary); margin-top: 0.2rem;">Extrémní tuhost, přesnost, jednoduché řízení.</div>
+                  </div>
+                  <div style="background: rgba(239,68,68,0.08); padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(239,68,68,0.2);">
+                    <strong style="color: #f87171;">Omezení:</strong>
+                    <div id="kinCons" style="color: var(--text-secondary); margin-top: 0.2rem;">Velký obestavěný prostor konstrukce.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); border-top: 1px dashed var(--border-subtle); padding-top: 0.5rem;">
+                Typické nasazení: <strong id="kinApps" style="color: var(--text-primary);">3D tiskárny, CNC frézky, portálové paletizátory</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 6: Stupně volnosti (6 DOF) – Teorie
+           ================================================================== -->
+      <section class="slide" id="slide-6" data-title="Stupně volnosti (6 DOF)">
+        <div class="slide-content">
+          <h2>Stupně volnosti (Degrees of Freedom – DOF)</h2>
+          <p class="slide-lead">Stupeň volnosti představuje počet nezávislých proměnných nutných k jednoznačnému určení polohy a orientace tuhého tělesa v trojrozměrném prostoru.</p>
+          
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="15 19 12 22 9 19"></polyline><polyline points="19 9 22 12 19 15"></polyline><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
+                1. Polohování v prostoru (Translace – 3 DOF)
+              </h3>
+              <p style="font-size: 0.9rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.5rem;">
+                Určuje souřadnice vztažného bodu nástroje <strong>TCP (Tool Center Point)</strong> $[X, Y, Z]$ vůči souřadnicovému systému základny robota:
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="badge-axis-x">Osa X</span>
+                  <span style="font-size: 0.9rem;">Translace dopředu / dozadu ($T_X$ [mm])</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="badge-axis-y">Osa Y</span>
+                  <span style="font-size: 0.9rem;">Translace doleva / doprava ($T_Y$ [mm])</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="badge-axis-z">Osa Z</span>
+                  <span style="font-size: 0.9rem;">Translace nahoru / dolů ($T_Z$ [mm])</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m14 10 4-4-4-4"></path><path d="M18 6H8a4 4 0 0 0-4 4v2"></path></svg>
+                2. Orientace nástroje (Rotace – 3 DOF)
+              </h3>
+              <p style="font-size: 0.9rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.5rem;">
+                Umožňuje natočit chapadlo či svářecí hořák pod libovolným prostorovým úhlem (Eulerovy úhly):
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="badge-axis-x">Roll (Rx)</span>
+                  <span style="font-size: 0.9rem;">Klopení / zkrut kolem podélné osy nástroje [$\pm^\circ$]</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="badge-axis-y">Pitch (Ry)</span>
+                  <span style="font-size: 0.9rem;">Klonění / sklon kolem příčné osy nahoru/dolů [$\pm^\circ$]</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <span class="badge-axis-z">Yaw (Rz)</span>
+                  <span style="font-size: 0.9rem;">Stáčení / vybočení do stran kolem svislé osy [$\pm^\circ$]</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="statement-box" style="margin-top: 1rem; border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.06);">
+            <strong>Didaktická poznámka SPŠ:</strong> Robot s 3 stupni volnosti sice dosáhne do bodu $[X,Y,Z]$, ale nemůže si vybrat směr přístupu. Teprve <strong>6 DOF</strong> umožňuje plnohodnotné prostorové manévrování. Moderní kolaborativní ramena mají často <strong>7 DOF (kinematická redundance)</strong>, což jim dovoluje vyhnout se překážce v prostoru bez pohnutí koncovým nástrojem.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 7: [INTERAKTIVNÍ VIZUALIZACE] Trenažér 6 DOF
+           ================================================================== -->
+      <section class="slide" id="slide-7" data-title="Trenažér 6 DOF">
+        <div class="slide-content">
+          <h2>Interaktivní trenažér 6 stupňů volnosti (DOF)</h2>
+          <p class="slide-lead">Měňte jednotlivé posuvníky a sledujte okamžitou polohovou a úhlovou transformaci koncového bodu nástroje (TCP) s RGB souřadným křížem.</p>
+          
+          <div class="dof-trainer-wrap">
+            <!-- 3D/Izometrický vizualizér -->
+            <div class="dof-view-box">
+              <div style="position: absolute; top: 0.6rem; left: 0.8rem; display: flex; gap: 0.5rem; font-size: 0.75rem;">
+                <span class="badge-axis-x">Osa X (Červená)</span>
+                <span class="badge-axis-y">Osa Y (Zelená)</span>
+                <span class="badge-axis-z">Osa Z (Modrá)</span>
+              </div>
+              <svg id="dofCanvasSvg" viewBox="0 0 400 320" style="width: 100%; height: 100%;"></svg>
+              <div style="position: absolute; bottom: 0.6rem; right: 0.8rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);" id="dofVectorDisplay">
+                TCP: [0, 0, 0, 0°, 0°, 0°]
+              </div>
+            </div>
+
+            <!-- Ovládací posuvníky -->
+            <div class="dof-controls-panel">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                <span style="font-weight: 700; font-size: 0.9rem; color: var(--accent);">Translace (Poloha TCP)</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Rozsah: &plusmn;80 mm</span>
+              </div>
+
+              <div class="slider-row">
+                <span class="slider-label"><span class="badge-axis-x">X</span> Posun</span>
+                <input type="range" id="dofSliderX" min="-80" max="80" value="0" step="1">
+                <span class="slider-val" id="valDofX">0 mm</span>
+              </div>
+
+              <div class="slider-row">
+                <span class="slider-label"><span class="badge-axis-y">Y</span> Posun</span>
+                <input type="range" id="dofSliderY" min="-80" max="80" value="0" step="1">
+                <span class="slider-val" id="valDofY">0 mm</span>
+              </div>
+
+              <div class="slider-row">
+                <span class="slider-label"><span class="badge-axis-z">Z</span> Zdvih</span>
+                <input type="range" id="dofSliderZ" min="-80" max="80" value="0" step="1">
+                <span class="slider-val" id="valDofZ">0 mm</span>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-top: 0.4rem;">
+                <span style="font-weight: 700; font-size: 0.9rem; color: #38bdf8;">Rotace (Orientace nástroje)</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Rozsah: &plusmn;90&deg;</span>
+              </div>
+
+              <div class="slider-row">
+                <span class="slider-label"><span class="badge-axis-x">Rx</span> Roll</span>
+                <input type="range" id="dofSliderRx" min="-90" max="90" value="0" step="1">
+                <span class="slider-val" id="valDofRx">0&deg;</span>
+              </div>
+
+              <div class="slider-row">
+                <span class="slider-label"><span class="badge-axis-y">Ry</span> Pitch</span>
+                <input type="range" id="dofSliderRy" min="-90" max="90" value="0" step="1">
+                <span class="slider-val" id="valDofRy">0&deg;</span>
+              </div>
+
+              <div class="slider-row">
+                <span class="slider-label"><span class="badge-axis-z">Rz</span> Yaw</span>
+                <input type="range" id="dofSliderRz" min="-90" max="90" value="0" step="1">
+                <span class="slider-val" id="valDofRz">0&deg;</span>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem; margin-top: 0.4rem; flex-wrap: wrap;">
+                <button class="action-btn" id="btnDofReset">Výchozí HOME</button>
+                <button class="action-btn" id="btnDofWeld">Předvolba: Svařování lemu</button>
+                <button class="action-btn" id="btnDofInsert">Předvolba: Montáž shora</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 8: Pohonné jednotky a mechanika kloubů
+           ================================================================== -->
+      <section class="slide" id="slide-8" data-title="Pohony a mechanika kloubu">
+        <div class="slide-content">
+          <h2>Pohonné jednotky a mechanika kloubu robota</h2>
+          <p class="slide-lead">Každý kloub průmyslového manipulátoru integruje synchronní servomotor, absolutní enkodér, elektromagnetickou brzdu a bezvůlovou převodovku Harmonic Drive.</p>
+          
+          <div class="hd-visualizer-wrap">
+            <div class="hd-canvas-box">
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase;">
+                Řez kloubem: Harmonická převodovka (Harmonic Drive)
+              </div>
+              <svg id="harmonicDriveSvg" viewBox="0 0 300 240" style="width: 100%; height: 210px;"></svg>
+              <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem;">
+                <button class="action-btn active" id="btnHdCompWave">1. Wave Generator</button>
+                <button class="action-btn" id="btnHdCompFlex">2. Flexspline</button>
+                <button class="action-btn" id="btnHdCompCirc">3. Circular Spline</button>
+              </div>
+            </div>
+
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge badge-accent" id="hdPartBadge">Komponenta č. 1 kloubu</span>
+                <h3 id="hdPartTitle" style="color: var(--accent); font-size: 1.2rem; margin-top: 0.4rem;">Vlnový generátor (Wave Generator)</h3>
+                <p id="hdPartDesc" style="font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.4rem;">
+                  Eliptické jádro s tenkostěnným pružným kuličkovým ložiskem na vnějším obvodu. Je nasazeno přímo na výstupní hřídel střídavého servomotoru a svou rotací deformuje pružné kolo Flexspline.
+                </p>
+
+                <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.75rem;">
+                  <strong style="color: #38bdf8; font-size: 0.88rem;">Proč je Harmonic Drive klíčem robotiky?</strong>
+                  <ul class="styled-list" style="margin-top: 0.35rem; font-size: 0.84rem;">
+                    <li><strong>Nulová vůle v zubech (Zero Backlash):</strong> Pružný věnec je v trvalém předepnutí, což zaručuje opakovatelnou přesnost polohování až $\pm 0{,}02\,\text{mm}$.</li>
+                    <li><strong>Obrovský převodový poměr v jediném stupni:</strong> Typicky $i = 50:1$ až $160:1$ při minimální hmotnosti a rozměrech.</li>
+                    <li><strong>Bezpečnostní pružinová brzda:</strong> Při výpadku 24 V okamžitě mechanicky sevře hřídel a rameno nespadne gravitační silou.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-muted); border-top: 1px dashed var(--border-subtle); padding-top: 0.5rem; margin-top: 0.5rem;">
+                Poznámka: Pro největší zatížení v základně se alternativně používají <strong>cykloidní převodovky (RV / Nabtesco)</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 9: [VIZUALIZACE] Koncové efektory a chapadla
+           ================================================================== -->
+      <section class="slide" id="slide-9" data-title="Koncové efektory a chapadla">
+        <div class="slide-content">
+          <h2>Koncové efektory (EOAT – End of Arm Tooling)</h2>
+          <p class="slide-lead">Robot bez nástroje je pouhým manipulátorem. Koncový efektor je nástrojem, který přichází do přímého kontaktu s obrobkem a realizuje technologickou operaci.</p>
+          
+          <div class="effectors-wrap">
+            <div class="kin-selector" id="effectorNav">
+              <button class="kin-nav-btn active" data-eff="pneumatic">
+                <span>Čelisťové chapadlo</span>
+                <span class="badge">Mechanické</span>
+              </button>
+              <button class="kin-nav-btn" data-eff="vacuum">
+                <span>Vakuová přísavka</span>
+                <span class="badge">Venturi</span>
+              </button>
+              <button class="kin-nav-btn" data-eff="magnetic">
+                <span>Magnetický úchyt</span>
+                <span class="badge">Feromagnet</span>
+              </button>
+              <button class="kin-nav-btn" data-eff="welding">
+                <span>Svařovací hořák</span>
+                <span class="badge">MIG / Laser</span>
+              </button>
+              <button class="kin-nav-btn" data-eff="atc">
+                <span>Rychlovýměník (ATC)</span>
+                <span class="badge">Automat</span>
+              </button>
+            </div>
+
+            <!-- Interaktivní vizualizér chapadla -->
+            <div class="content-card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center;">
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-md); padding: 1rem; min-height: 280px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid var(--border-color); position: relative;">
+                <svg id="effectorSvg" viewBox="0 0 260 220" style="width: 100%; height: 210px;"></svg>
+                <button class="action-btn" id="btnEffectorAction" style="margin-top: 0.5rem;">
+                  <span id="effectorBtnLabel">Sevřít čelisti chapadla</span>
+                </button>
+              </div>
+
+              <div>
+                <span class="badge badge-accent" id="effectorBadge">Typ: Mechanické sevření</span>
+                <h3 id="effectorTitle" style="color: var(--accent); font-size: 1.25rem; margin-top: 0.4rem;">Dvoudrápové paralelní chapadlo</h3>
+                <p id="effectorDesc" style="font-size: 0.9rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.5rem;">
+                  Nejrozšířenější typ efektoru v průmyslu. Čelisti se pohybují synchronně proti sobě po kuličkovém lineárním vedení. Pohon je buď pneumatický (dvoučinný válec) nebo servoelektrický s přesnou regulací sevření a detekcí rozměru dílu.
+                </p>
+
+                <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.75rem; border: 1px solid var(--border-color); margin-top: 0.75rem;">
+                  <strong style="color: #38bdf8; font-size: 0.86rem;">Technické parametry a aplikace:</strong>
+                  <ul class="styled-list" id="effectorSpecs" style="margin-top: 0.35rem; font-size: 0.84rem;">
+                    <li>Uchopovací síla: $50\,\text{N}$ až $2500\,\text{N}$</li>
+                    <li>Prsty vyrobené z hliníku nebo 3D tisku přesně dle profilu součástky</li>
+                    <li>Vhodné pro obrábění dílů, montážní linky a třídění</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 10: Bezpečnost v průmyslu – Normy a prvky
+           ================================================================== -->
+      <section class="slide" id="slide-10" data-title="Bezpečnost a normy">
+        <div class="slide-content">
+          <h2>Bezpečnostní systémy v průmyslové robotice</h2>
+          <p class="slide-lead">Průmyslový robot manipuluje se stovkami kilogramů při rychlostech přesahujících $2\,\text{m/s}$. Bezpečnostní architektura je navržena tak, aby žádná jednotlivá závada nevedla k ohrožení člověka.</p>
+          
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: #ef4444; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Normativní rámec (ISO standardy)
+              </h3>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.9rem;">
+                <li><strong>ČSN EN ISO 10218-1/2:</strong> Požadavky na bezpečnost průmyslových robotů a jejich integraci do automatizovaných výrobních buněk.</li>
+                <li><strong>ČSN EN ISO 13849-1:</strong> Bezpečnostní části řídicích systémů (SRP/CS). Vyžaduje úroveň vlastností <strong>PL d / PL e</strong> (Performance Level) a bezpečnostní architekturu Kategorie 3 nebo 4 (dvoukanálová redundance).</li>
+                <li><strong>ISO/TS 15066:</strong> Kolaborativní roboti – limity biomechanického zatížení těla operátora (tlak a síla při případném dotyku).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon><line x1="16" y1="12" x2="12" y2="12"></line></svg>
+                Klíčové bezpečnostní funkce pohonů
+              </h3>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.9rem;">
+                <li><strong>STO (Safe Torque Off):</strong> Bezpečné odpojení točivého momentu motoru. Hardwarové odpojení výkonových tranzistorů invertoru (stop kategorie 0).</li>
+                <li><strong>SS1 / SS2 (Safe Stop 1/2):</strong> Řízené zabrzdění po bezpečné rampě s následným aktivováním STO nebo bezpečného klidového stavu (SOS).</li>
+                <li><strong>SLS (Safely-Limited Speed):</strong> Omezení obvodové rychlosti robota na max. $250\,\text{mm/s}$ při ručním navádění nebo seřizování.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="summary-grid" style="margin-top: 1rem; grid-template-columns: repeat(3, 1fr);">
+            <div class="content-card" style="text-align: center; padding: 0.75rem;">
+              <strong style="color: #fbbf24;">Optické závory (Light Curtains)</strong>
+              <p style="font-size: 0.82rem; margin-top: 0.3rem;">Svazek infračervených paprsků. Přerušení rukou operátora do 20 ms vyšle stop signál.</p>
+            </div>
+            <div class="content-card" style="text-align: center; padding: 0.75rem;">
+              <strong style="color: #f87171;">Zámky dveří s RFID klíčem</strong>
+              <p style="font-size: 0.82rem; margin-top: 0.3rem;">Dveře do buňky nelze otevřít, dokud robot úplně nezastaví a nevypne pohony.</p>
+            </div>
+            <div class="content-card" style="text-align: center; padding: 0.75rem;">
+              <strong style="color: #38bdf8;">Laserové skenery zón</strong>
+              <p style="font-size: 0.82rem; margin-top: 0.3rem;">Dynamické měření vzdálenosti. Umožňuje definovat žlutou varovnou a červenou stop zónu.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 11: [INTERAKTIVNÍ VIZUALIZACE] Bezpečnostní buňka & Cobot
+           ================================================================== -->
+      <section class="slide" id="slide-11" data-title="Simulátor bezpečnostní buňky">
+        <div class="slide-content">
+          <h2>Interaktivní simulátor robotické buňky a kolaborace</h2>
+          <p class="slide-lead">Vyzkoušejte reakci laserového zónového skeneru a optických bezpečnostních prvků při přiblížení pracovníka k běžícímu robotu.</p>
+          
+          <div class="safety-sim-wrap">
+            <!-- Půdorys buňky -->
+            <div class="safety-cell-box">
+              <svg id="safetyCellSvg" viewBox="0 0 420 320"></svg>
+            </div>
+
+            <!-- Ovládání situací a vysvětlení -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span class="safety-status-badge status-ok" id="safetyBadge">
+                    <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                    Stav: Automatický cyklus (100 %)
+                  </span>
+                  <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);" id="safetySpeedDisplay">V = 1800 mm/s</span>
+                </div>
+
+                <h3 id="safetyTitle" style="color: var(--text-primary); font-size: 1.15rem; margin-bottom: 0.4rem;">Provoz bez narušení ochranného pole</h3>
+                <p id="safetyDesc" style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary);">
+                  Operátor se nachází v bezpečné zelené zóně mimo dosah ramene. Robot pracuje plnou výrobní rychlostí a bezpečnostní maják svítí zeleně.
+                </p>
+
+                <div style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                  <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Simulovat událost v buňce:</div>
+                  <button class="action-btn active" id="btnSimOk">1. Operátor v bezpečné zóně (Běžný chod)</button>
+                  <button class="action-btn" id="btnSimWarn">2. Vstup do žluté varovné zóny (Zpomalení na 20 %)</button>
+                  <button class="action-btn" id="btnSimStop">3. Narušení červené stop zóny (Okamžitý E-STOP STO)</button>
+                  <button class="action-btn" id="btnSimCobot">4. Přepnout na Cobota (Práce po boku člověka)</button>
+                </div>
+              </div>
+
+              <div style="margin-top: 0.75rem; background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--border-color); font-size: 0.84rem; line-height: 1.45;" id="safetyNote">
+                <strong style="color: var(--accent);">Princip zónového skeneru:</strong> Laserový paprsek rotuje v rovině podlahy a měří dobu odrazu (ToF). Umožňuje bezkontaktní plynulé přechody mezi rychlým a bezpečným pomalým režimem.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 12: Shrnutí tématu a kontrolní otázky
+           ================================================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a prověrka">
+        <div class="slide-content">
+          <h2>Shrnutí tématu a kontrolní otázky (SPŠ test)</h2>
+          <p class="slide-lead">Ověřte si porozumění látce o kinematice, stupních volnosti, pohonech a bezpečnosti manipulátorů. Kliknutím na otázku zobrazíte správné řešení.</p>
+          
+          <div class="grid-2" style="margin-top: 0.5rem;">
+            <div>
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>1. Kdo poprvé vymyslel slovo robot a jaký je jeho původ?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  Slovo vymyslel český malíř a spisovatel <strong>Josef Čapek</strong> pro divadelní hru svého bratra <strong>Karla Čapka</strong> <em>R.U.R. (Rossum's Universal Robots)</em> z roku 1920. Vychází ze staročeského slova <em>robota</em> (nevolnická těžká práce, lopotná služba na panském).
+                </div>
+              </div>
+
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>2. Jaký je rozdíl mezi kartézským a SCARA robotem?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  <strong>Kartézský robot (PPP):</strong> Má 3 přímočaré lineární osy pohybující se v pravoúhlém souřadnicovém systému (kvádrový prostor, vysoká tuhost, 3D tiskárny/CNC).<br>
+                  <strong>SCARA robot (RRP):</strong> Má dvě horizontální rotační osy a vertikální posuv. Je selektivně poddajný v horizontální rovině a velmi tuhý ve svislé ose, ideální pro rychlou montáž shora (Pick &amp; Place).
+                </div>
+              </div>
+
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>3. Proč má tuhé těleso v prostoru právě 6 stupňů volnosti?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  Tuhé těleso v 3D prostoru vyžaduje <strong>3 translační posuny</strong> ($T_X, T_Y, T_Z$) pro určení přesné pozice koncového bodu nástroje (TCP) a <strong>3 prostorové rotace</strong> (Roll, Pitch, Yaw) pro libovolné natočení nástroje vůči obrobku.
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>4. Proč se v kloubech robotů používá převodovka Harmonic Drive?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  Díky pružnému deformovatelnému kolu (Flexspline) v eliptickém ložisku má převodovka <strong>nulovou vůli v zubech (Zero Backlash)</strong>, vysokou torzní tuhost a umožňuje převodový poměr až $160:1$ v jediném kompaktním stupni bez nutnosti složitého soukolí.
+                </div>
+              </div>
+
+              <div class="qa-card" onclick="this.classList.toggle('open')">
+                <div class="qa-question">
+                  <span>5. Jak funguje zónový laserový skener v bezpečnostní buňce?</span>
+                  <svg class="icon qa-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="qa-answer">
+                  Skener měří dobu letu laserového paprsku (ToF). Rozlišuje <strong>žlutou varovnou zónu</strong> (při vstupu člověka robot zpomalí na bezpečnou rychlost pod $250\,\text{mm/s}$) a <strong>červenou ochrannou zónu</strong> (při narušení vyšle signál STO pro okamžité nouzové zastavení bez nebezpečného doběhu).
+                </div>
+              </div>
+
+              <div class="content-card" style="border-left: 3px solid var(--accent); margin-top: 0.5rem; padding: 0.85rem;">
+                <h4 style="color: var(--accent); margin-bottom: 0.3rem;">Navazující výukové téma</h4>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+                  V tématu <strong>030: Užití mechatronických systémů v praxi</strong> prozkoumáme konkrétní mechatronická řešení v moderních automobilech (ABS, ESP, aktivní podvozky) a automatických výrobních linkách.
+                </p>
+                <div style="margin-top: 0.6rem;">
+                  <a href="../030-Uziti-mechatroniky/index.html" class="action-btn">Přejít na Téma 030 &rarr;</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Standardní SPŠ spodní ovládací lišta -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../010-Zakladni-pojmy/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 010 Základní pojmy mechatroniky">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu KYME">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../030-Uziti-mechatroniky/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 030 Užití mechatronických systémů">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <!-- Vysouvací osnova prezentace (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Robotika
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální skript prezentačního frameworku SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Specifický interaktivní skript pro Téma 020: Robotika -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ====================================================================
+         1. Interaktivní časová osa historie robotiky
+         ==================================================================== */
+      const timelineData = {
+        '1920': {
+          badge: 'Roku 1920 • Premiéra 1921',
+          heading: 'R.U.R. – Rossum\'s Universal Robots',
+          text: 'Spisovatel <strong>Karel Čapek</strong> ve své divadelní hře R.U.R. poprvé představil umělé dělníky. Původně je chtěl nazvat latinským slovem <em>laboři</em> (z labor = práce). Jeho bratr, malíř a spisovatel <strong>Josef Čapek</strong>, který zrovna maloval na štaflích, mu řekl: <em>„Tak jim říkej roboti.“</em> Slovo vychází ze slova <strong>robota</strong> (lopota, nevolnická těžká práce na panském).',
+          note: '<strong>Čapkův vizionářský odkaz:</strong> Čapkovi roboti byli biologičtí androidi stvoření k nahrazení namáhavé lidské práce. Teprve pozdější sci-fi literatura z nich učinila mechanické kovové stroje.',
+          details: 'Hra měla obrovský mezinárodní úspěch v Londýně, New Yorku i Tokiu. Pojem „robot“ byl během několika let přejat do všech světových jazyků a stal se základním kamenem nového technického oboru.',
+          code: 'Etymologie: praslovanské *orbota &rarr; staročeské robota &rarr; robot'
+        },
+        '1942': {
+          badge: 'Roku 1942 • Sci-fi a vědecká etika',
+          heading: 'Isaac Asimov – Zákony robotiky',
+          text: 'V povídce <em>Runaround (Hra na honěnou)</em> formuloval slavný biochemik a spisovatel <strong>Isaac Asimov</strong> Tři zákony robotiky. Asimov také jako první použil slovo <strong>robotika</strong> jako označení vědního oboru zabývajícího se konstrukcí a řízením robotů.',
+          note: '<strong>Etický pilíř:</strong> Zákony řešily bezpečnost člověka a morální odpovědnost tvůrců ještě dříve, než byl postaven první reálný průmyslový manipulátor.',
+          details: 'Pravidla byla navržena jako zabudovaná bezpečnostní pojistka v tzv. pozitronovém mozku každého stroje. V 80. letech je Asimov doplnil ještě o nultý zákon na ochranu lidstva.',
+          code: 'Terminologie: Isaac Asimov poprvé definoval obor „robotika“ (robotics)'
+        },
+        '1961': {
+          badge: 'Roku 1961 • Zrození průmyslové robotiky',
+          heading: 'Unimate – První průmyslový robot',
+          text: 'Vynálezci <strong>George Devol</strong> a <strong>Joseph Engelberger</strong> (nazývaný „otec robotiky“) sestrojili první hydraulický manipulátor <strong>Unimate</strong>. První nasazení proběhlo v automobilce General Motors v Trentonu (New Jersey) na nebezpečném pracovišti manipulace s rozžhavenými odlitky z tlakového lití.',
+          note: '<strong>Průlom v bezpečnosti:</strong> Robot převzal životu nebezpečnou práci v toxickém a horkém prostředí, kde hrozilo popálení a úrazy pracovníků.',
+          details: 'Unimate vážil 1,5 tuny a příkazy četl z magnetického bubnu. Úspěch vedl k založení společnosti Unimation – první komerční firmy vyrábějící roboty.',
+          code: 'Patent US 2,988,237: „Programmed Article Transfer“ (George Devol, 1954/1961)'
+        },
+        '1978': {
+          badge: '70. léta • Elektromechanická revoluce',
+          heading: 'SCARA & KUKA FAMULUS',
+          text: 'Roku 1973 představila německá <strong>KUKA</strong> robot FAMULUS – první manipulátor s 6 čistě elektromechanicky poháněnými osami (konec netěsnící hydrauliky). V roce 1978 vyvinul profesor <strong>Hiroshi Makino</strong> na univerzitě v Yamanashi koncepci <strong>SCARA</strong> pro rychlou montáž elektroniky.',
+          note: '<strong>Kompaktní servopohony:</strong> Přechod na střídavá serva a harmonické převodovky umožnil dosáhnout milimetrové přesnosti při vysokých rychlostech.',
+          details: 'V téže době představila švédská firma ASEA (dnešní ABB) robot IRB 6 s plně mikroprocesorovým řízením Intel 8008 s ukládáním programů v paměti RAM.',
+          code: 'Architektury: KUKA FAMULUS (6-osý kloubový) • SCARA (RRP Selektivní poddajnost)'
+        },
+        '2008': {
+          badge: 'Současnost • Průmysl 4.0 & Coboti',
+          heading: 'Kolaborativní roboti (Coboti) a AI',
+          text: 'V roce 2008 představila dánská firma <strong>Universal Robots</strong> prvního komerčního kolaborativního robota UR5. Coboti jsou vybaveni senzory momentu v každém kloubu a pokročilým bezpečnostním monitoringem, takže mohou bezpečně pracovat bez ochranné klece přímo po boku člověka.',
+          note: '<strong>Moderní trendy:</strong> Integrace 3D strojového vidění, adaptivní uchopovače, mobilní robotické platformy (AMR) a učení dráhy pouhým ručním vedením.',
+          details: 'Dnešní mechatronické robotické systémy jsou propojeny přes průmyslový Ethernet (Profinet, EtherCAT) s podnikovými systémy MES a cloudovými digitálními dvojčaty.',
+          code: 'Norma ISO/TS 15066: Specifikace limitů sil a energie při kontaktu cobota s člověkem'
+        }
+      };
+
+      const timelineNav = document.getElementById('timelineNav');
+      if (timelineNav) {
+        timelineNav.addEventListener('click', (e) => {
+          const btn = e.target.closest('.timeline-tab-btn');
+          if (!btn) return;
+          const era = btn.getAttribute('data-era');
+          const data = timelineData[era];
+          if (!data) return;
+
+          timelineNav.querySelectorAll('.timeline-tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const badge = document.getElementById('timelineBadge');
+          const heading = document.getElementById('timelineHeading');
+          const text = document.getElementById('timelineText');
+          const note = document.getElementById('timelineNote');
+          const details = document.getElementById('timelineDetails');
+          const code = document.getElementById('timelineCode');
+
+          if (badge) badge.textContent = data.badge;
+          if (heading) heading.innerHTML = data.heading;
+          if (text) text.innerHTML = data.text;
+          if (note) note.innerHTML = data.note;
+          if (details) details.innerHTML = data.details;
+          if (code) code.innerHTML = data.code;
+        });
+      }
+
+      /* ====================================================================
+         2. Interaktivní přepínač Asimovových zákonů
+         ==================================================================== */
+      const asimovData = {
+        '0': {
+          badge: 'Nadřazený etický axiom (1985)',
+          heading: '0. Nultý zákon robotiky',
+          quote: '„Robot nesmí ublížit lidstvu nebo svou nečinností dopustit, aby lidstvu bylo ublíženo.“',
+          explanation: 'Asimov tento zákon zformuloval později v románu Roboti a impérium. Zjistil, že ochrana konkrétního jednotlivce (1. zákon) nesmí stát v cestě přežití celé lidské rasy. Všechny ostatní zákony jsou tomuto nultému pravidlu striktně podřízeny.',
+          norms: '<strong>Norma ISO 10218 a systémová bezpečnost:</strong> V moderním pojetí odpovídá globálnímu posouzení rizik celého průmyslového závodu a kritické infrastruktury, kde výpadek nesmí způsobit ekologickou havárii či ohrožení obyvatelstva.'
+        },
+        '1': {
+          badge: 'Základní pravidlo ochrany člověka (1942)',
+          heading: '1. První zákon robotiky',
+          quote: '„Robot nesmí ublížit člověku nebo svou nečinností dopustit, aby člověku bylo ublíženo (pokud to neodporuje nultému zákonu).“',
+          explanation: 'První zákon dává lidskému životu a zdraví absolutní přednost před čímkoliv jiným. Zároveň zakazuje „hřích nečinnosti“ – pokud robot vidí, že člověku hrozí bezprostřední nebezpečí, je povinen zasáhnout.',
+          norms: '<strong>Norma ČSN EN ISO 13849-1 (PL e / Cat 4):</strong> Bezpečnostní funkce strojního zařízení (nouzové zastavení STO, světelné závory) musí mít nejvyšší prioritu a spolehlivost. Pohon se v případě narušení zóny okamžitě odpojí bez ohledu na probíhající technologický proces.'
+        },
+        '2': {
+          badge: 'Pravidlo ovladatelnosti a poslušnosti (1942)',
+          heading: '2. Druhý zákon robotiky',
+          quote: '„Robot musí uposlechnout příkazů člověka, kromě případů, kdy jsou tyto příkazy v rozporu s prvním zákonem.“',
+          explanation: 'Robot je stroj a sluha člověka. Nemá vlastní vůli odporovat zadanému programu. Pokud by však člověk nařídil robotovi ublížit jiné osobě, robot musí příkaz okamžitě odmítnout.',
+          norms: '<strong>Kybernetická bezpečnost a validace povelů:</strong> Řídicí systémy průmyslových buněk odmítnou povely z operátorského panelu (HMI) nebo nadřazeného PLC, pokud by vedly k pohybu s otevřeným bezpečnostním krytem nebo překročení limitů rychlosti (SLS).'
+        },
+        '3': {
+          badge: 'Pravidlo sebeochrany a integrity (1942)',
+          heading: '3. Třetí zákon robotiky',
+          quote: '„Robot musí chránit svou existenci, pokud tato ochrana není v rozporu s prvním nebo druhým zákonem.“',
+          explanation: 'Stroj má chránit svou mechanickou a elektronickou integritu před poškozením (např. před přehřátím nebo nárazem do zdi). Tato sebeochrana však musí okamžitě ustoupit, pokud je třeba zachránit člověka nebo splnit platný lidský příkaz.',
+          norms: '<strong>Hardware monitoring a termoochrana:</strong> Měření proudu servomotorů, teplotní čidla vinutí a mechanické omezovače točivého momentu chrání rameno před destrukcí, avšak nikdy na úkor bezpečnosti personálu.'
+        }
+      };
+
+      const asimovSelector = document.getElementById('asimovSelector');
+      if (asimovSelector) {
+        asimovSelector.addEventListener('click', (e) => {
+          const btn = e.target.closest('.asimov-item-btn');
+          if (!btn) return;
+          const law = btn.getAttribute('data-law');
+          const data = asimovData[law];
+          if (!data) return;
+
+          asimovSelector.querySelectorAll('.asimov-item-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const badge = document.getElementById('asimovBadge');
+          const heading = document.getElementById('asimovHeading');
+          const quote = document.getElementById('asimovQuote');
+          const exp = document.getElementById('asimovExplanation');
+          const norms = document.getElementById('asimovNorms');
+
+          if (badge) badge.textContent = data.badge;
+          if (heading) heading.textContent = data.heading;
+          if (quote) quote.textContent = data.quote;
+          if (exp) exp.textContent = data.explanation;
+          if (norms) norms.innerHTML = data.norms;
+        });
+      }
+
+      /* ====================================================================
+         3. Interaktivní průzkumník kinematických struktur (Slide 5)
+         ==================================================================== */
+      const kinData = {
+        cartesian: {
+          badge: 'Kód vazeb: P - P - P',
+          type: 'Kartézská kinematika',
+          title: 'Kartézský robot (Gantry / Portálový)',
+          desc: 'Tři nezávislé navzájem kolmé posuvné osy (X, Y, Z). Řídicí systém nemusí provádět složité inverzní kinematické transformace – souřadnice v prostoru přímo odpovídají posuvům lineárních motorů.',
+          envelope: 'Kvádr / Pravoúhlý hranol (V = X · Y · Z)',
+          pros: 'Extrémní tuhost, vysoká nosnost, přímočaré polohování, snadné škálování rozměrů.',
+          cons: 'Velké vnější rozměry rámu, nemožnost obejít překážku z boku.',
+          apps: '3D tiskárny, velkoformátové CNC frézky, portálové zakladače, řezání vodním paprskem.',
+          draw: drawCartesianModel
+        },
+        scara: {
+          badge: 'Kód vazeb: R - R - P',
+          type: 'Selektivně poddajné rameno',
+          title: 'SCARA robot (Selective Compliance Articulated)',
+          desc: 'Dva rotační klouby s paralelními vertikálními osami otáčení pohybují ramenem v horizontální rovině, zatímco třetí osa zajišťuje svislý translační zdvih Z a čtvrtá rotaci zápěstí.',
+          envelope: 'Válec s ledvinovým průřezem (plochý pracovní prostor)',
+          pros: 'Bleskurychlý pohyb v rovině X-Y, vysoká vertikální tuhost pro nalisování součástek.',
+          cons: 'Omezený pracovní prostor za ramenem, nelze naklápět nástroj do stran.',
+          apps: 'Vysokorychlostní montáž elektroniky (Pick & Place), osazování DPS, balení léků.',
+          draw: drawScaraModel
+        },
+        articulated: {
+          badge: 'Kód vazeb: R - R - R ... (6 os)',
+          type: 'Antropomorfní kinematika',
+          title: 'Kloubový antropomorfní robot (6-osý)',
+          desc: 'Šest rotačních kloubů napodobujících anatomii lidské paže (pas, rameno, loket a 3osé kulové zápěstí). Poskytuje plných 6 stupňů volnosti pro manipulaci pod jakýmkoliv úhlem.',
+          envelope: 'Koule / Sférická obálka s vnitřní dutinou',
+          pros: 'Maximální flexibilita, dosah za i pod sebe, obcházení prostorových překážek.',
+          cons: 'Složitá inverzní kinematika, pokles tuhosti při maximálním vyložení ramene.',
+          apps: 'Bodové a obloukové svařování karoserií, lakování, obsluha CNC, paletizace.',
+          draw: drawArticulatedModel
+        },
+        delta: {
+          badge: 'Paralelní kinematika (3 paralelní ramena)',
+          type: 'Paralelní mechanismus (Spider)',
+          title: 'Delta robot (Vysokorychlostní třídění)',
+          desc: 'Tři lehká kloubová ramena vycházejí ze společné stropní základny a spojují se na malé koncové plošině. Motory jsou umístěny pevně na základně, takže se nepohybují.',
+          envelope: 'Komolý kužel / Kupole pod stropní základnou',
+          pros: 'Extrémní dynamika a zrychlení až 15G díky minimální pohybující se hmotě.',
+          cons: 'Velmi malá nosnost (typicky do 2–5 kg), omezená výška zdvihu.',
+          apps: 'Vysokorychlostní balení potravin (sušenky, čokolády), třídění léků a drobných dílů.',
+          draw: drawDeltaModel
+        },
+        cylindrical: {
+          badge: 'Kód vazeb: R - P - P',
+          type: 'Cylindrická kinematika',
+          title: 'Válcový robot (Cylindrický)',
+          desc: 'Jedna rotační základna (úhel Theta) doplněná o vertikální lineární zdvih (Z) a radiální výsuv ramene (R). Efektor se pohybuje ve válcových polárních souřadnicích.',
+          envelope: 'Válec nebo mezikruží (dutý válec)',
+          pros: 'Jednoduché mechanické provedení, vysoká tuhost při zataženém rameni.',
+          cons: 'Slepý prostor kolem vlastní osy otáčení, horší přístup do stísněných prostor.',
+          apps: 'Zakládání polotovarů do rotačních obráběcích center, manipulace s křemíkovými wafery.',
+          draw: drawCylindricalModel
+        }
+      };
+
+      let currentKin = 'cartesian';
+      let kinAnimActive = true;
+      let kinAngle = 0;
+      let kinSpeed = 0.010; // Pomalé, didaktické výukové tempo
+      const kinSvg = document.getElementById('kinSvgModel');
+      const kinTelemetry = document.getElementById('kinTelemetry');
+
+      /* 1. Kartézský robot (PPP - Gantry / Portál) */
+      function drawCartesianModel(t) {
+        if (!kinSvg) return;
+        const uX = 0.5 + 0.5 * Math.sin(t);
+        const uY = 0.5 + 0.5 * Math.cos(t * 0.85);
+        const uZ = 0.5 + 0.5 * Math.sin(t * 1.5 + 0.8);
+
+        const xBridge = 100 + 200 * uX;
+        const cX = xBridge + 35 * (1 - uY);
+        const cY = 40 + 25 * uY;
+        const zStroke = 25 + 75 * uZ;
+        const tcpY = cY + 15 + zStroke;
+
+        kinSvg.innerHTML = `
+          <defs>
+            <linearGradient id="gantryGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#0891b2"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+            <linearGradient id="quillGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#64748b"/>
+              <stop offset="100%" stop-color="#cbd5e1"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Pracovní plocha a stanice -->
+          <line x1="40" y1="265" x2="420" y2="265" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+          <!-- Vstupní paleta (vlevo) -->
+          <rect x="80" y="245" width="55" height="18" fill="#1e293b" stroke="#475569" rx="2"/>
+          <text x="107" y="258" fill="var(--text-muted)" font-size="9" text-anchor="middle">Paleta A</text>
+          <!-- Výstupní dopravník (vpravo) -->
+          <rect x="325" y="245" width="70" height="18" fill="#1e293b" stroke="#475569" rx="2"/>
+          <text x="360" y="258" fill="var(--text-muted)" font-size="9" text-anchor="middle">Dopravník B</text>
+
+          <!-- Pracovní prostor: Kvádr (Dashed obálka) -->
+          <polygon points="75,70 380,70 415,45 110,45" fill="rgba(6, 182, 212, 0.03)" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <polygon points="75,235 380,235 415,210 110,210" fill="none" stroke="rgba(56, 189, 248, 0.2)" stroke-dasharray="4 4"/>
+          <line x1="75" y1="70" x2="75" y2="235" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <line x1="380" y1="70" x2="380" y2="235" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <line x1="110" y1="45" x2="110" y2="210" stroke="rgba(56, 189, 248, 0.15)" stroke-dasharray="4 4"/>
+          <line x1="415" y1="45" x2="415" y2="210" stroke="rgba(56, 189, 248, 0.15)" stroke-dasharray="4 4"/>
+          <text x="375" y="115" fill="rgba(56, 189, 248, 0.6)" font-size="9" font-family="sans-serif">Kvádr: X × Y × Z</text>
+
+          <!-- Pevný portálový rám -->
+          <!-- Zadní sloupy a kolejnice -->
+          <line x1="110" y1="45" x2="110" y2="225" stroke="#1e293b" stroke-width="6"/>
+          <line x1="415" y1="45" x2="415" y2="225" stroke="#1e293b" stroke-width="6"/>
+          <line x1="110" y1="45" x2="415" y2="45" stroke="#334155" stroke-width="7"/>
+          <!-- Přední sloupy a kolejnice -->
+          <line x1="75" y1="70" x2="75" y2="260" stroke="#334155" stroke-width="8"/>
+          <line x1="380" y1="70" x2="380" y2="260" stroke="#334155" stroke-width="8"/>
+          <line x1="75" y1="70" x2="380" y2="70" stroke="#475569" stroke-width="8"/>
+
+          <!-- Pohyblivý most (Osa X - Podélný posuv P_X) -->
+          <line x1="${xBridge}" y1="70" x2="${xBridge + 35}" y2="45" stroke="url(#gantryGrad)" stroke-width="12" stroke-linecap="round"/>
+          <!-- Pojezdové bloky mostu -->
+          <rect x="${xBridge - 12}" y="62" width="24" height="16" fill="var(--accent)" rx="3"/>
+          <rect x="${xBridge + 25}" y="38" width="20" height="14" fill="#0e7490" rx="2"/>
+          <!-- Indikátor osy X -->
+          <rect x="${xBridge - 42}" y="18" width="84" height="17" rx="3" fill="#0f172a" stroke="var(--accent)" stroke-width="1"/>
+          <text x="${xBridge}" y="30" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="middle">↔ Osa X (P₁)</text>
+
+          <!-- Příčný vozík (Osa Y - Příčný pojezd P_Y) -->
+          <rect x="${cX - 14}" y="${cY - 10}" width="28" height="20" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5" rx="3"/>
+          <rect x="${cX + 12}" y="${cY - 16}" width="72" height="16" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+          <text x="${cX + 48}" y="${cY - 4}" fill="#38bdf8" font-size="9.5" font-weight="700" text-anchor="middle">↗ Osa Y (P₂)</text>
+
+          <!-- Svislá pinola (Osa Z - Zdvih P_Z) -->
+          <rect x="${cX - 5}" y="${cY + 10}" width="10" height="${zStroke + 15}" fill="url(#quillGrad)" stroke="#475569" rx="2"/>
+          <!-- Zoubkování / měřítko pinoly -->
+          ${[0, 15, 30, 45, 60, 75].filter(p => p < zStroke).map(p => `
+            <line x1="${cX - 4}" y1="${cY + 15 + p}" x2="${cX + 4}" y2="${cY + 15 + p}" stroke="#334155" stroke-width="1.5"/>
+          `).join('')}
+          <rect x="${cX - 82}" y="${cY + 18}" width="72" height="16" rx="3" fill="#0f172a" stroke="#818cf8" stroke-width="1"/>
+          <text x="${cX - 46}" y="${cY + 30}" fill="#818cf8" font-size="9.5" font-weight="700" text-anchor="middle">↕ Osa Z (P₃)</text>
+
+          <!-- Koncové chapadlo (Efektor) -->
+          <rect x="${cX - 12}" y="${tcpY}" width="24" height="8" fill="#f87171" rx="2"/>
+          <line x1="${cX - 8}" y1="${tcpY + 8}" x2="${cX - 8}" y2="${tcpY + 18}" stroke="#f87171" stroke-width="3"/>
+          <line x1="${cX + 8}" y1="${tcpY + 8}" x2="${cX + 8}" y2="${tcpY + 18}" stroke="#f87171" stroke-width="3"/>
+
+          <!-- Přenášený dílec (zlatý blok) -->
+          <rect x="${cX - 6}" y="${tcpY + 8}" width="12" height="12" fill="#fbbf24" stroke="#d97706" rx="2"/>
+
+          <!-- Popiska typu -->
+          <text x="230" y="288" fill="#94a3b8" font-size="10" text-anchor="middle">Kartézská kinematika: 3 na sebe kolmé lineární posuvy (P-P-P)</text>
+        `;
+
+        if (kinTelemetry) {
+          kinTelemetry.textContent = `X: ${Math.round(uX * 600)} mm | Y: ${Math.round(uY * 400)} mm | Z: ${Math.round(uZ * 250)} mm`;
+        }
+      }
+
+      /* 2. SCARA robot (RRP - Selektivně poddajné rameno: Pohled shora + Pohled z boku) */
+      function drawScaraModel(t) {
+        if (!kinSvg) return;
+        // Pomalý, hladký harmonický pohyb ramen
+        const a1 = -0.20 + 0.65 * Math.sin(t);
+        const a2 = 0.55 + 0.75 * Math.cos(t * 1.15);
+        const phi = a1 + a2; // Celkový úhel předloktí
+        const uZ = 0.5 + 0.5 * Math.sin(t * 1.8); // Zdvih pinoly Z (0 = zataženo nahoře, 1 = nalisování dole)
+
+        // 1. POHLED SHORA (Levý panel: Rovina X-Y)
+        const x0 = 105, y0 = 145; // Střed základního sloupu
+        const L1 = 78, L2 = 68;   // Délky vnitřního a vnějšího ramene
+        const x1 = x0 + Math.cos(a1) * L1;
+        const y1 = y0 + Math.sin(a1) * L1;
+        const x2 = x1 + Math.cos(phi) * L2;
+        const y2 = y1 + Math.sin(phi) * L2;
+
+        const a1Deg = Math.round(a1 * 180 / Math.PI);
+        const a2Deg = Math.round(a2 * 180 / Math.PI);
+
+        // 2. POHLED Z BOKU (Pravý panel: Osa Z)
+        const zStroke = Math.round(uZ * 48); // Zdvih v px (max 48)
+        const casingTopY = 65, casingBotY = 145;
+        // Pevná pinola permanentně prochází skrze pouzdro (žádný díl nevypadává)
+        const shaftTopY = 32 + zStroke;
+        const shaftBotY = 175 + zStroke;
+        const isPlacing = uZ > 0.82;
+
+        kinSvg.innerHTML = `
+          <defs>
+            <linearGradient id="scaraQuillGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#94a3b8"/>
+              <stop offset="50%" stop-color="#f1f5f9"/>
+              <stop offset="100%" stop-color="#64748b"/>
+            </linearGradient>
+          </defs>
+
+          <!-- =======================================================
+               LEVO: POHLED SHORA (Rovina X-Y, rotace θ₁ a θ₂)
+               ======================================================= -->
+          <!-- Štítek pohledu shora -->
+          <rect x="15" y="14" width="165" height="18" rx="3" fill="#0f172a" stroke="var(--accent)" stroke-width="1"/>
+          <text x="97" y="26" fill="var(--accent)" font-size="9" font-weight="700" text-anchor="middle">POHLED SHORA (ROVINA X-Y)</text>
+
+          <!-- Pracovní prostor: Ledvinový půdorys (Dashed obálka) -->
+          <path d="M 60 45 C 130 20, 235 50, 245 145 C 255 220, 185 260, 100 245 C 40 230, 45 160, 60 140 Z"
+                fill="rgba(56, 189, 248, 0.04)" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <text x="205" y="52" fill="rgba(56, 189, 248, 0.65)" font-size="8">Obálka (ledvina)</text>
+
+          <!-- Pracovní stanice shora: Zásobník SMD součástek -->
+          <rect x="35" y="48" width="50" height="26" fill="#1e293b" stroke="#475569" rx="3"/>
+          <text x="60" y="64" fill="#94a3b8" font-size="8" text-anchor="middle">Zásobník SMD</text>
+          <!-- Cílová montážní deska DPS -->
+          <rect x="155" y="165" width="70" height="42" fill="#064e3b" stroke="#059669" rx="3"/>
+          <text x="190" y="188" fill="#34d399" font-size="9" font-weight="700" text-anchor="middle">DPS (Montáž)</text>
+
+          <!-- Referenční osy základny (+X doprava, +Y dolů) -->
+          <line x1="${x0}" y1="${y0}" x2="${x0 + 50}" y2="${y0}" stroke="rgba(239, 68, 68, 0.35)" stroke-width="1.5" stroke-dasharray="2 2"/>
+          <line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y0 + 50}" stroke="rgba(34, 197, 94, 0.35)" stroke-width="1.5" stroke-dasharray="2 2"/>
+
+          <!-- Pevná základna sloupu shora -->
+          <circle cx="${x0}" cy="${y0}" r="24" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+          <circle cx="${x0}" cy="${y0}" r="16" fill="#0f172a" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="${x0}" cy="${y0}" r="4" fill="var(--accent)"/>
+
+          <!-- Osa 1 (J1): Úhlový štítek θ₁ -->
+          <rect x="${x0 - 32}" y="${y0 + 26}" width="64" height="16" rx="3" fill="#0f172a" stroke="var(--accent)" stroke-width="1"/>
+          <text x="${x0}" y="${y0 + 38}" fill="var(--accent)" font-size="9.5" font-weight="700" text-anchor="middle">θ₁ (${a1Deg}°)</text>
+
+          <!-- Vnitřní rameno (Biceps L₁) -->
+          <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="var(--accent)" stroke-width="18" stroke-linecap="round"/>
+          <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="#155e75" stroke-width="8" stroke-linecap="round"/>
+
+          <!-- Osa 2 (J2): Loketní rotační kloub -->
+          <circle cx="${x1}" cy="${y1}" r="13" fill="#0284c7" stroke="#38bdf8" stroke-width="2"/>
+          <!-- Úhlový štítek θ₂ -->
+          <rect x="${x1 + 10}" y="${y1 - 22}" width="60" height="16" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+          <text x="${x1 + 40}" y="${y1 - 10}" fill="#38bdf8" font-size="9.5" font-weight="700" text-anchor="middle">θ₂ (${a2Deg}°)</text>
+
+          <!-- Vnější rameno (Předloktí L₂) -->
+          <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#38bdf8" stroke-width="14" stroke-linecap="round"/>
+          <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#075985" stroke-width="6" stroke-linecap="round"/>
+
+          <!-- Hlava pinoly shora (Osa Z) -->
+          <circle cx="${x2}" cy="${y2}" r="11" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+          <circle cx="${x2}" cy="${y2}" r="5" fill="#cbd5e1" stroke="#475569" stroke-width="1"/>
+          <line x1="${x2 - 5}" y1="${y2}" x2="${x2 + 5}" y2="${y2}" stroke="#475569" stroke-width="1"/>
+          <text x="${x2}" y="${y2 - 14}" fill="#c084fc" font-size="8.5" font-weight="700" text-anchor="middle">Osa Z</text>
+
+          <!-- =======================================================
+               DĚLICÍ PŘÍČKA MEZI POHLEDY
+               ======================================================= -->
+          <line x1="285" y1="14" x2="285" y2="275" stroke="rgba(255,255,255,0.12)" stroke-dasharray="3 3"/>
+
+          <!-- =======================================================
+               VPRAVO: POHLED Z BOKU (Svislý zdvih pinoly Z)
+               ======================================================= -->
+          <!-- Štítek pohledu z boku -->
+          <rect x="300" y="14" width="146" height="18" rx="3" fill="#0f172a" stroke="#a855f7" stroke-width="1"/>
+          <text x="373" y="26" fill="#c084fc" font-size="9" font-weight="700" text-anchor="middle">POHLED Z BOKU (OSA Z)</text>
+
+          <!-- Montážní pouzdro hlavy (pevně uchyceno k rameni L₂) -->
+          <rect x="296" y="75" width="46" height="18" fill="#38bdf8" stroke="#0284c7" rx="2"/>
+          <rect x="342" y="${casingTopY}" width="64" height="80" fill="#1e293b" stroke="#475569" stroke-width="2" rx="4"/>
+          <!-- Vnitřní vedení (kuličková matice) -->
+          <rect x="352" y="${casingTopY + 14}" width="44" height="52" fill="#0f172a" stroke="#64748b" stroke-dasharray="2 2" rx="2"/>
+          <text x="374" y="${casingTopY + 43}" fill="#94a3b8" font-size="7.5" text-anchor="middle">Vedení pinoly</text>
+
+          <!-- Výsuvná broušená hřídel pinoly Z (prochází permanentně pouzdrem) -->
+          <rect x="367" y="${shaftTopY}" width="14" height="142" fill="url(#scaraQuillGrad)" stroke="#475569" rx="2"/>
+          <!-- Drážkování / kuličkový šroub -->
+          ${[0, 16, 32, 48, 64, 80, 96, 112, 128].map(p => `
+            <line x1="369" y1="${shaftTopY + 7 + p}" x2="379" y2="${shaftTopY + 7 + p}" stroke="#64748b" stroke-width="1.2"/>
+          `).join('')}
+
+          <!-- Štítek svislého zdvihu Z -->
+          <rect x="408" y="${shaftBotY - 24}" width="48" height="16" rx="3" fill="#0f172a" stroke="#a855f7" stroke-width="1"/>
+          <text x="432" y="${shaftBotY - 12}" fill="#a855f7" font-size="8.5" font-weight="700" text-anchor="middle">↕ Z: ${Math.round(uZ * 50)} mm</text>
+          <line x1="382" y1="${shaftBotY - 16}" x2="408" y2="${shaftBotY - 16}" stroke="#a855f7" stroke-width="1" stroke-dasharray="2 2"/>
+
+          <!-- Chapadlo na spodku pinoly -->
+          <rect x="364" y="${shaftBotY}" width="20" height="7" fill="#334155" stroke="#64748b" rx="1"/>
+          <line x1="369" y1="${shaftBotY + 7}" x2="369" y2="${shaftBotY + 16}" stroke="#f87171" stroke-width="2"/>
+          <line x1="379" y1="${shaftBotY + 7}" x2="379" y2="${shaftBotY + 16}" stroke="#f87171" stroke-width="2"/>
+
+          <!-- Osazovaná součástka (SMD čip) -->
+          <rect x="368" y="${shaftBotY + 10}" width="12" height="7" fill="#fbbf24" stroke="#d97706" rx="1"/>
+
+          <!-- Pracovní stůl a montážní deska DPS v pohledu z boku -->
+          <line x1="298" y1="248" x2="450" y2="248" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+          <rect x="328" y="236" width="92" height="12" fill="#064e3b" stroke="#059669" stroke-width="1.5" rx="2"/>
+          <rect x="367" y="234" width="14" height="3" fill="#fbbf24"/>
+          <text x="374" y="262" fill="#34d399" font-size="8.5" font-weight="700" text-anchor="middle">DPS: Pájecí plošky</text>
+          ${isPlacing ? `
+            <circle cx="374" cy="237" r="9" fill="rgba(52, 211, 153, 0.45)"/>
+          ` : ''}
+
+          <!-- Spodní didaktické shrnutí -->
+          <text x="230" y="291" fill="#94a3b8" font-size="9.5" text-anchor="middle">SCARA: Horizontální rotační osy (θ₁, θ₂) zajišťují rychlost v rovině X-Y, svislá pinola (Z) přesný montážní zdvih</text>
+        `;
+
+        if (kinTelemetry) {
+          kinTelemetry.textContent = `θ₁: ${a1Deg}° | θ₂: ${a2Deg}° | Z: ${Math.round(uZ * 50)} mm | Fáze: ${isPlacing ? 'Nalisování na DPS' : 'Přejezd v rovině'}`;
+        }
+      }
+
+      /* 3. Kloubový 6-osý robot (Antropomorfní - RRR...) */
+      function drawArticulatedModel(t) {
+        if (!kinSvg) return;
+        // Plynulý svařovací cyklus podél profilu karoserie
+        const u = 0.5 + 0.5 * Math.sin(t);
+        const q1 = 0.40 + 0.45 * u; // Úhel ramene J2 (23° až 49°)
+        const q2 = 0.95 + 0.25 * (1 - u); // Úhel lokte J3 (69° až 54°)
+        const q3 = 0.40 + 0.20 * Math.cos(t); // Orientace zápěstí
+
+        // Osa otáčení základny J1 a kloubu J2 jsou přesně vertikálně vycentrovány
+        const xBase = 125, yBase = 255;
+        const xShoulder = 125, yShoulder = 205;
+        const L1 = 92, L2 = 82, L3 = 38;
+
+        const xElbow = xShoulder + Math.sin(q1) * L1;
+        const yElbow = yShoulder - Math.cos(q1) * L1;
+
+        const xWrist = xElbow + Math.sin(q1 + q2) * L2;
+        const yWrist = yElbow - Math.cos(q1 + q2) * L2;
+
+        const xTcp = xWrist + Math.sin(q1 + q2 + q3) * L3;
+        const yTcp = yWrist - Math.cos(q1 + q2 + q3) * L3;
+
+        const q1Deg = Math.round(q1 * 180 / Math.PI);
+        const q2Deg = Math.round(q2 * 180 / Math.PI);
+
+        // Detekce vedení svarového švu (trajektorie hořáku)
+        const isWelding = xTcp >= 270 && xTcp <= 315 && yTcp >= 140 && yTcp <= 195;
+
+        kinSvg.innerHTML = `
+          <!-- Pracovní plocha -->
+          <line x1="40" y1="265" x2="420" y2="265" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+          
+          <!-- Svařovaný karosářský díl (profil upevněný na stole) -->
+          <path d="M 255 260 L 270 148 L 315 192 L 355 260" fill="none" stroke="#475569" stroke-width="4"/>
+          <!-- Trajektorie svarového švu -->
+          <path d="M 270 148 L 315 192" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="3 3"/>
+          <text x="290" y="140" fill="#f59e0b" font-size="9" text-anchor="middle">Svařovací šev</text>
+
+          <!-- Sférický pracovní prostor (Dashed kružnice dosahu) -->
+          <path d="M 125 30 A 175 175 0 0 1 300 205" fill="none" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="5 5"/>
+          <text x="220" y="40" fill="#38bdf8" font-size="9.5">Sférická obálka (Dosah R=1750 mm)</text>
+
+          <!-- Podstavec robota a Osa J1 (Rotace základny) -->
+          <rect x="${xBase - 28}" y="${yBase - 8}" width="56" height="16" fill="#1e293b" stroke="#475569" rx="3"/>
+          <rect x="${xBase - 18}" y="${yBase - 32}" width="36" height="24" fill="#334155" stroke="#475569" rx="3"/>
+          <!-- Karusel / otočný stůl -->
+          <ellipse cx="${xBase}" cy="${yBase - 32}" rx="24" ry="7" fill="#0e7490" stroke="var(--accent)"/>
+          <rect x="${xBase - 48}" y="${yBase + 4}" width="96" height="16" rx="3" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+          <text x="${xBase}" y="${yBase + 16}" fill="#94a3b8" font-size="9.5" text-anchor="middle">Osa J1: Rotace pasu</text>
+
+          <!-- Tělo otočné věže (přímé osové spojení karuselu J1 a kloubu ramene J2) -->
+          <path d="M ${xBase - 18} ${yBase - 32} L ${xBase - 14} ${yShoulder} L ${xBase + 14} ${yShoulder} L ${xBase + 18} ${yBase - 32} Z" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+          <rect x="${xBase - 8}" y="${yShoulder + 10}" width="16" height="18" fill="#0f172a" stroke="#0e7490" rx="2"/>
+
+          <!-- Osa J2: Rameno (Shoulder) - přesně vycentrováno na základně -->
+          <circle cx="${xShoulder}" cy="${yShoulder}" r="15" fill="#0891b2" stroke="var(--accent)" stroke-width="2.5"/>
+          <rect x="${xShoulder - 62}" y="${yShoulder - 16}" width="54" height="16" rx="3" fill="#0f172a" stroke="var(--accent)" stroke-width="1"/>
+          <text x="${xShoulder - 35}" y="${yShoulder - 4}" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="middle">J2 (${q1Deg}°)</text>
+
+          <!-- Spodní rameno (Bicep link L₁) -->
+          <line x1="${xShoulder}" y1="${yShoulder}" x2="${xElbow}" y2="${yElbow}" stroke="var(--accent)" stroke-width="16" stroke-linecap="round"/>
+          <line x1="${xShoulder}" y1="${yShoulder}" x2="${xElbow}" y2="${yElbow}" stroke="#164e63" stroke-width="6" stroke-linecap="round"/>
+
+          <!-- Osa J3: Loket (Elbow) -->
+          <circle cx="${xElbow}" cy="${yElbow}" r="12" fill="#0284c7" stroke="#38bdf8" stroke-width="2"/>
+          <rect x="${xElbow + 10}" y="${yElbow - 8}" width="52" height="16" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+          <text x="${xElbow + 36}" y="${yElbow + 4}" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">J3 (${q2Deg}°)</text>
+
+          <!-- Horní rameno (Předloktí link L₂) -->
+          <line x1="${xElbow}" y1="${yElbow}" x2="${xWrist}" y2="${yWrist}" stroke="#38bdf8" stroke-width="12" stroke-linecap="round"/>
+
+          <!-- 3osé kulové zápěstí (J4, J5, J6) -->
+          <circle cx="${xWrist}" cy="${yWrist}" r="8" fill="#7c3aed" stroke="#a855f7" stroke-width="2"/>
+          <line x1="${xWrist}" y1="${yWrist}" x2="${xTcp}" y2="${yTcp}" stroke="#a855f7" stroke-width="7" stroke-linecap="round"/>
+          <rect x="${xWrist - 35}" y="${yWrist - 26}" width="70" height="16" rx="3" fill="#0f172a" stroke="#a855f7" stroke-width="1"/>
+          <text x="${xWrist}" y="${yWrist - 14}" fill="#a855f7" font-size="9.5" font-weight="700" text-anchor="middle">Zápěstí 3-DOF</text>
+
+          <!-- Nástroj: Svařovací hořák MIG/MAG -->
+          <line x1="${xTcp}" y1="${yTcp}" x2="${xTcp + Math.sin(q1+q2+q3)*14}" y2="${yTcp - Math.cos(q1+q2+q3)*14}" stroke="#f87171" stroke-width="4"/>
+          <!-- Tryska a svařovací drát -->
+          <circle cx="${xTcp + Math.sin(q1+q2+q3)*14}" cy="${yTcp - Math.cos(q1+q2+q3)*14}" r="2.5" fill="#fbbf24"/>
+
+          <!-- Svařovací jiskry a oblouk při přiblížení k švu -->
+          ${isWelding ? `
+            <circle cx="${xTcp + Math.sin(q1+q2+q3)*14}" cy="${yTcp - Math.cos(q1+q2+q3)*14}" r="8" fill="rgba(251, 191, 36, 0.4)"/>
+            <line x1="${xTcp+12}" y1="${yTcp-8}" x2="${xTcp+18}" y2="${yTcp-14}" stroke="#fef08a" stroke-width="1.5"/>
+            <line x1="${xTcp+8}" y1="${yTcp+4}" x2="${xTcp+15}" y2="${yTcp+8}" stroke="#fef08a" stroke-width="1.5"/>
+          ` : ''}
+
+          <text x="230" y="288" fill="#94a3b8" font-size="10" text-anchor="middle">Antropomorfní robot: 6 rotačních kloubů napodobujících anatomii lidské paže</text>
+        `;
+
+        if (kinTelemetry) {
+          kinTelemetry.textContent = `J1: ${Math.round(20 * Math.sin(t*0.7))}° | J2: ${q1Deg}° | J3: ${q2Deg}° | Efektor: ${isWelding ? 'Svařování (oblouk ZAP)' : 'Přejezd po švu'}`;
+        }
+      }
+
+      /* 4. Delta robot (Paralelní mechanismus / Spider) */
+      function drawDeltaModel(t) {
+        if (!kinSvg) return;
+        const pX = 230 + 80 * Math.sin(t * 1.3);
+        const pY = 175 + 28 * Math.cos(t * 1.6);
+        const topY = 45;
+
+        // Úhly horních ramen (biceps) natáčených motory
+        const a1 = 0.6 + 0.35 * Math.sin(t * 1.3);
+        const a2 = 0.8 - 0.35 * Math.cos(t * 1.6);
+        const a3 = 0.6 - 0.35 * Math.sin(t * 1.3);
+
+        const b1X = 130 + Math.cos(a1) * 36;
+        const b1Y = topY + Math.sin(a1) * 36;
+        const b2X = 230 + Math.sin(a2 - 0.8) * 36;
+        const b2Y = topY + Math.cos(a2 - 0.8) * 36;
+        const b3X = 330 - Math.cos(a3) * 36;
+        const b3Y = topY + Math.sin(a3) * 36;
+
+        kinSvg.innerHTML = `
+          <!-- Pracovní plocha: Pásový dopravník potravin -->
+          <rect x="50" y="250" width="360" height="18" fill="#1e293b" stroke="#475569" rx="3"/>
+          <!-- Vstupní produkty (sušenky/pralinky) na pásu -->
+          <circle cx="110" cy="250" r="7" fill="#d97706"/>
+          <circle cx="150" cy="250" r="7" fill="#d97706"/>
+          <!-- Balicí blistr na pravé straně -->
+          <rect x="300" y="242" width="70" height="22" fill="#0f172a" stroke="#0ea5e9" rx="2"/>
+          <circle cx="320" cy="253" r="5" fill="#b45309"/>
+          <text x="335" y="235" fill="#38bdf8" font-size="9" text-anchor="middle">Balení</text>
+
+          <!-- Pracovní prostor: Komolý kužel (Dashed) -->
+          <polygon points="120,55 340,55 385,225 75,225" fill="rgba(6, 182, 212, 0.03)" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <text x="370" y="115" fill="#38bdf8" font-size="9.5">Komolý kužel</text>
+
+          <!-- Stropní základna robota (Pevný rám s 3 servomotory) -->
+          <rect x="85" y="${topY - 14}" width="290" height="20" fill="#334155" stroke="#475569" rx="4"/>
+          <text x="230" y="${topY - 20}" fill="var(--accent)" font-size="9.5" font-weight="700" text-anchor="middle">3x Servomotor s převodovkou na pevném rámu</text>
+
+          <!-- Motor 1 (vlevo) -->
+          <circle cx="130" cy="${topY}" r="9" fill="#0891b2" stroke="var(--accent)" stroke-width="2"/>
+          <line x1="130" y1="${topY}" x2="${b1X}" y2="${b1Y}" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="${b1X}" cy="${b1Y}" r="4" fill="#0e7490"/>
+
+          <!-- Motor 2 (uprostřed) -->
+          <circle cx="230" cy="${topY}" r="9" fill="#0891b2" stroke="var(--accent)" stroke-width="2"/>
+          <line x1="230" y1="${topY}" x2="${b2X}" y2="${b2Y}" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="${b2X}" cy="${b2Y}" r="4" fill="#0e7490"/>
+
+          <!-- Motor 3 (vpravo) -->
+          <circle cx="330" cy="${topY}" r="9" fill="#0891b2" stroke="var(--accent)" stroke-width="2"/>
+          <line x1="330" y1="${topY}" x2="${b3X}" y2="${b3Y}" stroke="var(--accent)" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="${b3X}" cy="${b3Y}" r="4" fill="#0e7490"/>
+
+          <!-- Paralelní táhla z uhlíkových vláken (dvojice táhel ke každému rameni) -->
+          <!-- Dvojice 1 -->
+          <line x1="${b1X - 3}" y1="${b1Y}" x2="${pX - 22}" y2="${pY}" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="${b1X + 3}" y1="${b1Y}" x2="${pX - 16}" y2="${pY}" stroke="#94a3b8" stroke-width="2"/>
+          <!-- Dvojice 2 -->
+          <line x1="${b2X - 3}" y1="${b2Y}" x2="${pX - 3}" y2="${pY}" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="${b2X + 3}" y1="${b2Y}" x2="${pX + 3}" y2="${pY}" stroke="#94a3b8" stroke-width="2"/>
+          <!-- Dvojice 3 -->
+          <line x1="${b3X - 3}" y1="${b3Y}" x2="${pX + 16}" y2="${pY}" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="${b3X + 3}" y1="${b3Y}" x2="${pX + 22}" y2="${pY}" stroke="#94a3b8" stroke-width="2"/>
+
+          <!-- Pohyblivá koncová plošina (Zůstává STRIKTNĚ vodorovná!) -->
+          <polygon points="${pX - 25},${pY} ${pX + 25},${pY} ${pX + 18},${pY + 10} ${pX - 18},${pY + 10}" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/>
+          <rect x="${pX - 58}" y="${pY - 22}" width="116" height="16" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+          <text x="${pX}" y="${pY - 10}" fill="#38bdf8" font-size="9.5" font-weight="700" text-anchor="middle">Vodorovná platforma</text>
+
+          <!-- Vakuový ejektor a přísavka -->
+          <rect x="${pX - 4}" y="${pY + 10}" width="8" height="12" fill="#64748b"/>
+          <ellipse cx="${pX}" cy="${pY + 24}" rx="9" ry="3.5" fill="#f87171"/>
+
+          <!-- Manipulovaný produkt na přísavce -->
+          <circle cx="${pX}" cy="${pY + 30}" r="6.5" fill="#d97706" stroke="#b45309"/>
+
+          <text x="230" y="288" fill="#94a3b8" font-size="10" text-anchor="middle">Delta: 3 paralelní kinematické smyčky, stacionární pohony, zrychlení až 15G</text>
+        `;
+
+        if (kinTelemetry) {
+          kinTelemetry.textContent = `M1: ${Math.round(a1 * 60)}° | M2: ${Math.round(a2 * 60)}° | M3: ${Math.round(a3 * 60)}° | Vakuum: AKTIVNÍ`;
+        }
+      }
+
+      /* 5. Válcový robot (RPP - Cylindrický) */
+      function drawCylindricalModel(t) {
+        if (!kinSvg) return;
+        const thetaNorm = 0.5 + 0.5 * Math.sin(t * 0.8);
+        const thetaDeg = Math.round(15 + 65 * thetaNorm);
+
+        const uZ = 0.5 + 0.5 * Math.cos(t * 1.1);
+        const zPos = 75 + 95 * uZ;
+
+        const uR = 0.5 + 0.5 * Math.sin(t * 1.4);
+        const rLen = 50 + 95 * uR;
+
+        const xBase = 150, yBase = 245;
+        const toolX = xBase + rLen;
+
+        kinSvg.innerHTML = `
+          <!-- Pracovní plocha a stanice -->
+          <line x1="40" y1="265" x2="420" y2="265" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+          <!-- Vstupní rotační zásobník (vlevo) -->
+          <ellipse cx="75" cy="245" rx="30" ry="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+          <text x="75" y="258" fill="#94a3b8" font-size="9" text-anchor="middle">Zásobník dílů</text>
+          <!-- Sklíčidlo CNC soustruhu (vpravo) -->
+          <rect x="365" y="150" width="30" height="70" fill="#1e293b" stroke="#475569" rx="2"/>
+          <rect x="345" y="165" width="20" height="40" fill="#334155" stroke="#64748b" rx="2"/>
+          <text x="380" y="235" fill="#94a3b8" font-size="9" text-anchor="middle">Sklíčidlo CNC</text>
+
+          <!-- Pracovní prostor: Válec / Mezikruží (Dashed) -->
+          <ellipse cx="${xBase}" cy="245" rx="145" ry="32" fill="none" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <ellipse cx="${xBase}" cy="70" rx="145" ry="32" fill="none" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <line x1="${xBase - 145}" y1="70" x2="${xBase - 145}" y2="245" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <line x1="${xBase + 145}" y1="70" x2="${xBase + 145}" y2="245" stroke="rgba(56, 189, 248, 0.25)" stroke-dasharray="4 4"/>
+          <text x="305" y="90" fill="#38bdf8" font-size="9.5">Válcový prostor (Mezikruží)</text>
+
+          <!-- Rotační základna (Osa 1 - Rotace θ) -->
+          <ellipse cx="${xBase}" cy="${yBase}" rx="48" ry="16" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+          <ellipse cx="${xBase}" cy="${yBase - 8}" rx="38" ry="12" fill="#0e7490" stroke="var(--accent)" stroke-width="1.5"/>
+          <path d="M ${xBase - 30} ${yBase - 4} A 32 10 0 0 0 ${xBase + 30} ${yBase - 4}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="${xBase - 60}" y="${yBase + 6}" width="120" height="16" rx="3" fill="#0f172a" stroke="var(--accent)" stroke-width="1"/>
+          <text x="${xBase}" y="${yBase + 18}" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="middle">Osa θ: Rotace (${thetaDeg}°)</text>
+
+          <!-- Centrální svislý sloup (Vedení pro osu Z) -->
+          <rect x="${xBase - 16}" y="60" width="32" height="175" fill="#334155" stroke="#475569" rx="3"/>
+          <!-- Kuličkový šroub uprostřed sloupu -->
+          <line x1="${xBase}" y1="65" x2="${xBase}" y2="230" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="3 2"/>
+
+          <!-- Vertikální jezdec (Osa 2 - Zdvih Z) -->
+          <rect x="${xBase - 22}" y="${zPos}" width="44" height="30" fill="var(--accent)" stroke="#0891b2" stroke-width="1.5" rx="3"/>
+          <rect x="${xBase - 85}" y="${zPos + 6}" width="60" height="16" rx="3" fill="#0f172a" stroke="#818cf8" stroke-width="1"/>
+          <text x="${xBase - 55}" y="${zPos + 18}" fill="#818cf8" font-size="10" font-weight="700" text-anchor="middle">↕ Zdvih Z</text>
+
+          <!-- Výsuvné horizontální rameno (Osa 3 - Radiální výsuv R) -->
+          <rect x="${xBase}" y="${zPos + 8}" width="${rLen}" height="14" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5" rx="2"/>
+          <!-- Rysky výsuvu -->
+          ${[30, 60, 90, 120].filter(d => d < rLen).map(d => `
+            <line x1="${xBase + d}" y1="${zPos + 8}" x2="${xBase + d}" y2="${zPos + 22}" stroke="#0369a1" stroke-width="1.5"/>
+          `).join('')}
+          <rect x="${xBase + rLen / 2 - 32}" y="${zPos - 18}" width="64" height="16" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+          <text x="${xBase + rLen / 2}" y="${zPos - 6}" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">↔ Výsuv R</text>
+
+          <!-- Koncový efektor (Kleštinové chapadlo) -->
+          <rect x="${toolX}" y="${zPos + 3}" width="14" height="24" fill="#f87171" rx="2"/>
+          <line x1="${toolX + 14}" y1="${zPos + 7}" x2="${toolX + 24}" y2="${zPos + 7}" stroke="#f87171" stroke-width="3"/>
+          <line x1="${toolX + 14}" y1="${zPos + 23}" x2="${toolX + 24}" y2="${zPos + 23}" stroke="#f87171" stroke-width="3"/>
+
+          <!-- Obráběný ocelový čep -->
+          <rect x="${toolX + 16}" y="${zPos + 9}" width="16" height="12" fill="#cbd5e1" stroke="#64748b" rx="2"/>
+
+          <text x="230" y="288" fill="#94a3b8" font-size="10" text-anchor="middle">Cylindrický robot: 1 rotační základna (θ) + 2 lineární osy (zdvih Z a radiální výsuv R)</text>
+        `;
+
+        if (kinTelemetry) {
+          kinTelemetry.textContent = `Úhel θ: ${thetaDeg}° | Zdvih Z: ${Math.round(uZ * 300)} mm | Výsuv R: ${Math.round(uR * 250)} mm`;
+        }
+      }
+
+      function animateKinModel() {
+        if (kinAnimActive) {
+          kinAngle += kinSpeed;
+          const k = kinData[currentKin];
+          if (k && k.draw) {
+            k.draw(kinAngle);
+          }
+        }
+        requestAnimationFrame(animateKinModel);
+      }
+      animateKinModel();
+
+      const kinNav = document.getElementById('kinNav');
+      if (kinNav) {
+        kinNav.addEventListener('click', (e) => {
+          const btn = e.target.closest('.kin-nav-btn');
+          if (!btn) return;
+          const kin = btn.getAttribute('data-kin');
+          const data = kinData[kin];
+          if (!data) return;
+
+          currentKin = kin;
+          kinNav.querySelectorAll('.kin-nav-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const badge = document.getElementById('kinBadge');
+          const label = document.getElementById('kinTypeLabel');
+          const title = document.getElementById('kinTitle');
+          const desc = document.getElementById('kinDesc');
+          const env = document.getElementById('kinEnvelope');
+          const pros = document.getElementById('kinPros');
+          const cons = document.getElementById('kinCons');
+          const apps = document.getElementById('kinApps');
+
+          if (badge) badge.textContent = data.badge;
+          if (label) label.textContent = data.type;
+          if (title) title.textContent = data.title;
+          if (desc) desc.textContent = data.desc;
+          if (env) env.textContent = data.envelope;
+          if (pros) pros.textContent = data.pros;
+          if (cons) cons.textContent = data.cons;
+          if (apps) apps.textContent = data.apps;
+        });
+      }
+
+      const btnToggleKinAnim = document.getElementById('btnToggleKinAnim');
+      if (btnToggleKinAnim) {
+        btnToggleKinAnim.addEventListener('click', () => {
+          kinAnimActive = !kinAnimActive;
+          const txt = document.getElementById('btnKinAnimText');
+          if (txt) {
+            txt.textContent = kinAnimActive ? 'Pozastavit animaci' : 'Spustit animaci';
+          }
+        });
+      }
+
+      const btnKinSpeedSlow = document.getElementById('btnKinSpeedSlow');
+      const btnKinSpeedNormal = document.getElementById('btnKinSpeedNormal');
+      if (btnKinSpeedSlow && btnKinSpeedNormal) {
+        btnKinSpeedSlow.addEventListener('click', () => {
+          kinSpeed = 0.010;
+          btnKinSpeedSlow.classList.add('active');
+          btnKinSpeedNormal.classList.remove('active');
+        });
+        btnKinSpeedNormal.addEventListener('click', () => {
+          kinSpeed = 0.022;
+          btnKinSpeedNormal.classList.add('active');
+          btnKinSpeedSlow.classList.remove('active');
+        });
+      }
+
+      /* ====================================================================
+         4. Interaktivní trenažér 6 DOF (Slide 7)
+         ==================================================================== */
+      let dofX = 0, dofY = 0, dofZ = 0;
+      let dofRx = 0, dofRy = 0, dofRz = 0;
+      const dofSvg = document.getElementById('dofCanvasSvg');
+
+      function updateDofDisplay() {
+        const valX = document.getElementById('valDofX');
+        const valY = document.getElementById('valDofY');
+        const valZ = document.getElementById('valDofZ');
+        const valRx = document.getElementById('valDofRx');
+        const valRy = document.getElementById('valDofRy');
+        const valRz = document.getElementById('valDofRz');
+        const vec = document.getElementById('dofVectorDisplay');
+
+        if (valX) valX.textContent = `${dofX} mm`;
+        if (valY) valY.textContent = `${dofY} mm`;
+        if (valZ) valZ.textContent = `${dofZ} mm`;
+        if (valRx) valRx.textContent = `${dofRx}°`;
+        if (valRy) valRy.textContent = `${dofRy}°`;
+        if (valRz) valRz.textContent = `${dofRz}°`;
+
+        if (vec) {
+          vec.textContent = `TCP: [${dofX}, ${dofY}, ${dofZ} mm | Rx:${dofRx}°, Ry:${dofRy}°, Rz:${dofRz}°]`;
+        }
+
+        renderDofSvg();
+      }
+
+      function renderDofSvg() {
+        if (!dofSvg) return;
+        // Izometrická projekce středu TCP
+        const centerX = 200 + (dofX - dofY) * 0.8;
+        const centerY = 160 + (dofX + dofY) * 0.4 - dofZ * 0.9;
+
+        // Délky os souřadného kříže
+        const axisLen = 65;
+        const radRx = (dofRx * Math.PI) / 180;
+        const radRy = (dofRy * Math.PI) / 180;
+        const radRz = (dofRz * Math.PI) / 180;
+
+        // Transformované osy X (červená), Y (zelená), Z (modrá)
+        const xEndX = centerX + Math.cos(radRz) * axisLen;
+        const xEndY = centerY + Math.sin(radRz) * axisLen * 0.5 - Math.sin(radRy) * axisLen * 0.6;
+
+        const yEndX = centerX - Math.sin(radRz) * axisLen * 0.8;
+        const yEndY = centerY + Math.cos(radRz) * axisLen * 0.5 + Math.sin(radRx) * axisLen * 0.6;
+
+        const zEndX = centerX + Math.sin(radRy) * axisLen * 0.4;
+        const zEndY = centerY - Math.cos(radRx) * axisLen;
+
+        dofSvg.innerHTML = `
+          <!-- Pracovní plocha a mřížka podlahy -->
+          <ellipse cx="200" cy="240" rx="140" ry="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+          <line x1="60" y1="240" x2="340" y2="240" stroke="rgba(255,255,255,0.06)"/>
+          <line x1="200" y1="190" x2="200" y2="290" stroke="rgba(255,255,255,0.06)"/>
+          
+          <!-- Stín polohy TCP na podlaze -->
+          <ellipse cx="${200 + (dofX - dofY) * 0.8}" cy="${240 + (dofX + dofY) * 0.4}" rx="18" ry="8" fill="rgba(6,182,212,0.18)"/>
+          <line x1="${centerX}" y1="${centerY}" x2="${200 + (dofX - dofY) * 0.8}" y2="${240 + (dofX + dofY) * 0.4}" stroke="rgba(6,182,212,0.3)" stroke-dasharray="3 3"/>
+          
+          <!-- Tělo zápěstí robota -->
+          <circle cx="${centerX}" cy="${centerY}" r="12" fill="#334155" stroke="var(--border-color)" stroke-width="2"/>
+          
+          <!-- Osa X (Červená) -->
+          <line x1="${centerX}" y1="${centerY}" x2="${xEndX}" y2="${xEndY}" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="${xEndX},${xEndY} ${xEndX - 6},${xEndY - 4} ${xEndX - 6},${xEndY + 4}" fill="#ef4444"/>
+          <text x="${xEndX + 8}" y="${xEndY + 4}" fill="#f87171" font-size="11" font-family="monospace" font-weight="700">X (Roll)</text>
+          
+          <!-- Osa Y (Zelená) -->
+          <line x1="${centerX}" y1="${centerY}" x2="${yEndX}" y2="${yEndY}" stroke="#22c55e" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="${yEndX},${yEndY} ${yEndX - 4},${yEndY - 6} ${yEndX + 4},${yEndY - 6}" fill="#22c55e"/>
+          <text x="${yEndX - 18}" y="${yEndY + 12}" fill="#4ade80" font-size="11" font-family="monospace" font-weight="700">Y (Pitch)</text>
+          
+          <!-- Osa Z (Modrá) -->
+          <line x1="${centerX}" y1="${centerY}" x2="${zEndX}" y2="${zEndY}" stroke="#3b82f6" stroke-width="3.5" stroke-linecap="round"/>
+          <polygon points="${zEndX},${zEndY} ${zEndX - 4},${zEndY + 6} ${zEndX + 4},${zEndY + 6}" fill="#3b82f6"/>
+          <text x="${zEndX + 4}" y="${zEndY - 8}" fill="#60a5fa" font-size="11" font-family="monospace" font-weight="700">Z (Yaw)</text>
+          
+          <!-- Střed TCP -->
+          <circle cx="${centerX}" cy="${centerY}" r="5" fill="#fbbf24" stroke="#041017" stroke-width="1.5"/>
+          <text x="${centerX - 12}" y="${centerY - 16}" fill="#fbbf24" font-size="10" font-weight="700">TCP</text>
+        `;
+      }
+
+      ['X', 'Y', 'Z', 'Rx', 'Ry', 'Rz'].forEach(axis => {
+        const slider = document.getElementById(`dofSlider${axis}`);
+        if (slider) {
+          slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value, 10);
+            if (axis === 'X') dofX = val;
+            if (axis === 'Y') dofY = val;
+            if (axis === 'Z') dofZ = val;
+            if (axis === 'Rx') dofRx = val;
+            if (axis === 'Ry') dofRy = val;
+            if (axis === 'Rz') dofRz = val;
+            updateDofDisplay();
+          });
+        }
+      });
+
+      function setDofValues(x, y, z, rx, ry, rz) {
+        dofX = x; dofY = y; dofZ = z;
+        dofRx = rx; dofRy = ry; dofRz = rz;
+        const sX = document.getElementById('dofSliderX'); if (sX) sX.value = x;
+        const sY = document.getElementById('dofSliderY'); if (sY) sY.value = y;
+        const sZ = document.getElementById('dofSliderZ'); if (sZ) sZ.value = z;
+        const sRx = document.getElementById('dofSliderRx'); if (sRx) sRx.value = rx;
+        const sRy = document.getElementById('dofSliderRy'); if (sRy) sRy.value = ry;
+        const sRz = document.getElementById('dofSliderRz'); if (sRz) sRz.value = rz;
+        updateDofDisplay();
+      }
+
+      const btnDofReset = document.getElementById('btnDofReset');
+      if (btnDofReset) btnDofReset.addEventListener('click', () => setDofValues(0, 0, 0, 0, 0, 0));
+
+      const btnDofWeld = document.getElementById('btnDofWeld');
+      if (btnDofWeld) btnDofWeld.addEventListener('click', () => setDofValues(45, -30, 20, 45, -30, 15));
+
+      const btnDofInsert = document.getElementById('btnDofInsert');
+      if (btnDofInsert) btnDofInsert.addEventListener('click', () => setDofValues(0, 0, 60, 0, 0, 0));
+
+      updateDofDisplay();
+
+      /* ====================================================================
+         5. Harmonická převodovka (Slide 8)
+         ==================================================================== */
+      const hdSvg = document.getElementById('harmonicDriveSvg');
+      let hdPart = 'wave';
+
+      const hdPartsInfo = {
+        wave: {
+          badge: 'Komponenta č. 1: Pohon',
+          title: 'Vlnový generátor (Wave Generator)',
+          desc: 'Oválné (eliptické) ocelové jádro s tenkostěnným pružným kuličkovým ložiskem na vnějším obvodu. Je přímo nasazeno na hřídel servomotoru a otáčí se motorovou rychlostí.'
+        },
+        flex: {
+          badge: 'Komponenta č. 2: Pružný člen',
+          title: 'Pružné ozubené kolo (Flexspline)',
+          desc: 'Tenkostěnná pružná ocelová miska s vnějším ozubením. Eliptický tvar ložiska ji deformuje tak, že zabírá do vnějšího věnce jen ve dvou protilehlých bodech velké poloosy elipsy.'
+        },
+        circ: {
+          badge: 'Komponenta č. 3: Výstupní věnec',
+          title: 'Pevné prstencové kolo (Circular Spline)',
+          desc: 'Masivní kruhový věnec s vnitřním ozubením spojený s výstupní přírubou robota. Má o 2 zuby více než Flexspline ($Z_c = Z_f + 2$). Při každé otáčce motoru se rameno pootočí právě o tyto 2 zuby zpět!'
+        }
+      };
+
+      function renderHdSvg() {
+        if (!hdSvg) return;
+        hdSvg.innerHTML = `
+          <!-- Vnější pevný věnec Circular Spline -->
+          <circle cx="150" cy="115" r="95" fill="none" stroke="${hdPart === 'circ' ? '#38bdf8' : 'rgba(56,189,248,0.2)'}" stroke-width="${hdPart === 'circ' ? '12' : '8'}"/>
+          <circle cx="150" cy="115" r="88" fill="none" stroke="#64748b" stroke-dasharray="3 2" stroke-width="2"/>
+          
+          <!-- Pružné kolo Flexspline (elipticky deformované) -->
+          <ellipse cx="150" cy="115" rx="88" ry="76" fill="${hdPart === 'flex' ? 'rgba(6,182,212,0.25)' : 'none'}" stroke="${hdPart === 'flex' ? 'var(--accent)' : 'rgba(6,182,212,0.5)'}" stroke-width="${hdPart === 'flex' ? '6' : '3'}"/>
+          
+          <!-- Vlnový generátor (Wave Generator - eliptické ložisko) -->
+          <ellipse cx="150" cy="115" rx="72" ry="60" fill="${hdPart === 'wave' ? 'rgba(234,179,8,0.2)' : '#1e293b'}" stroke="${hdPart === 'wave' ? '#eab308' : '#475569'}" stroke-width="4"/>
+          
+          <!-- Kuličky ložiska -->
+          <circle cx="78" cy="115" r="6" fill="#cbd5e1"/>
+          <circle cx="222" cy="115" r="6" fill="#cbd5e1"/>
+          <circle cx="150" cy="55" r="5" fill="#94a3b8"/>
+          <circle cx="150" cy="175" r="5" fill="#94a3b8"/>
+          
+          <!-- Hřídel motoru střed -->
+          <circle cx="150" cy="115" r="22" fill="#0f172a" stroke="#cbd5e1" stroke-width="2"/>
+          <rect x="146" y="100" width="8" height="15" fill="#eab308"/>
+          <text x="150" y="119" fill="#cbd5e1" font-size="9" font-family="monospace" text-anchor="middle">Motor</text>
+          
+          <!-- Body záběru zubů -->
+          <circle cx="62" cy="115" r="4" fill="#ef4444"/>
+          <circle cx="238" cy="115" r="4" fill="#ef4444"/>
+          <text x="150" y="228" fill="var(--text-muted)" font-size="10" text-anchor="middle">Záběr nastává výhradně ve 2 protilehlých bodech</text>
+        `;
+      }
+      renderHdSvg();
+
+      function selectHdComponent(part) {
+        hdPart = part;
+        ['btnHdCompWave', 'btnHdCompFlex', 'btnHdCompCirc'].forEach(id => {
+          const btn = document.getElementById(id);
+          if (btn) btn.classList.remove('active');
+        });
+        if (part === 'wave') document.getElementById('btnHdCompWave')?.classList.add('active');
+        if (part === 'flex') document.getElementById('btnHdCompFlex')?.classList.add('active');
+        if (part === 'circ') document.getElementById('btnHdCompCirc')?.classList.add('active');
+
+        const info = hdPartsInfo[part];
+        if (info) {
+          const b = document.getElementById('hdPartBadge');
+          const t = document.getElementById('hdPartTitle');
+          const d = document.getElementById('hdPartDesc');
+          if (b) b.textContent = info.badge;
+          if (t) t.textContent = info.title;
+          if (d) d.textContent = info.desc;
+        }
+        renderHdSvg();
+      }
+
+      document.getElementById('btnHdCompWave')?.addEventListener('click', () => selectHdComponent('wave'));
+      document.getElementById('btnHdCompFlex')?.addEventListener('click', () => selectHdComponent('flex'));
+      document.getElementById('btnHdCompCirc')?.addEventListener('click', () => selectHdComponent('circ'));
+
+      /* ====================================================================
+         6. Koncové efektory a chapadla (Slide 9)
+         ==================================================================== */
+      let currentEffector = 'pneumatic';
+      let effectorState = false; // sevřeno/otevřeno, zapnuto/vypnuto
+      const effSvg = document.getElementById('effectorSvg');
+
+      const effectorData = {
+        pneumatic: {
+          badge: 'Typ: Mechanické paralelní sevření',
+          title: 'Dvoudrápové paralelní chapadlo',
+          desc: 'Nejrozšířenější typ efektoru v průmyslu. Dvě čelisti se synchronně pohybují proti sobě po přesném lineárním vedení s kuličkovým uložením. Pohon obstarává pneumatický píst nebo servomotor.',
+          specs: [
+            'Uchopovací síla: 50 N až 2500 N',
+            'Čelisti s tvarovým vybráním z hliníku nebo 3D tisku',
+            'Využití: Zakládání dílů do CNC strojů, montáž a manipulace'
+          ],
+          actionLabel: (st) => st ? 'Otevřít čelisti chapadla' : 'Sevřít čelisti chapadla',
+          draw: (st) => {
+            const gap = st ? 14 : 38;
+            effSvg.innerHTML = `
+              <!-- Tělo chapadla -->
+              <rect x="80" y="40" width="100" height="70" fill="#334155" stroke="var(--border-color)" rx="4"/>
+              <circle cx="130" cy="30" r="14" fill="#1e293b" stroke="#64748b"/>
+              <text x="130" y="75" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="middle">SERVO POHON</text>
+              
+              <!-- Levý prst -->
+              <rect x="${130 - gap - 12}" y="110" width="14" height="60" fill="#cbd5e1" rx="2"/>
+              <!-- Pravý prst -->
+              <rect x="${130 + gap - 2}" y="110" width="14" height="60" fill="#cbd5e1" rx="2"/>
+              
+              <!-- Součástka (krychle) -->
+              <rect x="115" y="135" width="30" height="30" fill="${st ? '#fbbf24' : 'rgba(251,191,36,0.3)'}" stroke="#d97706" rx="2"/>
+              
+              <text x="130" y="200" fill="var(--text-muted)" font-size="11" text-anchor="middle">${st ? 'Uchopeno: Pevný stisk součástky' : 'Uvolněno: Čelisti roztaženy'}</text>
+            `;
+          }
+        },
+        vacuum: {
+          badge: 'Typ: Podtlakové uchopení',
+          title: 'Vakuový ejektor s přísavkami',
+          desc: 'Využívá Venturiho trubici na stlačený vzduch k vytvoření hlubokého podtlaku (až -85 kPa) během několika milisekund. Měkké silikonové přísavky se dokonale přizpůsobí povrchu.',
+          specs: [
+            'Podtlak: -0,8 bar (-80 kPa)',
+            'Nezanechává stopy a nepoškozuje povrch obrobku',
+            'Využití: Manipulace s tabulemi skla, plechy karoserií, lepenkovými krabicemi'
+          ],
+          actionLabel: (st) => st ? 'Vypnout podtlak (Uvolnit díl)' : 'Zapnout vakuum (Přisát díl)',
+          draw: (st) => {
+            effSvg.innerHTML = `
+              <!-- Rozdělovač vakua -->
+              <rect x="70" y="50" width="120" height="35" fill="#334155" stroke="var(--border-color)" rx="4"/>
+              <text x="130" y="72" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">VENTURIHO EJEKTOR</text>
+              
+              <!-- Trubky k přísavkám -->
+              <line x1="95" y1="85" x2="95" y2="120" stroke="#64748b" stroke-width="6"/>
+              <line x1="165" y1="85" x2="165" y2="120" stroke="#64748b" stroke-width="6"/>
+              
+              <!-- Silikonové vlnovcové přísavky -->
+              <ellipse cx="95" cy="130" rx="20" ry="${st ? '7' : '12'}" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/>
+              <ellipse cx="165" cy="130" rx="20" ry="${st ? '7' : '12'}" fill="#38bdf8" stroke="#0284c7" stroke-width="2"/>
+              
+              <!-- Tabule skla / plechu -->
+              <rect x="50" y="${st ? 137 : 155}" width="160" height="10" fill="${st ? '#67e8f9' : '#475569'}" stroke="#06b6d4" rx="2"/>
+              
+              <text x="130" y="200" fill="var(--text-muted)" font-size="11" text-anchor="middle">${st ? 'Podtlak aktivní (-80 kPa)' : 'Podtlak vypnut'}</text>
+            `;
+          }
+        },
+        magnetic: {
+          badge: 'Typ: Elektromagnetický úchyt',
+          title: 'Permanentní a elektromagnetický efektor',
+          desc: 'Generuje silné magnetické pole pro bleskové uchopení ocelových a litinových výrobků. Zvládne zvedat i mastné, horké nebo děrované plechy, kde vakuové přísavky selhávají.',
+          specs: [
+            'Nosnost: až několik tun na magnet',
+            'Elektrický pulz slouží pouze k přepnutí stavu (energeticky bezpečné)',
+            'Využití: Výpalky z laseru, odlitky, ocelové nosníky'
+          ],
+          actionLabel: (st) => st ? 'Deaktivovat magnetické pole' : 'Sepnout elektromagnet',
+          draw: (st) => {
+            effSvg.innerHTML = `
+              <!-- Tělo magnetu -->
+              <rect x="85" y="50" width="90" height="50" fill="#334155" rx="4"/>
+              <rect x="95" y="100" width="25" height="30" fill="#ef4444"/>
+              <text x="107" y="120" fill="#fff" font-size="10" font-weight="700">N</text>
+              <rect x="140" y="100" width="25" height="30" fill="#3b82f6"/>
+              <text x="152" y="120" fill="#fff" font-size="10" font-weight="700">S</text>
+              
+              <!-- Magnetické siločáry -->
+              ${st ? `
+                <path d="M107 130 C107 155, 152 155, 152 130" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="3 3"/>
+                <rect x="70" y="135" width="120" height="14" fill="#94a3b8" stroke="#cbd5e1" rx="2"/>
+              ` : `
+                <rect x="70" y="160" width="120" height="14" fill="#475569" stroke="#64748b" rx="2"/>
+              `}
+              
+              <text x="130" y="200" fill="var(--text-muted)" font-size="11" text-anchor="middle">${st ? 'Magnet sepnut: Ocelový díl uchycen' : 'Magnet vypnut'}</text>
+            `;
+          }
+        },
+        welding: {
+          badge: 'Typ: Procesní technologický nástroj',
+          title: 'Svařovací hořák (MIG/MAG & Laser)',
+          desc: 'Technologická hlava s automatickým podavačem svařovacího drátu, přívodem ochranného plynu (Argon/CO2) a vodním chlazením. Vyžaduje absolutní opakovatelnou přesnost vedení hořáku v dráze.',
+          specs: [
+            'Proudové zatížení: až 500 A při 100% zatěžovateli',
+            'Integrovaná optická laserová navigace svarové spáry',
+            'Využití: Svařování rámů vozidel, potrubí a tlakových nádob'
+          ],
+          actionLabel: (st) => st ? 'Zhasnout svařovací oblouk' : 'Zapálit elektrický oblouk',
+          draw: (st) => {
+            effSvg.innerHTML = `
+              <!-- Tělo hořáku -->
+              <rect x="110" y="40" width="40" height="40" fill="#334155" rx="3"/>
+              <path d="M125 80 L120 135 L145 155" fill="none" stroke="#cbd5e1" stroke-width="10" stroke-linecap="round"/>
+              <polygon points="140,150 155,160 148,168 135,158" fill="#d97706"/>
+              
+              <!-- Svařovaný plech -->
+              <rect x="60" y="175" width="140" height="12" fill="#475569" rx="2"/>
+              
+              ${st ? `
+                <!-- Elektrický oblouk a jiskry -->
+                <circle cx="152" cy="172" r="8" fill="#67e8f9" filter="drop-shadow(0 0 8px #38bdf8)"/>
+                <circle cx="152" cy="172" r="4" fill="#ffffff"/>
+                <line x1="152" y1="172" x2="165" y2="162" stroke="#fbbf24" stroke-width="2"/>
+                <line x1="152" y1="172" x2="140" y2="160" stroke="#fbbf24" stroke-width="2"/>
+                <line x1="152" y1="172" x2="168" y2="178" stroke="#fbbf24" stroke-width="2"/>
+              ` : ''}
+              
+              <text x="130" y="205" fill="var(--text-muted)" font-size="11" text-anchor="middle">${st ? 'Svařovací proud aktivní (Oblouk hoří)' : 'Hořák v klidu'}</text>
+            `;
+          }
+        },
+        atc: {
+          badge: 'Typ: Automatická výměna nástroje',
+          title: 'Automatický měnič nástrojů (ATC)',
+          desc: 'Rychlovýměnná pneumatická a elektrická spojka. Umožňuje jednomu robotovi automaticky za pouhé 3 sekundy odložit svařovací hořák a vzít chapadlo či frézku ze zásobníku.',
+          specs: [
+            'Opakovatelná přesnost spojení: < 0,005 mm',
+            'Přenáší tlakový vzduch, signály sběrnice, chladicí kapalinu i silový proud',
+            'Využití: Flexibilní výrobní buňky se širokým spektrem výrobků'
+          ],
+          actionLabel: (st) => st ? 'Rozpojit a odložit nástroj' : 'Zamknout nástroj k rameni',
+          draw: (st) => {
+            const gap = st ? 10 : 35;
+            effSvg.innerHTML = `
+              <!-- Robotická strana (Master) -->
+              <rect x="75" y="45" width="110" height="35" fill="#0284c7" rx="4"/>
+              <text x="130" y="66" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">STRANA ROBOTA</text>
+              <circle cx="100" cy="80" r="4" fill="#fbbf24"/>
+              <circle cx="160" cy="80" r="4" fill="#fbbf24"/>
+              
+              <!-- Nástrojová strana (Tool) -->
+              <rect x="75" y="${80 + gap}" width="110" height="35" fill="#059669" rx="4"/>
+              <text x="130" y="${101 + gap}" fill="#fff" font-size="10" font-weight="700" text-anchor="middle">STRANA NÁSTROJE</text>
+              
+              <!-- Nástroj -->
+              <path d="M110 ${115 + gap} L110 ${145 + gap} L150 ${145 + gap} L150 ${115 + gap}" fill="#334155"/>
+              
+              <text x="130" y="200" fill="var(--text-muted)" font-size="11" text-anchor="middle">${st ? 'Nástroj bezpečně uzamčen k robotu' : 'ATC rozpojeno (Výměna v zásobníku)'}</text>
+            `;
+          }
+        }
+      };
+
+      function updateEffectorDisplay() {
+        const data = effectorData[currentEffector];
+        if (!data) return;
+
+        const badge = document.getElementById('effectorBadge');
+        const title = document.getElementById('effectorTitle');
+        const desc = document.getElementById('effectorDesc');
+        const specs = document.getElementById('effectorSpecs');
+        const btnLabel = document.getElementById('effectorBtnLabel');
+
+        if (badge) badge.textContent = data.badge;
+        if (title) title.textContent = data.title;
+        if (desc) desc.textContent = data.desc;
+        if (btnLabel) btnLabel.textContent = data.actionLabel(effectorState);
+
+        if (specs) {
+          specs.innerHTML = data.specs.map(s => `<li>${s}</li>`).join('');
+        }
+
+        if (data.draw) {
+          data.draw(effectorState);
+        }
+      }
+
+      const effectorNav = document.getElementById('effectorNav');
+      if (effectorNav) {
+        effectorNav.addEventListener('click', (e) => {
+          const btn = e.target.closest('.kin-nav-btn');
+          if (!btn) return;
+          const eff = btn.getAttribute('data-eff');
+          if (!effectorData[eff]) return;
+
+          currentEffector = eff;
+          effectorState = false;
+          effectorNav.querySelectorAll('.kin-nav-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          updateEffectorDisplay();
+        });
+      }
+
+      const btnEffectorAction = document.getElementById('btnEffectorAction');
+      if (btnEffectorAction) {
+        btnEffectorAction.addEventListener('click', () => {
+          effectorState = !effectorState;
+          updateEffectorDisplay();
+        });
+      }
+      updateEffectorDisplay();
+
+      /* ====================================================================
+         7. Interaktivní simulátor bezpečnostní buňky (Slide 11)
+         ==================================================================== */
+      let safetyMode = 'ok'; // 'ok', 'warn', 'stop', 'cobot'
+      const safetySvg = document.getElementById('safetyCellSvg');
+
+      const safetyModesData = {
+        ok: {
+          badgeClass: 'status-ok',
+          badgeText: 'Stav: Automatický cyklus (100 %)',
+          speedText: 'V = 1800 mm/s',
+          title: 'Provoz bez narušení ochranného pole',
+          desc: 'Operátor se nachází v bezpečné zelené zóně mimo dosah ramene. Robot pracuje plnou výrobní rychlostí a bezpečnostní maják svítí zeleně.',
+          note: '<strong>Princip zónového skeneru:</strong> Laserový paprsek rotuje v rovině podlahy a měří dobu odrazu (ToF). Umožňuje bezkontaktní plynulé přechody mezi rychlým a bezpečným pomalým režimem.'
+        },
+        warn: {
+          badgeClass: 'status-warn',
+          badgeText: 'Stav: Varovná zóna (Zpomalení na 20 %)',
+          speedText: 'V = 250 mm/s (SLS)',
+          title: 'Pracovník ve žluté zóně skeneru',
+          desc: 'Operátor překročil hranici žluté zóny. Bezpečnostní PLC aktivovalo funkci Safely-Limited Speed (SLS) – robot okamžitě plynule zpomalil na bezpečnou rychlost a maják bliká žlutě.',
+          note: '<strong>Výhoda zónového řízení:</strong> Robot se nemusí ihned úplně zastavit. Pokud operátor ustoupí zpět, výroba se okamžitě vrátí na 100 % bez nutnosti ručního restartu.'
+        },
+        stop: {
+          badgeClass: 'status-stop',
+          badgeText: 'Stav: NOUZOVÉ ZASTAVENÍ (STO)',
+          speedText: 'V = 0 mm/s (Safe Stop 1)',
+          title: 'Narušení červené ochranné zóny / optické závory',
+          desc: 'Člověk vstoupil přímo do dosahu ramene robota. Dvoukanálový bezpečnostní okruh do 40 ms inicioval funkci STO (Safe Torque Off) a sepnul mechanické brzdy. Robot stojí na místě.',
+          note: '<strong>Opětovný rozběh:</strong> Po opuštění ochranné zóny je vyžadováno ruční potvrzení operátora tlačítkem RESET na ovládacím pultu před buňkou.'
+        },
+        cobot: {
+          badgeClass: 'status-ok',
+          badgeText: 'Režim: Kolaborativní Cobot (Bez klece)',
+          speedText: 'V = 500 mm/s (PFL limit)',
+          title: 'Kolaborativní robotika po boku člověka',
+          desc: 'Cobot pracuje bez fyzického oplocení. Senzory momentu v každém kloubu nepřetržitě monitorují odpor – při jakémkoliv lehkém dotyku s člověkem (< 150 N) robot do 50 ms sám zastaví.',
+          note: '<strong>Norma ISO/TS 15066:</strong> Definuje přesné biomechanické prahy bolesti pro různé části lidského těla. Cobot má oblé kryty bez ostrých hran, které zabraňují skřípnutí prstů.'
+        }
+      };
+
+      function renderSafetySvg() {
+        if (!safetySvg) return;
+        const isCobot = safetyMode === 'cobot';
+        const isWarn = safetyMode === 'warn';
+        const isStop = safetyMode === 'stop';
+
+        // Pozice operátora
+        let opX = 350, opY = 240;
+        if (isWarn) { opX = 260; opY = 190; }
+        if (isStop) { opX = 190; opY = 160; }
+        if (isCobot) { opX = 230; opY = 150; }
+
+        safetySvg.innerHTML = `
+          <!-- Podlaha buňky -->
+          <rect x="20" y="20" width="380" height="280" fill="rgba(0,0,0,0.2)" rx="8"/>
+          
+          ${!isCobot ? `
+            <!-- Fyzické oplocení bezpečnostní buňky -->
+            <rect x="40" y="40" width="260" height="240" fill="none" stroke="#64748b" stroke-width="3" stroke-dasharray="6 4"/>
+            <text x="50" y="55" fill="#94a3b8" font-size="9" font-family="sans-serif">Bezpečnostní oplocení buňky</text>
+            
+            <!-- Žlutá varovná zóna skeneru -->
+            <path d="M 160 160 L 300 90 A 150 150 0 0 1 300 240 Z" fill="rgba(245,158,11,0.18)" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 4"/>
+            
+            <!-- Červená stop zóna skeneru -->
+            <path d="M 160 160 L 250 110 A 100 100 0 0 1 250 210 Z" fill="rgba(239,68,68,0.22)" stroke="#ef4444" stroke-width="2"/>
+            
+            <!-- Optická závora na vstupu -->
+            <line x1="300" y1="120" x2="300" y2="200" stroke="#f87171" stroke-width="4"/>
+            <circle cx="300" cy="120" r="5" fill="#ef4444"/>
+            <circle cx="300" cy="200" r="5" fill="#ef4444"/>
+            <text x="306" y="160" fill="#f87171" font-size="9" font-weight="700">Optická závora</text>
+            
+            <!-- Laserový skener v rohu -->
+            <polygon points="40,40 55,40 40,55" fill="#eab308"/>
+            <circle cx="48" cy="48" r="3" fill="#ef4444"/>
+          ` : `
+            <!-- Zóna pro kolaborativního cobota -->
+            <circle cx="160" cy="160" r="110" fill="rgba(6,182,212,0.08)" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 4"/>
+            <text x="160" y="45" fill="var(--accent)" font-size="11" font-weight="700" text-anchor="middle">Volná kolaborativní zóna (Bez klece)</text>
+          `}
+          
+          <!-- Robot uprostřed -->
+          <circle cx="160" cy="160" r="30" fill="#1e293b" stroke="var(--border-color)" stroke-width="2"/>
+          <line x1="160" y1="160" x2="${isStop ? 160 : 190}" y2="${isStop ? 160 : 130}" stroke="${isStop ? '#ef4444' : 'var(--accent)'}" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="160" cy="160" r="12" fill="${isStop ? '#ef4444' : 'var(--accent)'}"/>
+          
+          <!-- Signalizační maják (semafor) -->
+          <rect x="45" y="245" width="16" height="30" fill="#0f172a" rx="2"/>
+          <circle cx="53" cy="252" r="4" fill="${isStop ? '#ef4444' : '#334155'}"/>
+          <circle cx="53" cy="260" r="4" fill="${isWarn ? '#fbbf24' : '#334155'}"/>
+          <circle cx="53" cy="268" r="4" fill="${(safetyMode === 'ok' || isCobot) ? '#22c55e' : '#334155'}"/>
+          
+          <!-- Člověk / Operátor -->
+          <circle cx="${opX}" cy="${opY}" r="9" fill="#38bdf8" stroke="#041017" stroke-width="1.5"/>
+          <path d="M${opX - 10} ${opY + 18} L${opX + 10} ${opY + 18} L${opX} ${opY + 9} Z" fill="#38bdf8"/>
+          <text x="${opX}" y="${opY - 14}" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">Operátor</text>
+        `;
+      }
+
+      function setSafetyMode(mode) {
+        safetyMode = mode;
+        const data = safetyModesData[mode];
+        if (!data) return;
+
+        ['btnSimOk', 'btnSimWarn', 'btnSimStop', 'btnSimCobot'].forEach(id => {
+          document.getElementById(id)?.classList.remove('active');
+        });
+        if (mode === 'ok') document.getElementById('btnSimOk')?.classList.add('active');
+        if (mode === 'warn') document.getElementById('btnSimWarn')?.classList.add('active');
+        if (mode === 'stop') document.getElementById('btnSimStop')?.classList.add('active');
+        if (mode === 'cobot') document.getElementById('btnSimCobot')?.classList.add('active');
+
+        const badge = document.getElementById('safetyBadge');
+        const speed = document.getElementById('safetySpeedDisplay');
+        const title = document.getElementById('safetyTitle');
+        const desc = document.getElementById('safetyDesc');
+        const note = document.getElementById('safetyNote');
+
+        if (badge) {
+          badge.className = `safety-status-badge ${data.badgeClass}`;
+          badge.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg> ${data.badgeText}`;
+        }
+        if (speed) speed.textContent = data.speedText;
+        if (title) title.textContent = data.title;
+        if (desc) desc.textContent = data.desc;
+        if (note) note.innerHTML = data.note;
+
+        renderSafetySvg();
+      }
+
+      document.getElementById('btnSimOk')?.addEventListener('click', () => setSafetyMode('ok'));
+      document.getElementById('btnSimWarn')?.addEventListener('click', () => setSafetyMode('warn'));
+      document.getElementById('btnSimStop')?.addEventListener('click', () => setSafetyMode('stop'));
+      document.getElementById('btnSimCobot')?.addEventListener('click', () => setSafetyMode('cobot'));
+
+      setSafetyMode('ok');
+
+      // Překreslení při změně rozměrů okna
+      window.addEventListener('resize', () => {
+        renderDofSvg();
+        renderHdSvg();
+        updateEffectorDisplay();
+        renderSafetySvg();
+      });
+
+    })();
+  </script>
+</body>
+
+</html>

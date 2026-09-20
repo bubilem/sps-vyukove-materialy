@@ -1,0 +1,43 @@
+# Operační systémy
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
+
+# Vývojářská prostředí a editory
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# Závislosti a balíčky
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dočasné a zkušební soubory
+tmp/
+temp/
+*.tmp
+*.bak
+scratch/
+
+# Logy a hlášení
+*.log
+
+# AI asistenti, IDE a lokální konfigurace
+.gemini/
+.cursor/
+.antigravity/
+.history/
+.env
+.env.*
+!.env.example
+

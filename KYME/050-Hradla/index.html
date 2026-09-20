@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 050: Logická hradla | KYME &bull; SPŠ</title>
+  
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+      --gate-on: #10b981;
+      --gate-off: #64748b;
+      --bulb-glow: #fbbf24;
+    }
+
+    /* Rozložení interaktivního pracoviště hradla */
+    .gate-interactive-container {
+      display: grid;
+      grid-template-columns: 1.05fr 1.35fr 1fr;
+      gap: 1.15rem;
+      margin-top: 0.85rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 1300px) {
+      .gate-interactive-container {
+        grid-template-columns: 1fr 1fr;
+      }
+      .gate-interactive-container .col-cmos {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .gate-interactive-container {
+        grid-template-columns: 1fr;
+      }
+      .gate-interactive-container .col-cmos {
+        grid-column: span 1;
+      }
+    }
+
+    /* Karty uvnitř hradla */
+    .gate-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .gate-card h3 {
+      font-size: 1.05rem;
+      color: var(--accent);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Schémata norem IEC vs ANSI */
+    .symbols-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 0.6rem 0;
+    }
+
+    .symbol-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.6rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .symbol-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    .symbol-svg {
+      width: 100px;
+      height: 48px;
+      overflow: visible;
+    }
+
+    /* Vstupní interaktivní ovládací lišta */
+    .inputs-toolbar {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.6rem 0.85rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .inputs-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .input-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+
+    .input-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--accent);
+    }
+
+    .input-toggle-btn.val-1 {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+    }
+
+    .input-toggle-btn.val-0 {
+      background: rgba(100, 116, 139, 0.2);
+      border-color: #64748b;
+      color: #94a3b8;
+    }
+
+    .output-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .output-indicator.out-1 {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: #06b6d4;
+      color: #38bdf8;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.35);
+    }
+
+    .output-indicator.out-0 {
+      background: rgba(100, 116, 139, 0.15);
+      border-color: #475569;
+      color: #94a3b8;
+    }
+
+    /* Pravdivostní tabulky a zvýraznění aktivního řádku */
+    .truth-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+      font-size: 0.86rem;
+      text-align: center;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .truth-table th {
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text-secondary);
+      padding: 0.45rem 0.5rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .truth-table td {
+      padding: 0.42rem 0.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .truth-table tr.active-row {
+      background: rgba(6, 182, 212, 0.22) !important;
+      font-weight: 700;
+    }
+
+    .truth-table tr.active-row td {
+      color: #38bdf8;
+    }
+
+    .truth-table tr.active-row td.col-out {
+      color: #fbbf24;
+      font-weight: 800;
+    }
+
+    /* Simulátor obvodu: Spínače a žárovka */
+    .circuit-canvas-box {
+      background: radial-gradient(circle at center, rgba(15, 23, 42, 0.9) 0%, rgba(3, 7, 18, 0.95) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 220px;
+    }
+
+    .circuit-svg {
+      width: 100%;
+      height: 210px;
+      max-width: 440px;
+    }
+
+    /* Styl vodičů a žárovky */
+    .wire {
+      stroke: #475569;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.25s, filter 0.25s;
+    }
+
+    .wire.active {
+      stroke: #06b6d4;
+      filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.7));
+    }
+
+    .wire.active-gold {
+      stroke: #fbbf24;
+      filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.8));
+    }
+
+    .switch-blade {
+      stroke: #94a3b8;
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.25s;
+      cursor: pointer;
+    }
+
+    .switch-blade.closed {
+      stroke: #10b981;
+      filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.7));
+    }
+
+    .switch-contact-dot {
+      fill: #cbd5e1;
+    }
+
+    .bulb-base {
+      fill: #64748b;
+    }
+
+    .bulb-glass {
+      fill: rgba(100, 116, 139, 0.2);
+      stroke: #64748b;
+      stroke-width: 2.5;
+      transition: fill 0.3s, stroke 0.3s, filter 0.3s;
+    }
+
+    .bulb-glass.lit {
+      fill: rgba(251, 191, 36, 0.45);
+      stroke: #f59e0b;
+      filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.95));
+    }
+
+    .bulb-filament {
+      stroke: #64748b;
+      stroke-width: 2;
+      fill: none;
+      transition: stroke 0.3s;
+    }
+
+    .bulb-filament.lit {
+      stroke: #fff;
+      filter: drop-shadow(0 0 3px #fff);
+    }
+
+    .bulb-status-caption {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .bulb-status-caption.lit {
+      color: #fbbf24;
+    }
+
+    /* Polovodičová karta CMOS / TTL */
+    .cmos-diagram-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cmos-svg {
+      width: 100%;
+      height: 180px;
+      max-width: 320px;
+    }
+
+    .transistor-box {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.45rem 0.65rem;
+      margin: 0.35rem 0;
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 0.82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .tx-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .tx-on {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .tx-off {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Styl rozložení pinů obvodů DIP-14 */
+    .ic-pinout-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .ic-chip {
+      background: #0f172a;
+      border: 2px solid #334155;
+      border-radius: 10px;
+      padding: 1.25rem 1rem;
+      position: relative;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .ic-notch {
+      width: 24px;
+      height: 12px;
+      background: #020617;
+      border: 2px solid #334155;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .ic-label {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin: 0.75rem 0 0.3rem 0;
+    }
+
+    .ic-desc {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    /* Kvízové kontrolní otázky */
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 0.85rem 1.15rem;
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--accent);
+    }
+
+    .faq-answer {
+      padding: 0.85rem 1.15rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: none;
+      line-height: 1.5;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+    
+    <!-- Horní lišta s drobečkovou navigací -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">050 Logická hradla</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hlavní prezentační plocha se snímky -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: TITULNÍ SNÍMEK
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do logických hradel">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět KYME &bull; Téma 050</span>
+            <span class="badge">Číslicová technika SPŠ</span>
+          </div>
+          <h1 class="hero-title">Logická hradla a hardware číslicových obvodů</h1>
+          <p class="hero-subtitle">
+            Od jednoduchých mechanických kontaktů a diod až po křemíkové CMOS tranzistory. Podrobný přehled funkcí, mezinárodních norem IEC/ANSI a interaktivní laboratorní simulátor.
+          </p>
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>Základní hradla</h4>
+              <p>Invertor (NOT), logický součin (AND) a logický součet (OR) jako elementární stavební kameny.</p>
+            </div>
+            <div class="content-card">
+              <h4>Invertovaná a aritmetická hradla</h4>
+              <p>Univerzální hradla NAND a NOR, parity generátory XOR a komparátory ekvivalence XNOR.</p>
+            </div>
+            <div class="content-card">
+              <h4>Polovodičové technologie</h4>
+              <p>Tranzistory MOSFET v architektuře CMOS, pull-up/pull-down větve a integrované obvody řad 74HC.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: LOGICKÉ ÚROVNĚ A NAPĚŤOVÉ STANDARDY
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Fyzikální podstata a logické úrovně">
+        <div class="slide-content">
+          <h2>Fyzikální reprezentace logických stavů a napěťové hladiny</h2>
+          <p class="slide-lead">V digitální technice neodpovídá logická 0 a 1 přesnému jednomu číslu, nýbrž povoleným <strong>napěťovým pásmům</strong>:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Bipolární technologie TTL (5 V)</h3>
+              <p>Historický i laboratorní standard (řada 74LS, 74HCT):</p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.88rem;">
+                <li><strong>Logická 0:</strong> $0{,}0\,\text{V} \dots 0{,}8\,\text{V}$</li>
+                <li><strong>Zakázané pásmo:</strong> $0{,}8\,\text{V} \dots 2{,}0\,\text{V}$ (nedefinovaný stav)</li>
+                <li><strong>Logická 1:</strong> $2{,}0\,\text{V} \dots 5{,}0\,\text{V}$</li>
+                <li>Vyznačuje se vyšším odběrem proudu ze vstupů.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Unipolární CMOS (3,3 V &amp; 5 V)</h3>
+              <p>Moderní mikroelektronika (řada 74HC, procesory, mikrokontroléry):</p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.88rem;">
+                <li><strong>Logická 0:</strong> $0{,}0\,\text{V} \dots 0{,}3 \times V_{DD}$ (např. $< 1{,}5\,\text{V}$)</li>
+                <li><strong>Logická 1:</strong> $0{,}7 \times V_{DD} \dots V_{DD}$ (např. $> 3{,}5\,\text{V}$)</li>
+                <li><strong>Symetrické meze:</strong> Vynikající šumová odolnost a téměř nulový statický odběr.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #f59e0b;">Plovoucí vstupy (Floating Inputs)</h3>
+              <p>Vstup CMOS hradla má extrémně vysoký odpor ($> 10^{12}\,\Omega$):</p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.88rem;">
+                <li>Ponechán nezapojen funguje jako anténa zachytávající elektromagnetický šum.</li>
+                <li>Může způsobit současné sepnutí obou tranzistorů a zničení čipu!</li>
+                <li><strong>Řešení:</strong> Použití <strong>Pull-up</strong> (k $V_{DD}$) nebo <strong>Pull-down</strong> (k zemi) rezistorů (typicky $4{,}7\,\text{k}\Omega \dots 10\,\text{k}\Omega$).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: NORMY ZNAČENÍ HRADEL
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Normy značení hradel (IEC vs ANSI)">
+        <div class="slide-content">
+          <h2>Normy schématických značek: Evropská (IEC) vs. Americká (ANSI)</h2>
+          <p class="slide-lead">Při čtení schémat se setkáte se dvěma mezinárodně uznávanými normami:</p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Evropská norma (ČSN EN 60617 / IEC 60617)</h3>
+              <p>Založena na <strong>obdélníkových blocích</strong> s unifikovaným symbolem matematické operace uvnitř:</p>
+              <ul class="styled-list" style="margin-top: 0.5rem;">
+                <li><code>1</code> – Invertor (identita s negací)</li>
+                <li><code>&amp;</code> – Hradlo AND (ampersand = logický součin)</li>
+                <li><code>&ge;1</code> – Hradlo OR (alespoň jeden vstup aktivní)</li>
+                <li><code>=1</code> – Hradlo XOR (právě jeden vstup aktivní)</li>
+                <li>Negace vstupu či výstupu je znázorněna malým <strong>kroužkem</strong> nebo trojúhelníkem.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Americká norma (ANSI / IEEE Std 91-1984)</h3>
+              <p>Založena na <strong>charakteristických geometrických tvarech</strong> (rozlišitelných na první pohled):</p>
+              <ul class="styled-list" style="margin-top: 0.5rem;">
+                <li><strong>AND:</strong> Tvar písmene D (plochá vstupní stěna, půlkruhový výstup).</li>
+                <li><strong>OR:</strong> Tvar špičatého štítu (prohnutá vstupní strana i špička).</li>
+                <li><strong>NOT:</strong> Trojúhelník s invertující kuličkou (tzv. bubble) na špičce.</li>
+                <li><strong>XOR:</strong> Tvar štítu s předsazeným druhým obloukem na vstupech.</li>
+                <li>Dodnes dominuje v celosvětových datasheetech a CAD programech (KiCad, Altium, Eagle).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: HRADLO NOT (INVERTOR)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Hradlo NOT (Invertor)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Základní hradlo</span>
+            <span class="badge">1 vstup &bull; 1 výstup</span>
+          </div>
+          <h2>Hradlo NOT (Logická negace &bull; Invertor)</h2>
+          <p class="slide-lead">Obrací hodnotu vstupní logické proměnné na opačnou: $Y = \bar{A} = \neg A$.</p>
+
+          <div class="gate-interactive-container" id="gate-not-app">
+            
+            <!-- Levý sloupec: Značky a tabulka -->
+            <div class="gate-card">
+              <div>
+                <h3>
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                  Schématické značky
+                </h3>
+                <div class="symbols-compare">
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <!-- IEC NOT -->
+                      <line x1="5" y1="24" x2="25" y2="24" stroke="currentColor" stroke-width="2"/>
+                      <rect x="25" y="8" width="40" height="32" fill="none" stroke="currentColor" stroke-width="2" rx="2"/>
+                      <text x="45" y="29" fill="currentColor" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">1</text>
+                      <circle cx="71" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="75" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">IEC (ČSN)</span>
+                  </div>
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <!-- ANSI NOT -->
+                      <line x1="5" y1="24" x2="28" y2="24" stroke="currentColor" stroke-width="2"/>
+                      <polygon points="28,10 28,38 65,24" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="71" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="75" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">ANSI (USA)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin-top: 0.5rem;">Pravdivostní tabulka</h3>
+                <table class="truth-table">
+                  <thead>
+                    <tr><th>Vstup $A$</th><th class="col-out">Výstup $Y = \bar{A}$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0"><td>0</td><td class="col-out">1</td></tr>
+                    <tr data-row="1"><td>1</td><td class="col-out">0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Elektromechanická simulace -->
+            <div class="gate-card">
+              <div>
+                <div class="inputs-toolbar">
+                  <div class="inputs-group">
+                    <span>Vstup $A$:</span>
+                    <button class="input-toggle-btn" id="btn-not-a" onclick="window.toggleGateInput('not', 'a')">
+                      A = 0
+                    </button>
+                  </div>
+                  <div>
+                    <span class="output-indicator" id="out-not">Y = 1</span>
+                  </div>
+                </div>
+
+                <div class="circuit-canvas-box">
+                  <svg class="circuit-svg" viewBox="0 0 340 180">
+                    <!-- Zdroj +5V a GND -->
+                    <text x="25" y="45" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold">+5V</text>
+                    <line x1="30" y1="50" x2="30" y2="130" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="20" y1="130" x2="40" y2="130" stroke="#cbd5e1" stroke-width="4"/>
+                    <line x1="24" y1="136" x2="36" y2="136" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="27" y1="142" x2="33" y2="142" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="22" y="156" fill="#94a3b8" font-family="monospace" font-size="11">GND</text>
+
+                    <!-- Vedení od zdroje přes ochranný rezistor -->
+                    <path class="wire active" id="wire-not-supply" d="M 30,50 L 100,50" />
+                    <!-- Rezistor R -->
+                    <rect x="100" y="42" width="30" height="16" fill="rgba(0,0,0,0.5)" stroke="#94a3b8" stroke-width="2" rx="2"/>
+                    <text x="115" y="54" fill="#94a3b8" font-size="9" text-anchor="middle">R</text>
+
+                    <!-- Uzel rozdvojení -->
+                    <circle cx="150" cy="50" r="3.5" fill="#06b6d4" />
+                    <line x1="130" y1="50" x2="150" y2="50" class="wire active"/>
+
+                    <!-- Větev ke spínači (zkratovač na zem) -->
+                    <line x1="150" y1="50" x2="150" y2="80" class="wire active"/>
+                    <circle cx="150" cy="80" r="3.5" class="switch-contact-dot"/>
+                    <!-- Spínač A -->
+                    <line id="switch-not-a" x1="150" y1="80" x2="150" y2="110" class="switch-blade" transform="rotate(-30 150 80)"/>
+                    <circle cx="150" cy="115" r="3.5" class="switch-contact-dot"/>
+                    <path id="wire-not-ground" class="wire" d="M 150,115 L 150,135 L 30,135" />
+                    <text x="125" y="98" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">S_A</text>
+
+                    <!-- Větev k žárovce -->
+                    <path id="wire-not-bulb" class="wire active" d="M 150,50 L 250,50 L 250,85" />
+                    
+                    <!-- Žárovka -->
+                    <circle cx="250" cy="100" r="16" class="bulb-glass lit" id="bulb-not-glass"/>
+                    <path d="M 244,106 L 248,94 L 252,94 L 256,106" class="bulb-filament lit" id="bulb-not-filament"/>
+                    <rect x="244" y="116" width="12" height="6" class="bulb-base" rx="1"/>
+
+                    <!-- Návrat z žárovky na GND -->
+                    <path class="wire active" d="M 250,122 L 250,135 L 150,135" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="bulb-status-caption lit" id="caption-not">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg>
+                <span>Žárovka SVÍTÍ (Výstup Y = 1). Spínač je rozepnutý, proud protéká žárovkou.</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Polovodičová realizace CMOS -->
+            <div class="gate-card col-cmos">
+              <div>
+                <h3>
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  CMOS realizace (Invertor)
+                </h3>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  Skládá se z dvojice komplementárních tranzistorů MOSFET:
+                </p>
+
+                <div class="transistor-box" id="tx-not-pmos">
+                  <div>
+                    <strong>T1 (PMOS)</strong> &bull; Pull-Up k $V_{DD}$
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Spíná při nízkém napětí ($A=0$)</div>
+                  </div>
+                  <span class="tx-badge tx-on" id="badge-not-pmos">VODIVÝ</span>
+                </div>
+
+                <div class="transistor-box" id="tx-not-nmos">
+                  <div>
+                    <strong>T2 (NMOS)</strong> &bull; Pull-Down k $GND$
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Spíná při vysokém napětí ($A=1$)</div>
+                  </div>
+                  <span class="tx-badge tx-off" id="badge-not-nmos">UZAVŘENÝ</span>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 6px; border-left: 3px solid var(--accent); margin-top: 0.5rem;">
+                <strong>Klíčová výhoda:</strong> V ustáleném stavu je vždy jeden z tranzistorů uzavřen, obvodem neprotéká žádný klidový zkratový proud.
+                <br>Typický integrovaný obvod: <strong>74HC04</strong> (6× invertor).
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: HRADLO AND (LOGICKÝ SOUČIN)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Hradlo AND (Logický součin)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Základní hradlo</span>
+            <span class="badge">Sériové řazení</span>
+          </div>
+          <h2>Hradlo AND (Logický součin &bull; Konjunkce)</h2>
+          <p class="slide-lead">Výstup je 1 pouze tehdy, jsou-li <strong>současně všechny vstupy 1</strong>: $Y = A \cdot B = A \wedge B$.</p>
+
+          <div class="gate-interactive-container" id="gate-and-app">
+            
+            <div class="gate-card">
+              <div>
+                <h3>Schématické značky</h3>
+                <div class="symbols-compare">
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <!-- IEC AND -->
+                      <line x1="5" y1="16" x2="25" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="25" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <rect x="25" y="8" width="45" height="32" fill="none" stroke="currentColor" stroke-width="2" rx="2"/>
+                      <text x="47" y="30" fill="currentColor" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">&amp;</text>
+                      <line x1="70" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">IEC (&amp;)</span>
+                  </div>
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <!-- ANSI AND -->
+                      <line x1="5" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="28" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 28,8 L 48,8 C 65,8 72,16 72,24 C 72,32 65,40 48,40 L 28,40 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="72" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">ANSI (D-tvar)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin-top: 0.5rem;">Pravdivostní tabulka</h3>
+                <table class="truth-table">
+                  <thead>
+                    <tr><th>$A$</th><th>$B$</th><th class="col-out">$Y = A \cdot B$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td class="col-out">0</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td class="col-out">0</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td class="col-out">0</td></tr>
+                    <tr data-row="1-1"><td>1</td><td>1</td><td class="col-out">1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Sériové spínače a žárovka -->
+            <div class="gate-card">
+              <div>
+                <div class="inputs-toolbar">
+                  <div class="inputs-group">
+                    <button class="input-toggle-btn" id="btn-and-a" onclick="window.toggleGateInput('and', 'a')">A = 0</button>
+                    <button class="input-toggle-btn" id="btn-and-b" onclick="window.toggleGateInput('and', 'b')">B = 0</button>
+                  </div>
+                  <div>
+                    <span class="output-indicator out-0" id="out-and">Y = 0</span>
+                  </div>
+                </div>
+
+                <div class="circuit-canvas-box">
+                  <svg class="circuit-svg" viewBox="0 0 340 180">
+                    <!-- Napájení -->
+                    <text x="20" y="45" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold">+5V</text>
+                    <line x1="25" y1="50" x2="25" y2="130" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="15" y1="130" x2="35" y2="130" stroke="#cbd5e1" stroke-width="4"/>
+                    <line x1="19" y1="136" x2="31" y2="136" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="22" y1="142" x2="28" y2="142" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="18" y="156" fill="#94a3b8" font-family="monospace" font-size="11">GND</text>
+
+                    <!-- Přívod k 1. spínači S_A -->
+                    <path class="wire active" d="M 25,50 L 70,50" />
+                    <circle cx="70" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <!-- Spínač A -->
+                    <line id="switch-and-a" x1="70" y1="50" x2="110" y2="50" class="switch-blade" transform="rotate(-30 70 50)"/>
+                    <circle cx="115" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <text x="85" y="32" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">S_A</text>
+
+                    <!-- Spojnice mezi spínači S_A a S_B -->
+                    <line id="wire-and-mid" x1="115" y1="50" x2="155" y2="50" class="wire"/>
+                    <circle cx="155" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <!-- Spínač B -->
+                    <line id="switch-and-b" x1="155" y1="50" x2="195" y2="50" class="switch-blade" transform="rotate(-30 155 50)"/>
+                    <circle cx="200" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <text x="170" y="32" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">S_B</text>
+
+                    <!-- Přívod k žárovce -->
+                    <path id="wire-and-bulb" class="wire" d="M 200,50 L 270,50 L 270,85" />
+
+                    <!-- Žárovka -->
+                    <circle cx="270" cy="100" r="16" class="bulb-glass" id="bulb-and-glass"/>
+                    <path d="M 264,106 L 268,94 L 272,94 L 276,106" class="bulb-filament" id="bulb-and-filament"/>
+                    <rect x="264" y="116" width="12" height="6" class="bulb-base" rx="1"/>
+
+                    <!-- Zpětný vodič do GND -->
+                    <path class="wire" id="wire-and-ret" d="M 270,122 L 270,135 L 25,135" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="bulb-status-caption" id="caption-and">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <span>Žárovka NESVÍTÍ. Proud neprochází, protože alespoň jeden spínač je rozepnut.</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Polovodičová realizace -->
+            <div class="gate-card col-cmos">
+              <div>
+                <h3>Polovodičová realizace</h3>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  V technologii CMOS je hradlo AND složeno ze základního hradla <strong>NAND</strong> a následného <strong>invertoru</strong>.
+                </p>
+
+                <div class="transistor-box" id="tx-and-pmos">
+                  <div>
+                    <strong>Pull-up větev (PMOS)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">2× PMOS paralelně k $V_{DD}$</div>
+                  </div>
+                  <span class="tx-badge tx-on" id="badge-and-pmos">AKTIVNÍ</span>
+                </div>
+
+                <div class="transistor-box" id="tx-and-nmos">
+                  <div>
+                    <strong>Pull-down větev (NMOS)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">2× NMOS sériově k $GND$</div>
+                  </div>
+                  <span class="tx-badge tx-off" id="badge-and-nmos">ROZEPNUTO</span>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 6px; border-left: 3px solid var(--accent); margin-top: 0.5rem;">
+                <strong>Elektrotechnické pravidlo:</strong> Logický součin odpovídá <em>sériovému zapojení spínačů</em> (proud projde pouze tehdy, sepnou-li oba).
+                <br>Typický obvod: <strong>74HC08</strong> (4× 2vstupové hradlo AND).
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: HRADLO OR (LOGICKÝ SOUČET)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Hradlo OR (Logický součet)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Základní hradlo</span>
+            <span class="badge">Paralelní řazení</span>
+          </div>
+          <h2>Hradlo OR (Logický součet &bull; Disjunkce)</h2>
+          <p class="slide-lead">Výstup je 1, pokud je <strong>alespoň jeden ze vstupů 1</strong>: $Y = A + B = A \vee B$.</p>
+
+          <div class="gate-interactive-container" id="gate-or-app">
+            
+            <div class="gate-card">
+              <div>
+                <h3>Schématické značky</h3>
+                <div class="symbols-compare">
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <!-- IEC OR -->
+                      <line x1="5" y1="16" x2="25" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="25" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <rect x="25" y="8" width="45" height="32" fill="none" stroke="currentColor" stroke-width="2" rx="2"/>
+                      <text x="47" y="30" fill="currentColor" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">&ge;1</text>
+                      <line x1="70" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">IEC (&ge;1)</span>
+                  </div>
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <!-- ANSI OR -->
+                      <line x1="5" y1="16" x2="33" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="33" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 25,8 Q 38,24 25,40 Q 55,40 75,24 Q 55,8 25,8 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="75" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">ANSI (Štít)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin-top: 0.5rem;">Pravdivostní tabulka</h3>
+                <table class="truth-table">
+                  <thead>
+                    <tr><th>$A$</th><th>$B$</th><th class="col-out">$Y = A + B$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td class="col-out">0</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td class="col-out">1</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td class="col-out">1</td></tr>
+                    <tr data-row="1-1"><td>1</td><td>1</td><td class="col-out">1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Paralelní spínače -->
+            <div class="gate-card">
+              <div>
+                <div class="inputs-toolbar">
+                  <div class="inputs-group">
+                    <button class="input-toggle-btn" id="btn-or-a" onclick="window.toggleGateInput('or', 'a')">A = 0</button>
+                    <button class="input-toggle-btn" id="btn-or-b" onclick="window.toggleGateInput('or', 'b')">B = 0</button>
+                  </div>
+                  <div>
+                    <span class="output-indicator out-0" id="out-or">Y = 0</span>
+                  </div>
+                </div>
+
+                <div class="circuit-canvas-box">
+                  <svg class="circuit-svg" viewBox="0 0 340 180">
+                    <!-- Napájení -->
+                    <text x="20" y="45" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold">+5V</text>
+                    <line x1="25" y1="50" x2="25" y2="135" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="15" y1="135" x2="35" y2="135" stroke="#cbd5e1" stroke-width="4"/>
+                    <line x1="19" y1="141" x2="31" y2="141" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="22" y1="147" x2="28" y2="147" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="18" y="161" fill="#94a3b8" font-family="monospace" font-size="11">GND</text>
+
+                    <!-- Rozvětvení do dvou paralelních větví -->
+                    <path class="wire active" d="M 25,50 L 70,50" />
+                    <circle cx="70" cy="50" r="3.5" fill="#06b6d4" />
+
+                    <!-- Horní větev: Spínač A -->
+                    <path class="wire active" d="M 70,50 L 70,30 L 95,30" />
+                    <circle cx="95" cy="30" r="3.5" class="switch-contact-dot"/>
+                    <line id="switch-or-a" x1="95" y1="30" x2="135" y2="30" class="switch-blade" transform="rotate(-30 95 30)"/>
+                    <circle cx="140" cy="30" r="3.5" class="switch-contact-dot"/>
+                    <path id="wire-or-top-out" class="wire" d="M 140,30 L 165,30 L 165,50" />
+                    <text x="110" y="18" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">S_A</text>
+
+                    <!-- Dolní větev: Spínač B -->
+                    <path class="wire active" d="M 70,50 L 70,70 L 95,70" />
+                    <circle cx="95" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <line id="switch-or-b" x1="95" y1="70" x2="135" y2="70" class="switch-blade" transform="rotate(-30 95 70)"/>
+                    <circle cx="140" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <path id="wire-or-bot-out" class="wire" d="M 140,70 L 165,70 L 165,50" />
+                    <text x="110" y="90" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">S_B</text>
+
+                    <!-- Spojovací uzel paralelních větví -->
+                    <circle cx="165" cy="50" r="3.5" class="switch-contact-dot"/>
+
+                    <!-- Vedení k žárovce -->
+                    <path id="wire-or-bulb" class="wire" d="M 165,50 L 260,50 L 260,85" />
+
+                    <!-- Žárovka -->
+                    <circle cx="260" cy="100" r="16" class="bulb-glass" id="bulb-or-glass"/>
+                    <path d="M 254,106 L 258,94 L 262,94 L 266,106" class="bulb-filament" id="bulb-or-filament"/>
+                    <rect x="254" y="116" width="12" height="6" class="bulb-base" rx="1"/>
+
+                    <!-- Návrat na GND -->
+                    <path class="wire" id="wire-or-ret" d="M 260,122 L 260,135 L 25,135" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="bulb-status-caption" id="caption-or">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <span>Žárovka NESVÍTÍ. Obě cesty jsou přerušeny.</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Polovodičová realizace -->
+            <div class="gate-card col-cmos">
+              <div>
+                <h3>Polovodičová realizace</h3>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  V CMOS obvodech se OR skládá ze základního hradla <strong>NOR</strong> následovaného <strong>invertorem</strong>.
+                </p>
+
+                <div class="transistor-box" id="tx-or-pmos">
+                  <div>
+                    <strong>Pull-up větev (PMOS)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">2× PMOS v sérii</div>
+                  </div>
+                  <span class="tx-badge tx-on" id="badge-or-pmos">PŘIPRAVENO</span>
+                </div>
+
+                <div class="transistor-box" id="tx-or-nmos">
+                  <div>
+                    <strong>Pull-down větev (NMOS)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">2× NMOS paralelně k zemi</div>
+                  </div>
+                  <span class="tx-badge tx-off" id="badge-or-nmos">ROZEPNUTO</span>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 6px; border-left: 3px solid var(--accent); margin-top: 0.5rem;">
+                <strong>Elektrotechnické pravidlo:</strong> Logický součet představuje <em>paralelní zapojení spínačů</em> (proud projde kteroukoli sepnutou větví nezávisle).
+                <br>Typický obvod: <strong>74HC32</strong> (4× 2vstupové hradlo OR).
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: HRADLO NAND (NEGOVANÝ SOUČIN)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Hradlo NAND (Univerzální báze)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Univerzální hradlo</span>
+            <span class="badge">Základ CMOS architektury</span>
+          </div>
+          <h2>Hradlo NAND (Negovaný logický součin &bull; Sheffer)</h2>
+          <p class="slide-lead">Výstup je 0 pouze tehdy, když jsou <strong>všechny vstupy 1</strong>: $Y = \overline{A \cdot B} = \bar{A} + \bar{B}$.</p>
+
+          <div class="gate-interactive-container" id="gate-nand-app">
+            
+            <div class="gate-card">
+              <div>
+                <h3>Schématické značky</h3>
+                <div class="symbols-compare">
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="25" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="25" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <rect x="25" y="8" width="45" height="32" fill="none" stroke="currentColor" stroke-width="2" rx="2"/>
+                      <text x="47" y="30" fill="currentColor" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">&amp;</text>
+                      <circle cx="75" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="79" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">IEC (&amp; s negací)</span>
+                  </div>
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="28" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 28,8 L 48,8 C 65,8 72,16 72,24 C 72,32 65,40 48,40 L 28,40 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="77" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="81" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">ANSI (D s bublinou)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin-top: 0.5rem;">Pravdivostní tabulka</h3>
+                <table class="truth-table">
+                  <thead>
+                    <tr><th>$A$</th><th>$B$</th><th class="col-out">$Y = \overline{A \cdot B}$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td class="col-out">1</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td class="col-out">1</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td class="col-out">1</td></tr>
+                    <tr data-row="1-1"><td>1</td><td>1</td><td class="col-out">0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Paralelní rozpínací kontakty / sériový zkratovač -->
+            <div class="gate-card">
+              <div>
+                <div class="inputs-toolbar">
+                  <div class="inputs-group">
+                    <button class="input-toggle-btn" id="btn-nand-a" onclick="window.toggleGateInput('nand', 'a')">A = 0</button>
+                    <button class="input-toggle-btn" id="btn-nand-b" onclick="window.toggleGateInput('nand', 'b')">B = 0</button>
+                  </div>
+                  <div>
+                    <span class="output-indicator out-1" id="out-nand">Y = 1</span>
+                  </div>
+                </div>
+
+                <div class="circuit-canvas-box">
+                  <svg class="circuit-svg" viewBox="0 0 340 180">
+                    <text x="20" y="45" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold">+5V</text>
+                    <line x1="25" y1="50" x2="25" y2="135" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="15" y1="135" x2="35" y2="135" stroke="#cbd5e1" stroke-width="4"/>
+                    <line x1="19" y1="141" x2="31" y2="141" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="22" y1="147" x2="28" y2="147" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="18" y="161" fill="#94a3b8" font-family="monospace" font-size="11">GND</text>
+
+                    <!-- Přívod přes ochranný rezistor R -->
+                    <path class="wire active" d="M 25,50 L 70,50" />
+                    <rect x="70" y="42" width="28" height="16" fill="rgba(0,0,0,0.5)" stroke="#94a3b8" stroke-width="2" rx="2"/>
+                    <text x="84" y="54" fill="#94a3b8" font-size="9" text-anchor="middle">R</text>
+
+                    <!-- Uzel k žárovce a zkratovací sériové větvi -->
+                    <line x1="98" y1="50" x2="130" y2="50" class="wire active"/>
+                    <circle cx="130" cy="50" r="3.5" fill="#06b6d4" />
+
+                    <!-- Větev sériových spínačů na zem -->
+                    <line x1="130" y1="50" x2="130" y2="70" class="wire active"/>
+                    <circle cx="130" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <!-- Spínač A -->
+                    <line id="switch-nand-a" x1="130" y1="70" x2="130" y2="95" class="switch-blade" transform="rotate(-30 130 70)"/>
+                    <circle cx="130" cy="100" r="3.5" class="switch-contact-dot"/>
+                    <text x="105" y="85" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_A</text>
+
+                    <!-- Spínač B -->
+                    <line id="switch-nand-b" x1="130" y1="100" x2="130" y2="125" class="switch-blade" transform="rotate(-30 130 100)"/>
+                    <circle cx="130" cy="128" r="3.5" class="switch-contact-dot"/>
+                    <text x="105" y="115" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_B</text>
+                    <path id="wire-nand-short" class="wire" d="M 130,128 L 130,135 L 25,135" />
+
+                    <!-- Přívod k žárovce -->
+                    <path id="wire-nand-bulb" class="wire active" d="M 130,50 L 250,50 L 250,85" />
+
+                    <!-- Žárovka -->
+                    <circle cx="250" cy="100" r="16" class="bulb-glass lit" id="bulb-nand-glass"/>
+                    <path d="M 244,106 L 248,94 L 252,94 L 256,106" class="bulb-filament lit" id="bulb-nand-filament"/>
+                    <rect x="244" y="116" width="12" height="6" class="bulb-base" rx="1"/>
+
+                    <!-- Zpětný vodič -->
+                    <path class="wire active" id="wire-nand-ret" d="M 250,122 L 250,135 L 130,135" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="bulb-status-caption lit" id="caption-nand">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg>
+                <span>Žárovka SVÍTÍ (Y = 1). Zkratovací větev je rozpojená, proud teče do žárovky.</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Polovodičová realizace CMOS -->
+            <div class="gate-card col-cmos">
+              <div>
+                <h3>Nativní CMOS hradlo</h3>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  NAND je <strong>nejjednodušší a nejrychlejší</strong> CMOS hradlo (pouze 4 tranzistory, žádný přídavný invertor):
+                </p>
+
+                <div class="transistor-box" id="tx-nand-pmos">
+                  <div>
+                    <strong>2× PMOS (paralelně k $V_{DD}$)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Sepne, pokud je $A=0$ NEBO $B=0$</div>
+                  </div>
+                  <span class="tx-badge tx-on" id="badge-nand-pmos">VEDE</span>
+                </div>
+
+                <div class="transistor-box" id="tx-nand-nmos">
+                  <div>
+                    <strong>2× NMOS (sériově k zemi)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Spojí výstup se zemí jen při $A=1$ a $B=1$</div>
+                  </div>
+                  <span class="tx-badge tx-off" id="badge-nand-nmos">PŘERUŠENO</span>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 6px; border-left: 3px solid var(--accent); margin-top: 0.5rem;">
+                <strong>Univerzální báze:</strong> Pomocí pouhých hradel NAND lze sestavit libovolný logický obvod včetně celého procesoru!
+                <br>Typický obvod: <strong>74HC00</strong> (4× 2vstupové hradlo NAND).
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: HRADLO NOR (NEGOVANÝ SOUČET)
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Hradlo NOR (Univerzální báze)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Univerzální hradlo</span>
+            <span class="badge">Peirceův operátor</span>
+          </div>
+          <h2>Hradlo NOR (Negovaný logický součet)</h2>
+          <p class="slide-lead">Výstup je 1 pouze tehdy, jsou-li <strong>všechny vstupy 0</strong>: $Y = \overline{A + B} = \bar{A} \cdot \bar{B}$.</p>
+
+          <div class="gate-interactive-container" id="gate-nor-app">
+            
+            <div class="gate-card">
+              <div>
+                <h3>Schématické značky</h3>
+                <div class="symbols-compare">
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="25" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="25" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <rect x="25" y="8" width="45" height="32" fill="none" stroke="currentColor" stroke-width="2" rx="2"/>
+                      <text x="47" y="30" fill="currentColor" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">&ge;1</text>
+                      <circle cx="75" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="79" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">IEC (&ge;1 s kroužkem)</span>
+                  </div>
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="33" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="33" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 25,8 Q 38,24 25,40 Q 55,40 73,24 Q 55,8 25,8 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="77" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="81" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">ANSI (Štít s bublinou)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin-top: 0.5rem;">Pravdivostní tabulka</h3>
+                <table class="truth-table">
+                  <thead>
+                    <tr><th>$A$</th><th>$B$</th><th class="col-out">$Y = \overline{A + B}$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td class="col-out">1</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td class="col-out">0</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td class="col-out">0</td></tr>
+                    <tr data-row="1-1"><td>1</td><td>1</td><td class="col-out">0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Paralelní zkratovací spínače -->
+            <div class="gate-card">
+              <div>
+                <div class="inputs-toolbar">
+                  <div class="inputs-group">
+                    <button class="input-toggle-btn" id="btn-nor-a" onclick="window.toggleGateInput('nor', 'a')">A = 0</button>
+                    <button class="input-toggle-btn" id="btn-nor-b" onclick="window.toggleGateInput('nor', 'b')">B = 0</button>
+                  </div>
+                  <div>
+                    <span class="output-indicator out-1" id="out-nor">Y = 1</span>
+                  </div>
+                </div>
+
+                <div class="circuit-canvas-box">
+                  <svg class="circuit-svg" viewBox="0 0 340 180">
+                    <text x="20" y="45" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold">+5V</text>
+                    <line x1="25" y1="50" x2="25" y2="135" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="15" y1="135" x2="35" y2="135" stroke="#cbd5e1" stroke-width="4"/>
+                    <line x1="19" y1="141" x2="31" y2="141" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="22" y1="147" x2="28" y2="147" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="18" y="161" fill="#94a3b8" font-family="monospace" font-size="11">GND</text>
+
+                    <!-- Rezistor R -->
+                    <path class="wire active" d="M 25,50 L 65,50" />
+                    <rect x="65" y="42" width="28" height="16" fill="rgba(0,0,0,0.5)" stroke="#94a3b8" stroke-width="2" rx="2"/>
+                    <text x="79" y="54" fill="#94a3b8" font-size="9" text-anchor="middle">R</text>
+
+                    <!-- Uzel k paralelním zkratovačům -->
+                    <line x1="93" y1="50" x2="120" y2="50" class="wire active"/>
+                    <circle cx="120" cy="50" r="3.5" fill="#06b6d4" />
+
+                    <!-- Spínač A větev -->
+                    <line x1="120" y1="50" x2="120" y2="70" class="wire active"/>
+                    <circle cx="120" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <line id="switch-nor-a" x1="120" y1="70" x2="120" y2="105" class="switch-blade" transform="rotate(-30 120 70)"/>
+                    <circle cx="120" cy="110" r="3.5" class="switch-contact-dot"/>
+                    <text x="95" y="88" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_A</text>
+
+                    <!-- Spínač B větev -->
+                    <path class="wire active" d="M 120,50 L 165,50 L 165,70" />
+                    <circle cx="165" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <line id="switch-nor-b" x1="165" y1="70" x2="165" y2="105" class="switch-blade" transform="rotate(-30 165 70)"/>
+                    <circle cx="165" cy="110" r="3.5" class="switch-contact-dot"/>
+                    <text x="140" y="88" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_B</text>
+
+                    <!-- Společný návrat ze zkratovačů do GND -->
+                    <path id="wire-nor-short" class="wire" d="M 120,110 L 120,135 L 25,135" />
+                    <path id="wire-nor-short-b" class="wire" d="M 165,110 L 165,135 L 120,135" />
+
+                    <!-- Přívod k žárovce -->
+                    <path id="wire-nor-bulb" class="wire active" d="M 165,50 L 260,50 L 260,85" />
+
+                    <!-- Žárovka -->
+                    <circle cx="260" cy="100" r="16" class="bulb-glass lit" id="bulb-nor-glass"/>
+                    <path d="M 254,106 L 258,94 L 262,94 L 266,106" class="bulb-filament lit" id="bulb-nor-filament"/>
+                    <rect x="254" y="116" width="12" height="6" class="bulb-base" rx="1"/>
+
+                    <!-- Zpětný vodič do GND -->
+                    <path class="wire active" id="wire-nor-ret" d="M 260,122 L 260,135 L 165,135" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="bulb-status-caption lit" id="caption-nor">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg>
+                <span>Žárovka SVÍTÍ (Y = 1). Ani jeden spínač neuzemňuje proud, žárovka svítí.</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Polovodičová realizace CMOS -->
+            <div class="gate-card col-cmos">
+              <div>
+                <h3>CMOS realizace</h3>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  Duální struktura k hradlu NAND (pouze 4 tranzistory):
+                </p>
+
+                <div class="transistor-box" id="tx-nor-pmos">
+                  <div>
+                    <strong>2× PMOS (sériově k $V_{DD}$)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Připojí výstup na $V_{DD}$ pouze při $A=0$ a $B=0$</div>
+                  </div>
+                  <span class="tx-badge tx-on" id="badge-nor-pmos">VEDE</span>
+                </div>
+
+                <div class="transistor-box" id="tx-nor-nmos">
+                  <div>
+                    <strong>2× NMOS (paralelně k zemi)</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Jakákoli 1 okamžitě zkratuje výstup k zemi</div>
+                  </div>
+                  <span class="tx-badge tx-off" id="badge-nor-nmos">ROZEPNUTO</span>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 6px; border-left: 3px solid var(--accent); margin-top: 0.5rem;">
+                <strong>Základ paměťových prvků:</strong> Z dvojice křížově propojených hradel NOR se staví asynchronní klopný obvod RS (latch).
+                <br>Typický obvod: <strong>74HC02</strong> (4× 2vstupové hradlo NOR).
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: HRADLO XOR (NEROVNOST A PARITA)
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Hradlo XOR (Exkluzivní součet)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Aritmetické hradlo</span>
+            <span class="badge">Detektor nerovnosti</span>
+          </div>
+          <h2>Hradlo XOR (Exkluzivní OR &bull; Parita &bull; Sčítačky)</h2>
+          <p class="slide-lead">Výstup je 1 právě tehdy, když se <strong>hodnoty vstupů od sebe liší</strong>: $Y = A \oplus B = \bar{A}B + A\bar{B}$.</p>
+
+          <div class="gate-interactive-container" id="gate-xor-app">
+            
+            <div class="gate-card">
+              <div>
+                <h3>Schématické značky</h3>
+                <div class="symbols-compare">
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="25" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="25" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <rect x="25" y="8" width="45" height="32" fill="none" stroke="currentColor" stroke-width="2" rx="2"/>
+                      <text x="47" y="30" fill="currentColor" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">=1</text>
+                      <line x1="70" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">IEC (=1)</span>
+                  </div>
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="30" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="30" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 22,8 Q 33,24 22,40" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 28,8 Q 39,24 28,40 Q 57,40 75,24 Q 57,8 28,8 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="75" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">ANSI (Dvojitý oblouk)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin-top: 0.5rem;">Pravdivostní tabulka</h3>
+                <table class="truth-table">
+                  <thead>
+                    <tr><th>$A$</th><th>$B$</th><th class="col-out">$Y = A \oplus B$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td class="col-out">0</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td class="col-out">1</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td class="col-out">1</td></tr>
+                    <tr data-row="1-1"><td>1</td><td>1</td><td class="col-out">0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Schodišťové přepínače (dvoupolohové) -->
+            <div class="gate-card">
+              <div>
+                <div class="inputs-toolbar">
+                  <div class="inputs-group">
+                    <button class="input-toggle-btn" id="btn-xor-a" onclick="window.toggleGateInput('xor', 'a')">A = 0</button>
+                    <button class="input-toggle-btn" id="btn-xor-b" onclick="window.toggleGateInput('xor', 'b')">B = 0</button>
+                  </div>
+                  <div>
+                    <span class="output-indicator out-0" id="out-xor">Y = 0</span>
+                  </div>
+                </div>
+
+                <div class="circuit-canvas-box">
+                  <svg class="circuit-svg" viewBox="0 0 340 180">
+                    <text x="20" y="45" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold">+5V</text>
+                    <line x1="25" y1="50" x2="25" y2="135" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="15" y1="135" x2="35" y2="135" stroke="#cbd5e1" stroke-width="4"/>
+                    <line x1="19" y1="141" x2="31" y2="141" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="22" y1="147" x2="28" y2="147" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="18" y="161" fill="#94a3b8" font-family="monospace" font-size="11">GND</text>
+
+                    <!-- Přívod k přepínači A -->
+                    <path class="wire active" d="M 25,50 L 60,50" />
+                    <circle cx="60" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <!-- Přepínač A: buď horní (poloha 0) nebo dolní (poloha 1) kontakt -->
+                    <line id="switch-xor-a" x1="60" y1="50" x2="95" y2="30" class="switch-blade" />
+                    <circle cx="95" cy="30" r="3.5" class="switch-contact-dot"/>
+                    <circle cx="95" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <text x="50" y="32" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_A</text>
+
+                    <!-- Horní a dolní sběrnice -->
+                    <path id="wire-xor-top" class="wire active" d="M 95,30 L 175,30" />
+                    <path id="wire-xor-bot" class="wire" d="M 95,70 L 175,70" />
+
+                    <!-- Přepínač B: otočen opačně: v poloze 0 míří na dolní kontakt, v poloze 1 na horní! -->
+                    <circle cx="175" cy="30" r="3.5" class="switch-contact-dot"/>
+                    <circle cx="175" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <line id="switch-xor-b" x1="210" y1="50" x2="175" y2="70" class="switch-blade" />
+                    <circle cx="210" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <text x="215" y="32" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_B</text>
+
+                    <!-- Vedení k žárovce -->
+                    <path id="wire-xor-bulb" class="wire" d="M 210,50 L 270,50 L 270,85" />
+
+                    <!-- Žárovka -->
+                    <circle cx="270" cy="100" r="16" class="bulb-glass" id="bulb-xor-glass"/>
+                    <path d="M 264,106 L 268,94 L 272,94 L 276,106" class="bulb-filament" id="bulb-xor-filament"/>
+                    <rect x="264" y="116" width="12" height="6" class="bulb-base" rx="1"/>
+
+                    <!-- Zpětný vodič do GND -->
+                    <path class="wire" id="wire-xor-ret" d="M 270,122 L 270,135 L 25,135" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="bulb-status-caption" id="caption-xor">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <span>Žárovka NESVÍTÍ. Vstupy jsou shodné (0 a 0), obvod není propojen.</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Polovodičová realizace -->
+            <div class="gate-card col-cmos">
+              <div>
+                <h3>Význam a realizace v křemíku</h3>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  V moderních CMOS obvodech se XOR staví pomocí <strong>přenosových hradel (Transmission Gates)</strong> nebo ze 4 hradel NAND:
+                </p>
+
+                <div class="transistor-box">
+                  <div>
+                    <strong>Sčítání modulo 2</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Základ 1-bitové polosčítačky (Half Adder)</div>
+                  </div>
+                  <span class="tx-badge tx-on">SUMA</span>
+                </div>
+
+                <div class="transistor-box">
+                  <div>
+                    <strong>Řízený invertor</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Při $B=0 \to Y=A$; při $B=1 \to Y=\bar{A}$</div>
+                  </div>
+                  <span class="tx-badge tx-on">KONTROLA</span>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 6px; border-left: 3px solid var(--accent); margin-top: 0.5rem;">
+                <strong>Reálná aplikace:</strong> Typické schodišťové zapojení světla ovládaného ze dvou míst odpovídá přesně logice hradla XOR.
+                <br>Typický integrovaný obvod: <strong>74HC86</strong> (4× 2vstupové XOR).
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: HRADLO XNOR (EKVIVALENCE)
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Hradlo XNOR (Ekvivalence)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Aritmetické hradlo</span>
+            <span class="badge">Komparátor shody</span>
+          </div>
+          <h2>Hradlo XNOR (Exkluzivní NOR &bull; Ekvivalence)</h2>
+          <p class="slide-lead">Výstup je 1 právě tehdy, když jsou <strong>oba vstupy vzájemně shodné</strong>: $Y = \overline{A \oplus B} = AB + \bar{A}\bar{B}$.</p>
+
+          <div class="gate-interactive-container" id="gate-xnor-app">
+            
+            <div class="gate-card">
+              <div>
+                <h3>Schématické značky</h3>
+                <div class="symbols-compare">
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="25" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="25" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <rect x="25" y="8" width="45" height="32" fill="none" stroke="currentColor" stroke-width="2" rx="2"/>
+                      <text x="47" y="30" fill="currentColor" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle">=1</text>
+                      <circle cx="75" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="79" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">IEC (=1 s negací)</span>
+                  </div>
+                  <div class="symbol-box">
+                    <svg class="symbol-svg" viewBox="0 0 100 48">
+                      <line x1="5" y1="16" x2="30" y2="16" stroke="currentColor" stroke-width="2"/>
+                      <line x1="5" y1="32" x2="30" y2="32" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 22,8 Q 33,24 22,40" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <path d="M 28,8 Q 39,24 28,40 Q 57,40 73,24 Q 57,8 28,8 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <circle cx="77" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <line x1="81" y1="24" x2="95" y2="24" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span class="symbol-label">ANSI (XOR s bublinou)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 style="margin-top: 0.5rem;">Pravdivostní tabulka</h3>
+                <table class="truth-table">
+                  <thead>
+                    <tr><th>$A$</th><th>$B$</th><th class="col-out">$Y = \overline{A \oplus B}$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td class="col-out">1</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td class="col-out">0</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td class="col-out">0</td></tr>
+                    <tr data-row="1-1"><td>1</td><td>1</td><td class="col-out">1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Schodišťový model shody -->
+            <div class="gate-card">
+              <div>
+                <div class="inputs-toolbar">
+                  <div class="inputs-group">
+                    <button class="input-toggle-btn" id="btn-xnor-a" onclick="window.toggleGateInput('xnor', 'a')">A = 0</button>
+                    <button class="input-toggle-btn" id="btn-xnor-b" onclick="window.toggleGateInput('xnor', 'b')">B = 0</button>
+                  </div>
+                  <div>
+                    <span class="output-indicator out-1" id="out-xnor">Y = 1</span>
+                  </div>
+                </div>
+
+                <div class="circuit-canvas-box">
+                  <svg class="circuit-svg" viewBox="0 0 340 180">
+                    <text x="20" y="45" fill="#f59e0b" font-family="monospace" font-size="12" font-weight="bold">+5V</text>
+                    <line x1="25" y1="50" x2="25" y2="135" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="15" y1="135" x2="35" y2="135" stroke="#cbd5e1" stroke-width="4"/>
+                    <line x1="19" y1="141" x2="31" y2="141" stroke="#cbd5e1" stroke-width="3"/>
+                    <line x1="22" y1="147" x2="28" y2="147" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="18" y="161" fill="#94a3b8" font-family="monospace" font-size="11">GND</text>
+
+                    <!-- Přívod k přepínači A -->
+                    <path class="wire active" d="M 25,50 L 60,50" />
+                    <circle cx="60" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <!-- Přepínač A -->
+                    <line id="switch-xnor-a" x1="60" y1="50" x2="95" y2="30" class="switch-blade" />
+                    <circle cx="95" cy="30" r="3.5" class="switch-contact-dot"/>
+                    <circle cx="95" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <text x="50" y="32" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_A</text>
+
+                    <!-- Vedení horní a dolní trasy -->
+                    <path id="wire-xnor-top" class="wire active" d="M 95,30 L 175,30" />
+                    <path id="wire-xnor-bot" class="wire" d="M 95,70 L 175,70" />
+
+                    <!-- Přepínač B zapojený symetricky: v poloze 0 míří NAHORU, v poloze 1 DOLŮ -->
+                    <circle cx="175" cy="30" r="3.5" class="switch-contact-dot"/>
+                    <circle cx="175" cy="70" r="3.5" class="switch-contact-dot"/>
+                    <line id="switch-xnor-b" x1="210" y1="50" x2="175" y2="30" class="switch-blade" />
+                    <circle cx="210" cy="50" r="3.5" class="switch-contact-dot"/>
+                    <text x="215" y="32" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">S_B</text>
+
+                    <!-- Vedení k žárovce -->
+                    <path id="wire-xnor-bulb" class="wire active" d="M 210,50 L 270,50 L 270,85" />
+
+                    <!-- Žárovka -->
+                    <circle cx="270" cy="100" r="16" class="bulb-glass lit" id="bulb-xnor-glass"/>
+                    <path d="M 264,106 L 268,94 L 272,94 L 276,106" class="bulb-filament lit" id="bulb-xnor-filament"/>
+                    <rect x="264" y="116" width="12" height="6" class="bulb-base" rx="1"/>
+
+                    <!-- Zpětný vodič do GND -->
+                    <path class="wire active" id="wire-xnor-ret" d="M 270,122 L 270,135 L 25,135" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="bulb-status-caption lit" id="caption-xnor">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg>
+                <span>Žárovka SVÍTÍ (Y = 1). Vstupy jsou shodné ($A=0, B=0$), horní trasa je sepnutá!</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Polovodičová realizace -->
+            <div class="gate-card col-cmos">
+              <div>
+                <h3>Číslicové komparátory shody</h3>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                  Hradlo XNOR se v číslicové technice používá k porovnání dvou bitů ($A == B$):
+                </p>
+
+                <div class="transistor-box">
+                  <div>
+                    <strong>Komparace datových slov</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Seskupením XNOR hradel vzniká sběrnicový porovnávač</div>
+                  </div>
+                  <span class="tx-badge tx-on">ROVNOST</span>
+                </div>
+
+                <div class="transistor-box">
+                  <div>
+                    <strong>Kontrola parity</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Sudá / lichá parita při sériové komunikaci (UART)</div>
+                  </div>
+                  <span class="tx-badge tx-on">PARITA</span>
+                </div>
+              </div>
+
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 6px; border-left: 3px solid var(--accent); margin-top: 0.5rem;">
+                <strong>Využití v praxi:</strong> Hradla XNOR tvoří jádro hardwarových ověřovačů chyb RAM a komparátorů adres v procesorech.
+                <br>Typický obvod: <strong>74HC7266</strong> (4× 2vstupové XNOR).
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: UNIVERZÁLNÍ BÁZE (NAND A NOR)
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Univerzální báze (NAND / NOR)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Návrh logiky</span>
+            <span class="badge">Funkční úplnost</span>
+          </div>
+          <h2>Univerzální báze hradel NAND a NOR</h2>
+          <p class="slide-lead">Z hradel NAND (nebo NOR) lze sestavit <strong>jakoukoli logickou funkci</strong> bez potřeby dalších součástek:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: var(--accent);">Realizace Invertoru (NOT)</h3>
+              <p>Spojením vstupů hradla NAND nebo připojením jednoho vstupu na trvalou 1:</p>
+              <div style="font-family: var(--font-mono); color: #38bdf8; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; margin: 0.5rem 0; text-align: center;">
+                $Y = \overline{A \cdot A} = \bar{A}$
+              </div>
+              <p style="font-size: 0.84rem; color: var(--text-muted);">Spotřeba: 1× hradlo NAND.</p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Realizace hradla AND</h3>
+              <p>Základní hradlo NAND následované invertorem z hradla NAND:</p>
+              <div style="font-family: var(--font-mono); color: #38bdf8; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; margin: 0.5rem 0; text-align: center;">
+                $Y = \overline{\overline{A \cdot B}} = A \cdot B$
+              </div>
+              <p style="font-size: 0.84rem; color: var(--text-muted);">Spotřeba: 2× hradlo NAND.</p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #a855f7;">Realizace hradla OR</h3>
+              <p>Aplikace De Morganova zákona ($\bar{A} \cdot \bar{B} = \overline{A+B}$):</p>
+              <div style="font-family: var(--font-mono); color: #a855f7; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 6px; margin: 0.5rem 0; text-align: center;">
+                $Y = \overline{\bar{A} \cdot \bar{B}} = A + B$
+              </div>
+              <p style="font-size: 0.84rem; color: var(--text-muted);">Invertujeme oba vstupy a přivedeme do třetího NAND. Spotřeba: 3× hradlo NAND.</p>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.15rem;">
+            <h4 style="color: #fbbf24; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              Proč je univerzální báze v praxi klíčová?
+            </h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary);">
+              V éře integrovaných obvodů zlevňuje výrobu: fabrika vyrábí pole identických buněk NAND (tzv. <em>Gate Arrays</em> nebo ASIC) a propojují se pouze horní kovové vrstvy. Tím se drasticky snižují náklady na masky čipů.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: INTEGROVANÉ OBVODY ŘAD 74xx
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Integrované obvody řad 74xx">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Praktický hardware</span>
+            <span class="badge">Pouzdro DIP-14</span>
+          </div>
+          <h2>Logické integrované obvody rodin 74xx a 4000 v praxi</h2>
+          <p class="slide-lead">Standardní číslicové čipy v klasických pouzdrech DIP-14 (Dual In-line Package):</p>
+
+          <div class="ic-pinout-grid">
+            <div class="ic-chip">
+              <div class="ic-notch"></div>
+              <div class="ic-label">74HC00</div>
+              <div class="ic-desc">4× 2vstupové hradlo NAND</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
+                Pin 14: $+V_{CC}$ (+5 V)<br>
+                Pin 7: $GND$ (0 V)<br>
+                4 samostatná nezávislá hradla.
+              </div>
+            </div>
+
+            <div class="ic-chip">
+              <div class="ic-notch"></div>
+              <div class="ic-label">74HC08</div>
+              <div class="ic-desc">4× 2vstupové hradlo AND</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
+                Pin 14: $+V_{CC}$ (+5 V)<br>
+                Pin 7: $GND$ (0 V)<br>
+                Identický pinout jako 74HC00.
+              </div>
+            </div>
+
+            <div class="ic-chip">
+              <div class="ic-notch"></div>
+              <div class="ic-label">74HC04</div>
+              <div class="ic-desc">6× invertor (Hex Inverter)</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
+                Pin 14: $+V_{CC}$ (+5 V)<br>
+                Pin 7: $GND$ (0 V)<br>
+                6 invertujících stupňů.
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top: 1.25rem;">
+            <div class="content-card">
+              <h4 style="color: var(--accent);">Schmittův klopný obvod na vstupech (74HC14)</h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Hradla se symbolem hystereze mají dvě různé prahové úrovně napětí ($V_{T+}$ a $V_{T-}$). Zabraňují kmitání výstupu při pomalu se měnících signálech ze senzorů a odstraňují zákmity mechanických tlačítek.
+              </p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #f59e0b;">Otevřený kolektor / Open-Drain (74HC03)</h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Výstupní tranzistor umí signál stáhnout pouze k zemi ($GND$), ale nepřipojuje se k $+V_{CC}$. S vnějším pull-up rezistorem umožňuje spojovat výstupy více obvodů do tzv. <strong>drátového součinu (Wired-AND)</strong> na společné sběrnici (např. sběrnice I2C).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: SHRNUTÍ A KONTROLNÍ OTÁZKY
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Závěrečné opakování</span>
+            <span class="badge">Otázky SPŠ</span>
+          </div>
+          <h2>Shrnutí tématu a kontrolní otázky</h2>
+          <p class="slide-lead">Ověřte si pochopení principů kombinační logiky a schématických norem:</p>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>1. Jaký je principiální rozdíl mezi normou IEC (ČSN) a ANSI u logických hradel?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Norma IEC (evropská) používá pro všechna hradla unifikovaný obdélníkový tvar a funkci definuje vnitřní symbol (&amp;, &ge;1, 1, =1). Norma ANSI (americká) používá charakteristické tvary (D pro AND, štít pro OR, trojúhelník pro NOT, předsazený oblouk pro XOR).
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>2. Jaké mechanické zapojení spínačů odpovídá hradlům AND a OR?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Hradlu AND odpovídá <strong>sériové řazení spínačů</strong> (proud protéká ke spotřebiči pouze tehdy, když jsou sepnuté všechny kontakty v cestě). Hradlu OR odpovídá <strong>paralelní zapojení spínačů</strong> (proud proteče, pokud sepne kterákoli z paralelních větví).
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>3. Proč se v mikroprocesorech preferují hradla NAND před hradly AND?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              V komplementární technologii CMOS je hradlo NAND přirozenější – vyžaduje pouze 4 tranzistory. Hradlo AND se v CMOS musí konstruovat jako NAND + invertor (celkem 6 tranzistorů). NAND je tedy menší na ploše čipu, levnější a má menší zpoždění šíření signálu.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>4. Proč nesmí mít vstup CMOS obvodu plovoucí (nezapojený) stav?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Vstup CMOS tvoří izolované hradlo MOSFETu s obrovským vstupním odporem. Plovoucí vstup funguje jako miniaturní anténa, zachycuje šum a napětí může zůstat v zakázaném pásmu. V takovém případě mohou začít vést PMOS i NMOS současně, což způsobuje velký proud, přehřívání a možné zničení obvodu.
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: center;">
+            <a href="../060-Obvody/index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); color: #fff; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Pokračovat na navazující téma: 060 Sekvenční obvody
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Spodní ovládací lišta prezentace -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../042-Vyrokova-logika/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 042 Výroková logika">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu KYME">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../060-Obvody/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 060 Obvody">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 13</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Fullscreen (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <!-- Postranní panel osnovy -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Logická hradla
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Jádro frameworku prezentací -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Specializovaná interaktivní logika pro simulátory hradel -->
+  <script>
+    (function () {
+      'use strict';
+
+      // Stav vstupů pro každé hradlo
+      const gateState = {
+        not: { a: 0 },
+        and: { a: 0, b: 0 },
+        or: { a: 0, b: 0 },
+        nand: { a: 0, b: 0 },
+        nor: { a: 0, b: 0 },
+        xor: { a: 0, b: 0 },
+        xnor: { a: 0, b: 0 }
+      };
+
+      /**
+       * Přepnutí vstupu hradla (voláno při kliknutí na tlačítka A a B)
+       */
+      window.toggleGateInput = function (gate, input) {
+        if (!gateState[gate]) return;
+        gateState[gate][input] = gateState[gate][input] === 0 ? 1 : 0;
+        updateGate(gate);
+      };
+
+      /**
+       * Přepočet a aktualizace vizuálních prvků hradla
+       */
+      function updateGate(gate) {
+        const state = gateState[gate];
+        if (!state) return;
+
+        let out = 0;
+        const a = state.a;
+        const b = state.b !== undefined ? state.b : 0;
+
+        switch (gate) {
+          case 'not':
+            out = a === 0 ? 1 : 0;
+            break;
+          case 'and':
+            out = (a === 1 && b === 1) ? 1 : 0;
+            break;
+          case 'or':
+            out = (a === 1 || b === 1) ? 1 : 0;
+            break;
+          case 'nand':
+            out = (a === 1 && b === 1) ? 0 : 1;
+            break;
+          case 'nor':
+            out = (a === 0 && b === 0) ? 1 : 0;
+            break;
+          case 'xor':
+            out = (a !== b) ? 1 : 0;
+            break;
+          case 'xnor':
+            out = (a === b) ? 1 : 0;
+            break;
+        }
+
+        // 1. Aktualizace tlačítek vstupů
+        const btnA = document.getElementById(`btn-${gate}-a`);
+        if (btnA) {
+          btnA.textContent = `A = ${a}`;
+          btnA.className = `input-toggle-btn val-${a}`;
+        }
+        const btnB = document.getElementById(`btn-${gate}-b`);
+        if (btnB) {
+          btnB.textContent = `B = ${b}`;
+          btnB.className = `input-toggle-btn val-${b}`;
+        }
+
+        // 2. Indikátor výstupu
+        const outIndicator = document.getElementById(`out-${gate}`);
+        if (outIndicator) {
+          outIndicator.textContent = `Y = ${out}`;
+          outIndicator.className = `output-indicator out-${out}`;
+        }
+
+        // 3. Zvýraznění aktivního řádku pravdivostní tabulky
+        const container = document.getElementById(`gate-${gate}-app`);
+        if (container) {
+          const rowKey = gate === 'not' ? `${a}` : `${a}-${b}`;
+          const rows = container.querySelectorAll('.truth-table tbody tr');
+          rows.forEach(tr => {
+            if (tr.getAttribute('data-row') === rowKey) {
+              tr.classList.add('active-row');
+            } else {
+              tr.classList.remove('active-row');
+            }
+          });
+        }
+
+        // 4. Aktualizace elektromechanického schématu
+        updateCircuitVisuals(gate, a, b, out);
+
+        // 5. Aktualizace polovodičových stavů (CMOS / tranzistory)
+        updateSemiconductorVisuals(gate, a, b, out);
+      }
+
+      /**
+       * Bezpečné nastavení CSS třídy pro SVG a HTML elementy
+       */
+      function setClass(el, cls) {
+        if (!el) return;
+        el.setAttribute('class', cls);
+      }
+
+      /**
+       * Aktualizace SVG schématu spínačů a žárovky
+       */
+      function updateCircuitVisuals(gate, a, b, out) {
+        // Spínače
+        const swA = document.getElementById(`switch-${gate}-a`);
+        const swB = document.getElementById(`switch-${gate}-b`);
+
+        if (gate === 'not') {
+          // NOT zkratovací spínač: při A=0 rozepnut (-30 st), při A=1 sepnut (0 st)
+          if (swA) {
+            swA.setAttribute('transform', a === 1 ? 'rotate(0 150 80)' : 'rotate(-30 150 80)');
+            setClass(swA, a === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          const wireGround = document.getElementById('wire-not-ground');
+          setClass(wireGround, a === 1 ? 'wire active' : 'wire');
+          const wireBulb = document.getElementById('wire-not-bulb');
+          setClass(wireBulb, a === 0 ? 'wire active' : 'wire');
+          const capNot = document.getElementById('caption-not');
+          if (capNot) {
+            setClass(capNot, a === 0 ? 'bulb-status-caption lit' : 'bulb-status-caption');
+            capNot.innerHTML = a === 0
+              ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg><span>Žárovka SVÍTÍ (Y = 1). Spínač je rozepnutý, proud nerušeně protéká žárovkou.</span>'
+              : '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg><span>Žárovka ZHASLA (Y = 0). Spínač sepnul a zkratoval napětí na zem (GND).</span>';
+          }
+        } else if (gate === 'and') {
+          if (swA) {
+            swA.setAttribute('transform', a === 1 ? 'rotate(0 70 50)' : 'rotate(-30 70 50)');
+            setClass(swA, a === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          if (swB) {
+            swB.setAttribute('transform', b === 1 ? 'rotate(0 155 50)' : 'rotate(-30 155 50)');
+            setClass(swB, b === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          const wireMid = document.getElementById('wire-and-mid');
+          setClass(wireMid, a === 1 ? 'wire active' : 'wire');
+          const wireBulb = document.getElementById('wire-and-bulb');
+          setClass(wireBulb, out === 1 ? 'wire active' : 'wire');
+          const wireRet = document.getElementById('wire-and-ret');
+          setClass(wireRet, out === 1 ? 'wire active' : 'wire');
+
+          const cap = document.getElementById('caption-and');
+          if (cap) {
+            setClass(cap, out === 1 ? 'bulb-status-caption lit' : 'bulb-status-caption');
+            cap.innerHTML = out === 1
+              ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg><span>Žárovka SVÍTÍ (Y = 1). Oba spínače jsou sepnuty současně v sérii.</span>'
+              : '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg><span>Žárovka NESVÍTÍ (Y = 0). Proud neprochází, protože alespoň jeden spínač je rozepnut.</span>';
+          }
+        } else if (gate === 'or') {
+          if (swA) {
+            swA.setAttribute('transform', a === 1 ? 'rotate(0 95 30)' : 'rotate(-30 95 30)');
+            setClass(swA, a === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          if (swB) {
+            swB.setAttribute('transform', b === 1 ? 'rotate(0 95 70)' : 'rotate(-30 95 70)');
+            setClass(swB, b === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          const wireTopOut = document.getElementById('wire-or-top-out');
+          setClass(wireTopOut, a === 1 ? 'wire active' : 'wire');
+          const wireBotOut = document.getElementById('wire-or-bot-out');
+          setClass(wireBotOut, b === 1 ? 'wire active' : 'wire');
+          const wireBulb = document.getElementById('wire-or-bulb');
+          setClass(wireBulb, out === 1 ? 'wire active' : 'wire');
+          const wireRet = document.getElementById('wire-or-ret');
+          setClass(wireRet, out === 1 ? 'wire active' : 'wire');
+
+          const cap = document.getElementById('caption-or');
+          if (cap) {
+            setClass(cap, out === 1 ? 'bulb-status-caption lit' : 'bulb-status-caption');
+            cap.innerHTML = out === 1
+              ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg><span>Žárovka SVÍTÍ (Y = 1). Proud protéká sepnutou paralelní větví.</span>'
+              : '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg><span>Žárovka NESVÍTÍ (Y = 0). Obě paralelní cesty jsou přerušeny.</span>';
+          }
+        } else if (gate === 'nand') {
+          if (swA) {
+            swA.setAttribute('transform', a === 1 ? 'rotate(0 130 70)' : 'rotate(-30 130 70)');
+            setClass(swA, a === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          if (swB) {
+            swB.setAttribute('transform', b === 1 ? 'rotate(0 130 100)' : 'rotate(-30 130 100)');
+            setClass(swB, b === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          const wireShort = document.getElementById('wire-nand-short');
+          setClass(wireShort, (a === 1 && b === 1) ? 'wire active' : 'wire');
+          const wireBulb = document.getElementById('wire-nand-bulb');
+          setClass(wireBulb, out === 1 ? 'wire active' : 'wire');
+          const wireRet = document.getElementById('wire-nand-ret');
+          setClass(wireRet, out === 1 ? 'wire active' : 'wire');
+
+          const cap = document.getElementById('caption-nand');
+          if (cap) {
+            setClass(cap, out === 1 ? 'bulb-status-caption lit' : 'bulb-status-caption');
+            cap.innerHTML = out === 1
+              ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg><span>Žárovka SVÍTÍ (Y = 1). Zkratovací větev je rozpojená, proud teče do žárovky.</span>'
+              : '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg><span>Žárovka ZHASLA (Y = 0). Oba spínače sepnuly a svedly proud do země.</span>';
+          }
+        } else if (gate === 'nor') {
+          if (swA) {
+            swA.setAttribute('transform', a === 1 ? 'rotate(0 120 70)' : 'rotate(-30 120 70)');
+            setClass(swA, a === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          if (swB) {
+            swB.setAttribute('transform', b === 1 ? 'rotate(0 165 70)' : 'rotate(-30 165 70)');
+            setClass(swB, b === 1 ? 'switch-blade closed' : 'switch-blade');
+          }
+          const wireShortA = document.getElementById('wire-nor-short');
+          setClass(wireShortA, a === 1 ? 'wire active' : 'wire');
+          const wireShortB = document.getElementById('wire-nor-short-b');
+          setClass(wireShortB, b === 1 ? 'wire active' : 'wire');
+          const wireBulb = document.getElementById('wire-nor-bulb');
+          setClass(wireBulb, out === 1 ? 'wire active' : 'wire');
+          const wireRet = document.getElementById('wire-nor-ret');
+          setClass(wireRet, out === 1 ? 'wire active' : 'wire');
+
+          const cap = document.getElementById('caption-nor');
+          if (cap) {
+            setClass(cap, out === 1 ? 'bulb-status-caption lit' : 'bulb-status-caption');
+            cap.innerHTML = out === 1
+              ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg><span>Žárovka SVÍTÍ (Y = 1). Ani jeden spínač neuzemňuje proud, žárovka svítí.</span>'
+              : '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg><span>Žárovka ZHASLA (Y = 0). Sepnutý spínač svedl napětí k zemi.</span>';
+          }
+        } else if (gate === 'xor') {
+          // Schodišťové zapojení:
+          // Spínač A: a=0 -> míří na horní kontakt (95,30), a=1 -> míří na dolní kontakt (95,70)
+          if (swA) {
+            swA.setAttribute('x2', '95');
+            swA.setAttribute('y2', a === 0 ? '30' : '70');
+            setClass(swA, 'switch-blade closed');
+          }
+          // Spínač B: b=0 -> míří na dolní kontakt (175,70), b=1 -> míří na horní kontakt (175,30)
+          if (swB) {
+            swB.setAttribute('x2', '175');
+            swB.setAttribute('y2', b === 0 ? '70' : '30');
+            setClass(swB, 'switch-blade closed');
+          }
+
+          const wireTop = document.getElementById('wire-xor-top');
+          setClass(wireTop, (a === 0) ? 'wire active' : 'wire');
+          const wireBot = document.getElementById('wire-xor-bot');
+          setClass(wireBot, (a === 1) ? 'wire active' : 'wire');
+          const wireBulb = document.getElementById('wire-xor-bulb');
+          setClass(wireBulb, out === 1 ? 'wire active' : 'wire');
+          const wireRet = document.getElementById('wire-xor-ret');
+          setClass(wireRet, out === 1 ? 'wire active' : 'wire');
+
+          const cap = document.getElementById('caption-xor');
+          if (cap) {
+            setClass(cap, out === 1 ? 'bulb-status-caption lit' : 'bulb-status-caption');
+            cap.innerHTML = out === 1
+              ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg><span>Žárovka SVÍTÍ (Y = 1). Polohy spínačů se liší, okruh je uzavřen!</span>'
+              : '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg><span>Žárovka NESVÍTÍ (Y = 0). Vstupy jsou shodné, okruh je přerušen.</span>';
+          }
+        } else if (gate === 'xnor') {
+          // XNOR: symetrické spínače
+          // a=0 -> horní (30), a=1 -> dolní (70)
+          if (swA) {
+            swA.setAttribute('x2', '95');
+            swA.setAttribute('y2', a === 0 ? '30' : '70');
+            setClass(swA, 'switch-blade closed');
+          }
+          // b=0 -> horní (30), b=1 -> dolní (70)
+          if (swB) {
+            swB.setAttribute('x2', '175');
+            swB.setAttribute('y2', b === 0 ? '30' : '70');
+            setClass(swB, 'switch-blade closed');
+          }
+
+          const wireTop = document.getElementById('wire-xnor-top');
+          setClass(wireTop, (a === 0) ? 'wire active' : 'wire');
+          const wireBot = document.getElementById('wire-xnor-bot');
+          setClass(wireBot, (a === 1) ? 'wire active' : 'wire');
+          const wireBulb = document.getElementById('wire-xnor-bulb');
+          setClass(wireBulb, out === 1 ? 'wire active' : 'wire');
+          const wireRet = document.getElementById('wire-xnor-ret');
+          setClass(wireRet, out === 1 ? 'wire active' : 'wire');
+
+          const cap = document.getElementById('caption-xnor');
+          if (cap) {
+            setClass(cap, out === 1 ? 'bulb-status-caption lit' : 'bulb-status-caption');
+            cap.innerHTML = out === 1
+              ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"></path></svg><span>Žárovka SVÍTÍ (Y = 1). Polohy spínačů jsou shodné, okruh je uzavřen!</span>'
+              : '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg><span>Žárovka NESVÍTÍ (Y = 0). Vstupy se liší, okruh je rozpojen.</span>';
+          }
+        }
+
+        // Žárovka rozsvícení/zhasnutí
+        const bulbGlass = document.getElementById(`bulb-${gate}-glass`);
+        setClass(bulbGlass, out === 1 ? 'bulb-glass lit' : 'bulb-glass');
+        const bulbFilament = document.getElementById(`bulb-${gate}-filament`);
+        setClass(bulbFilament, out === 1 ? 'bulb-filament lit' : 'bulb-filament');
+      }
+
+      /**
+       * Aktualizace stavu tranzistorů v polovodičových kartách
+       */
+      function updateSemiconductorVisuals(gate, a, b, out) {
+        if (gate === 'not') {
+          const badgeP = document.getElementById('badge-not-pmos');
+          const badgeN = document.getElementById('badge-not-nmos');
+          if (badgeP) {
+            badgeP.textContent = a === 0 ? 'VODIVÝ' : 'UZAVŘENÝ';
+            badgeP.className = a === 0 ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+          if (badgeN) {
+            badgeN.textContent = a === 1 ? 'VODIVÝ' : 'UZAVŘENÝ';
+            badgeN.className = a === 1 ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+        } else if (gate === 'and') {
+          const badgeP = document.getElementById('badge-and-pmos');
+          const badgeN = document.getElementById('badge-and-nmos');
+          const pOn = (a === 0 || b === 0);
+          const nOn = (a === 1 && b === 1);
+          if (badgeP) {
+            badgeP.textContent = pOn ? 'VEDE (Pull-Up)' : 'ROZEPNUTO';
+            badgeP.className = pOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+          if (badgeN) {
+            badgeN.textContent = nOn ? 'VEDE (Série)' : 'PŘERUŠENO';
+            badgeN.className = nOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+        } else if (gate === 'or') {
+          const badgeP = document.getElementById('badge-or-pmos');
+          const badgeN = document.getElementById('badge-or-nmos');
+          const pOn = (a === 0 && b === 0);
+          const nOn = (a === 1 || b === 1);
+          if (badgeP) {
+            badgeP.textContent = pOn ? 'VEDE (Série)' : 'PŘERUŠENO';
+            badgeP.className = pOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+          if (badgeN) {
+            badgeN.textContent = nOn ? 'VEDE (Paralelně)' : 'ROZEPNUTO';
+            badgeN.className = nOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+        } else if (gate === 'nand') {
+          const badgeP = document.getElementById('badge-nand-pmos');
+          const badgeN = document.getElementById('badge-nand-nmos');
+          const pOn = (a === 0 || b === 0);
+          const nOn = (a === 1 && b === 1);
+          if (badgeP) {
+            badgeP.textContent = pOn ? 'VEDE (K VDD)' : 'ROZEPNUTO';
+            badgeP.className = pOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+          if (badgeN) {
+            badgeN.textContent = nOn ? 'VEDE K ZEMI' : 'PŘERUŠENO';
+            badgeN.className = nOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+        } else if (gate === 'nor') {
+          const badgeP = document.getElementById('badge-nor-pmos');
+          const badgeN = document.getElementById('badge-nor-nmos');
+          const pOn = (a === 0 && b === 0);
+          const nOn = (a === 1 || b === 1);
+          if (badgeP) {
+            badgeP.textContent = pOn ? 'VEDE K VDD' : 'PŘERUŠENO';
+            badgeP.className = pOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+          if (badgeN) {
+            badgeN.textContent = nOn ? 'VEDE K ZEMI' : 'ROZEPNUTO';
+            badgeN.className = nOn ? 'tx-badge tx-on' : 'tx-badge tx-off';
+          }
+        }
+      }
+
+      // Inicializace všech hradel po načtení
+      ['not', 'and', 'or', 'nand', 'nor', 'xor', 'xnor'].forEach(gate => updateGate(gate));
+
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+/* ==========================================================================
+   Syntax Highlighting: HTML, CSS, JavaScript & SCSS
+   Použití pro předmět WEB (Webové technologie)
+   ========================================================================== */
+
+/* HTML značky a atributy */
+.html-tag   { color: #f43f5e; font-weight: 600; }
+.html-attr  { color: #38bdf8; }
+.html-val   { color: #10b981; }
+.html-comm  { color: #6b7280; font-style: italic; }
+
+/* CSS vlastnosti a hodnoty */
+.css-sel    { color: #f59e0b; font-weight: 600; }
+.css-prop   { color: #38bdf8; }
+.css-val    { color: #10b981; }
+.css-unit   { color: #a855f7; }
+.css-var    { color: #ec4899; }
+.css-atrule { color: #f43f5e; font-weight: 700; }
+
+/* JavaScript / EcmaScript tokeny */
+.js-kw      { color: #f43f5e; font-weight: 700; }
+.js-fn      { color: #38bdf8; font-weight: 600; }
+.js-str     { color: #10b981; }
+.js-num     { color: #f59e0b; }
+.js-comment { color: #6b7280; font-style: italic; }
+.js-var     { color: #e2e8f0; }
