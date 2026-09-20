@@ -734,7 +734,7 @@
                 <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
                 Regulace a zpětná vazba
               </h4>
-              <p>Princip uzavřené smyčky, srovnávání skutečného stavu se žádanou hodnotou a okamžitá eliminace poruch.</p>
+              <p>Princip uzavřené smyčky, srovnávání skutečného stavu se žádanou hodnotou a průběžné potlačování regulační odchylky.</p>
             </div>
             <div class="content-card">
               <h4>
@@ -1055,7 +1055,7 @@
               </div>
 
               <div class="statement-box positive" id="feedbackExplainBox" style="margin: 0; font-size: 0.86rem; line-height: 1.5;">
-                <strong>Pozorování:</strong> V režimu se <strong>zpětnou vazbou</strong> systém okamžitě zaregistruje pokles rychlosti způsobený kopcem a regulátor sám automaticky zvýší plyn $u(t)$, aby udržel přesně 90 km/h.
+                <strong>Pozorování:</strong> V režimu se <strong>zpětnou vazbou</strong> systém zaregistruje pokles rychlosti způsobený kopcem a regulátor sám automaticky zvýší plyn $u(t)$, aby rychlost co nejrychleji vrátil zpět k žádaným 90 km/h.
               </div>
             </div>
           </div>
@@ -1507,7 +1507,7 @@
           pointsClassic: ['Plováková komora, trysky a mechanické sytiče', 'Zvýšená spotřeba a vysoké emise škodlivin', 'Při změně nadmořské výšky nutné přetryskování'],
           titleMecha: 'Moderní motor s řídicí jednotkou (ECU & EFI)',
           badgeMecha: 'Mechatronický systém',
-          descMecha: 'Mikroprocesorová jednotka (ECU) každou milisekundu vyhodnocuje data z lambda sondy, váhy vzduchu a snímače polohy klikové hřídele. Solenoidové nebo piezoelektrické vstřikovače dávkují přesnou mikro-dávku paliva pod tlakem až 2 500 bar.',
+          descMecha: 'Mikroprocesorová jednotka (ECU) každou milisekundu vyhodnocuje data z lambda sondy, váhy vzduchu a snímače polohy klikové hřídele. Solenoidové nebo piezoelektrické vstřikovače dávkují přesnou mikro-dávku paliva – u benzinových motorů pod tlakem řádově jednotek až stovek barů, u naftových common-rail systémů až 2 500 barů.',
           pointsMecha: ['Elektromagnetické / piezo vstřikovače (PWM puls)', 'Variabilní časování ventilů (VVT) řízené servy', 'O 40 % vyšší účinnost, autodiagnostika přes OBD-II']
         },
         brakes: {

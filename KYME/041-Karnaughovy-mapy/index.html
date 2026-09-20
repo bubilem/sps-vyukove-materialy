@@ -590,65 +590,134 @@
         if (ones.length === 0) return '0';
         if (ones.length === Math.pow(2, vars)) return '1';
 
-        if (vars === 2) {
-          // 4 buňky: m0(00), m1(01), m2(10), m3(11)
-          // Pokrývání dvojic
-          const has0 = ones.includes(0);
-          const has1 = ones.includes(1);
-          const has2 = ones.includes(2);
-          const has3 = ones.includes(3);
+        // Obecná minimalizace metodou Quine-McCluskeyho (ekvivalentní seskupování
+        // sousedních buněk v Karnaughově mapě), funguje pro 2 i 3 proměnné.
+        const varNames = vars === 2 ? ['A', 'B'] : ['A', 'B', 'C'];
+        const negNames = vars === 2 ? ['Ā', 'B̄'] : ['Ā', 'B̄', 'C̄'];
 
-          if (has0 && has1 && has2) return 'Ā + B̄';
-          if (has0 && has1 && has3) return 'Ā + B';
-          if (has0 && has2 && has3) return 'B̄ + A';
-          if (has1 && has2 && has3) return 'B + A';
+        function toBits(n) {
+          let s = '';
+          for (let b = vars - 1; b >= 0; b--) s += (n >> b) & 1;
+          return s;
+        }
 
-          // Jednotlivé dvojice
-          const terms = [];
-          const covered = new Set();
+        function bitsToTerm(bits) {
+          const parts = [];
+          for (let p = 0; p < bits.length; p++) {
+            if (bits[p] === '-') continue;
+            parts.push(bits[p] === '1' ? varNames[p] : negNames[p]);
+          }
+          return parts.length > 0 ? parts.join('·') : '1';
+        }
 
-          if (has0 && has1) { terms.push('Ā'); covered.add(0); covered.add(1); }
-          if (has2 && has3) { terms.push('A'); covered.add(2); covered.add(3); }
-          if (has0 && has2) { terms.push('B̄'); covered.add(0); covered.add(2); }
-          if (has1 && has3) { terms.push('B'); covered.add(1); covered.add(3); }
-
-          // Osamocené buňky
-          ones.forEach(i => {
-            if (!covered.has(i)) {
-              const a = (i & 2) ? 'A' : 'Ā';
-              const b = (i & 1) ? 'B' : 'B̄';
-              terms.push(`${a}·${b}`);
+        function combinations(arr, k) {
+          const result = [];
+          (function helper(start, combo) {
+            if (combo.length === k) { result.push(combo.slice()); return; }
+            for (let i = start; i < arr.length; i++) {
+              combo.push(arr[i]);
+              helper(i + 1, combo);
+              combo.pop();
             }
-          });
+          })(0, []);
+          return result;
+        }
 
-          return terms.length > 0 ? terms.join(' + ') : '0';
-        } else {
-          // 3 proměnné: A, B, C (8 buněk)
-          // Rychlé vyhodnocení známých konfigurací pro SPŠ výuku
-          const set = new Set(ones);
+        // 1. Seskupení mintermů podle počtu jedniček (výchozí úroveň QM tabulky)
+        let currentGroups = {};
+        ones.forEach(m => {
+          const bits = toBits(m);
+          const cnt = bits.split('').filter(c => c === '1').length;
+          if (!currentGroups[cnt]) currentGroups[cnt] = [];
+          currentGroups[cnt].push({ bits, minterms: [m] });
+        });
 
-          // Čtveřice:
-          if (set.has(0) && set.has(1) && set.has(2) && set.has(3)) return 'Ā';
-          if (set.has(4) && set.has(5) && set.has(6) && set.has(7)) return 'A';
-          if (set.has(0) && set.has(1) && set.has(4) && set.has(5)) return 'B̄';
-          if (set.has(2) && set.has(3) && set.has(6) && set.has(7)) return 'B';
-          if (set.has(1) && set.has(3) && set.has(5) && set.has(7)) return 'C';
-          if (set.has(0) && set.has(2) && set.has(4) && set.has(6)) return 'C̄';
+        // 2. Opakované slučování sousedních skupin (rozdíl v 1 bitu) až do ustálení
+        const primeImplicants = [];
+        while (true) {
+          const counts = Object.keys(currentGroups).map(Number).sort((a, b) => a - b);
+          const usedBits = new Set();
+          const nextGroups = {};
 
-          // Většina (Majority function)
-          if (set.has(3) && set.has(5) && set.has(6) && set.has(7)) {
-            return 'A·B + B·C + A·C';
+          for (let i = 0; i < counts.length - 1; i++) {
+            const c1 = counts[i], c2 = counts[i + 1];
+            if (c2 !== c1 + 1) continue;
+
+            currentGroups[c1].forEach(ta => {
+              currentGroups[c2].forEach(tb => {
+                let diffPos = -1, diffCount = 0;
+                for (let p = 0; p < vars; p++) {
+                  if (ta.bits[p] !== tb.bits[p]) { diffCount++; diffPos = p; }
+                }
+                if (diffCount === 1 && ta.bits[diffPos] !== '-' && tb.bits[diffPos] !== '-') {
+                  const newBits = ta.bits.substring(0, diffPos) + '-' + ta.bits.substring(diffPos + 1);
+                  const merged = Array.from(new Set([...ta.minterms, ...tb.minterms])).sort((x, y) => x - y);
+                  if (!nextGroups[c1]) nextGroups[c1] = new Map();
+                  nextGroups[c1].set(newBits, { bits: newBits, minterms: merged });
+                  usedBits.add(ta.bits);
+                  usedBits.add(tb.bits);
+                }
+              });
+            });
           }
 
-          // Pokud není speciální vzor, zobrazíme zjednodušenou formu
-          const sop = ones.map(idx => {
-            const a = (idx & 4) ? 'A' : 'Ā';
-            const b = (idx & 2) ? 'B' : 'B̄';
-            const c = (idx & 1) ? 'C' : 'C̄';
-            return `${a}·${b}·${c}`;
+          // Termy, které se s ničím nesloučily, jsou primární implikanty
+          counts.forEach(c => {
+            currentGroups[c].forEach(t => {
+              if (!usedBits.has(t.bits)) primeImplicants.push(t);
+            });
           });
-          return sop.join(' + ');
+
+          const anyCombined = Object.keys(nextGroups).some(c => nextGroups[c].size > 0);
+          if (!anyCombined) break;
+
+          const flattened = {};
+          Object.keys(nextGroups).forEach(c => { flattened[c] = Array.from(nextGroups[c].values()); });
+          currentGroups = flattened;
         }
+
+        // Odstranění duplicitních primárních implikantů
+        const piByBits = new Map();
+        primeImplicants.forEach(pi => piByBits.set(pi.bits, pi));
+        const piList = Array.from(piByBits.values());
+
+        // 3. Tabulka pokrytí: pro každý minterm najdeme implikanty, které ho pokrývají
+        const coverMap = ones.map(m => piList.filter(pi => pi.minterms.includes(m)));
+
+        // 4. Esenciální primární implikanty (jediné pokrytí daného mintermu)
+        const essential = new Set();
+        ones.forEach((m, i) => {
+          if (coverMap[i].length === 1) essential.add(coverMap[i][0].bits);
+        });
+
+        const covered = new Set();
+        essential.forEach(bits => {
+          piByBits.get(bits).minterms.forEach(m => covered.add(m));
+        });
+
+        // 5. Doplnění zbývajících mintermů nejmenší možnou sadou implikantů
+        const remaining = ones.filter(m => !covered.has(m));
+        const candidates = piList.filter(pi => !essential.has(pi.bits));
+        let extra = [];
+
+        if (remaining.length > 0) {
+          outer:
+          for (let size = 1; size <= candidates.length; size++) {
+            for (const subset of combinations(candidates, size)) {
+              const coversNow = new Set();
+              subset.forEach(pi => pi.minterms.forEach(m => coversNow.add(m)));
+              if (remaining.every(m => coversNow.has(m))) {
+                extra = subset;
+                break outer;
+              }
+            }
+          }
+        }
+
+        const finalTerms = [...Array.from(essential).map(bits => piByBits.get(bits)), ...extra];
+        finalTerms.sort((a, b) => Math.min(...a.minterms) - Math.min(...b.minterms));
+
+        return finalTerms.map(pi => bitsToTerm(pi.bits)).join(' + ');
       }
 
       // Presety události
