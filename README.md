@@ -1,8 +1,10 @@
-# Výukové materiály SPŠ – Kybernetika, Mechatronika a IT
+# Výukové materiály SPŠ – IT
 
 Komplexní otevřená webová platforma interaktivních výukových materiálů, prezentací a laboratorních appletů pro **Střední průmyslovou školu (SPŠ)**. Projekt je navržen pro technické obory se zaměřením na automatizaci, robotiku, číslicovou techniku a informatiku.
 
 Materiály tvoří ucelená odborná témata (často pokrývající více vyučovacích hodin i desítky snímků), jsou plně optimalizovány pro **100% offline provoz** bez nutnosti serveru i pro živý provoz na **GitHub Pages** a obsahují přehledná shrnutí s opakovacími otázkami.
+
+[https://bubilem.github.io/sps-vyukove-materialy/](https://bubilem.github.io/sps-vyukove-materialy/)
 
 ---
 
@@ -104,12 +106,3 @@ Tento princip umožňuje vkládat samostatné laboratorní a interaktivní apple
    - **Node.js (npx):** `npx serve .`
    Následně otevřete v prohlížeči adresu `http://localhost:8000`.
 
----
-
-## Nasazení na GitHub Pages
-
-Repozitář je připraven pro okamžité automatické publikování přes GitHub Pages:
-- V nastavení repozitáře (**Settings &rarr; Pages**):
-  - **Source:** `Deploy from a branch`
-  - **Branch:** `main` &bull; `/ (root)`
-- Díky čistě relativním cestám web bezchybně funguje v kořenovém i podsložkovém repozitáři GitHub Pages.
