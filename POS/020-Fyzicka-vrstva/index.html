@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 020: Fyzická vrstva a přenosová média | POS • SPŠ</title>
+  <meta name="description" content="Komplexní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Fyzická vrstva (L1), metalická média (UTP/STP, koax), optická vlákna (SMF, MMF), kódování bitů a modulace, signálový simulátor, bezdrátové sítě (Wi-Fi 7, Bluetooth 5.x, Li-Fi, FSO), konektory a normy.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 020 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">020 Fyzická vrstva</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; Média &amp; Signalizace</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Fyzická vrstva a přenosová média">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 020</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Layer 1</span>
+          </div>
+          <h1 class="hero-title">Fyzická vrstva a přenosová média</h1>
+          <p class="hero-subtitle">
+            Cesta bitů reálným světem &bull; Od elektrických impulsů v měděných vodičích přes světelné fotony v optických vláknech až po mikrovlny v éteru.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M2 8c4 0 4 8 8 8s4-8 8-8 4 8 4 8"></path><path d="M2 16c4 0 4-8 8-8s4 8 8 8 4-8 4-8"></path></svg>
+                Metalická média
+              </h4>
+              <p>Koaxiální kabely a kroucená dvojlinka (UTP/STP). Diferenciální signál, potlačení přeslechů a normy T568A/B.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path><circle cx="12" cy="12" r="4"></circle></svg>
+                Optická vlákna
+              </h4>
+              <p>Totální odraz světla, Snellův zákon lomu. Srovnání Single-Mode (9 µm) vs. Multi-Mode (50 µm), vidová disperze a konektory LC/SC.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #3b82f6;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Kódování &amp; Simulátor
+              </h4>
+              <p>Reprezentace bitů na médiu: NRZ-L, Manchester, AM, FM a BPSK. Živý interaktivní trenažér signálových křivek.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                Bezdrátová média
+              </h4>
+              <p>Elektromagnetické spektrum, Wi-Fi 6E/7 (OFDMA, 4K-QAM, MLO), Bluetooth 5.x a optické bezdráty Li-Fi a FSO.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Úloha fyzické vrstvy v síťové architektuře
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Úloha fyzické vrstvy a přenosové metriky">
+        <div class="slide-header">
+          <h2 class="slide-title">Úloha fyzické vrstvy (L1) v síťovém modelu</h2>
+          <p class="slide-subtitle">Fyzická vrstva přebírá datový rámec (L2 PDU) z linkové vrstvy, kóduje jednotlivé bity do signálů a vysílá je do přenosového média.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Funkce L1 -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon blue">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              </div>
+              <h3 class="card-title">Základní úkoly vrstvy L1</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Fyzické komponenty:</strong> Síťové adaptéry (NIC), konektory (RJ-45, LC), patch panely, kabely a anténní prvky.</li>
+                <li><strong>Kódování dat (Encoding):</strong> Transformace sekvence bitů (0 a 1) do předdefinovaného vzoru impulsů rozpoznatelných přijímačem.</li>
+                <li><strong>Signalizace (Signaling):</strong> Způsob, jakým jsou hodnoty 0 a 1 fyzicky reprezentovány – napěťové úrovně (V), světelné záblesky (fotony), nebo rádiové vlny.</li>
+                <li><strong>Bitová synchronizace:</strong> Přijímač musí přesně rozpoznat začátek a konec každého bitového intervalu pomocí časového taktu (Clock).</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Klíčové metriky & Fyzikální omezení -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+              </div>
+              <h3 class="card-title">Metriky propustnosti &amp; Fyzikální vlivy</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Šířka pásma (Bandwidth):</strong> Teoretická maximální kapacita přenosu dat za sekundu (např. 1 Gbps, 10 Gbps). Měřeno v bitech/s.</li>
+                <li><strong>Propustnost (Throughput):</strong> Skutečný objem přenesených dat včetně režie protokolů za daný čas přes fyzické médium.</li>
+                <li><strong>Užitečná propustnost (Goodput):</strong> Čistý přenos uživatelských dat (bez hlaviček TCP/IP/Ethernet a bez retransmisí). Vždy platí: $\text{Goodput} \le \text{Throughput} \le \text{Bandwidth}$.</li>
+                <li><strong>Útlum (Attenuation):</strong> Postupná ztráta energie signálu s rostoucí vzdáleností (důvod omezení délky kabelů).</li>
+                <li><strong>Rušení (EMI / RFI):</strong> Elektromagnetická interference z okolních motorů, zářivek či radiových vysílačů deformující signál.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Metalická média – Koaxiální kabely & Průřez
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Koaxiální kabely a jejich konstrukce">
+        <div class="slide-header">
+          <h2 class="slide-title">Metalická média: Koaxiální kabel a jeho průřez</h2>
+          <p class="slide-subtitle">Koaxiální vedení se skládá ze dvou souosých vodičů oddělených dielektrikem. Dříve páteř sítí Ethernet, dnes páteř kabelových rozvodů a vysokofrekvenčních RF tras.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Popis a parametry koaxu -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line></svg>
+              </div>
+              <h3 class="card-title">Vlastnosti a použití koaxiálních kabelů</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Konstrukce:</strong> Střední plný měděný vodič obklopený dielektrickým izolantem, stínicí fólií a měděným opletením s vnějším PVC pláštěm.</li>
+                <li><strong>Impedance 50 &Omega;:</strong> Určeno pro datové přenosy a vysílací techniku (Ethernet 10BASE2 "Thinnet" s kabelem RG-58, 10BASE5 "Thicknet" s RG-8, anténní RF svody).</li>
+                <li><strong>Impedance 75 &Omega;:</strong> Optimalizováno pro minimální útlum video signálu (kabelová televize CATV, satelitní rozvody, kabelové modemy DOCSIS 3.1/4.0 s kabelem RG-6 / RG-59).</li>
+                <li><strong>Konektory:</strong> Bajonetový BNC (vyžadoval T-kusy a 50&Omega; terminátory na koncích sběrnice), šroubovací F-konektory (CATV/satelit) a SMA (Wi-Fi antény).</li>
+                <li><strong>Výhody a limity:</strong> Výborná odolnost proti vnějšímu EMI rušení, ale vysoká tuhost kabelu, složitější zakončování a sběrnicová topologie náchylná na přerušení.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: SVG Technický průřez s kótami a detailní rozpis -->
+          <div class="diagram-container">
+            <div class="diagram-header">
+              <span class="diagram-title">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                Technický průřez kabelem RG-6 (75 &Omega;)
+              </span>
+              <span class="diagram-badge">Reálné rozměry v mm</span>
+            </div>
+
+            <!-- Čistý barevný průřez s číslovanými terčíky bez kolidujících textů -->
+            <svg class="cross-section-svg" viewBox="0 0 340 210" aria-label="Barevný technický průřez koaxiálním kabelem RG-6">
+              <!-- Vrstvy kabelu od vnějšku dovnitř se středem cx=170, cy=105 -->
+              <!-- 4. Vnější ochranný plášť (Ø 6.8 mm) -->
+              <circle cx="170" cy="105" r="86" fill="#1e293b" stroke="#38bdf8" stroke-width="2.5" class="cable-layer" />
+              <!-- 3. Opletení ze slitiny mědi/hliníku (Ø 5.3 mm) -->
+              <circle cx="170" cy="105" r="67" fill="#334155" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="4,2" class="cable-layer" />
+              <!-- 3b. Stínicí Al fólie (Ø 4.8 mm) -->
+              <circle cx="170" cy="105" r="60" fill="#64748b" stroke="#cbd5e1" stroke-width="1.5" class="cable-layer" />
+              <!-- 2. Pěnové PE dielektrikum (Ø 4.6 mm) -->
+              <circle cx="170" cy="105" r="56" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" class="cable-layer" />
+              <!-- 1. Střední měděné jádro (Ø 1.02 mm) -->
+              <circle cx="170" cy="105" r="14" fill="#f59e0b" stroke="#d97706" stroke-width="2" class="cable-layer" />
+
+              <!-- Číslované terčíky vrstev s vysokým kontrastem -->
+              <!-- Terčík 1: Měděné jádro -->
+              <circle cx="170" cy="105" r="8.5" fill="#f59e0b" stroke="#78350f" stroke-width="1.5" />
+              <text x="170" y="108.5" fill="#78350f" font-size="10" font-weight="900" font-family="sans-serif" text-anchor="middle">1</text>
+
+              <!-- Terčík 2: Dielektrikum PE -->
+              <circle cx="170" cy="68" r="8.5" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" />
+              <text x="170" y="71.5" fill="#1e293b" font-size="10" font-weight="900" font-family="sans-serif" text-anchor="middle">2</text>
+
+              <!-- Terčík 3: Stínění (Al fólie + Cu pletivo) -->
+              <circle cx="170" cy="41" r="8.5" fill="#94a3b8" stroke="#334155" stroke-width="1.5" />
+              <text x="170" y="44.5" fill="#0f172a" font-size="10" font-weight="900" font-family="sans-serif" text-anchor="middle">3</text>
+
+              <!-- Terčík 4: Vnější plášť -->
+              <circle cx="170" cy="23" r="8.5" fill="#38bdf8" stroke="#0369a1" stroke-width="1.5" />
+              <text x="170" y="26.5" fill="#0c4a6e" font-size="10" font-weight="900" font-family="sans-serif" text-anchor="middle">4</text>
+
+              <!-- Svislá vnější kóta celkového průměru vlevo -->
+              <line x1="42" y1="19" x2="42" y2="191" stroke="#38bdf8" stroke-width="1.5" />
+              <line x1="35" y1="19" x2="49" y2="19" stroke="#38bdf8" stroke-width="1.5" />
+              <line x1="35" y1="191" x2="49" y2="191" stroke="#38bdf8" stroke-width="1.5" />
+              <text x="32" y="105" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" transform="rotate(-90 32 105)" text-anchor="middle">&Oslash; Celkový: 6,8 mm</text>
+            </svg>
+
+            <!-- Podrobný rozpis vrstev a jejich funkce pod schématem -->
+            <div class="layers-breakdown">
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #f59e0b; color: #78350f;">1</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Střední měděný vodič (Jádro)</span>
+                    <span class="layer-detail-dimension">&Oslash; 1,02 mm &bull; AWG 18</span>
+                  </div>
+                  <p class="layer-detail-desc">Masivní elektrovodná měď (OFC). Přenáší vysokofrekvenční signál. U VF kmitočtů se uplatňuje <em>skin-efekt</em> (proud teče především po tenkém povrchu jádra).</p>
+                </div>
+              </div>
+
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #f8fafc; color: #1e293b;">2</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Pěnové PE dielektrikum</span>
+                    <span class="layer-detail-dimension">&Oslash; 4,60 mm &bull; FPE</span>
+                  </div>
+                  <p class="layer-detail-desc">Pěnový polyethylen s plynovými bublinkami. Fixuje přesnou souosost jádra se stíněním, přímo určuje vlnovou impedanci (75 &Omega;) a rychlost šíření signálu (až 82 % <em>c</em>).</p>
+                </div>
+              </div>
+
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #94a3b8; color: #0f172a;">3</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Dvojité stínění (Al fólie + Cu opletení)</span>
+                    <span class="layer-detail-dimension">&Oslash; 5,10 mm &bull; 100% + 60% krytí</span>
+                  </div>
+                  <p class="layer-detail-desc">Al fólie odráží vysokofrekvenční RFI rušení, husté měděné pletivo chrání před nízkofrekvenčním EMI a slouží současně jako spolehlivý zemní zpětný vodič.</p>
+                </div>
+              </div>
+
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #38bdf8; color: #0c4a6e;">4</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Vnější ochranný plášť</span>
+                    <span class="layer-detail-dimension">&Oslash; 6,80 mm &bull; PVC / LSZH</span>
+                  </div>
+                  <p class="layer-detail-desc">Zajišťuje mechanickou soudržnost a robustní ochranu kabelu před vlhkostí, otěrem a povětrnostními vlivy (černý venkovní PE plášť navíc odolává UV záření).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Metalická média – Kroucená dvojlinka (UTP/STP)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Kroucená dvojlinka a její kategorie">
+        <div class="slide-header">
+          <h2 class="slide-title">Kroucená dvojlinka (Twisted Pair): UTP, STP a kategorie</h2>
+          <p class="slide-subtitle">Dominantní metalické médium moderních LAN. Využívá symetrický diferenciální přenos po kroucených párech pro eliminaci elektromagnetického rušení.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Princip symetrického přenosu a kroucení -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M2 8c4 0 4 8 8 8s4-8 8-8 4 8 4 8"></path><path d="M2 16c4 0 4-8 8-8s4 8 8 8 4-8 4-8"></path></svg>
+              </div>
+              <h3 class="card-title">Proč kroucení eliminuje rušení (Diferenciální přenos)</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Problém paralelních vodičů:</strong> Kdyby vedly dva vodiče rovnoběžně, vodič blíže k motoru či 230V kabelu by schytal vyšší rušení než druhý (+3 V vs. +1 V). Signál by byl nenávratně zkreslen.</li>
+                <li><strong>Geniální trik zkrutu:</strong> Pravidelným kroucením si oba vodiče každých pár centimetrů prohazují pozici. V průměru po celé délce kabelu se do obou žil naindukuje <strong>naprosto shodné rušivé napětí</strong> (+V<sub>šum</sub>).</li>
+                <li><strong>Diferenciální komparátor na přijímači:</strong>
+                  Vysílač vysílá: žíla A = +V, žíla B = &minus;V.<br>
+                  Během trasy vnikne šum: V<sub>A</sub> = +V + V<sub>šum</sub>, V<sub>B</sub> = &minus;V + V<sub>šum</sub>.<br>
+                  Přijímač na konci kabelu provede odečtení napětí obou žil:
+                  <div style="font-family: var(--font-mono); font-size: 0.84rem; background: rgba(0, 0, 0, 0.3); padding: 0.4rem 0.6rem; border-radius: 6px; margin: 0.45rem 0; border: 1px solid var(--border-subtle); color: #38bdf8;">
+                    (+V + V<sub>šum</sub>) &minus; (&minus;V + V<sub>šum</sub>) = 2V + (V<sub>šum</sub> &minus; V<sub>šum</sub>) = <strong>2V</strong>
+                  </div>
+                  Rušení se <strong>fyzikálně i matematicky zcela vyruší na 0 V</strong> a užitečný signál se dokonce zdvojnásobí!
+                </li>
+                <li><strong>Různá stoupání zkrutu:</strong> Každý ze 4 párů má jiný počet zkrutů na metr, aby se vzájemně nerušily sousední páry (NEXT &ndash; <em>Near-End Crosstalk</em>).</li>
+              </ul>
+
+              <!-- Názorný box s matematickým odečtením rušení -->
+              <div class="diff-signaling-box">
+                <div style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; text-transform: uppercase;">Princip eliminace souhlasného rušení (CMRR)</div>
+                <div class="diff-math-row">
+                  <span>Signál A: $+V + V_{\text{šum}}$</span>
+                  <span style="color: #94a3b8;">&minus;</span>
+                  <span>Signál B: $-V + V_{\text{šum}}$</span>
+                  <span style="color: #34d399; font-weight: bold;">= 2V (Šum vyrušen)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Značení stínění dle ISO/IEC 11801 a SVG průřez s detailním rozpisem -->
+          <div class="diagram-container">
+            <div class="diagram-header">
+              <span class="diagram-title">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8M12 8v8"></path></svg>
+                Průřez kabelem S/FTP Cat 7 (Stíněné páry i celek)
+              </span>
+              <span class="diagram-badge">ISO/IEC 11801 &bull; 600 MHz</span>
+            </div>
+
+            <!-- Čistý barevný průřez s číslovanými terčíky bez kolidujících textů -->
+            <svg class="cross-section-svg" viewBox="0 0 340 210" aria-label="Barevný technický průřez kabelem S/FTP Cat 7">
+              <!-- Vnější plášť kabelu (Ø 7.2 mm) se středem cx=170, cy=105 -->
+              <circle cx="170" cy="105" r="88" fill="#1e293b" stroke="#38bdf8" stroke-width="2.5" class="cable-layer" />
+              <!-- Celkové opletení (S = Braided Shield) -->
+              <circle cx="170" cy="105" r="80" fill="#334155" stroke="#94a3b8" stroke-width="2" stroke-dasharray="3,2" class="cable-layer" />
+
+              <!-- Centrální plastový kříž (Spline) -->
+              <path d="M166 22 h8 v166 h-8 z" fill="#475569" opacity="0.6" />
+              <path d="M87 101 h166 v8 h-166 z" fill="#475569" opacity="0.6" />
+
+              <!-- 4 Stíněné páry (F = Foil Shielded Pairs) -->
+              <!-- Pár 1 (Nahoře) - Modrý pár -->
+              <circle cx="170" cy="62" r="24" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5" opacity="0.9" />
+              <circle cx="162" cy="62" r="6.5" fill="#3b82f6" stroke="#93c5fd" stroke-width="1" />
+              <circle cx="178" cy="62" r="6.5" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5" />
+
+              <!-- Pár 2 (Vpravo) - Oranžový pár -->
+              <circle cx="213" cy="105" r="24" fill="#7c2d12" stroke="#f97316" stroke-width="1.5" opacity="0.9" />
+              <circle cx="213" cy="97" r="6.5" fill="#ea580c" stroke="#fdba74" stroke-width="1" />
+              <circle cx="213" cy="113" r="6.5" fill="#ffffff" stroke="#ea580c" stroke-width="1.5" />
+
+              <!-- Pár 3 (Dole) - Zelený pár -->
+              <circle cx="170" cy="148" r="24" fill="#14532d" stroke="#22c55e" stroke-width="1.5" opacity="0.9" />
+              <circle cx="162" cy="148" r="6.5" fill="#16a34a" stroke="#86efac" stroke-width="1" />
+              <circle cx="178" cy="148" r="6.5" fill="#ffffff" stroke="#16a34a" stroke-width="1.5" />
+
+              <!-- Pár 4 (Vlevo) - Hnědý pár -->
+              <circle cx="127" cy="105" r="24" fill="#451a03" stroke="#a16207" stroke-width="1.5" opacity="0.9" />
+              <circle cx="127" cy="97" r="6.5" fill="#78350f" stroke="#d97706" stroke-width="1" />
+              <circle cx="127" cy="113" r="6.5" fill="#ffffff" stroke="#78350f" stroke-width="1.5" />
+
+              <!-- Číslované terčíky s vysokým kontrastem -->
+              <!-- Terčík 1: Vodič AWG 23 -->
+              <circle cx="178" cy="62" r="7.5" fill="#38bdf8" stroke="#0369a1" stroke-width="1.5" />
+              <text x="178" y="65.5" fill="#0c4a6e" font-size="9" font-weight="900" font-family="sans-serif" text-anchor="middle">1</text>
+
+              <!-- Terčík 2: Fólie páru PiMF -->
+              <circle cx="225" cy="84" r="8" fill="#f97316" stroke="#9a3412" stroke-width="1.5" />
+              <text x="225" y="87.5" fill="#ffffff" font-size="9" font-weight="900" font-family="sans-serif" text-anchor="middle">2</text>
+
+              <!-- Terčík 3: Celkové stínění Cu opletením -->
+              <circle cx="236" cy="135" r="8" fill="#94a3b8" stroke="#334155" stroke-width="1.5" />
+              <text x="236" y="138.5" fill="#0f172a" font-size="9" font-weight="900" font-family="sans-serif" text-anchor="middle">3</text>
+
+              <!-- Terčík 4: Plášť LSZH -->
+              <circle cx="248" cy="165" r="8" fill="#38bdf8" stroke="#0369a1" stroke-width="1.5" />
+              <text x="248" y="168.5" fill="#0c4a6e" font-size="9" font-weight="900" font-family="sans-serif" text-anchor="middle">4</text>
+
+              <!-- Svislá vnější kóta celkového průměru vlevo -->
+              <line x1="42" y1="17" x2="42" y2="193" stroke="#38bdf8" stroke-width="1.5" />
+              <line x1="35" y1="17" x2="49" y2="17" stroke="#38bdf8" stroke-width="1.5" />
+              <line x1="35" y1="193" x2="49" y2="193" stroke="#38bdf8" stroke-width="1.5" />
+              <text x="32" y="105" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" transform="rotate(-90 32 105)" text-anchor="middle">&Oslash; Celkový: 7,2 mm</text>
+            </svg>
+
+            <!-- Podrobný rozpis vrstev a jejich funkce pod schématem -->
+            <div class="layers-breakdown">
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #38bdf8; color: #0c4a6e;">1</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Měděné vodiče (4 páry / 8 žil)</span>
+                    <span class="layer-detail-dimension">&Oslash; 0,57 mm &bull; AWG 23</span>
+                  </div>
+                  <p class="layer-detail-desc">Masivní čistá elektrovodná měď s tenkou PE izolací dle T568B. Každý pár má jiný krok zkrutu (Twist Pitch), což potlačuje vzájemné přeslechy NEXT.</p>
+                </div>
+              </div>
+
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #f97316; color: #ffffff;">2</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Individuální stínění párů (Al fólie - PiMF)</span>
+                    <span class="layer-detail-dimension">Pairs in Metal Foil &bull; 100%</span>
+                  </div>
+                  <p class="layer-detail-desc">Každý ze 4 párů je samostatně ovinut hliníkovou fólií. Zcela eliminuje elektromagnetické přeslechy mezi vnitřními páry a umožňuje frekvence až 600&ndash;1000 MHz.</p>
+                </div>
+              </div>
+
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #94a3b8; color: #0f172a;">3</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Celkové stínění opletením (S = Shield)</span>
+                    <span class="layer-detail-dimension">Husté Cu opletení</span>
+                  </div>
+                  <p class="layer-detail-desc">Společné kovové opletení obepíná celý svazek 4 párů. Poskytuje špičkovou ochranu proti vnějšímu průmyslovému EMI rušení a tvoří společné uzemnění.</p>
+                </div>
+              </div>
+
+              <div class="layer-detail-item">
+                <div class="layer-num-badge" style="background: #38bdf8; color: #0c4a6e;">4</div>
+                <div class="layer-detail-body">
+                  <div class="layer-detail-header">
+                    <span class="layer-detail-title">Centrální kříž &amp; Vnější plášť LSZH</span>
+                    <span class="layer-detail-dimension">&Oslash; 7,20 mm &bull; Bezhalogenový</span>
+                  </div>
+                  <p class="layer-detail-desc">Plastový separátor udržuje symetrickou geometrii. Plášť LSZH (Low Smoke Zero Halogen) při požáru netvoří toxické dýmy ani agresivní halogenové kyseliny.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Přehledová tabulka kategorií kabelů -->
+        <div class="spec-table-container" style="margin-top: 1rem;">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Kategorie</th>
+                <th>Max. frekvence</th>
+                <th>Rychlost sítě</th>
+                <th>Max. vzdálenost</th>
+                <th>Typické stínění</th>
+                <th>Použití v praxi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(100, 116, 139, 0.2); color: #cbd5e1;">Cat 5e</span></td>
+                <td>100 MHz</td>
+                <td>1 Gbps (1000BASE-T)</td>
+                <td>100 m</td>
+                <td>U/UTP (nestíněný)</td>
+                <td>Zastaralé rozvody, IP kamery, základní LAN</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Cat 6</span></td>
+                <td>250 MHz</td>
+                <td>1 Gbps (10 Gbps do 55 m)</td>
+                <td>100 m / 55 m</td>
+                <td>U/UTP s plastovým křížem</td>
+                <td>Standard pro novější kancelářské a domácí rozvody</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(6, 182, 212, 0.2); color: #38bdf8;">Cat 6a</span></td>
+                <td>500 MHz</td>
+                <td>10 Gbps (10GBASE-T)</td>
+                <td>100 m</td>
+                <td>F/UTP nebo U/FTP</td>
+                <td>Dnešní standard pro strukturovanou kabeláž firem a škol</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">Cat 7 / 7a</span></td>
+                <td>600 / 1000 MHz</td>
+                <td>10 Gbps+</td>
+                <td>100 m</td>
+                <td>S/FTP (individuální fólie + pletivo)</td>
+                <td>Průmysl s vysokým rušením, audio/video studia</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Cat 8</span></td>
+                <td>2000 MHz</td>
+                <td>25 Gbps / 40 Gbps</td>
+                <td>30 m (Switch-to-Server)</td>
+                <td>S/FTP stíněný</td>
+                <td>Datová centra (propoje serverových racků na krátké trasy)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Standardy zapojení T568A/B a konektory
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Konektory RJ-45, T568A/B a napájení PoE">
+        <div class="slide-header">
+          <h2 class="slide-title">Konektory RJ-45, normy T568A/B a napájení PoE</h2>
+          <p class="slide-subtitle">Zakončení kroucené dvojlinky se řídí mezinárodními standardy TIA/EIA-568. Zajišťuje kompatibilitu pinů a umožňuje současné napájení zařízení (PoE).</p>
+        </div>
+
+        <!-- Srovnání T568A vs T568B s barevnými vodiči -->
+        <div class="pinout-container">
+          <!-- Norma T568A -->
+          <div class="pinout-box">
+            <div class="pinout-header">
+              <span>Norma TIA/EIA-568A</span>
+              <span class="spec-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Zelený pár na pinech 1-2</span>
+            </div>
+            <div class="pin-row"><span class="pin-num">1</span><span class="wire-swatch wire-white-green"></span><span>Bílo-zelená (Transmit +)</span></div>
+            <div class="pin-row"><span class="pin-num">2</span><span class="wire-swatch wire-green"></span><span>Zelená (Transmit -)</span></div>
+            <div class="pin-row"><span class="pin-num">3</span><span class="wire-swatch wire-white-orange"></span><span>Bílo-oranžová (Receive +)</span></div>
+            <div class="pin-row"><span class="pin-num">4</span><span class="wire-swatch wire-blue"></span><span>Modrá</span></div>
+            <div class="pin-row"><span class="pin-num">5</span><span class="wire-swatch wire-white-blue"></span><span>Bílo-modrá</span></div>
+            <div class="pin-row"><span class="pin-num">6</span><span class="wire-swatch wire-orange"></span><span>Oranžová (Receive -)</span></div>
+            <div class="pin-row"><span class="pin-num">7</span><span class="wire-swatch wire-white-brown"></span><span>Bílo-hnědá</span></div>
+            <div class="pin-row"><span class="pin-num">8</span><span class="wire-swatch wire-brown"></span><span>Hnědá</span></div>
+          </div>
+
+          <!-- Norma T568B -->
+          <div class="pinout-box">
+            <div class="pinout-header">
+              <span>Norma TIA/EIA-568B (Běžnější v ČR)</span>
+              <span class="spec-badge" style="background: rgba(249, 115, 22, 0.2); color: #fb923c;">Oranžový pár na pinech 1-2</span>
+            </div>
+            <div class="pin-row"><span class="pin-num">1</span><span class="wire-swatch wire-white-orange"></span><span>Bílo-oranžová (Transmit +)</span></div>
+            <div class="pin-row"><span class="pin-num">2</span><span class="wire-swatch wire-orange"></span><span>Oranžová (Transmit -)</span></div>
+            <div class="pin-row"><span class="pin-num">3</span><span class="wire-swatch wire-white-green"></span><span>Bílo-zelená (Receive +)</span></div>
+            <div class="pin-row"><span class="pin-num">4</span><span class="wire-swatch wire-blue"></span><span>Modrá</span></div>
+            <div class="pin-row"><span class="pin-num">5</span><span class="wire-swatch wire-white-blue"></span><span>Bílo-modrá</span></div>
+            <div class="pin-row"><span class="pin-num">6</span><span class="wire-swatch wire-green"></span><span>Zelená (Receive -)</span></div>
+            <div class="pin-row"><span class="pin-num">7</span><span class="wire-swatch wire-white-brown"></span><span>Bílo-hnědá</span></div>
+            <div class="pin-row"><span class="pin-num">8</span><span class="wire-swatch wire-brown"></span><span>Hnědá</span></div>
+          </div>
+        </div>
+
+        <!-- Karty s typy kabelů a PoE -->
+        <div class="grid-2" style="margin-top: 1rem;">
+          <div class="card">
+            <h4 style="color: var(--accent); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              Typy patch kabelů &amp; Auto-MDIX
+            </h4>
+            <ul class="clean-list" style="font-size: 0.84rem;">
+              <li><strong>Přímý kabel (Straight-Through):</strong> Na obou koncích stejná norma (T568B &ndash; T568B). Propojení různých prvků (PC &harr; Switch, Router &harr; Switch).</li>
+              <li><strong>Křížený kabel (Crossover):</strong> Na jednom konci T568A, na druhém T568B. Dříve nutné pro spojení stejných prvků (Switch &harr; Switch, PC &harr; PC).</li>
+              <li><strong>Auto-MDIX:</strong> Všechny moderní gigabitové síťové karty a switche automaticky detekují zapojení pinů a elektronicky překříží Tx/Rx, takže funguje jakýkoli kabel.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h4 style="color: #10b981; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              Power over Ethernet (PoE) standardy
+            </h4>
+            <ul class="clean-list" style="font-size: 0.84rem;">
+              <li><strong>IEEE 802.3af (PoE):</strong> Napětí 48 V, výkon až 15,4 W na port (pro základní IP telefony a jednoduché senzory).</li>
+              <li><strong>IEEE 802.3at (PoE+):</strong> Výkon až 30 W (pro otočné PTZ IP kamery s vyhříváním a Wi-Fi 5 přístupové body).</li>
+              <li><strong>IEEE 802.3bt (4PPoE / PoE++):</strong> Využívá všechny 4 páry kabelu. Typ 3 (až 60 W) a Typ 4 (až 90&ndash;100 W) napájí výkonné Wi-Fi 7 AP, tenké klienty či LED osvětlení budov.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Optická média – Princip a šíření světla
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Optická vlákna a fyzikální princip lomu">
+        <div class="slide-header">
+          <h2 class="slide-title">Optická média: Princip šíření světla a vnitřní struktura</h2>
+          <p class="slide-subtitle">Přenos dat pomocí modulovaných světelných impulsů ve skleněném vlákně. Nabízí extrémní šířku pásma, nulový útlum na kilometry a absolutní imunitu vůči rušení.</p>
+        </div>
+
+        <div class="grid-2" style="align-items: start;">
+          <!-- Levý sloupec: Interaktivní simulátor Snellova zákona a úplného odrazu -->
+          <div class="optics-playground-card">
+            <div class="optics-header">
+              <div class="optics-title-group">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+                <span class="optics-title">Snellův zákon &amp; Úplný vnitřní odraz (TIR)</span>
+              </div>
+              <span id="statOpticsTirMode" class="badge badge-success">ÚPLNÝ VNITŘNÍ ODRAZ</span>
+            </div>
+
+            <!-- Volič prostředí (Presety) -->
+            <div class="optics-presets-bar">
+              <span class="optics-presets-label">Prostředí:</span>
+              <button type="button" class="optics-preset-btn active" data-preset="fiber">Optické vlákno (1.48 / 1.46)</button>
+              <button type="button" class="optics-preset-btn" data-preset="glass">Sklo / Vzduch (1.50 / 1.00)</button>
+              <button type="button" class="optics-preset-btn" data-preset="water">Voda / Vzduch (1.33 / 1.00)</button>
+            </div>
+
+            <!-- Canvas simulátoru -->
+            <div class="optics-canvas-wrapper">
+              <canvas id="opticsCanvas" class="optics-canvas"></canvas>
+              <div class="optics-canvas-hint">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 12px; height: 12px; color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                Měňte úhel posuvníkem níže nebo tažením laserového zdroje přímo na plátně.
+              </div>
+            </div>
+
+            <!-- Ovládací prvky úhlu -->
+            <div class="optics-controls-row">
+              <div class="optics-slider-group">
+                <label for="opticsAngleSlider">Úhel dopadu na kolmici (&theta;<sub>1</sub>):</label>
+                <div class="optics-slider-inner">
+                  <input type="range" id="opticsAngleSlider" min="1" max="88" value="83" step="0.5">
+                  <span id="opticsAngleVal" class="optics-angle-badge">83.0°</span>
+                </div>
+              </div>
+              <button type="button" id="opticsSetCriticalBtn" class="optics-crit-btn" title="Nastavit úhel dopadu přesně na mezní úhel θc">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+                Nastavit mezní úhel (&theta;<sub>c</sub>)
+              </button>
+            </div>
+
+            <!-- Telemetrie výpočtu -->
+            <div class="optics-telemetry-grid">
+              <div class="optics-telem-cell">
+                <span class="telem-label">Úhel dopadu (&theta;<sub>1</sub>)</span>
+                <span class="telem-val" id="statOpticsTheta1">83.0°</span>
+              </div>
+              <div class="optics-telem-cell">
+                <span class="telem-label">Mezní úhel (&theta;<sub>c</sub>)</span>
+                <span class="telem-val" id="statOpticsThetaC" style="color: #f59e0b;">80.6°</span>
+              </div>
+              <div class="optics-telem-cell">
+                <span class="telem-label">Úhel lomu (&theta;<sub>2</sub>)</span>
+                <span class="telem-val" id="statOpticsTheta2" style="color: #ef4444;">Nenastává (TIR)</span>
+              </div>
+              <div class="optics-telem-cell">
+                <span class="telem-label">Energetická bilance</span>
+                <span class="telem-val" id="statOpticsReflectance" style="color: #10b981;">Odraz R = 100 %</span>
+              </div>
+            </div>
+
+            <!-- Didaktický závěr simulátoru -->
+            <div id="opticsTirAlert" class="optics-alert-box"></div>
+          </div>
+
+          <!-- Pravý sloupec: Anatomie kabelu a fyzikální výklad -->
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Vrstvy optického kabelu -->
+            <div class="diagram-container">
+              <div class="diagram-header">
+                <span class="diagram-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  Vrstvy optického kabelu (Anatomie ochrany)
+                </span>
+                <span class="diagram-badge">Od jádra k plášti</span>
+              </div>
+
+              <svg class="cross-section-svg" viewBox="0 0 440 200" aria-label="Anatomie optického kabelu" style="max-height: 160px;">
+                <!-- Podélné vrstvy kabelu s kaskádovým odizolováním -->
+                <!-- Vnější plášť LSZH -->
+                <rect x="20" y="20" width="90" height="160" rx="6" fill="#f59e0b" stroke="#d97706" stroke-width="2" />
+                <text x="65" y="105" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle" transform="rotate(-90 65 105)">Vnější plášť</text>
+
+                <!-- Aramidová tahová vlákna (Kevlar) -->
+                <rect x="110" y="35" width="70" height="130" fill="#eab308" stroke="#ca8a04" stroke-width="1.5" stroke-dasharray="2,2" />
+                <text x="145" y="105" fill="#713f12" font-size="10" font-weight="bold" text-anchor="middle" transform="rotate(-90 145 105)">Kevlar</text>
+
+                <!-- Sekundární těsná ochrana (Tight buffer 900 µm) -->
+                <rect x="180" y="50" width="70" height="100" fill="#475569" stroke="#64748b" stroke-width="1.5" />
+                <text x="215" y="105" fill="#f8fafc" font-size="10" text-anchor="middle" transform="rotate(-90 215 105)">Buffer 900 &mu;m</text>
+
+                <!-- Primární laková ochrana (Coating 250 µm) -->
+                <rect x="250" y="65" width="65" height="70" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5" />
+                <text x="282" y="105" fill="#ffffff" font-size="9" text-anchor="middle" transform="rotate(-90 282 105)">Coating 250 &mu;m</text>
+
+                <!-- Reflexní plášť vlákna (Cladding 125 µm) -->
+                <rect x="315" y="78" width="55" height="44" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1.5" />
+                <text x="342" y="103" fill="#0f172a" font-size="8" font-weight="bold" text-anchor="middle">Plášť 125&mu;m</text>
+
+                <!-- Skleněné jádro (Core 9 / 50 µm) se světelným paprskem -->
+                <rect x="370" y="88" width="55" height="24" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5" />
+                <!-- Cik-cak světelný paprsek v jádře -->
+                <polyline points="370,100 385,92 400,108 415,92 425,100" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+              </svg>
+
+              <div class="layers-legend" style="margin-top: 0.35rem;">
+                <div class="legend-item"><span class="legend-swatch" style="background: #38bdf8;"></span>Jádro (Core)</div>
+                <div class="legend-item"><span class="legend-swatch" style="background: #cbd5e1;"></span>Plášť (Cladding 125 &mu;m)</div>
+                <div class="legend-item"><span class="legend-swatch" style="background: #3b82f6;"></span>Lak (250 &mu;m)</div>
+                <div class="legend-item"><span class="legend-swatch" style="background: #eab308;"></span>Kevlar</div>
+              </div>
+            </div>
+
+            <!-- Karta se Snellovým zákonem a mezním úhlem -->
+            <div class="card" style="padding: 0.75rem 0.9rem;">
+              <h4 style="color: #06b6d4; font-size: 0.85rem; margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Fyzikální princip lomu &amp; Podmínka úplného odrazu
+              </h4>
+              <ul class="clean-list" style="font-size: 0.76rem; line-height: 1.45;">
+                <li><strong>Snellův zákon lomu:</strong> $n_1 \cdot \sin(\theta_1) = n_2 \cdot \sin(\theta_2)$, kde $n = c / v$ je optická hustota.</li>
+                <li><strong>Podmínka pro úplný odraz (TIR):</strong> Světlo musí jít z hustšího do řidšího prostředí ($n_1 > n_2$) a úhel dopadu vůči kolmici musí překročit mezní úhel: $\theta_1 > \theta_c = \arcsin(n_2 / n_1)$.</li>
+                <li><strong>Proč je mezní úhel ve vlákně &approx; 80,6&deg;?</strong> Rozdíl indexů jádra (1,480) a pláště (1,460) je schválně minimální. Paprsek se v jádře šíří pod velmi ostrým úhlem k podélné ose (velkým úhlem k normále), což garantuje 100% odraz beze ztrát na kilometry trasy!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Optická média – SMF vs. MMF & Konektory
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Single-Mode vs. Multi-Mode a optické konektory">
+        <div class="slide-header">
+          <h2 class="slide-title">Optická média: Single-Mode vs. Multi-Mode &amp; Konektory</h2>
+          <p class="slide-subtitle">Rozdíl mezi jednovidovým (SMF) a mnohovidovým (MMF) vláknem tkví v průměru jádra, což určuje disperzi světla, dosah a typ použitého optického vysílače.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Srovnávací SVG diagram průřezů vláken s mikrometrovými kótami -->
+          <div class="diagram-container">
+            <div class="diagram-header">
+              <span class="diagram-title">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                Srovnání průřezů SMF vs. MMF s reálnými kótami
+              </span>
+              <span class="diagram-badge">Rozměry v mikrometrech (&mu;m)</span>
+            </div>
+
+            <svg class="cross-section-svg" viewBox="0 0 460 220" aria-label="Srovnání průřezu jednovidového a mnohovidového vlákna">
+              <!-- Levá polovina: Single-Mode Fiber (9/125 µm) se středem cy=80 -->
+              <g transform="translate(115, 80)">
+                <!-- Cladding 125 µm -->
+                <circle cx="0" cy="0" r="68" fill="#1e293b" stroke="#f59e0b" stroke-width="2" />
+                <!-- Core 9 µm (ve stejném měřítku miniaturní tečka) -->
+                <circle cx="0" cy="0" r="5" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5" />
+                <text x="0" y="90" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">Single-Mode (OS2)</text>
+                <text x="0" y="105" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Jádro: 9 &mu;m &bull; Plášť: 125 &mu;m</text>
+                <!-- Kóta pro 9 µm jádro -->
+                <line x1="5" y1="0" x2="45" y2="-40" stroke="#38bdf8" stroke-width="1.2" />
+                <text x="50" y="-42" fill="#38bdf8" font-size="10" font-family="monospace" font-weight="bold">Jádro 9 &mu;m</text>
+              </g>
+
+              <!-- Pravá polovina: Multi-Mode Fiber (50/125 µm) se středem cy=80 -->
+              <g transform="translate(345, 80)">
+                <!-- Cladding 125 µm -->
+                <circle cx="0" cy="0" r="68" fill="#1e293b" stroke="#06b6d4" stroke-width="2" />
+                <!-- Core 50 µm -->
+                <circle cx="0" cy="0" r="28" fill="rgba(6, 182, 212, 0.35)" stroke="#38bdf8" stroke-width="2" />
+                <!-- Zobrazení několika vidů (paprsků) uvnitř 50µm jádra -->
+                <circle cx="-8" cy="-5" r="2.5" fill="#ffffff" />
+                <circle cx="10" cy="7" r="2.5" fill="#ffffff" />
+                <circle cx="0" cy="12" r="2.5" fill="#ffffff" />
+                <text x="0" y="90" fill="#06b6d4" font-size="11" font-weight="bold" text-anchor="middle">Multi-Mode (OM3/4/5)</text>
+                <text x="0" y="105" fill="#94a3b8" font-size="10" font-family="monospace" text-anchor="middle">Jádro: 50 &mu;m &bull; Plášť: 125 &mu;m</text>
+                <!-- Kóta pro 50 µm jádro -->
+                <line x1="28" y1="0" x2="65" y2="-40" stroke="#06b6d4" stroke-width="1.2" />
+                <text x="70" y="-42" fill="#06b6d4" font-size="10" font-family="monospace" font-weight="bold">Jádro 50 &mu;m</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Srovnávací tabulka SMF vs MMF -->
+          <div class="spec-table-container">
+            <table class="spec-table">
+              <thead>
+                <tr>
+                  <th>Vlastnost</th>
+                  <th>Single-Mode (SMF)</th>
+                  <th>Multi-Mode (MMF)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Průměr jádra</strong></td>
+                  <td><span class="spec-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">9 &mu;m</span></td>
+                  <td><span class="spec-badge" style="background: rgba(6, 182, 212, 0.2); color: #38bdf8;">50 &mu;m (starší 62,5 &mu;m)</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Světelný zdroj</strong></td>
+                  <td>Laserová dioda (úzké spektrum)</td>
+                  <td>LED dioda nebo levný VCSEL laser</td>
+                </tr>
+                <tr>
+                  <td><strong>Vlnové délky</strong></td>
+                  <td>1310 nm / 1550 nm (infračervené)</td>
+                  <td>850 nm / 1300 nm</td>
+                </tr>
+                <tr>
+                  <td><strong>Vidová disperze</strong></td>
+                  <td>Nulová (pouze 1 vid / přímá trasa)</td>
+                  <td>Vysoká (paprsky dorazí s různým zpožděním)</td>
+                </tr>
+                <tr>
+                  <td><strong>Dosah přenosu</strong></td>
+                  <td>Až 10 km &ndash; 100+ km</td>
+                  <td>Max. 300 m &ndash; 550 m (při 10 Gbps)</td>
+                </tr>
+                <tr>
+                  <td><strong>Typické použití</strong></td>
+                  <td>Páteřní sítě, telekomunikace, WAN</td>
+                  <td>LAN v budově, kampusy, datová centra</td>
+                </tr>
+                <tr>
+                  <td><strong>Barva pláště (kód)</strong></td>
+                  <td>Žlutá (OS1/OS2)</td>
+                  <td>Oranžová (OM1/2), Tyrkysová Aqua (OM3/4)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Mřížka optických konektorů a broušení ferule -->
+        <div class="connector-grid" style="margin-top: 1rem;">
+          <div class="connector-card">
+            <div class="connector-icon-wrap" style="color: #60a5fa;">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2"></rect><line x1="10" y1="3" x2="10" y2="9"></line><line x1="14" y1="3" x2="14" y2="9"></line></svg>
+            </div>
+            <div class="connector-name">LC (Lucent Connector)</div>
+            <div class="connector-type">Malý formát (SFP)</div>
+            <p class="connector-desc">Dnes nejpoužívanější konektor v síťových prvcích a optických transceiverech SFP/SFP+ díky své kompaktnosti.</p>
+          </div>
+
+          <div class="connector-card">
+            <div class="connector-icon-wrap" style="color: #38bdf8;">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"></rect><circle cx="12" cy="12" r="4"></circle></svg>
+            </div>
+            <div class="connector-name">SC (Subscriber)</div>
+            <div class="connector-type">Push-Pull mechanismus</div>
+            <p class="connector-desc">Čtvercový zasouvací konektor. Hojně využívaný v rozvodných optických vanách (ODF) a v koncových bodech sítí GPON/FTTH.</p>
+          </div>
+
+          <div class="connector-card">
+            <div class="connector-icon-wrap" style="color: #a855f7;">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10M9 9l6 6"></path></svg>
+            </div>
+            <div class="connector-name">MPO / MTP</div>
+            <div class="connector-type">Vícevláknový (12/24 vláken)</div>
+            <p class="connector-desc">Vysokohustotní konektor pro datacentra. V jediném spoji propojuje 8, 12 nebo 24 vláken pro rychlosti 40G, 100G a 400G.</p>
+          </div>
+
+          <div class="connector-card">
+            <div class="connector-icon-wrap" style="color: #10b981;">
+              <svg class="icon" viewBox="0 0 24 24"><path d="m14 7-5 5 5 5"></path><circle cx="12" cy="12" r="9"></circle></svg>
+            </div>
+            <div class="connector-name">Broušení: UPC vs. APC</div>
+            <div class="connector-type">Modrá vs. Zelená barva</div>
+            <p class="connector-desc"><strong>UPC (modrý):</strong> Kolmý dotyk ferule. <strong>APC (zelený):</strong> Zkosený úhel 8&deg;, odražené světlo uniká do pláště. Zásadní pro FTTH.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Kódování a modulace bitů na médiu
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Kódování a modulace signálů">
+        <div class="slide-header">
+          <h2 class="slide-title">Kódování a modulace: Jak proměnit bity v signál</h2>
+          <p class="slide-subtitle">Bity samy o sobě v kabelu neexistují. Fyzická vrstva je musí transformovat na změny napětí, frekvence či fáze nosného signálu.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Linkové kódy (Základní pásmo - Baseband) -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon blue">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              </div>
+              <h3 class="card-title">Linkové kódy (Základní pásmo / Baseband)</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>NRZ-L (Non-Return to Zero Level):</strong> Bit 1 = vysoké napětí ($+V$), Bit 0 = nízké napětí ($-V$). Jednoduché, ale při dlouhé sérii stejných bitů (00000...) signál nemění úroveň a přijímač <strong>ztratí synchronizaci hodin</strong> (Clock Drift).</li>
+                <li><strong>Manchester kódování (IEEE 802.3 10BASE-T):</strong> Každý bit má povinný přechod přesně <strong>uprostřed periody</strong>. Bit 0 = přechod z Low do High ($L \rightarrow H$), Bit 1 = přechod z High do Low ($H \rightarrow L$).
+                  <br><span style="color: #34d399; font-size: 0.82rem;">&bull; Výhoda: 100% samonavigační synchronizace (Self-clocking) a nulová stejnosměrná složka (DC balance).</span>
+                  <br><span style="color: #f87171; font-size: 0.82rem;">&bull; Nevýhoda: Vyžaduje 2 změny signálu na bit &ndash; poloviční efektivita (10 Mbps potřebuje 20 MHz pásmo).</span>
+                </li>
+                <li><strong>Víceúrovňové kódování v moderním Ethernetu:</strong>
+                  <br>&bull; <strong>MLT-3 (100BASE-TX):</strong> Střídá 3 úrovně ($+V, 0, -V$) pouze při bitu 1, což snižuje vyzařovanou frekvenci.
+                  <br>&bull; <strong>PAM-4 (100G/400G Ethernet):</strong> Pulzně amplitudová modulace se 4 úrovněmi napětí ($00, 01, 10, 11$) přenáší <strong>2 bity v jediném taktu</strong>!
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Analogová modulace nosné vlny (Passband) -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M2 12h2a4 4 0 0 1 4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 1 4-4h2"></path></svg>
+              </div>
+              <h3 class="card-title">Modulace nosné vlny (Analog / Passband)</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>AM / ASK (Amplitude Shift Keying):</strong> Informace je kódována výškou (amplitudou) sinusové vlny. Bit 1 = plná amplituda, Bit 0 = nulová či minimální amplituda. Velmi náchylné na šum.</li>
+                <li><strong>FM / FSK (Frequency Shift Keying):</strong> Informace je kódována změnou frekvence nosné vlny. Bit 1 = vyšší frekvence ($f_1$), Bit 0 = nižší frekvence ($f_2$). Vyšší odolnost proti šumu.</li>
+                <li><strong>PM / PSK (Phase Shift Keying):</strong> Informace je kódována <strong>posunem fáze</strong> nosné vlny.
+                  <br>&bull; <strong>BPSK (Binary PSK):</strong> Změna fáze o 180&deg; pro bit 0 vs. 1.
+                  <br>&bull; <strong>QPSK (Quadrature PSK):</strong> 4 fázové posuny (0&deg;, 90&deg;, 180&deg;, 270&deg;) &ndash; přenáší 2 bity současně.
+                </li>
+                <li><strong>QAM (Quadrature Amplitude Modulation):</strong> Kombinuje změnu amplitudy i fáze. Základ moderní Wi-Fi a mobilních sítí 5G:
+                  <br>&bull; <strong>Wi-Fi 6:</strong> 1024-QAM (10 bitů na symbol).
+                  <br>&bull; <strong>Wi-Fi 7:</strong> 4096-QAM (12 bitů na symbol &ndash; extrémní propustnost v čistém pásmu).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Interaktivní signálový trenažér
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Interaktivní signálový trenažér">
+        <div class="slide-header">
+          <h2 class="slide-title">Laboratorní trenažér: Živá vizualizace kódování bitů</h2>
+          <p class="slide-subtitle">Změňte hodnoty v bitové sekvenci nebo zvolte typ kódování. Sledujte v reálném čase, jak se bity přeměňují ve fyzický elektrický či rádiový signál.</p>
+        </div>
+
+        <div class="playground-card">
+          <!-- Ovládací panel trenažéru -->
+          <div class="playground-controls">
+            <!-- Interaktivní bity -->
+            <div class="bit-input-group">
+              <span class="bit-input-label">Bitová sekvence (kliknutím přepněte):</span>
+              <div class="bit-buttons-row" id="bitButtonsRow">
+                <!-- Tlačítka bitů vkládána dynamicky JS enginem -->
+              </div>
+            </div>
+
+            <!-- Předvolby sekvencí -->
+            <div class="preset-btn-group">
+              <button class="preset-btn" data-preset="alt" title="Střídavé bity 10101010">10101010</button>
+              <button class="preset-btn" data-preset="zeros" title="Dlouhé nuly (riziko ztráty hodin)">00000000</button>
+              <button class="preset-btn" data-preset="ones" title="Dlouhé jedničky">11111111</button>
+              <button class="preset-btn" data-preset="ccna" title="Testovací rámec">11001010</button>
+              <button class="preset-btn" data-preset="random" title="Generovat náhodné bity">Náhodné</button>
+            </div>
+
+            <!-- Volba kódování / modulace -->
+            <div class="encoding-selector">
+              <button class="enc-btn active" data-enc="nrz">NRZ-L</button>
+              <button class="enc-btn" data-enc="manchester">Manchester (802.3)</button>
+              <button class="enc-btn" data-enc="ask">AM / ASK</button>
+              <button class="enc-btn" data-enc="fsk">FM / FSK</button>
+              <button class="enc-btn" data-enc="bpsk">BPSK (Fáze)</button>
+            </div>
+          </div>
+
+          <!-- HTML5 Canvas s vykresleným signálem -->
+          <div class="canvas-container">
+            <canvas id="signalCanvas"></canvas>
+          </div>
+
+          <!-- Informační lišta o parametrech signálu (4 stejné vyvážené pilulky) -->
+          <div class="signal-info-bar">
+            <div class="info-pill">
+              <span class="info-pill-label">Počet změn signálu (Hran)</span>
+              <span class="info-pill-value" id="statTransitions">0 hran</span>
+            </div>
+            <div class="info-pill">
+              <span class="info-pill-label">Synchronizace přijímače</span>
+              <span class="info-pill-value" id="statSync" style="color: #34d399;">Spolehlivá</span>
+            </div>
+            <div class="info-pill">
+              <span class="info-pill-label">Přenosová rychlost (Baud/Bit)</span>
+              <span class="info-pill-value" id="statBaud">1 Baud / bit</span>
+            </div>
+            <div class="info-pill">
+              <span class="info-pill-label">DC složka (Stejnosměrný posun)</span>
+              <span class="info-pill-value" id="statDc" style="color: #34d399;">Vyvážená</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Samostatné okno pod simulátorem: Didaktický výklad Baud vs. Bit rate -->
+        <div class="baud-explainer-card">
+          <div class="baud-explainer-header">
+            <div class="baud-explainer-title">
+              <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+              Didaktické okno: Co je to Baud a jaký je rozdíl oproti bitové rychlosti (bps)?
+            </div>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; font-family: var(--font-mono);">Baud rate vs. Bit rate</span>
+          </div>
+
+          <p class="baud-explainer-desc">
+            <strong>Baud [Bd]</strong> (symbolová / modulační rychlost) udává počet <em>fyzických stavových změn signálu</em> (symbolů, napěťových skoků, fázových otočení) na přenosovém médiu za 1 sekundu. Naproti tomu <strong>Bitová rychlost [bps / bit/s]</strong> vyjadřuje skutečný objem <em>užitečných digitálních dat</em> přenesených za sekundu.
+          </p>
+
+          <div class="baud-grid">
+            <div class="baud-item">
+              <div class="baud-item-header">
+                <span class="baud-badge" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">1 Baud = 1 bps</span>
+                <span class="baud-item-title">Základní NRZ</span>
+              </div>
+              <p>Každý stav signálu (úroveň napětí +V nebo &minus;V) kóduje právě 1 datový bit. Symbolová rychlost v Baudech je rovna přenosové rychlosti v bitech za sekundu.</p>
+            </div>
+
+            <div class="baud-item">
+              <div class="baud-item-header">
+                <span class="baud-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">2 Baud = 1 bps</span>
+                <span class="baud-item-title">Manchester (802.3)</span>
+              </div>
+              <p>Každý bit má povinný přechod uprostřed taktu (2 stavové změny). Pro přenos 10 Mbps je nutné médium taktovat na 20 MBaud (poloviční efektivita využití pásma).</p>
+            </div>
+
+            <div class="baud-item">
+              <div class="baud-item-header">
+                <span class="baud-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">1 Baud = Více bitů</span>
+                <span class="baud-item-title">PAM-4, QAM, Wi-Fi 7</span>
+              </div>
+              <p>Moderní modulace přenášejí více bitů v jediném symbolu: PAM-4 nese <strong>2 bity/symbol</strong>, Wi-Fi 6 (1024-QAM) nese <strong>10 bitů/symbol</strong> a Wi-Fi 7 (4096-QAM) až <strong>12 bitů na 1 Baud</strong>!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Elektromagnetické vlnění a šíření signálu
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Elektromagnetické vlnění">
+        <div class="slide-header">
+          <h2 class="slide-title">Elektromagnetické vlnění a fyzikální podstata signálu</h2>
+          <p class="slide-subtitle">Jak se informace šíří volným prostorem bez kabelů &bull; Vzájemně svázané elektrické a magnetické pole kmitající kolmo na směr šíření rychlostí světla.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: 3D Vektorový nákres EM vlny -->
+          <div class="diagram-container">
+            <div class="diagram-header">
+              <span class="diagram-title">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                Struktura elektromagnetické vlny v prostoru
+              </span>
+              <span class="diagram-badge">Složky E a B</span>
+            </div>
+
+            <svg class="cross-section-svg" viewBox="0 0 540 250" aria-label="3D model elektromagnetické vlny se složkami E a B">
+              <!-- Osa z (šíření) -->
+              <line x1="40" y1="130" x2="500" y2="130" stroke="#94a3b8" stroke-width="1.8" />
+              <polygon points="510,130 495,124 495,136" fill="#94a3b8" />
+              <text x="515" y="134" fill="#94a3b8" font-size="12" font-family="monospace" font-weight="bold">Směr c</text>
+
+              <!-- Osa y (Elektrické pole E) -->
+              <line x1="70" y1="220" x2="70" y2="25" stroke="#38bdf8" stroke-width="1.8" />
+              <polygon points="70,15 65,28 75,28" fill="#38bdf8" />
+              <text x="60" y="18" fill="#38bdf8" font-size="13" font-family="monospace" font-weight="bold">E</text>
+
+              <!-- Osa x (Magnetické pole B v perspektivě) -->
+              <line x1="70" y1="130" x2="20" y2="190" stroke="#f43f5e" stroke-width="1.8" />
+              <polygon points="12,200 24,188 16,182" fill="#f43f5e" />
+              <text x="10" y="215" fill="#f43f5e" font-size="13" font-family="monospace" font-weight="bold">B</text>
+
+              <!-- Složka E (Elektrické pole) - sinusovka ve vertikální rovině y-z -->
+              <path d="M 70,130 Q 150,20 230,130 Q 310,240 390,130 Q 435,75 470,130" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+              
+              <!-- Vektory pole E (vertikální šipky) -->
+              <line x1="110" y1="130" x2="110" y2="70" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="2,2" />
+              <line x1="150" y1="130" x2="150" y2="47" stroke="#38bdf8" stroke-width="1.5" />
+              <polygon points="150,40 146,50 154,50" fill="#38bdf8" />
+              <line x1="190" y1="130" x2="190" y2="70" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="2,2" />
+
+              <line x1="270" y1="130" x2="270" y2="190" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="2,2" />
+              <line x1="310" y1="130" x2="310" y2="213" stroke="#38bdf8" stroke-width="1.5" />
+              <polygon points="310,220 306,210 314,210" fill="#38bdf8" />
+              <line x1="350" y1="130" x2="350" y2="190" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="2,2" />
+
+              <!-- Složka B (Magnetické pole) - sinusovka v perspektivní rovině x-z -->
+              <path d="M 70,130 Q 150,195 230,130 Q 310,65 390,130 Q 435,165 470,130" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="4,2" />
+
+              <!-- Vektory pole B (šikmé šipky) -->
+              <line x1="150" y1="130" x2="120" y2="175" stroke="#f43f5e" stroke-width="1.5" />
+              <polygon points="115,182 125,177 118,170" fill="#f43f5e" />
+
+              <line x1="310" y1="130" x2="340" y2="85" stroke="#f43f5e" stroke-width="1.5" />
+              <polygon points="345,78 335,83 342,90" fill="#f43f5e" />
+
+              <!-- Kóta vlnové délky lambda mezi dvěma vrcholy pole E -->
+              <line x1="150" y1="30" x2="470" y2="30" stroke="#fbbf24" stroke-width="1.5" />
+              <line x1="150" y1="22" x2="150" y2="38" stroke="#fbbf24" stroke-width="1.5" />
+              <line x1="470" y1="22" x2="470" y2="38" stroke="#fbbf24" stroke-width="1.5" />
+              <text x="310" y="24" fill="#fbbf24" font-size="12" font-family="monospace" font-weight="bold" text-anchor="middle">Vlnová délka &lambda; (Lambda)</text>
+            </svg>
+
+            <div class="layers-legend" style="margin-top: 0.5rem;">
+              <div class="legend-item"><span class="legend-swatch" style="background: #38bdf8;"></span>Elektrické pole E (V/m)</div>
+              <div class="legend-item"><span class="legend-swatch" style="background: #f43f5e;"></span>Magnetické pole B (Tesla)</div>
+              <div class="legend-item"><span class="legend-swatch" style="background: #fbbf24;"></span>Vlnová délka &lambda; (m)</div>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Fyzikální zákony a vlastnosti EM vln -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon blue">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <h3 class="card-title">Fyzikální zákony elektromagnetického záření</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Rychlost šíření (<i>c</i>):</strong> Ve vakuu a vzduchu se EM vlna šíří mezní rychlostí:
+                  $$c \approx 300\,000\text{ km/s} = 3 \cdot 10^8\text{ m/s}$$
+                </li>
+                <li><strong>Základní vlnová rovnice:</strong> Rychlost je součinem vlnové délky a frekvence:
+                  $$c = \lambda \cdot f \implies \lambda = \frac{c}{f}, \quad f = \frac{c}{\lambda}$$
+                  <div style="font-size: 0.82rem; color: #38bdf8; margin-top: 0.35rem;">Příklad: Wi-Fi 2,4 GHz má &lambda; = 12,5 cm. Wi-Fi 5 GHz má &lambda; = 6 cm.</div>
+                </li>
+                <li><strong>Perioda kmitu ($T$):</strong> Doba trvání jednoho kmitu: $T = \frac{1}{f}$.</li>
+                <li><strong>Energie fotonu (Kvantum záření):</strong> $E = h \cdot f$, kde $h = 6{,}626 \cdot 10^{-34}\text{ J}\cdot\text{s}$ (Planckova konstanta). Čím vyšší frekvence, tím více energie foton nese. Rádiové a mikrovlnné záření je <strong>neionizující</strong> (nemění molekulární vazby DNA).</li>
+                <li><strong>Polarizace vlnění:</strong> Rovina, ve které kmitá vektor elektrického pole $\vec{E}$.
+                  <br>&bull; Vertikální / Horizontální: Anténa přijímače musí být orientována stejně jako vysílač.
+                  <br>&bull; Kruhová polarizace: Vektor $\vec{E}$ rotuje (používáno u satelitů GPS a Starlink).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Elektromagnetické spektrum a využití
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Elektromagnetické spektrum a využití">
+        <div class="slide-header">
+          <h2 class="slide-title">Elektromagnetické spektrum: Od krátkých vln po dlouhé</h2>
+          <p class="slide-subtitle">Kompletní přehled frekvenčních pásem od nanometrových vlnových délek &lambda; (UV) po kilometrové vlny, jejich fyzikálních vlastností a síťového využití.</p>
+        </div>
+
+        <!-- Směrový orientační proužek -->
+        <div class="spectrum-guide-bar">
+          <div class="spectrum-guide-left">
+            &larr; Krátké vlny (&lambda; &lt; 380 nm) &bull; Vyšší frekvence (THz) &bull; Vyšší fotonová energie
+          </div>
+          <div class="spectrum-guide-right">
+            Dlouhé vlny (&lambda; &gt; 1 km) &bull; Nižší frekvence (kHz) &bull; Lepší ohyb terénem &rarr;
+          </div>
+        </div>
+
+        <!-- Spektrální vizuální gradientní proužek: z tmavě fialové přes duhu viditelného spektra po tmavě červenou -->
+        <div class="spectrum-ribbon">
+          <span class="spectrum-tag" style="border-color: rgba(167, 139, 250, 0.4);">UV a kratší (&lt; 380 nm)</span>
+          <span class="spectrum-tag visible-tag">Viditelné světlo (380&ndash;750 nm)</span>
+          <span class="spectrum-tag" style="border-color: rgba(239, 68, 68, 0.4);">Infračervené IR (&mu;m)</span>
+          <span class="spectrum-tag" style="border-color: rgba(185, 28, 28, 0.4);">Mikrovlny (mm&ndash;cm)</span>
+          <span class="spectrum-tag" style="border-color: rgba(153, 27, 27, 0.4);">Rádio / TV (dm&ndash;m)</span>
+          <span class="spectrum-tag" style="border-color: rgba(127, 29, 29, 0.4);">Dlouhé vlny (km)</span>
+        </div>
+
+        <!-- Přehledová strukturovaná tabulka pásem od krátkých vln k dlouhým -->
+        <div class="spec-table-container">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Pásmo &amp; Označení</th>
+                <th>Vlnová délka (&lambda;)</th>
+                <th>Frekvence (<i>f</i>)</th>
+                <th>Fyzikální vlastnosti šíření</th>
+                <th>Využití v telekomunikacích a sítích</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(124, 58, 237, 0.2); color: #c084fc;">UV záření</span></td>
+                <td><strong>&lt; 380 nm</strong> (10&ndash;380 nm)</td>
+                <td>790 THz &ndash; 30 PHz</td>
+                <td>Vysoká energie fotonů, pohlcováno ozonem a běžným sklem</td>
+                <td><strong>Výroba moderních mikročipů (EUV litografie 13,5 nm)</strong>, UV-C sterilizace</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Viditelné světlo</span></td>
+                <td><strong>380 nm &ndash; 750 nm</strong></td>
+                <td>400 THz &ndash; 790 THz</td>
+                <td>Barevné spektrum (fialová &rarr; červená), neprochází zdmi</td>
+                <td><strong>Li-Fi bezdrátové sítě (IEEE 802.11bb)</strong>, optická LED signalizace, laserové spoje</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">Infračervené (IR)</span></td>
+                <td><strong>750 nm &ndash; 1 mm</strong></td>
+                <td>300 GHz &ndash; 400 THz</td>
+                <td>Minimální útlum v křemenném jádře optických vláken</td>
+                <td><strong>Páteřní optika (850, 1310, 1550 nm)</strong>, atmosférické lasery FSO, TV dálkové ovladače</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(225, 29, 72, 0.2); color: #fb7185;">Milimetrové (EHF)</span></td>
+                <td><strong>1 mm &ndash; 10 mm</strong></td>
+                <td>30 GHz &ndash; 300 GHz</td>
+                <td>Extrémní šířka pásma, silné pohlcování deštěm a překážkami</td>
+                <td>5G mmWave sítě, automobilové protikolizní radary (77 GHz), Wi-Fi 60 GHz (802.11ay)</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">Mikrovlny (SHF/UHF)</span></td>
+                <td><strong>1 cm &ndash; 1 m</strong></td>
+                <td>300 MHz &ndash; 30 GHz</td>
+                <td>Přímá viditelnost, částečný průchod zdmi, vysoká propustnost</td>
+                <td><strong>Klíčové síťové pásmo:</strong> Wi-Fi 2,4 / 5 / 6 GHz (802.11be), mobilní 4G/5G, Bluetooth 5.x, GPS, Starlink</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Velmi krátké (VHF)</span></td>
+                <td><strong>1 m &ndash; 10 m</strong></td>
+                <td>30 MHz &ndash; 300 MHz</td>
+                <td>Přímá viditelnost s mírným ohybem přes terénní horizont</td>
+                <td>FM analogový rozhlas (87,5&ndash;108 MHz), digitální rádio DAB+, letecká komunikace</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(148, 163, 184, 0.2); color: #cbd5e1;">Střední &amp; Krátké (MF/HF)</span></td>
+                <td><strong>10 m &ndash; 1 km</strong></td>
+                <td>300 kHz &ndash; 30 MHz</td>
+                <td>Odraz od ionosféry umožňuje dálkový mezikontinentální dosah</td>
+                <td>AM rozhlasové vysílání, radioamatéři, dálková námořní a letecká radiotelegrafie</td>
+              </tr>
+              <tr>
+                <td><span class="spec-badge" style="background: rgba(100, 116, 139, 0.2); color: #94a3b8;">Dlouhé vlny (VLF/LF)</span></td>
+                <td><strong>1 km &ndash; 100 km</strong></td>
+                <td>3 kHz &ndash; 300 kHz</td>
+                <td>Šíří se ohybem kolem zakřivení Země, pronikají pod vodní hladinu</td>
+                <td>Komunikace s ponorkami ponořenými v oceánu, dlouhovlnný časový signál DCF77 (77,5 kHz)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Bezdrátová média v terénu: Antény a šíření
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Antény a vyzařovací charakteristiky">
+        <div class="slide-header">
+          <h2 class="slide-title">Bezdrátová média: Antény, vyzařovací diagramy a Fresnelova zóna</h2>
+          <p class="slide-subtitle">Praktické aspekty bezdrátového přenosu &bull; Jak tvarovat vyzařování antén do prostoru, překonávat terénní překážky a chránit signál před fázovým útlumem.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Fyzika šíření a Fresnelova zóna -->
+          <div class="card fresnel-card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+              </div>
+              <h3 class="card-title">Šíření vln a 1. Fresnelova zóna</h3>
+            </div>
+            
+            <!-- Vektorový nákres Fresnelovy zóny -->
+            <div class="fresnel-svg-wrap">
+              <svg class="cross-section-svg" viewBox="0 0 460 180" aria-label="1. Fresnelova zóna mezi vysílačem a přijímačem">
+                <!-- Spodní terén / horizont -->
+                <path d="M 10,165 Q 120,155 230,160 T 450,165" fill="none" stroke="#475569" stroke-width="1.5" />
+                
+                <!-- Stožár TX (vlevo) -->
+                <line x1="45" y1="162" x2="45" y2="85" stroke="#94a3b8" stroke-width="2.5" />
+                <polygon points="45,85 38,98 52,98" fill="#38bdf8" />
+                <circle cx="45" cy="85" r="4" fill="#38bdf8" />
+                <text x="45" y="75" fill="#38bdf8" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">TX</text>
+
+                <!-- Stožár RX (vpravo) -->
+                <line x1="415" y1="162" x2="415" y2="85" stroke="#94a3b8" stroke-width="2.5" />
+                <polygon points="415,85 408,98 422,98" fill="#10b981" />
+                <circle cx="415" cy="85" r="4" fill="#10b981" />
+                <text x="415" y="75" fill="#10b981" font-size="11" font-family="monospace" font-weight="bold" text-anchor="middle">RX</text>
+
+                <!-- Přímá viditelnost (Line of Sight - LoS) -->
+                <line x1="45" y1="85" x2="415" y2="85" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="4,3" />
+                <text x="230" y="80" fill="#f59e0b" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">Přímá viditelnost (LoS)</text>
+
+                <!-- 1. Fresnelova elipsa (100% obal) -->
+                <ellipse cx="230" cy="85" rx="180" ry="55" fill="rgba(56, 189, 248, 0.07)" stroke="#38bdf8" stroke-width="1.8" />
+
+                <!-- 60% kritická hranice Fresnelovy zóny (musí být bez překážek) -->
+                <ellipse cx="230" cy="85" rx="150" ry="33" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.4" stroke-dasharray="3,3" />
+
+                <!-- Terénní překážka (strom/budova) -->
+                <rect x="215" y="115" width="30" height="46" fill="#334155" stroke="#64748b" stroke-width="1.2" />
+                <circle cx="230" cy="112" r="14" fill="rgba(239, 68, 68, 0.3)" stroke="#ef4444" stroke-width="1.5" />
+                <line x1="230" y1="126" x2="230" y2="160" stroke="#78350f" stroke-width="2" />
+                <text x="252" y="118" fill="#ef4444" font-size="9" font-family="monospace" font-weight="bold">Překážka v zóně!</text>
+
+                <!-- Kóta poloměru r1 -->
+                <line x1="170" y1="85" x2="170" y2="34" stroke="#38bdf8" stroke-width="1.2" />
+                <polygon points="170,31 167,39 173,39" fill="#38bdf8" />
+                <polygon points="170,85 167,77 173,77" fill="#38bdf8" />
+                <text x="162" y="62" fill="#38bdf8" font-size="10" font-family="monospace" font-weight="bold" text-anchor="end">r₁</text>
+              </svg>
+            </div>
+
+            <div class="card-body" style="padding-top: 0;">
+              <ul class="clean-list" style="font-size: 0.8rem;">
+                <li><strong>1. Fresnelova zóna:</strong> Vlnění se nešíří pouze po tenkém paprsku LoS, ale prostorovým elipsoidem:
+                  $$r_1 = \sqrt{\frac{\lambda \cdot d_1 \cdot d_2}{d_1 + d_2}} = \frac{1}{2} \sqrt{\lambda \cdot D}$$
+                </li>
+                <li><strong>Pravidlo 60 % clearance:</strong> Alespoň <strong>60 % poloměru</strong> 1. Fresnelovy zóny musí být zcela volných bez překážek (stromy, střechy). Pokud do zóny zasáhne překážka, odražené vlny dorazí s opačnou fází ($180^\circ$) a signál se vzájemně vyruší (fázový fading), ačkoliv přímá optická viditelnost je volná!</li>
+                <li><strong>Zisk antény (dBi vs. dBd):</strong>
+                  <br>&bull; <strong>dBi:</strong> Zisk vztažený k teoretickému <em>izotropnímu zářiči</em> (vyzařuje rovnoměrně do celé koule).
+                  <br>&bull; <strong>dBd:</strong> Zisk vztažený k reálnému <em>půlvlnnému dipólu</em>: $\text{dBi} = \text{dBd} + 2{,}15\text{ dB}$.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Interaktivní vyzařovací diagramy -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              </div>
+              <h3 class="card-title">Vyzařovací charakteristiky antén (Polární diagram)</h3>
+            </div>
+
+            <div class="card-body antenna-explorer">
+              <!-- Přepínač typů antén -->
+              <div class="antenna-tabs">
+                <button type="button" class="antenna-type-btn active" data-type="omni">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                  Všesměrová (Dipól)
+                </button>
+                <button type="button" class="antenna-type-btn" data-type="directional">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                  Směrová (Yagi / Parabola)
+                </button>
+                <button type="button" class="antenna-type-btn" data-type="sector">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 22a10 10 0 0 0 7.07-2.93l-7.07-7.07V2z"></path></svg>
+                  Sektorová (120° / 90°)
+                </button>
+                <button type="button" class="antenna-type-btn" data-type="beamforming">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                  Smart Beamforming
+                </button>
+              </div>
+
+              <!-- Vizuální plátno a specifikace -->
+              <div class="antenna-visual-grid">
+                <div class="antenna-canvas-container">
+                  <canvas id="antennaCanvas" class="antenna-canvas"></canvas>
+                  
+                  <!-- Speciální slider pro Beamforming -->
+                  <div id="beamformingSteerControl" class="beamforming-ctrl">
+                    <label for="beamformingSlider">
+                      <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path></svg>
+                      Úhel:
+                    </label>
+                    <input type="range" id="beamformingSlider" min="-60" max="60" value="25" step="1">
+                    <span id="beamformingAngleVal" class="beamforming-val-badge">+25°</span>
+                  </div>
+                </div>
+
+                <!-- Karta technických parametrů zvolené antény -->
+                <div class="antenna-specs-card">
+                  <div class="antenna-specs-header">
+                    <span class="antenna-specs-title" id="antPropName">Všesměrová anténa (Dipól)</span>
+                  </div>
+
+                  <div class="antenna-spec-row">
+                    <span class="antenna-spec-label">Zisk antény (Gain):</span>
+                    <span class="antenna-spec-value" id="antPropGain">2,15 dBi (0 dBd)</span>
+                  </div>
+                  <div class="antenna-spec-row">
+                    <span class="antenna-spec-label">Úhel svazku HPBW (Azimut):</span>
+                    <span class="antenna-spec-value" id="antPropHpbwH">360° (Kruhové vyzařování)</span>
+                  </div>
+                  <div class="antenna-spec-row">
+                    <span class="antenna-spec-label">Úhel svazku HPBW (Elevace):</span>
+                    <span class="antenna-spec-value" id="antPropHpbwV">78° (Tvar donutu)</span>
+                  </div>
+                  <div class="antenna-spec-row">
+                    <span class="antenna-spec-label">Předozadní poměr:</span>
+                    <span class="antenna-spec-value" id="antPropFb">0 dB</span>
+                  </div>
+
+                  <div class="antenna-usecase-box" id="antPropUse">
+                    Domácí Wi-Fi AP, všesměrové tyčové antény pro rovnoměrné pokrytí místnosti
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Wi-Fi 6 a modulace 1024-QAM (10 bitů na symbol)
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Wi-Fi 6 a 1024-QAM (10 bitů)">
+        <div class="slide-header">
+          <h2 class="slide-title">Wi-Fi 6 a modulace 1024-QAM: Jak přenést 10 bitů v jediném symbolu</h2>
+          <p class="slide-subtitle">Kvadraturní amplitudová modulace (QAM) &bull; Od 2 bitů (QPSK) až po 1024 stavů v rovině I/Q &bull; Proč Wi-Fi 6 vyžaduje čisté prostředí a vysoké SNR.</p>
+        </div>
+
+        <!-- Tři technologické pilíře QAM -->
+        <div class="qam-pillars-grid">
+          <div class="qam-pillar-card">
+            <h4>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10"></path></svg>
+              1. Ortogonální nosné (I a Q)
+            </h4>
+            <p>Vysílač skládá dvě nosné vlny stejné frekvence posunuté o $90^\circ$: $s(t) = I \cos(\omega t) - Q \sin(\omega t)$. Tyto dvě složky se v éteru vzájemně neruší.</p>
+          </div>
+
+          <div class="qam-pillar-card">
+            <h4>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="2" y="2" width="20" height="20" rx="4"></rect><path d="M7 12h10M12 7v10"></path></svg>
+              2. 5 bitů na osu &bull; Liché úrovně (&plusmn;1 až &plusmn;31)
+            </h4>
+            <p>Každá osa představuje nezávislou modulaci <strong>PAM-32</strong> se 32 diskrétními lichými hodnotami $\{-31, -29, \dots, -1, +1, \dots, +31\}$. V počátku není nula, aby nosná vlna nikdy nevymizela ($A \neq 0$) a odstup bodů byl všude stejný ($\Delta = 2$). $32 \times 32 = \mathbf{1024}$ stavů!</p>
+          </div>
+
+          <div class="qam-pillar-card">
+            <h4>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="m9 11 3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              3. Grayův kód (Proč ne prosté 0 až 31?)
+            </h4>
+            <p>U přirozené binární řady nastává skok (např. 15 <code>01111</code> &rarr; 16 <code>10000</code> mění všech 5 bitů!). Grayův kód zaručuje, že <strong>sousední body se liší vždy pouze v jediném bitu</strong> &ndash; šum tak způsobí maximálně 1 bitovou chybu, kterou snadno opraví FEC (LDPC).</p>
+          </div>
+        </div>
+
+        <!-- Hlavní interaktivní laboratorní pult -->
+        <div class="qam-playground-grid">
+          <!-- Levá část: Volič modulací a Konstelační rovina IQ -->
+          <div class="qam-left-panel">
+            <div class="qam-mod-selector">
+              <button type="button" class="mod-btn" data-mod="qpsk">QPSK (2 bity)</button>
+              <button type="button" class="mod-btn" data-mod="qam16">16-QAM (4 bity)</button>
+              <button type="button" class="mod-btn" data-mod="qam64">64-QAM (6 bitů)</button>
+              <button type="button" class="mod-btn" data-mod="qam256">256-QAM (8 bitů &bull; Wi-Fi 5)</button>
+              <button type="button" class="mod-btn btn-highlight active" data-mod="qam1024">1024-QAM (10 bitů &bull; Wi-Fi 6 ★)</button>
+            </div>
+
+            <div class="qam-canvas-card">
+              <canvas id="qamCanvas" class="qam-canvas"></canvas>
+              <div class="qam-canvas-hint">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px; color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                Klikněte na libovolný bod v mřížce pro okamžité zobrazení 10bitového slova a RF vlny.
+              </div>
+            </div>
+
+            <!-- Karta vlevo pod obrázkem: Didaktické vysvětlení Grayova kódu a rozprostření 5 bitů -->
+            <div class="qam-gray-explainer-card">
+              <div class="qam-gray-header">
+                <div class="qam-gray-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                  <span>Proč Grayův kód a liché úrovně &plusmn;1 až &plusmn;31?</span>
+                </div>
+                <span class="badge" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; font-size: 0.68rem; padding: 0.15rem 0.45rem;">Hammingovo d = 1</span>
+              </div>
+              <div class="qam-gray-content">
+                <div class="qam-gray-rule">
+                  <strong style="color: #38bdf8;">1. Žádná nula na ose (proč liché hodnoty):</strong>
+                  <span>Kdyby byl bod v $(0, 0)$, amplituda nosné by byla $A = \sqrt{I^2+Q^2} = 0$. Vysílač by nevyslal nic a přijímač by ztratil synchronizaci (PLL). 32 lichých hodnot $\{-31, \dots, -1, +1, \dots, +31\}$ zaručuje všude stálý odstup $\Delta = 2$.</span>
+                </div>
+                <div class="qam-gray-rule">
+                  <strong style="color: #f59e0b;">2. Proč ne prostá binární řada (0 až 31)?</strong>
+                  <span>U klasického binárního číslování nastává skok: úroveň &minus;1 má kód <code>01111</code> a úroveň +1 má <code>10000</code>. Drobný šum by tak otočil <strong>všech 5 bitů najednou</strong> (katastrofální chybovost).</span>
+                </div>
+                <div class="qam-gray-rule">
+                  <strong style="color: #10b981;">3. Grayovo zrcadlení v praxi:</strong>
+                  <span>Nejvyšší bit ($b_9$ pro $I$, $b_4$ pro $Q$) je <em>znaménko</em> (<code>0</code> = záporná, <code>1</code> = kladná polovina). Zbylé 4 bity se zrcadlí: úroveň &minus;1 má kód <code>01000</code> a sousední +1 má <code>10000</code> &ndash; liší se <strong>pouze v jediném bitu</strong>! Šum tak poškodí max. 1 bit z 10, což LDPC okamžitě zkoriguje.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pravá část: Rozpad 10 bitů, osciloskop a vliv šumu SNR -->
+          <div class="qam-right-panel">
+            <!-- Karta 1: Rozpad 10 bitů vybraného stavu -->
+            <div class="qam-bits-card">
+              <div class="qam-bits-header">
+                <span class="qam-bits-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                  Rozpad 10 bitů aktuálního symbolu
+                </span>
+                <span class="badge badge-accent" id="qamBitsCount">10 bitů</span>
+              </div>
+
+              <!-- 10 interaktivních bitových tlačítek -->
+              <div id="qamBitButtonsContainer" class="qam-bits-container"></div>
+
+              <!-- Telemetrie signálu -->
+              <div class="qam-telemetry-grid">
+                <div class="qam-telemetry-cell">
+                  <span class="qam-cell-label">Binární kód symbolu</span>
+                  <span class="qam-cell-value" id="statQamBits">10101 01010</span>
+                </div>
+                <div class="qam-telemetry-cell">
+                  <span class="qam-cell-label">Úrovně složek (I, Q)</span>
+                  <span class="qam-cell-value" id="statQamCoord">I = +5, Q = -11</span>
+                </div>
+                <div class="qam-telemetry-cell">
+                  <span class="qam-cell-label">Amplituda vlny (A)</span>
+                  <span class="qam-cell-value" id="statQamAmp">12.08</span>
+                </div>
+                <div class="qam-telemetry-cell">
+                  <span class="qam-cell-label">Fázový posun (&phi;)</span>
+                  <span class="qam-cell-value" id="statQamPhase">-65°</span>
+                </div>
+              </div>
+
+              <!-- Osciloskop pro výsledný RF signál -->
+              <canvas id="qamScopeCanvas" class="qam-scope-canvas"></canvas>
+            </div>
+
+            <!-- Karta 3: Experiment se šumem SNR a Adaptive Modulation -->
+            <div class="qam-snr-card">
+              <div class="qam-snr-header">
+                <span class="qam-snr-title">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><polyline points="2 12 5 7 8 16 11 6 14 18 17 9 20 15 22 12"></polyline></svg>
+                  Vliv šumu prostředí (Odstup signál/šum SNR)
+                </span>
+                <span class="badge" id="qamModMinSnr" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">Min. SNR: 35 dB</span>
+              </div>
+
+              <div class="qam-snr-slider-row">
+                <input type="range" id="qamSnrSlider" min="15" max="40" value="38" step="1">
+                <span id="qamSnrVal" class="qam-snr-badge">38 dB</span>
+              </div>
+
+              <div class="qam-ber-result">
+                <span style="color: var(--text-muted);">Kvalita příjmu a BER:</span>
+                <strong id="statQamBer" style="color: #10b981;">Vynikající (BER = 0)</strong>
+              </div>
+
+              <p style="font-size: 0.74rem; color: var(--text-secondary); line-height: 1.35; margin: 0;">
+                <strong>Didaktický postřeh:</strong> 1024-QAM má body extrémně blízko u sebe. Pokud SNR klesne pod <strong>35 dB</strong> (vzdálenost od AP, zdi), body se vlivem šumu slijí a Wi-Fi čip musí automaticky přepnout na nižší modulaci (AMC: 1024-QAM &rarr; 256-QAM &rarr; 64-QAM).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 14: Bezdrátové technologie v praxi
+           ========================================== -->
+      <section class="slide" id="slide-14" data-title="Wi-Fi, Bluetooth a optické bezdráty">
+        <div class="slide-header">
+          <h2 class="slide-title">Aktuální technologie: Wi-Fi 7, Bluetooth 5.x, Li-Fi a FSO</h2>
+          <p class="slide-subtitle">Přehled nejmodernějších bezdrátových standardů současnosti &ndash; od gigabitových radiových sítí až po revoluční přenosy dat světlem.</p>
+        </div>
+
+        <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.15rem;">
+          <!-- Karta 1: Wi-Fi 6E a Wi-Fi 7 -->
+          <div class="content-card">
+            <h4>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #3b82f6;"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+              Wi-Fi 6 / 6E &amp; Wi-Fi 7 (802.11be)
+            </h4>
+            <ul class="clean-list" style="font-size: 0.82rem;">
+              <li><strong>OFDMA (Wi-Fi 6/7):</strong> Dělí kanál na desítky subnosných (RU). Umožňuje obsluhovat desítky klientů ve stejném časovém okamžiku bez kolizí.</li>
+              <li><strong>Nové čisté pásmo 6 GHz (Wi-Fi 6E/7):</strong> Široké pásmo bez rušení staršími 2,4/5 GHz zařízeními.</li>
+              <li><strong>Kanály 320 MHz &amp; 4096-QAM (Wi-Fi 7):</strong> Dvojnásobná šířka kanálu a propustnost přes <strong>40 Gbps</strong> (12 bitů na symbol).</li>
+              <li><strong>MLO (Multi-Link Operation):</strong> Klient vysílá a přijímá data současně přes pásmo 5 GHz i 6 GHz naráz &ndash; minimální latence pod 5 ms pro VR a online řízení.</li>
+            </ul>
+          </div>
+
+          <!-- Karta 2: Bluetooth 5.x & BLE -->
+          <div class="content-card">
+            <h4>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"></polyline></svg>
+              Bluetooth 5.0 &ndash; 5.4 &amp; BLE
+            </h4>
+            <ul class="clean-list" style="font-size: 0.82rem;">
+              <li><strong>Bluetooth Low Energy (BLE):</strong> Extrémně nízká spotřeba &ndash; senzory, chytré hodinky a IoT zařízení fungují roky na knoflíkovou baterii CR2032.</li>
+              <li><strong>Režimy 2 Mbps PHY &amp; Coded PHY:</strong> Možnost volby mezi dvojnásobnou rychlostí přenosu nebo dosahem až 200 m (Long Range).</li>
+              <li><strong>FHSS (Frequency Hopping):</strong> Skáče 1600&times; za sekundu mezi 79 radiovými kanály na 2,4 GHz, čímž aktivně obchází rušení s Wi-Fi sítěmi.</li>
+              <li><strong>Bluetooth Mesh:</strong> Zařízení si předávají zprávy řetězově mezi sebou (automatizace budov, chytré osvětlení).</li>
+            </ul>
+          </div>
+
+          <!-- Karta 3: Optické bezdráty (Li-Fi a FSO) -->
+          <div class="content-card">
+            <h4>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line></svg>
+              Optické bezdráty: Li-Fi &amp; FSO
+            </h4>
+            <ul class="clean-list" style="font-size: 0.82rem;">
+              <li><strong>Li-Fi (Light Fidelity &ndash; IEEE 802.11bb):</strong> Přenos dat vysokofrekvenční modulací viditelného LED světla či IR (lidské oko změnu nezaznamená).
+                <br>&bull; Rychlosti v řádu Gbps.
+                <br>&bull; <em>Výhoda:</em> Nulové elektromagnetické rušení (vhodné do nemocnic, letadel, operačních sálů) a maximální bezpečnost (světlo neprojde zdí).
+              </li>
+              <li><strong>FSO (Free Space Optics):</strong> Úzké laserové point-to-point spoje mezi budovami na střechách.
+                <br>&bull; Přenosové rychlosti 1 až 100 Gbps bez nutnosti radiových licencí.
+                <br>&bull; <em>Limit:</em> Citlivost na počasí (hustá mlha, sněhová vánice).
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 15: Didaktické shrnutí & Opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-15" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu: Fyzická vrstva &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Ucelený přehled klíčových vlastností médií a interaktivní opakovací test pro upevnění látky před praktickými cvičeními.</p>
+        </div>
+
+        <!-- Srovnávací matice všech médií -->
+        <div class="spec-table-container" style="margin-bottom: 1.25rem;">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Médium</th>
+                <th>Běžná rychlost</th>
+                <th>Max. délka segmentu</th>
+                <th>Odolnost proti EMI</th>
+                <th>Cena instalace</th>
+                <th>Klíčová výhoda</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Kroucená dvojlinka (UTP/STP)</strong></td>
+                <td>1 &ndash; 10 Gbps</td>
+                <td>100 metrů</td>
+                <td>Střední (díky kroucení / stínění)</td>
+                <td>Nízká</td>
+                <td>Cenová dostupnost, ohebnost, podpora PoE</td>
+              </tr>
+              <tr>
+                <td><strong>Koaxiální kabel</strong></td>
+                <td>10 &ndash; 1000 Mbps</td>
+                <td>185 m (10BASE2) / 500 m (10BASE5)</td>
+                <td>Vysoká (stínicí pletivo)</td>
+                <td>Střední</td>
+                <td>Robustnost pro VF signály a kabelovou TV</td>
+              </tr>
+              <tr>
+                <td><strong>Multi-Mode optika (MMF)</strong></td>
+                <td>10 &ndash; 100 Gbps</td>
+                <td>300 &ndash; 550 metrů</td>
+                <td>Absolutní (dielektrikum)</td>
+                <td>Střední až vyšší</td>
+                <td>Levnější transceivery (VCSEL), vysoká propustnost v LAN</td>
+              </tr>
+              <tr>
+                <td><strong>Single-Mode optika (SMF)</strong></td>
+                <td>10 &ndash; 400+ Gbps</td>
+                <td>10 &ndash; 100+ km</td>
+                <td>Absolutní (dielektrikum)</td>
+                <td>Vyšší (laserové zdroje)</td>
+                <td>Nulová vidová disperze, extrémní vzdálenosti a WAN</td>
+              </tr>
+              <tr>
+                <td><strong>Bezdrát (Wi-Fi 6/7)</strong></td>
+                <td>Až 40 Gbps teoreticky</td>
+                <td>Desítky metrů (dle překážek)</td>
+                <td>Nízká (sdílené pásmo ISM)</td>
+                <td>Nízká (žádné kabely)</td>
+                <td>Mobilita uživatelů, 1024-QAM / 4096-QAM</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 5 Interaktivních opakovacích otázek -->
+        <div class="questions-grid">
+          <!-- Otázka 1 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 1 &bull; Metalická média &amp; Diferenciální signál</span>
+            </div>
+            <div class="question-text">Proč se u kroucené dvojlinky (UTP) jednotlivé páry kroutí a proč má každý pár jiný krok kroucení?</div>
+            <button type="button" class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Kroucení vodičů v páru zajišťuje, že vnější elektromagnetické rušení (EMI) indukuje v obou vodičích prakticky shodné rušivé napětí. Přijímač vyhodnocuje rozdíl napětí (<strong>diferenciální signál $U_A - U_B$</strong>), čímž se souhlasné rušení dokonale odečte a zruší. Každý ze 4 párů má navíc <em>odlišný krok (hustotu) zkroucení</em> na metr délky, aby se zamezilo vzájemnému elektromagnetickému přeslechu (crosstalk / NEXT) mezi sousedními páry uvnitř téhož kabelu.
+            </div>
+          </div>
+
+          <!-- Otázka 2 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 2 &bull; Optická vlákna &amp; Disperze</span>
+            </div>
+            <div class="question-text">Jaký je principiální fyzikální rozdíl mezi jednovidovým (SMF) a mnohovidovým (MMF) optickým vláknem?</div>
+            <button type="button" class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Klíčový rozdíl spočívá v <strong>průměru křemenného jádra</strong> a z toho plynoucí disperzi:
+              <br>&bull; <strong>MMF (Multi-Mode, jádro 50 µm):</strong> Světlo se šíří mnoha různými trasami (vidy) s různými úhly odrazu. Paprsky dorazí na konec vlákna v mírně odlišný čas (tzv. <em>vidová disperze</em>), což rozostřuje světelné pulzy a limituje dosah na cca 300–550 metrů.
+              <br>&bull; <strong>SMF (Single-Mode, jádro 9 µm):</strong> Jádro je natolik tenké (srovnatelné s vlnovou délkou světla), že v něm existuje pouze jediná přímá trasa (vid). Vidová disperze je nulová, což umožňuje přenos na desítky až stovky kilometrů bez regenerace signálu.
+            </div>
+          </div>
+
+          <!-- Otázka 3 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 3 &bull; Signalizace: Baud vs. Bit/s</span>
+            </div>
+            <div class="question-text">Co vyjadřuje jednotka Baud a jaký je její vztah k bitové rychlosti (bps)? Uveďte příklad.</div>
+            <button type="button" class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              <strong>Baud (Bd)</strong> udává počet <em>stavových změn (symbolů)</em> na médiu za 1 sekundu, zatímco <strong>bps (bity za sekundu)</strong> udává skutečně přenesený objem dat. Vztah závisí na použité modulaci:
+              <br>&bull; U kódování Manchester vyžaduje 1 bit dvě změny signálu $\implies 1\text{ bit} = 2\text{ Baudy}$ (poloviční efektivita).
+              <br>&bull; U jednoduchého NRZ odpovídá $1\text{ Baud} = 1\text{ bit}$.
+              <br>&bull; U vícestavových modulací (např. Wi-Fi 6 1024-QAM) nese 1 symbol $10\text{ bitů}$ $\implies 1\text{ Baud} = 10\text{ bitů/s}$!
+            </div>
+          </div>
+
+          <!-- Otázka 4 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 4 &bull; Šíření vln v prostoru</span>
+            </div>
+            <div class="question-text">Proč v bezdrátových sítích nestačí pouze přímá viditelnost (LoS) a co je to 1. Fresnelova zóna?</div>
+            <button type="button" class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Elektromagnetické vlnění se v prostoru nešíří pouze po přímce, ale prostorovým elipsoidem mezi vysílačem a přijímačem – tzv. <strong>Fresnelovou zónou</strong>. Pokud se v této zóně nachází překážka (koruna stromu, hřeben střechy), část vln se od ní odrazí a dorazí k přijímači s fázovým posunem (až $180^\circ$). Odražená vlna se sečte s přímou vlnou v protifázi a dojde k <em>destruktivní interferenci (fázovému vyrušení signálu)</em>. V praxi proto musí být alespoň <strong>60 % poloměru 1. Fresnelovy zóny</strong> zcela čisté.
+            </div>
+          </div>
+
+          <!-- Otázka 5 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 5 &bull; Wi-Fi 6 &amp; 1024-QAM</span>
+            </div>
+            <div class="question-text">Proč Wi-Fi 6 při použití modulace 1024-QAM (10 bitů na symbol) vyžaduje čisté prostředí s vysokým SNR?</div>
+            <button type="button" class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              V modulaci 1024-QAM je v rovině IQ umístěno $32 \times 32 = 1024$ stavových bodů. Vzdálenost mezi sousedními body je extrémně malá. Pokud v prostředí existuje šum (nízké SNR pod cca 35 dB), bod se vlivem šumu posune mimo svou rozhodovací oblast (vysoká chybovost EVM a BER). Wi-Fi proto používá adaptivní řízení modulace (AMC): při slabším signálu či větší vzdálenosti automaticky degraduje na 256-QAM, 64-QAM nebo robustní QPSK.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../010-Uvod-do-pocitacovych-siti/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 010 Úvod do počítačových sítí (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../030-Linkova-vrstva/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 030 Linková vrstva a Ethernet (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 15</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Fyzická vrstva
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro interaktivní trenažér signálů a modulací -->
+  <script src="signal-playground.js"></script>
+  <!-- Lokální engine pro simulátor Snellova zákona a úplného odrazu -->
+  <script src="optics-playground.js"></script>
+  <!-- Lokální engine pro antény a simulátor Wi-Fi 6 1024-QAM -->
+  <script src="wireless-playground.js"></script>
+</body>
+
+</html>

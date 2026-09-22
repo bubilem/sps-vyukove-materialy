@@ -1534,13 +1534,16 @@ kbd {
 }
 
 .formula-main {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 500;
   color: var(--accent, #38bdf8);
   letter-spacing: 0.02em;
   margin-bottom: 0.25rem;
   display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 0.35rem;
 }
 

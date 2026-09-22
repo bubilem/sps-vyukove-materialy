@@ -709,7 +709,7 @@
         if (newHtml.includes('$$')) {
           newHtml = newHtml.replace(/\$\$([\s\S]+?)\$\$/g, (_, math) => {
             hasChanges = true;
-            return '<div class="formula-display" role="math">' + renderLatexExpression(math) + '</div>';
+            return '<div class="formula-display" role="math"><span class="formula-main">' + renderLatexExpression(math) + '</span></div>';
           });
         }
 
@@ -741,7 +741,7 @@
     // Úhly a stupně (0^\circ, 180^\circ apod.)
     if (/^\d+(\.\d+)?\s*\^?\s*\\circ$/.test(str) || (str.includes('\\circ') && /[\d,\s]/.test(str))) return true;
     // LaTeX značky a funkce
-    if (/\\(text|frac|sqrt|wedge|vee|neg|varepsilon|alpha|beta|gamma|delta|Delta|mu|pi|approx|times|cdot|le|ge|ne|to|rightarrow|leftarrow|in|pm|circ|log|ln|sin|cos|tan|oplus|bar|overline|Rightarrow|Leftrightarrow|equiv|infty)\b/.test(str)) return true;
+    if (/\\(text|mathbf|frac|sqrt|wedge|vee|neg|varepsilon|alpha|beta|gamma|delta|Delta|lambda|Lambda|theta|omega|Omega|vec|mu|pi|approx|times|cdot|le|ge|ne|to|rightarrow|leftarrow|in|pm|circ|log|ln|sin|cos|tan|oplus|bar|overline|Rightarrow|Leftrightarrow|implies|iff|equiv|infty)\b/.test(str)) return true;
     // Operátory a relace
     if (/(=|<|>|&lt;|&gt;|\+|-|\/|\*|&times;|&approx;|&le;|&ge;|\^|_|\[|\])/.test(str)) return true;
     // Výpočetní složitost O(1), O(log N)
@@ -771,8 +771,13 @@
     s = s.replace(/\\\{/g, '{').replace(/\\\}/g, '}');
     s = s.replace(/\{,\}/g, ',');
 
-    // 1. Textové bloky: \text{...}
+    // 1. Textové bloky: \text{...} a tučné \mathbf{...}
     const textStore = [];
+    s = s.replace(/\\mathbf\{([^}]*)\}/g, (_, txt) => {
+      const idx = textStore.length;
+      textStore.push('<strong class="formula-text">' + escapeHtml(txt) + '</strong>');
+      return 'XXTXT' + idx + 'XX';
+    });
     s = s.replace(/\\text\{([^}]*)\}/g, (_, txt) => {
       const idx = textStore.length;
       textStore.push('<span class="formula-text">' + escapeHtml(txt) + '</span>');
@@ -789,8 +794,20 @@
     // 4. Odmocniny: \sqrt{x}
     s = s.replace(/\\sqrt\{([^}]+)\}/g, '<span class="formula-sqrt"><span class="formula-surd">&radic;</span><span class="formula-radicand">$1</span></span>');
 
+    // 4b. Vektory: \vec{E}
+    s = s.replace(/\\vec\{([^}]+)\}/g, '<span class="formula-vec">$1&#x20D7;</span>');
+
     // 5. Symboly, logika a řecká abeceda
     const symbols = [
+      [/\\implies/g, '&rArr;'],
+      [/\\iff/g, '&hArr;'],
+      [/\\qquad/g, '&emsp;&emsp;'],
+      [/\\quad/g, '&emsp;'],
+      [/\\lambda/g, '&lambda;'],
+      [/\\Lambda/g, '&Lambda;'],
+      [/\\theta/g, '&theta;'],
+      [/\\omega/g, '&omega;'],
+      [/\\Omega/g, '&Omega;'],
       [/\\wedge/g, '&and;'],
       [/\\vee/g, '&or;'],
       [/\\neg/g, '&not;'],
