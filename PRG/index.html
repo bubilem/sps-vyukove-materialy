@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRG: Programování | Výukové materiály SPŠ</title>
+  
+  <!-- Společné styly pro katalogy a rozcestníky SPŠ -->
+  <link rel="stylesheet" href="../assets/css/dashboard-core.css">
+  <style>
+    :root {
+      --accent: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.16) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="dashboard-container">
+    
+    <!-- 1. Drobečková navigace (SPŠ 4-úrovňový standard) -->
+    <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+      <a href="../index.html" class="breadcrumb-link" title="Zpět na centrální rozcestník SPŠ">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Rozcestník SPŠ
+      </a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Programování (PRG)</span>
+    </nav>
+
+    <!-- 2. Hlavička předmětu -->
+    <header class="dashboard-header">
+      <div class="brand-box">
+        <div class="brand-icon" style="background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); color: #c084fc;">
+          <svg class="icon" viewBox="0 0 24 24">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Předmět PRG: Programování</h1>
+          <p>Střední průmyslová škola &bull; Algoritmizace, datové struktury, objektově orientované programování a architektura aplikací</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <!-- Ikona vložena JS -->
+        </button>
+      </div>
+    </header>
+
+    <!-- 3. Vyhledávací pole -->
+    <div class="search-container">
+      <svg class="search-icon-svg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech PRG (např. grafy, stromy, dijkstra, složitost, algoritmy, OOP, BFS)..." autocomplete="off">
+    </div>
+
+    <!-- 4. Mřížka témat (Katalog témat SPŠ PRG) -->
+    <div class="lessons-grid" id="lessonsGrid">
+      
+      <!-- Téma 070: Teorie grafů -->
+      <div class="lesson-card" data-keywords="070 teorie grafu grafy uzly hrany stupne stromy planarita bfs dfs dijkstra mst kruskal euler hamilton tsp gnn ai datove struktury prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #c084fc; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.12);">TÉMA 070</span>
+            <span class="lesson-exam-badge" style="color: #c084fc; background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.3);">Algoritmy &amp; Datové struktury</span>
+          </div>
+          <h2>Teorie grafů</h2>
+          <p class="lesson-desc">
+            Abstrakce a topologie systémů, matematická definice G = (V, E), stupně vrcholů, matice a seznamy sousedů v paměti, reprezentace v moderní AI (GNN, Znalostní grafy), klíčové algoritmy (BFS, DFS, Dijkstra, Kruskal MST, Euler, Hamilton/TSP) a interaktivní grafové pískoviště.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 10 snímků &bull; Simulátor</span>
+          <a href="070-Teorie-grafu/index.html" class="btn-launch-lesson" style="color: #c084fc;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 071: Reprezentace grafu v programování -->
+      <div class="lesson-card" data-keywords="071 reprezentace grafu grafy matice sousednosti 2d pole list v listu oop python trida graph add_edge get_edge has_edge reset stupne uzlu prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #38bdf8; border-color: rgba(6, 182, 212, 0.3); background: rgba(6, 182, 212, 0.12);">TÉMA 071</span>
+            <span class="lesson-exam-badge" style="color: #38bdf8; background: rgba(6, 182, 212, 0.12); border-color: rgba(6, 182, 212, 0.3);">Python &amp; Datové struktury</span>
+          </div>
+          <h2>Reprezentace grafu v programování</h2>
+          <p class="lesson-desc">
+            Vizuální model orientovaného váženého grafu se 4 uzly, převod do matice sousednosti a 2D pole v Pythonu (list v listu). Krok za krokem vystavěná objektová třída Graph, metody reset, add_edge, has_edge, výpočet stupňů uzlů a interaktivní pískoviště.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Praktické téma &bull; 10 snímků &bull; Simulátor</span>
+          <a href="071-Reprezentace-grafu/index.html" class="btn-launch-lesson" style="color: #38bdf8;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 5. Footer katalogu -->
+    <footer class="site-footer">
+      <div class="footer-nav">
+        <a href="../index.html" class="btn-footer-back" title="Návrat na hlavní rozcestník SPŠ">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Zpět na centrální rozcestník SPŠ
+        </a>
+      </div>
+      <p>Střední průmyslová škola &copy; 2026 &bull; Předmět Programování (PRG)</p>
+    </footer>
+
+  </div>
+
+  <!-- Společný engine pro katalogy (správa motivu, vyhledávání, klikatelnost dlaždic) -->
+  <script src="../assets/js/dashboard-core.js"></script>
+</body>
+
+</html>

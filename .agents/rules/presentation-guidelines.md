@@ -86,3 +86,6 @@ Při vytváření nebo úpravách výukových materiálů a prezentací v tomto 
    - **Přísný zákaz meta-informací pro autory/vývojáře:** Na veřejných stránkách žáka nezajímají vývojářské instrukce (jak jsou číslovány složky, konvence kroků po 10, interní návody na framework). Stránky musí obsahovat výhradně věcné, didakticky hodnotné informace k danému předmětu a tématu.
    - V patičkách katalogů uvádět pouze čistou navigaci (např. tlačítko návratu na rozcestník SPŠ) bez zbytečných a náhodných odkazů na dílčí témata či interní technickou dokumentaci.
 
+8. **Lokální dedikované skripty a styly tématu:**
+   - Jakékoli skripty (např. interaktivní simulátory, laboratorní demonstrace, canvas kalkulátory) a doplňkové styly specifické pro konkrétní téma se ukládají v samostatných souborech přímo v lokální složce dané prezentace (např. `style.css`, `graph-playground.js`).
+   - Do sdílené složky `/assets/` patří výhradně prvky (společné jádro JS/CSS, společné ikony a rozcestníkové enginy), které jsou využívány více prezentacemi napříč systémem.

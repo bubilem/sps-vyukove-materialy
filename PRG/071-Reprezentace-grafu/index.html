@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Výuková prezentace SPŠ: Reprezentace grafu v programování. Orientovaný vážený graf, matice sousednosti, 2D pole a objektová třída Graph v Pythonu.">
+  <title>071 Reprezentace grafu v programování | Výukové materiály SPŠ</title>
+
+  <!-- Společné jádro frameworku (DRY strategie) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+
+  <!-- Lokální dedikované styly pro toto konkrétní téma -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Hlavní kontejner prezentace -->
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">071 Reprezentace grafu</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #38bdf8; border-color: rgba(6, 182, 212, 0.35); background: rgba(6, 182, 212, 0.12);">Python &amp; Datové struktury</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Reprezentace grafu v kódu">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            Předmět PRG &bull; Téma 071 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title" style="font-size: 2.85rem; margin-bottom: 1rem;">
+            Reprezentace grafu <br><span class="gradient-text">v programování</span>
+          </h1>
+          <p class="hero-description">
+            Od orientovaného a ohodnoceného grafu se 4 uzly přes matici sousednosti až po přehlednou a čistou třídu Graph v základním Pythonu.
+          </p>
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag cyan">Model</span>
+              <span>4 uzly &bull; Orientovaný &bull; Ohodnocený</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag emerald">2D Pole</span>
+              <span>Matice sousednosti &bull; List v listu</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">OOP Python</span>
+              <span>Třída Graph &bull; Konstruktor &bull; Metody</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag amber">Praxe</span>
+              <span>Interaktivní pískoviště &bull; Algoritmy</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Modelový orientovaný vážený graf
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Modelový orientovaný vážený graf">
+        <div class="slide-header">
+          <h2 class="slide-title">Modelový orientovaný vážený graf se 4 uzly</h2>
+          <p class="slide-subtitle">Konkrétní ukázkový graf, na kterém si krok za krokem vysvětlíme veškeré datové struktury a programové operace.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div class="graph-display-wrapper">
+            <svg viewBox="0 0 360 220" class="graph-display-svg" aria-label="Schéma orientovaného váženého grafu se 4 uzly">
+              <defs>
+                <marker id="arrowHeadCyan" viewBox="0 0 10 10" refX="22" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#38bdf8"></path>
+                </marker>
+              </defs>
+
+              <!-- Hrana 0 -> 1 (váha 5) -->
+              <path d="M 70 60 L 290 60" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowHeadCyan)"></path>
+              <rect x="170" y="44" width="22" height="16" rx="3" fill="#090d16" stroke="#38bdf8" stroke-width="1.2"></rect>
+              <text x="181" y="56" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">5</text>
+
+              <!-- Hrana 0 -> 2 (váha 3) diagonála -->
+              <path d="M 70 60 L 290 160" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowHeadCyan)"></path>
+              <rect x="155" y="104" width="22" height="16" rx="3" fill="#090d16" stroke="#38bdf8" stroke-width="1.2"></rect>
+              <text x="166" y="116" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">3</text>
+
+              <!-- Hrana 1 -> 2 (váha 2) svislá -->
+              <path d="M 290 60 L 290 160" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowHeadCyan)"></path>
+              <rect x="296" y="102" width="22" height="16" rx="3" fill="#090d16" stroke="#38bdf8" stroke-width="1.2"></rect>
+              <text x="307" y="114" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">2</text>
+
+              <!-- Hrana 2 -> 3 (váha 7) vodorovná spodní -->
+              <path d="M 290 160 L 70 160" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowHeadCyan)"></path>
+              <rect x="170" y="166" width="22" height="16" rx="3" fill="#090d16" stroke="#38bdf8" stroke-width="1.2"></rect>
+              <text x="181" y="178" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">7</text>
+
+              <!-- Hrana 3 -> 0 (váha 1) svislá levá -->
+              <path d="M 70 160 L 70 60" fill="none" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrowHeadCyan)"></path>
+              <rect x="42" y="102" width="22" height="16" rx="3" fill="#090d16" stroke="#38bdf8" stroke-width="1.2"></rect>
+              <text x="53" y="114" text-anchor="middle" font-size="11" font-weight="800" fill="#ffffff">1</text>
+
+              <!-- Uzel 0 -->
+              <circle cx="70" cy="60" r="19" fill="#0f172a" stroke="#38bdf8" stroke-width="3" class="node-circle"></circle>
+              <text x="70" y="66" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">0</text>
+
+              <!-- Uzel 1 -->
+              <circle cx="290" cy="60" r="19" fill="#0f172a" stroke="#38bdf8" stroke-width="3" class="node-circle"></circle>
+              <text x="290" y="66" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">1</text>
+
+              <!-- Uzel 2 -->
+              <circle cx="290" cy="160" r="19" fill="#0f172a" stroke="#38bdf8" stroke-width="3" class="node-circle"></circle>
+              <text x="290" y="166" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">2</text>
+
+              <!-- Uzel 3 -->
+              <circle cx="70" cy="160" r="19" fill="#0f172a" stroke="#38bdf8" stroke-width="3" class="node-circle"></circle>
+              <text x="70" y="166" text-anchor="middle" font-size="15" font-weight="800" fill="#ffffff">3</text>
+            </svg>
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.6rem;">
+              4 uzly {0, 1, 2, 3} &bull; 5 orientovaných hran s váhami
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+              </div>
+              <h3 class="card-title">Vlastnosti našeho modelu</h3>
+            </div>
+            <div class="card-body">
+              <ul class="styled-list">
+                <li><strong>Uzly (V):</strong> Celkem 4 vrcholy očíslované od <strong>0 do 3</strong> (ideální pro přímé indexování v programovacích jazycích).</li>
+                <li><strong>Orientace (Digraf):</strong> Šipka udává směr toku z výchozího uzlu $u$ do cílového uzlu $v$. Např. hrana $0 \to 1$ neznamená, že existuje cesta $1 \to 0$!</li>
+                <li><strong>Ohodnocení (Váhy):</strong> Každá hrana nese číselnou hodnotu (např. délka kabelu v metrech, cena letenky, čas v minutách).</li>
+              </ul>
+              <div class="formula-box">
+                <span class="formula-main">E = { (0, 1): 5, (0, 2): 3, (1, 2): 2, (2, 3): 7, (3, 0): 1 }</span>
+                <span class="formula-desc">Množina orientovaných hran s příslušnými váhami</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Matice sousednosti (Adjacency Matrix)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Matice sousednosti">
+        <div class="slide-header">
+          <h2 class="slide-title">Matice sousednosti (Adjacency Matrix)</h2>
+          <p class="slide-subtitle">Čtvercová tabulka velikosti N × N, která přesně a jednoznačně popisuje všechny spoje v grafu.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div class="card matrix-card">
+            <div class="matrix-table-container">
+              <table class="matrix-grid-table">
+                <thead>
+                  <tr>
+                    <th title="Řádek u = Odkud / Sloupec v = Kam">u \ v</th>
+                    <th>0</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>0</th>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-val">5</td>
+                    <td class="cell-val">3</td>
+                    <td class="cell-zero">0</td>
+                  </tr>
+                  <tr>
+                    <th>1</th>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-val">2</td>
+                    <td class="cell-zero">0</td>
+                  </tr>
+                  <tr>
+                    <th>2</th>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-val">7</td>
+                  </tr>
+                  <tr>
+                    <th>3</th>
+                    <td class="cell-val">1</td>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-zero">0</td>
+                    <td class="cell-zero">0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="matrix-legend">
+              <div class="matrix-legend-item">
+                <span class="legend-dot val"></span>
+                <span>Číslo > 0 = Váha hrany (u &rarr; v)</span>
+              </div>
+              <div class="matrix-legend-item">
+                <span class="legend-dot zero"></span>
+                <span>0 = Hrana neexistuje</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+              </div>
+              <h3 class="card-title">Základní pravidla čtení matice</h3>
+            </div>
+            <div class="card-body">
+              <ul class="styled-list">
+                <li><strong>Index řádku $u$ (Odkud):</strong> Vyjadřuje zdrojový uzel, ze kterého hrana vychází.</li>
+                <li><strong>Index sloupce $v$ (Kam):</strong> Vyjadřuje cílový uzel, do kterého hrana vstupuje.</li>
+                <li><strong>Buňka $M[u][v]$:</strong>
+                  <ul>
+                    <li>Pokud je hodnota $> 0$, existuje přímá hrana $u \to v$ s danou vahou.</li>
+                    <li>Pokud je hodnota $= 0$, přímé spojení mezi uzly neexistuje.</li>
+                  </ul>
+                </li>
+                <li><strong>Příklad čtení:</strong>
+                  V řádku <strong>0</strong> je ve sloupci <strong>1</strong> hodnota <strong>5</strong>. To znamená: <em>existuje hrana z uzlu 0 do uzlu 1 s váhou 5</em>.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Od matice k 2D poli v Pythonu
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="2D pole v Pythonu (List of Lists)">
+        <div class="slide-header">
+          <h2 class="slide-title">Od matematické matice k 2D poli v Pythonu</h2>
+          <p class="slide-subtitle">V Pythonu reprezentujeme matici jako vnořený seznam (list v listu), indexovaný přímo od nuly.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div>
+            <div class="python-code-box">
+              <span class="code-badge-py">Python 3</span>
+<span class="py-cmt"># Matice sousednosti zapsaná jako 2D list</span>
+matrix = [
+    [<span class="py-num">0</span>, <span class="py-num">5</span>, <span class="py-num">3</span>, <span class="py-num">0</span>],  <span class="py-cmt"># Řádek 0 (hrany z uzlu 0)</span>
+    [<span class="py-num">0</span>, <span class="py-num">0</span>, <span class="py-num">2</span>, <span class="py-num">0</span>],  <span class="py-cmt"># Řádek 1 (hrany z uzlu 1)</span>
+    [<span class="py-num">0</span>, <span class="py-num">0</span>, <span class="py-num">0</span>, <span class="py-num">7</span>],  <span class="py-cmt"># Řádek 2 (hrany z uzlu 2)</span>
+    [<span class="py-num">1</span>, <span class="py-num">0</span>, <span class="py-num">0</span>, <span class="py-num">0</span>]   <span class="py-cmt"># Řádek 3 (hrany z uzlu 3)</span>
+]
+
+<span class="py-cmt"># Přístup k hodnotě: matrix[odkud][kam]</span>
+vaha = matrix[<span class="py-num">0</span>][<span class="py-num">1</span>]   <span class="py-cmt"># Vrátí 5</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.6rem;">
+              První závorka <code>[u]</code> vybere řádek, druhá závorka <code>[v]</code> vybere prvek v daném řádku.
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="compare-box bad">
+              <div class="compare-title">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                Častá začátečnická chyba: [[0] * n] * n
+              </div>
+              <p style="font-size: 0.84rem; margin: 0; color: var(--text-secondary);">
+                Tento zápis zkopíruje <strong>pouze odkazy</strong> na stejný vnitřní seznam! Změna v <code>m[0][1]</code> by se nechtěně projevila ve <strong>všech řádcích najednou</strong>.
+              </p>
+            </div>
+
+            <div class="compare-box good">
+              <div class="compare-title">
+                <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Správná tvorba prázdné matice N &times; N nul
+              </div>
+              <div class="python-code-box" style="padding: 0.6rem 0.8rem; font-size: 0.82rem; margin: 0.2rem 0 0 0;">
+matrix = [[<span class="py-num">0</span> <span class="py-kw">for</span> _ <span class="py-kw">in</span> <span class="py-fn">range</span>(n)] <span class="py-kw">for</span> _ <span class="py-kw">in</span> <span class="py-fn">range</span>(n)]
+              </div>
+              <p style="font-size: 0.84rem; margin: 0; color: var(--text-secondary);">
+                List comprehension vytvoří $N$ <strong>samostatných a nezávislých</strong> řádků v paměti počítače.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Třída Graph: Konstruktor a Reset
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Třída Graph: Konstruktor a Reset">
+        <div class="slide-header">
+          <h2 class="slide-title">Třída Graph v OOP: Konstruktor a Reset</h2>
+          <p class="slide-subtitle">Zabalení dat a souvisejících operací do přehledného objektu pro čistý a znovupoužitelný kód.</p>
+        </div>
+
+        <div class="content-grid-2-1">
+          <div class="python-code-box">
+            <span class="code-badge-py">graph.py</span>
+<span class="py-kw">class</span> <span class="py-fn">Graph</span>:
+    <span class="py-kw">def</span> <span class="py-fn">__init__</span>(<span class="py-self">self</span>, n):
+        <span class="py-str">"""Konstruktor: n je počet uzlů grafu (0 až n-1)."""</span>
+        <span class="py-self">self</span>.n = n
+        <span class="py-cmt"># Vytvoření prázdné matice sousednosti n x n vyplněné nulami</span>
+        <span class="py-self">self</span>.matrix = [[<span class="py-num">0</span> <span class="py-kw">for</span> _ <span class="py-kw">in</span> <span class="py-fn">range</span>(n)] <span class="py-kw">for</span> _ <span class="py-kw">in</span> <span class="py-fn">range</span>(n)]
+
+    <span class="py-kw">def</span> <span class="py-fn">reset</span>(<span class="py-self">self</span>):
+        <span class="py-str">"""Vyčistí graf: smaže všechny hrany nastavením na 0."""</span>
+        <span class="py-kw">for</span> r <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-self">self</span>.n):
+            <span class="py-kw">for</span> c <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-self">self</span>.n):
+                <span class="py-self">self</span>.matrix[r][c] = <span class="py-num">0</span>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              </div>
+              <h3 class="card-title">Objektová architektura</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>Atributy instance:</strong></p>
+              <ul class="styled-list">
+                <li><code>self.n</code>: Uložený celkový počet uzlů v grafu.</li>
+                <li><code>self.matrix</code>: Vnitřní 2D seznam uchovávající váhy hran.</li>
+              </ul>
+              <p style="margin-top: 0.8rem;"><strong>Proč metoda <code>reset()</code>?</strong></p>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Umožňuje rychle vyprázdnit existující graf bez nutnosti znovu vytvářet novou instanci a zatěžovat garbage collector.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Manipulace s hranami
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Manipulace s hranami">
+        <div class="slide-header">
+          <h2 class="slide-title">Práce s hranami: Přidání, hodnota a test existence</h2>
+          <p class="slide-subtitle">Základní stavební kameny pro manipulaci s grafem: bezpečný zápis a bleskové dotazování v čase O(1).</p>
+        </div>
+
+        <div class="content-grid-2-1">
+          <div class="python-code-box">
+            <span class="code-badge-py">Metody třídy Graph</span>
+    <span class="py-kw">def</span> <span class="py-fn">add_edge</span>(<span class="py-self">self</span>, u, v, weight=<span class="py-num">1</span>):
+        <span class="py-str">"""Nastaví orientovanou hranu z uzlu u do uzlu v s danou vahou."""</span>
+        <span class="py-kw">if</span> <span class="py-num">0</span> &lt;= u &lt; <span class="py-self">self</span>.n <span class="py-kw">and</span> <span class="py-num">0</span> &lt;= v &lt; <span class="py-self">self</span>.n:
+            <span class="py-self">self</span>.matrix[u][v] = weight
+        <span class="py-kw">else</span>:
+            <span class="py-fn">print</span>(<span class="py-str">f"Chyba: Neplatný index uzlu ({u} nebo {v})!"</span>)
+
+    <span class="py-kw">def</span> <span class="py-fn">remove_edge</span>(<span class="py-self">self</span>, u, v):
+        <span class="py-str">"""Odstraní hranu u -> v (nastaví váhu zpět na 0)."""</span>
+        <span class="py-self">self</span>.<span class="py-fn">add_edge</span>(u, v, weight=<span class="py-num">0</span>)
+
+    <span class="py-kw">def</span> <span class="py-fn">get_edge</span>(<span class="py-self">self</span>, u, v):
+        <span class="py-str">"""Vrátí váhu hrany u -> v (nebo 0, pokud neexistuje)."""</span>
+        <span class="py-kw">return</span> <span class="py-self">self</span>.matrix[u][v]
+
+    <span class="py-kw">def</span> <span class="py-fn">has_edge</span>(<span class="py-self">self</span>, u, v):
+        <span class="py-str">"""Vrátí True, pokud hrana u -> v existuje (váha > 0)."""</span>
+        <span class="py-kw">return</span> <span class="py-self">self</span>.matrix[u][v] &gt; <span class="py-num">0</span>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+              </div>
+              <h3 class="card-title">Časová složitost: O(1)</h3>
+            </div>
+            <div class="card-body">
+              <p>Matice sousednosti exceluje v rychlosti přímého přístupu:</p>
+              <div class="formula-box">
+                <span class="formula-main">has_edge(u, v) &rarr; O(1)</span>
+                <span class="formula-desc">Blesková odezva bez procházení prvků</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Nemusíme prohledávat žádný seznam – počítač skočí přímo na paměťovou adresu <code>matrix[u][v]</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Stupně uzlů & Hledání sousedů
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Základní algoritmy a stupně">
+        <div class="slide-header">
+          <h2 class="slide-title">Základní grafové operace: Následníci a stupně uzlů</h2>
+          <p class="slide-subtitle">Jednoduché a přímočaré algoritmy pro analýzu zapojení jednotlivých vrcholů.</p>
+        </div>
+
+        <div class="content-grid-2-1">
+          <div class="python-code-box">
+            <span class="code-badge-py">Analytické metody</span>
+    <span class="py-kw">def</span> <span class="py-fn">get_neighbors</span>(<span class="py-self">self</span>, u):
+        <span class="py-str">"""Vrátí seznam všech uzlů, do kterých vede hrana z uzlu u."""</span>
+        neighbors = []
+        <span class="py-kw">for</span> v <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-self">self</span>.n):
+            <span class="py-kw">if</span> <span class="py-self">self</span>.matrix[u][v] &gt; <span class="py-num">0</span>:
+                neighbors.<span class="py-fn">append</span>(v)
+        <span class="py-kw">return</span> neighbors
+
+    <span class="py-kw">def</span> <span class="py-fn">out_degree</span>(<span class="py-self">self</span>, u):
+        <span class="py-str">"""Výstupní stupeň: počet hran vycházejících z uzlu u."""</span>
+        <span class="py-kw">return</span> <span class="py-fn">len</span>(<span class="py-self">self</span>.<span class="py-fn">get_neighbors</span>(u))
+
+    <span class="py-kw">def</span> <span class="py-fn">in_degree</span>(<span class="py-self">self</span>, v):
+        <span class="py-str">"""Vstupní stupeň: počet hran vstupujících do uzlu v (projdeme sloupec)."""</span>
+        count = <span class="py-num">0</span>
+        <span class="py-kw">for</span> u <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-self">self</span>.n):
+            <span class="py-kw">if</span> <span class="py-self">self</span>.matrix[u][v] &gt; <span class="py-num">0</span>:
+                count += <span class="py-num">1</span>
+        <span class="py-kw">return</span> count
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </div>
+              <h3 class="card-title">Princip v matici</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>Výstupní stupeň (Out-degree):</strong></p>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Procházíme <strong>řádek $u$</strong> a počítáme buňky $> 0$.
+              </p>
+              <p style="margin-top: 0.8rem;"><strong>Vstupní stupeň (In-degree):</strong></p>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Procházíme <strong>sloupec $v$</strong> shora dolů a počítáme buňky $> 0$.
+              </p>
+              <div class="formula-box">
+                <span class="formula-main">Složitost operací: O(N)</span>
+                <span class="formula-desc">Prohledání jednoho celého řádku či sloupce</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Formátovaný výpis & Kompletní program
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Formátovaný výpis a spuštění">
+        <div class="slide-header">
+          <h2 class="slide-title">Formátovaný výpis a vzorový program</h2>
+          <p class="slide-subtitle">Elegantní tisk matice do terminálu a ukázka sestavení modelového grafu v praxi.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div class="python-code-box">
+            <span class="code-badge-py">print_matrix() &amp; main</span>
+    <span class="py-kw">def</span> <span class="py-fn">print_matrix</span>(<span class="py-self">self</span>):
+        <span class="py-str">"""Přehledně vytiskne matici sousednosti s hlavičkou."""</span>
+        <span class="py-fn">print</span>(<span class="py-str">"    "</span> + <span class="py-str">"  "</span>.<span class="py-fn">join</span>(<span class="py-str">f"{c}"</span> <span class="py-kw">for</span> c <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-self">self</span>.n)))
+        <span class="py-fn">print</span>(<span class="py-str">"  +"</span> + <span class="py-str">"---"</span> * <span class="py-self">self</span>.n)
+        <span class="py-kw">for</span> r <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-self">self</span>.n):
+            row_str = <span class="py-str">"  "</span>.<span class="py-fn">join</span>(<span class="py-str">f"{self.matrix[r][c]}"</span> <span class="py-kw">for</span> c <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-self">self</span>.n))
+            <span class="py-fn">print</span>(<span class="py-str">f"{r} | {row_str}"</span>)
+
+<span class="py-cmt"># === Vytvoření modelového grafu ze snímku 2 ===</span>
+g = <span class="py-fn">Graph</span>(<span class="py-num">4</span>)
+g.<span class="py-fn">add_edge</span>(<span class="py-num">0</span>, <span class="py-num">1</span>, weight=<span class="py-num">5</span>)
+g.<span class="py-fn">add_edge</span>(<span class="py-num">0</span>, <span class="py-num">2</span>, weight=<span class="py-num">3</span>)
+g.<span class="py-fn">add_edge</span>(<span class="py-num">1</span>, <span class="py-num">2</span>, weight=<span class="py-num">2</span>)
+g.<span class="py-fn">add_edge</span>(<span class="py-num">2</span>, <span class="py-num">3</span>, weight=<span class="py-num">7</span>)
+g.<span class="py-fn">add_edge</span>(<span class="py-num">3</span>, <span class="py-num">0</span>, weight=<span class="py-num">1</span>)
+
+g.<span class="py-fn">print_matrix</span>()
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              </div>
+              <h3 class="card-title">Výstup v konzoli</h3>
+            </div>
+            <div class="card-body">
+              <div class="console-output-box" style="min-height: 120px; margin-bottom: 1rem;">
+    0  1  2  3
+  +------------
+0 | 0  5  3  0
+1 | 0  0  2  0
+2 | 0  0  0  7
+3 | 1  0  0  0
+              </div>
+              <p><strong>Testovací dotazy:</strong></p>
+              <div class="python-code-box" style="padding: 0.75rem 1rem; font-size: 0.84rem;">
+<span class="py-fn">print</span>(g.<span class="py-fn">has_edge</span>(<span class="py-num">0</span>, <span class="py-num">1</span>))     <span class="py-cmt"># True</span>
+<span class="py-fn">print</span>(g.<span class="py-fn">has_edge</span>(<span class="py-num">1</span>, <span class="py-num">0</span>))     <span class="py-cmt"># False (orientovaný!)</span>
+<span class="py-fn">print</span>(g.<span class="py-fn">get_neighbors</span>(<span class="py-num">0</span>)) <span class="py-cmt"># [1, 2]</span>
+<span class="py-fn">print</span>(g.<span class="py-fn">out_degree</span>(<span class="py-num">0</span>))    <span class="py-cmt"># 2</span>
+<span class="py-fn">print</span>(g.<span class="py-fn">in_degree</span>(<span class="py-num">2</span>))     <span class="py-cmt"># 2 (vstupují z 0 a 1)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Interaktivní simulátor
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Interaktivní simulátor matice a grafu">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor matice a grafu</h2>
+          <p class="slide-subtitle">Vyzkoušejte si propojení živého grafu, matice a Python kódu v reálném čase. Kliknutím na buňku měníte váhu hrany.</p>
+        </div>
+
+        <div class="playground-grid">
+          <!-- Levý sloupec: Graf a editovatelná matice -->
+          <div class="playground-left">
+            <div class="graph-display-wrapper" style="padding: 0.75rem;">
+              <svg id="playgroundSvg" viewBox="0 0 360 220" style="width: 100%; max-width: 320px; height: auto;" aria-label="Interaktivní SVG graf"></svg>
+            </div>
+
+            <div class="card" style="padding: 0.85rem;">
+              <div style="font-size: 0.88rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem; text-align: center;">
+                Kliknutím na buňku přepínejte váhu: 0 &rarr; 1 &rarr; 3 &rarr; 5 &rarr; 7 &rarr; 0
+              </div>
+              <div id="playgroundMatrixContainer"></div>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Kód a konzole -->
+          <div class="playground-right">
+            <div class="card" style="padding: 0.85rem;">
+              <div style="font-size: 0.86rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.45rem;">
+                Aktuální odpovídající Python kód:
+              </div>
+              <div class="python-code-box" id="playgroundPythonPreview" style="min-height: 90px; max-height: 130px; font-size: 0.82rem; padding: 0.65rem 0.85rem;"></div>
+            </div>
+
+            <div class="card" style="padding: 0.85rem;">
+              <div class="playground-controls" style="margin-bottom: 0.65rem;">
+                <button type="button" class="ctrl-btn primary" id="btnPgDefault">Výchozí model</button>
+                <button type="button" class="ctrl-btn" id="btnPgReset">g.reset()</button>
+                <button type="button" class="ctrl-btn" id="btnPgNeighbors">g.get_neighbors(0)</button>
+                <button type="button" class="ctrl-btn" id="btnPgPrint">g.print_matrix()</button>
+              </div>
+
+              <div class="console-output-box" id="playgroundConsoleLog"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí & Kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Klíčová shrnutí &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Strukturované zhodnocení vlastností matice sousednosti a ověření pochopení látky.</p>
+        </div>
+
+        <div class="content-grid-2" style="margin-bottom: 1.25rem;">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <h3 class="card-title">Hlavní výhody matice</h3>
+            </div>
+            <div class="card-body">
+              <ul class="styled-list">
+                <li><strong>Okamžitý test hrany $O(1)$:</strong> Zjištění existence i váhy <code>matrix[u][v]</code> v jediném procesorovém taktu.</li>
+                <li><strong>Extrémně snadná implementace:</strong> Vystačíme si se základním vnořeným seznamem bez pointerů.</li>
+                <li><strong>Skvělá pro husté grafy:</strong> Kde je většina hran zapojena a matice se plně využije.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon pink">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </div>
+              <h3 class="card-title">Nevýhody a limity</h3>
+            </div>
+            <div class="card-body">
+              <ul class="styled-list">
+                <li><strong>Paměťová náročnost $O(N^2)$:</strong> Pro 100 000 uzlů potřebujeme tabulku o 10 miliardách buněk (většinou samé nuly – řídký graf).</li>
+                <li><strong>Hledání sousedů trvá $O(N)$:</strong> I když má uzel jen 1 souseda, musíme zkontrolovat všech $N$ sloupců v řádku.</li>
+                <li><strong>Nelze uložit násobné hrany:</strong> Mezi dvěma uzly může buňka držet jen jediné číslo.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-grid-2">
+          <div class="quiz-card" onclick="this.classList.toggle('open')">
+            <div class="quiz-header">
+              <h4 class="quiz-q">1. Co znamená, když má orientovaný graf na pozici [2][0] hodnotu 0?</h4>
+              <svg class="quiz-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="quiz-answer">
+              Znamená to, že neexistuje žádná přímá orientovaná hrana vedoucí z uzlu 2 do uzlu 0.
+            </div>
+          </div>
+
+          <div class="quiz-card" onclick="this.classList.toggle('open')">
+            <div class="quiz-header">
+              <h4 class="quiz-q">2. Jak zjistíme vstupní stupeň uzlu 3 v matici sousednosti?</h4>
+              <svg class="quiz-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="quiz-answer">
+              Projdeme sloupec číslo 3 shora dolů (přes všechny řádky <code>u</code>) a spočítáme, kolik buněk má hodnotu větší než 0.
+            </div>
+          </div>
+
+          <div class="quiz-card" onclick="this.classList.toggle('open')">
+            <div class="quiz-header">
+              <h4 class="quiz-q">3. Proč je zápis [[0]*n]*n v Pythonu nebezpečný?</h4>
+              <svg class="quiz-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="quiz-answer">
+              Vytvoří $n$ odkazů na jeden a tentýž vnitřní seznam. Když pak změníte prvek <code>m[0][1] = 5</code>, změní se hodnota ve sloupci 1 pro úplně všechny řádky grafu!
+            </div>
+          </div>
+
+          <div class="quiz-card" onclick="this.classList.toggle('open')">
+            <div class="quiz-header">
+              <h4 class="quiz-q">4. Kdy je lepší použít matici sousednosti místo seznamu sousedů?</h4>
+              <svg class="quiz-toggle-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="quiz-answer">
+              U hustých grafů (kde existuje většina možných hran) a v úlohách, kde klíčový algoritmus neustále testuje existenci hrany mezi libovolnými dvěma uzly v čase $O(1)$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../070-Teorie-grafu/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 070 Teorie grafů (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Reprezentace grafu
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Společný běhový JS engine pro prezentace SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Lokální dedikovaný skript pro interaktivní simulátor matice -->
+  <script src="matrix-playground.js"></script>
+
+</body>
+
+</html>

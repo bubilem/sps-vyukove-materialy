@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 070: Teorie grafů | PRG • SPŠ</title>
+  <meta name="description" content="Komplexní interaktivní výuková prezentace o teorii grafů: základy, reprezentace v paměti a v AI, klíčové algoritmy a reálné aplikace v praxi.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 070 Teorie grafů -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní dekorativní pozadí -->
+  <div class="ambient-bg">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">070 Teorie grafů</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #c084fc; border-color: rgba(168, 85, 247, 0.35); background: rgba(168, 85, 247, 0.12);">Algoritmy &amp; Datové struktury</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do teorie grafů">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Předmět PRG &bull; Téma 070 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title" style="font-size: 2.85rem; margin-bottom: 1rem;">
+            Teorie grafů: <br><span class="gradient-text">Jazyk propojeného světa</span>
+          </h1>
+          <p class="hero-description">
+            Od historické hádanky v Královci přes GPS navigace a sociální sítě až po reprezentace v paměti a moderní grafové neuronové sítě (GNN) v umělé inteligenci.
+          </p>
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag cyan">V, E</span>
+              <span>Definice &amp; Stupně vrcholů</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">RAM &amp; AI</span>
+              <span>Matice, seznamy sousedů &amp; GNN</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag emerald">Algoritmy</span>
+              <span>BFS, DFS, Dijkstra, MST, TSP</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag amber">Simulátor</span>
+              <span>Interaktivní pískoviště</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Historie & Sedm mostů Královce
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Historie: Sedm mostů Královce">
+        <div class="slide-header">
+          <h2 class="slide-title">Zrod teorie grafů: Sedm mostů města Královce</h2>
+          <p class="slide-subtitle">V roce 1736 vyřešil švýcarský matematik Leonhard Euler slavnou hádanku a položil základy grafů i topologie.</p>
+        </div>
+
+        <!-- Vizuální porovnání: Geografická realita vs. Eulerův abstraktní graf -->
+        <div class="königsberg-visual-wrapper">
+          
+          <!-- Levá část: Geografická realita -->
+          <div class="königsberg-box">
+            <div class="königsberg-box-header">
+              <span class="box-step-badge">1. Geografie</span>
+              <h4>Pevniny a 7 mostů města Královce</h4>
+            </div>
+
+            <svg viewBox="0 0 380 205" class="königsberg-svg" aria-label="Geografické schéma Královce se 7 mosty">
+              <!-- Řeka Pregola vodní plocha -->
+              <rect x="0" y="48" width="380" height="106" fill="rgba(6, 182, 212, 0.15)"></rect>
+              <path d="M 15 96 Q 35 90 55 96" stroke="rgba(6, 182, 212, 0.35)" stroke-width="1.5" fill="none"></path>
+              <path d="M 325 96 Q 345 102 365 96" stroke="rgba(6, 182, 212, 0.35)" stroke-width="1.5" fill="none"></path>
+              <path d="M 135 60 Q 155 56 175 60" stroke="rgba(6, 182, 212, 0.25)" stroke-width="1" fill="none"></path>
+              <path d="M 135 142 Q 155 146 175 142" stroke="rgba(6, 182, 212, 0.25)" stroke-width="1" fill="none"></path>
+
+              <!-- Severní břeh (B) -->
+              <path d="M 0 0 L 380 0 L 380 48 Q 280 50 220 46 Q 120 46 0 48 Z" fill="#1e293b" stroke="#475569" stroke-width="1.5"></path>
+              <text x="190" y="28" text-anchor="middle" font-size="12" font-weight="700" fill="#38bdf8">Severní břeh (B)</text>
+
+              <!-- Jižní břeh (C) -->
+              <path d="M 0 154 Q 120 156 220 156 Q 280 152 380 154 L 380 205 L 0 205 Z" fill="#1e293b" stroke="#475569" stroke-width="1.5"></path>
+              <text x="190" y="184" text-anchor="middle" font-size="12" font-weight="700" fill="#38bdf8">Jižní břeh (C)</text>
+
+              <!-- Ostrov Kneiphof (A) -->
+              <ellipse cx="115" cy="101" rx="55" ry="30" fill="rgba(168, 85, 247, 0.25)" stroke="#a855f7" stroke-width="2"></ellipse>
+              <text x="115" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#f3f4f6">Kneiphof</text>
+              <text x="115" y="113" text-anchor="middle" font-size="11" font-weight="700" fill="#c084fc">Ostrov A</text>
+
+              <!-- Ostrov Lomse (D) -->
+              <ellipse cx="275" cy="101" rx="48" ry="28" fill="rgba(168, 85, 247, 0.25)" stroke="#a855f7" stroke-width="2"></ellipse>
+              <text x="275" y="97" text-anchor="middle" font-size="12" font-weight="700" fill="#f3f4f6">Lomse</text>
+              <text x="275" y="113" text-anchor="middle" font-size="11" font-weight="700" fill="#c084fc">Ostrov D</text>
+
+              <!-- Mosty 1 až 7 (zlaté spojnice) -->
+              <!-- Most 1 -->
+              <rect x="85" y="42" width="14" height="32" rx="3" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"></rect>
+              <text x="92" y="61" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">1</text>
+
+              <!-- Most 2 -->
+              <rect x="130" y="42" width="14" height="32" rx="3" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"></rect>
+              <text x="137" y="61" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">2</text>
+
+              <!-- Most 3 -->
+              <rect x="85" y="128" width="14" height="32" rx="3" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"></rect>
+              <text x="92" y="147" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">3</text>
+
+              <!-- Most 4 -->
+              <rect x="130" y="128" width="14" height="32" rx="3" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"></rect>
+              <text x="137" y="147" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">4</text>
+
+              <!-- Most 5 -->
+              <rect x="250" y="42" width="14" height="34" rx="3" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"></rect>
+              <text x="257" y="62" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">5</text>
+
+              <!-- Most 6 -->
+              <rect x="250" y="126" width="14" height="34" rx="3" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"></rect>
+              <text x="257" y="146" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">6</text>
+
+              <!-- Most 7 -->
+              <rect x="170" y="94" width="57" height="14" rx="3" fill="#f59e0b" stroke="#b45309" stroke-width="1.2"></rect>
+              <text x="198" y="105" text-anchor="middle" font-size="10" font-weight="800" fill="#0f172a">7</text>
+            </svg>
+
+            <div class="königsberg-box-footer">4 pevninské části &bull; 7 fyzických mostů přes řeku Pregolu</div>
+          </div>
+
+          <!-- Středová transformační šipka -->
+          <div class="königsberg-arrow-col">
+            <div class="arrow-indicator">
+              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              <span>Eulerova abstrakce</span>
+            </div>
+          </div>
+
+          <!-- Pravá část: Abstraktní graf -->
+          <div class="königsberg-box">
+            <div class="königsberg-box-header">
+              <span class="box-step-badge accent">2. Grafový model</span>
+              <h4>Multigraf G = (V, E) a stupně deg(v)</h4>
+            </div>
+
+            <svg viewBox="0 0 380 205" class="königsberg-svg" aria-label="Abstraktní multigraf se 4 uzly a 7 hranami">
+              <!-- Hrana 1: B - A vnější oblouk -->
+              <path d="M 124 24 C 65 20 46 60 62 83" fill="none" stroke="#f59e0b" stroke-width="2.5"></path>
+              <rect x="68" y="38" width="14" height="14" rx="2" fill="#0f172a" stroke="#f59e0b" stroke-width="1"></rect>
+              <text x="75" y="49" text-anchor="middle" font-size="9" font-weight="700" fill="#fbbf24">1</text>
+
+              <!-- Hrana 2: B - A vnitřní oblouk -->
+              <path d="M 134 44 C 115 62 98 76 85 88" fill="none" stroke="#f59e0b" stroke-width="2.5"></path>
+              <rect x="108" y="58" width="14" height="14" rx="2" fill="#0f172a" stroke="#f59e0b" stroke-width="1"></rect>
+              <text x="115" y="69" text-anchor="middle" font-size="9" font-weight="700" fill="#fbbf24">2</text>
+
+              <!-- Hrana 3: C - A vnější oblouk -->
+              <path d="M 124 180 C 65 184 46 144 62 121" fill="none" stroke="#f59e0b" stroke-width="2.5"></path>
+              <rect x="68" y="152" width="14" height="14" rx="2" fill="#0f172a" stroke="#f59e0b" stroke-width="1"></rect>
+              <text x="75" y="163" text-anchor="middle" font-size="9" font-weight="700" fill="#fbbf24">3</text>
+
+              <!-- Hrana 4: C - A vnitřní oblouk -->
+              <path d="M 134 160 C 115 142 98 128 85 116" fill="none" stroke="#f59e0b" stroke-width="2.5"></path>
+              <rect x="108" y="132" width="14" height="14" rx="2" fill="#0f172a" stroke="#f59e0b" stroke-width="1"></rect>
+              <text x="115" y="143" text-anchor="middle" font-size="9" font-weight="700" fill="#fbbf24">4</text>
+
+              <!-- Hrana 5: B - D -->
+              <path d="M 158 35 Q 228 44 272 88" fill="none" stroke="#f59e0b" stroke-width="2.5"></path>
+              <rect x="212" y="44" width="14" height="14" rx="2" fill="#0f172a" stroke="#f59e0b" stroke-width="1"></rect>
+              <text x="219" y="55" text-anchor="middle" font-size="9" font-weight="700" fill="#fbbf24">5</text>
+
+              <!-- Hrana 6: C - D -->
+              <path d="M 158 169 Q 228 160 272 116" fill="none" stroke="#f59e0b" stroke-width="2.5"></path>
+              <rect x="212" y="146" width="14" height="14" rx="2" fill="#0f172a" stroke="#f59e0b" stroke-width="1"></rect>
+              <text x="219" y="157" text-anchor="middle" font-size="9" font-weight="700" fill="#fbbf24">6</text>
+
+              <!-- Hrana 7: A - D přímá -->
+              <line x1="97" y1="102" x2="263" y2="102" stroke="#f59e0b" stroke-width="2.5"></line>
+              <rect x="173" y="95" width="14" height="14" rx="2" fill="#0f172a" stroke="#f59e0b" stroke-width="1"></rect>
+              <text x="180" y="106" text-anchor="middle" font-size="9" font-weight="700" fill="#fbbf24">7</text>
+
+              <!-- Vrcholy (Uzly) -->
+              <!-- Uzel A: Kneiphof -->
+              <circle cx="75" cy="102" r="22" fill="#581c87" stroke="#c084fc" stroke-width="3"></circle>
+              <text x="75" y="107" text-anchor="middle" font-size="14" font-weight="800" fill="#ffffff">A</text>
+              <rect x="14" y="92" width="41" height="20" rx="4" fill="#881337" stroke="#fb7185" stroke-width="1"></rect>
+              <text x="34" y="106" text-anchor="middle" font-size="10" font-weight="700" fill="#fecdd3">deg=5</text>
+
+              <!-- Uzel B: Severní břeh -->
+              <circle cx="140" cy="30" r="19" fill="#0f172a" stroke="#38bdf8" stroke-width="3"></circle>
+              <text x="140" y="35" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">B</text>
+              <rect x="168" y="20" width="41" height="20" rx="4" fill="#881337" stroke="#fb7185" stroke-width="1"></rect>
+              <text x="188" y="34" text-anchor="middle" font-size="10" font-weight="700" fill="#fecdd3">deg=3</text>
+
+              <!-- Uzel C: Jižní břeh -->
+              <circle cx="140" cy="174" r="19" fill="#0f172a" stroke="#38bdf8" stroke-width="3"></circle>
+              <text x="140" y="179" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">C</text>
+              <rect x="168" y="164" width="41" height="20" rx="4" fill="#881337" stroke="#fb7185" stroke-width="1"></rect>
+              <text x="188" y="178" text-anchor="middle" font-size="10" font-weight="700" fill="#fecdd3">deg=3</text>
+
+              <!-- Uzel D: Ostrov Lomse -->
+              <circle cx="285" cy="102" r="19" fill="#0f172a" stroke="#38bdf8" stroke-width="3"></circle>
+              <text x="285" y="107" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">D</text>
+              <rect x="312" y="92" width="41" height="20" rx="4" fill="#881337" stroke="#fb7185" stroke-width="1"></rect>
+              <text x="332" y="106" text-anchor="middle" font-size="10" font-weight="700" fill="#fecdd3">deg=3</text>
+            </svg>
+
+            <div class="königsberg-box-footer">4 vrcholy &bull; 7 multihran &bull; 4 liché stupně (úloha nemá řešení)</div>
+          </div>
+
+        </div>
+
+        <div class="content-grid-2">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><path d="M3 21h18M3 11h18M5 11v10M19 11v10M9 11a3 3 0 0 1 6 0"></path></svg>
+              </div>
+              <h3 class="card-title">Královecký rébus (1736)</h3>
+            </div>
+            <div class="card-body">
+              <p>Město Královec (Königsberg) se rozkládalo na březích a dvou ostrovech řeky Pregoly. Části města spojovalo celkem <strong>7 mostů</strong>.</p>
+              <p><strong>Otázka obyvatel:</strong> <em>„Lze naplánovat procházku tak, abychom přešli každý z těchto 7 mostů právě jednou a vrátili se do výchozího bodu?“</em></p>
+              <div class="formula-box">
+                <span class="formula-main">E = Mosty (7) &hArr; V = Pevniny (4)</span>
+                <span class="formula-desc">Nahrazení geografických detailů čistými vztahy mezi objekty</span>
+              </div>
+              <p>Euler si uvědomil, že nezáleží na tvarech ostrovů ani délkách mostů. Důležitá jsou výhradně <strong>vzájemná propojení</strong>. Geografii nahradil <strong>abstraktním grafem</strong>.</p>
+            </div>
+          </div>
+
+          <div class="card card-highlight">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path><line x1="9" y1="21" x2="15" y2="21"></line></svg>
+              </div>
+              <h3 class="card-title">Eulerův princip &amp; Řešení</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>Zjištění:</strong> Kdykoliv do pevniny (uzlu) vejdeme po mostě, musíme z ní také po jiném mostě odejít. Pro každý uzel (kromě startu a cíle) musí existovat <strong>sudý počet připojených hran</strong>.</p>
+              <ul>
+                <li>Severní břeh: <strong>deg = 3</strong> (lichý stupeň)</li>
+                <li>Jižní břeh: <strong>deg = 3</strong> (lichý stupeň)</li>
+                <li>Ostrov Kneiphof: <strong>deg = 5</strong> (lichý stupeň)</li>
+                <li>Ostrov Lomse: <strong>deg = 3</strong> (lichý stupeň)</li>
+              </ul>
+              <div class="formula-box" style="border-left-color: var(--accent-pink);">
+                <span class="formula-main" style="color: #fb7185;">Závěr: Úloha NEMÁ řešení! (4 liché uzly)</span>
+                <span class="formula-desc">Uzavřený eulerovský tah vyžaduje, aby všechny uzly měly sudý stupeň</span>
+              </div>
+              <p>Tím vznikl pojem <strong>Eulerovský tah</strong>: spojitá cesta grafem, která projde každou hranu právě jednou.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Základní definice: Uzly, hrany a stupně
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Definice: Uzly, hrany a stupně">
+        <div class="slide-header">
+          <h2 class="slide-title">Základní definice: Uzly, hrany a stupně</h2>
+          <p class="slide-subtitle">Graf je uspořádaná dvojice množin představující objekty a relace mezi nimi.</p>
+        </div>
+
+        <div class="content-grid-3">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="18" r="3"></circle><circle cx="18" cy="6" r="3"></circle><line x1="8.5" y1="8.5" x2="15.5" y2="15.5"></line><line x1="9" y1="6" x2="15" y2="6"></line></svg>
+              </div>
+              <h3 class="card-title">Formální definice</h3>
+            </div>
+            <div class="card-body">
+              <p>Graf <span class="formula-inline">G</span> značíme jako uspořádanou dvojici množin:</p>
+              <div class="formula-box">
+                <span class="formula-main">G = (V, E)</span>
+              </div>
+              <ul>
+                <li><strong>V (Vertices / Uzly):</strong> neprázdná konečná množina prvků (např. města, servery, uživatelé).</li>
+                <li><strong>E (Edges / Hrany):</strong> množina dvouprvkových podmnožin V, kde hrana e = {u, v} spojuje uzly u a v.</li>
+                <li>Dva uzly spojené hranou nazýváme <strong>sousední</strong> (incidentní).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="6" x2="12" y2="12"></line><line x1="12" y1="12" x2="16" y2="14"></line></svg>
+              </div>
+              <h3 class="card-title">Stupeň uzlu (Degree)</h3>
+            </div>
+            <div class="card-body">
+              <p>Stupeň uzlu v, značený <strong>deg(v)</strong>, je počet hran, které z něj vycházejí / vstupují do něj.</p>
+              <div class="formula-box">
+                <span class="formula-main">&sum; deg(v) = 2 &middot; |E|</span>
+                <span class="formula-desc">Princip podání rukou (Handshaking Lemma)</span>
+              </div>
+              <ul>
+                <li>Každá hrana má přesně dva konce, takže při sčítání stupňů započítáme každou hranu 2&times;.</li>
+                <li><strong>Důsledek:</strong> Součet stupňů je vždy sudý; počet vrcholů s lichým stupněm musí být sudé číslo.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M12 2a10 10 0 0 0-7.07 17.07"></path><path d="M12 22a10 10 0 0 0 7.07-17.07"></path></svg>
+              </div>
+              <h3 class="card-title">Smyčky a multigrafy</h3>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Smyčka:</strong> hrana spojující uzel se sebou samým e = {v, v}. Ke stupni uzlu přispívá hodnotou 2.</li>
+                <li><strong>Násobné hrany:</strong> více hran spojujících stejnou dvojici uzlů.</li>
+                <li><strong>Jednoduchý graf:</strong> neobsahuje žádné smyčky ani násobné hrany.</li>
+                <li><strong>Multigraf:</strong> povoluje násobné hrany i smyčky (jako právě mosty v Královci).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Typy grafů & Rozdělení
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Typy a rozdělení grafů">
+        <div class="slide-header">
+          <h2 class="slide-title">Základní typy a rozdělení grafů</h2>
+          <p class="slide-subtitle">Různé softwarové domény vyžadují různé typy grafů podle povahy a směru vazeb.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </div>
+              <h3 class="card-title">Orientovaný vs. Neorientovaný graf</h3>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Neorientovaný graf:</strong> Hrany jsou obousměrné neuspořádané dvojice {u, v}. Příklady: přátelství na Facebooku, obousměrná silnice, sousedství států.</li>
+                <li><strong>Orientovaný graf (Digraf):</strong> Hrany mají definovaný směr (uspořádaná dvojice (u, v)).
+                  <ul>
+                    <li>Rozlišujeme <strong>vstupní stupeň deg<sup>&minus;</sup>(v)</strong> a <strong>výstupní stupeň deg<sup>+</sup>(v)</strong>.</li>
+                    <li>Příklady: sledování na sociálních sítích, webové hypertextové odkazy, jednosměrky v dopravě, volání funkcí v kódu.</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"></line><path d="M6 8l6-3 6 3"></path><path d="M6 8a4 4 0 0 0 8 0"></path><path d="M18 8a4 4 0 0 0-8 0"></path></svg>
+              </div>
+              <h3 class="card-title">Ohodnocený (vážený) graf</h3>
+            </div>
+            <div class="card-body">
+              <p>Každé hraně je přiřazeno reálné číslo (váha):</p>
+              <div class="formula-box">
+                <span class="formula-main">w : E &rarr; &reals;</span>
+              </div>
+              <ul>
+                <li><strong>Význam váhy v praxi:</strong> fyzická vzdálenost (km), čas průjezdu (minuty), propustnost síťového kabelu (Mbit/s), cena letenky nebo spolehlivost linky.</li>
+                <li>Základ pro algoritmy hledání nejkratší cesty (Dijkstra, A*) a minimální kostry (MST).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.5"></circle><circle cx="6" cy="17" r="2.5"></circle><circle cx="18" cy="7" r="2.5"></circle><circle cx="18" cy="17" r="2.5"></circle><line x1="8.5" y1="7" x2="15.5" y2="7"></line><line x1="8.5" y1="17" x2="15.5" y2="17"></line><line x1="8.5" y1="7" x2="15.5" y2="17"></line></svg>
+              </div>
+              <h3 class="card-title">Bipartitní &amp; k-partitní grafy</h3>
+            </div>
+            <div class="card-body">
+              <p>Množinu uzlů V lze rozdělit na dvě disjunktní podmnožiny V<sub>1</sub> a V<sub>2</sub> tak, že <strong>žádná hrana nespojuje dva uzly ze stejné skupiny</strong>.</p>
+              <ul>
+                <li>Všechny hrany vedou výhradně mezi V<sub>1</sub> a V<sub>2</sub>.</li>
+                <li><strong>Využití v AI:</strong> doporučovací systémy (Uživatelé &hArr; Filmy), párování úloh a serverů.</li>
+                <li>Graf je bipartitní právě tehdy, když <strong>neobsahuje žádný cyklus liché délky</strong>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"></circle><circle cx="4" cy="11" r="2"></circle><circle cx="20" cy="11" r="2"></circle><circle cx="7" cy="19" r="2"></circle><circle cx="17" cy="19" r="2"></circle><path d="M12 6L4 11l3 8h10l3-8-8-5z"></path><line x1="12" y1="6" x2="7" y2="19"></line><line x1="12" y1="6" x2="17" y2="19"></line><line x1="4" y1="11" x2="20" y2="11"></line></svg>
+              </div>
+              <h3 class="card-title">Úplné &amp; Regulární grafy</h3>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Úplný graf (K<sub>n</sub>):</strong> Každá dvojice uzlů je spojena hranou. Počet hran je:
+                  <div class="formula-box">
+                    <span class="formula-main">|E| = n &middot; (n &minus; 1) / 2 = &Copf;(n, 2)</span>
+                  </div>
+                </li>
+                <li><strong>Regulární graf:</strong> Všechny uzly mají stejný stupeň k (k-regulární graf). Např. krystalové mřížky v chemii nebo peer-to-peer architektury.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Vlastnosti & Třídy grafů
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Vlastnosti: Souvislost, stromy, planarita">
+        <div class="slide-header">
+          <h2 class="slide-title">Klíčové vlastnosti a třídy grafů</h2>
+          <p class="slide-subtitle">Souvislost, stromy, rovinnost a barvení – základní stavební kameny algoritmické analýzy.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              </div>
+              <h3 class="card-title">Souvislost (Connectivity)</h3>
+            </div>
+            <div class="card-body">
+              <p>Graf je <strong>souvislý</strong>, pokud mezi libovolnými dvěma uzly existuje alespoň jedna cesta.</p>
+              <ul>
+                <li>Není-li souvislý, rozpadá se na <strong>komponenty souvislosti</strong> (disjunktní podsítě).</li>
+                <li>U orientovaných grafů rozlišujeme:
+                  <ul>
+                    <li><strong>Slabá souvislost:</strong> souvislý při ignorování směrů šipek.</li>
+                    <li><strong>Silná souvislost:</strong> pro každé dva uzly u, v existuje cesta z u do v i z v do u.</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"></circle><circle cx="6" cy="18" r="2.5"></circle><circle cx="18" cy="18" r="2.5"></circle><line x1="10.5" y1="7.5" x2="7.5" y2="15.5"></line><line x1="13.5" y1="7.5" x2="16.5" y2="15.5"></line></svg>
+              </div>
+              <h3 class="card-title">Stromy a Lesy</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>Strom</strong> je souvislý acyklický graf. Les je disjunktní sjednocení stromů.</p>
+              <div class="formula-box">
+                <span class="formula-main">|E| = |V| &minus; 1</span>
+              </div>
+              <ul>
+                <li>Mezi libovolnými dvěma uzly stromu existuje <strong>právě jedna</strong> cesta.</li>
+                <li>Odebráním libovolné hrany se strom stane nesouvislým.</li>
+                <li>Přidáním libovolné nové hrany vznikne přesně jeden cyklus.</li>
+                <li>Využití: DOM strom v HTML, rozhodovací stromy v ML, hierarchie souborových systémů.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+              </div>
+              <h3 class="card-title">Planární (rovinné) grafy</h3>
+            </div>
+            <div class="card-body">
+              <p>Graf je <strong>planární</strong>, lze-li jej nakreslit v rovině tak, aby se žádné dvě hrany <strong>nekřížily</strong>.</p>
+              <div class="formula-box">
+                <span class="formula-main">V &minus; E + F = 2</span>
+                <span class="formula-desc">Eulerova formule pro počet stěn (oblastí) F</span>
+              </div>
+              <ul>
+                <li><strong>Kuratowského věta:</strong> Graf je planární právě tehdy, neobsahuje-li podgraf homeomorfní s K<sub>5</sub> (úplný graf o 5 uzlech) ani K<sub>3,3</sub> (problém 3 domů a 3 inženýrských sítí).</li>
+                <li>Aplikace: návrh jednovrstvých tištěných spojů (PCB) a integrovaných obvodů bez zkratů.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon pink">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="9" cy="10" r="1.5"></circle><circle cx="15" cy="10" r="1.5"></circle><circle cx="12" cy="15" r="1.5"></circle></svg>
+              </div>
+              <h3 class="card-title">Barvení a chromatičnost</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>Vrcholové barvení:</strong> přiřazení barev uzlům tak, aby žádné dva sousední uzly neměly stejnou barvu.</p>
+              <ul>
+                <li><strong>Chromatické číslo &chi;(G):</strong> minimální počet barev potřebný k obarvení grafu G.</li>
+                <li><strong>Věta o čtyřech barvách (1976):</strong> Každý planární graf (např. mapu států) lze obarvit maximálně <strong>4 barvami</strong>: &chi;(G) &le; 4.</li>
+                <li><strong>Využití v IT:</strong> plánování rozvrhů zkoušek, přidělování frekvencí vysílačům, alokace registrů procesoru v kompilátorech (LLVM / GCC).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Reprezentace v paměti & v AI
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Reprezentace v paměti a v AI">
+        <div class="slide-header">
+          <h2 class="slide-title">Reprezentace v paměti a v moderní AI</h2>
+          <p class="slide-subtitle">Jak grafy ukládáme v kódu a jak na nich staví sémantické znalostní báze a hluboké učení.</p>
+        </div>
+
+        <div class="content-grid-3">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+              </div>
+              <h3 class="card-title">Matice sousednosti</h3>
+            </div>
+            <div class="card-body">
+              <p>Čtvercová matice velikosti |V| &times; |V|, kde A[i][j] = 1 (nebo váha), pokud existuje hrana i &rarr; j.</p>
+              <table class="matrix-table">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><th>A</th><td class="val-zero">0</td><td class="val-one">1</td><td class="val-one">1</td></tr>
+                <tr><th>B</th><td class="val-one">1</td><td class="val-zero">0</td><td class="val-zero">0</td></tr>
+                <tr><th>C</th><td class="val-one">1</td><td class="val-zero">0</td><td class="val-zero">0</td></tr>
+              </table>
+              <ul>
+                <li>Dotaz na hranu: <strong style="color:var(--accent-emerald);">O(1)</strong></li>
+                <li>Paměťová náročnost: <strong style="color:var(--accent-pink);">O(|V|<sup>2</sup>)</strong></li>
+                <li>Vhodné pro husté grafy a algebraické maticové operace.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+              </div>
+              <h3 class="card-title">Seznam sousedů &amp; OOP</h3>
+            </div>
+            <div class="card-body">
+              <p>Pole či hešovací tabulka, kde každý uzel ukazuje na seznam svých sousedů.</p>
+              <div class="code-box">
+<span class="code-comment"># Reprezentace v Pythonu</span>
+adj = {
+  <span class="code-string">'A'</span>: [(<span class="code-string">'B'</span>, <span class="code-num">4</span>), (<span class="code-string">'C'</span>, <span class="code-num">2</span>)],
+  <span class="code-string">'B'</span>: [(<span class="code-string">'A'</span>, <span class="code-num">4</span>), (<span class="code-string">'D'</span>, <span class="code-num">5</span>)],
+  <span class="code-string">'C'</span>: [(<span class="code-string">'A'</span>, <span class="code-num">2</span>)]
+}
+              </div>
+              <ul>
+                <li>Paměťová náročnost: <strong style="color:var(--accent-emerald);">O(|V| + |E|)</strong></li>
+                <li>Optimální pro řídké grafy (silnice, sociální sítě).</li>
+                <li>OOP: Třídy <code>class Node</code>, <code>class Edge</code>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card card-highlight">
+            <div class="card-header-icon">
+              <div class="card-icon pink">
+                <svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 .73-.2 1.41-.54 2H18a4 4 0 0 1 4 4 4 4 0 0 1-4 4h-.54c.34.59.54 1.27.54 2a4 4 0 0 1-4 4 4 4 0 0 1-2-.54V22h-4v-.54A4 4 0 0 1 8 22a4 4 0 0 1-4-4c0-.73.2-1.41.54-2H4a4 4 0 0 1-4-4 4 4 0 0 1 4-4h.54A3.98 3.98 0 0 1 4 6a4 4 0 0 1 4-4 4 4 0 0 1 2 .54V2h2v.54A3.98 3.98 0 0 1 12 2z"></path><circle cx="12" cy="12" r="2"></circle></svg>
+              </div>
+              <h3 class="card-title">Grafy v moderní AI &amp; ML</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>1. Znalostní grafy (Knowledge Graphs):</strong></p>
+              <p>Sémantické trojice <code>(Subjekt, Predikát, Objekt)</code>. Např. <em>(Praha, jeHlavníMěsto, Česko)</em>. Základ pro Graph-RAG u velkých jazykových modelů (LLM).</p>
+              <p><strong>2. Graph Neural Networks (GNN):</strong></p>
+              <p>Neuronové sítě schopné učit se na nepravidelných grafech pomocí <strong>Message Passing</strong>: každý uzel agreguje embedding vektory ze svého okolí.</p>
+              <ul>
+                <li>Predikce skládání proteinů (AlphaFold)</li>
+                <li>Detekce podvodů v bankovních transakcích</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Klíčové algoritmy & Problémy
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Klíčové grafové algoritmy">
+        <div class="slide-header">
+          <h2 class="slide-title">Klíčové grafové problémy &amp; Algoritmy</h2>
+          <p class="slide-subtitle">Základní repertoár každého softwarového inženýra a systémového architekta.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+              </div>
+              <h3 class="card-title">1. Prohledávání grafu (BFS vs. DFS)</h3>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>BFS (Do šířky, Fronta FIFO):</strong> Postupuje po vlnách vrstev. V neohodnoceném grafu garantuje <strong>nejkratší cestu</strong> s minimálním počtem hran. Složitost <strong>O(|V| + |E|)</strong>.</li>
+                <li><strong>DFS (Do hloubky, Zásobník LIFO / Rekurze):</strong> Jde po větvi až na konec, pak se vrací (backtracking). Využití: detekce cyklů, topologické třídění, řešení bludišť. Složitost <strong>O(|V| + |E|)</strong>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+              </div>
+              <h3 class="card-title">2. Nejkratší cesty ve váženém grafu</h3>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Dijkstrův algoritmus:</strong> Hladový algoritmus pro nezáporné váhy hran. Pomocí prioritní fronty (min-heap) dosahuje složitosti <strong>O((|V| + |E|) log |V|)</strong>.</li>
+                <li><strong>Bellman-Fordův algoritmus:</strong> Zvládá i záporné váhy a odhaluje záporné cykly. Složitost O(|V| &middot; |E|).</li>
+                <li><strong>A* algoritmus:</strong> Rozšíření Dijkstry o <strong>heuristickou funkci</strong> f(n) = g(n) + h(n). Zásadní v herní AI a autonomních robotech.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="6" r="2.5"></circle><circle cx="12" cy="18" r="2.5"></circle><line x1="8.5" y1="6" x2="15.5" y2="6"></line><line x1="7.5" y1="8" x2="10.5" y2="16"></line></svg>
+              </div>
+              <h3 class="card-title">3. Minimální kostra grafu (MST)</h3>
+            </div>
+            <div class="card-body">
+              <p>Cíl: Najít podstrom propojující všechny uzly grafu s <strong>minimálním možným součtem vah hran</strong>.</p>
+              <ul>
+                <li><strong>Kruskalův algoritmus:</strong> Řadí hrany vzestupně a přidává je pomocí struktury Disjoint-Set (Union-Find) bez vytvoření cyklu.</li>
+                <li><strong>Jarníkův / Primův algoritmus:</strong> Postupně rozšiřuje jeden strom o nejlevnější hranu vedoucí ven. Objeven českým matematikem Vojtěchem Jarníkem (1930).</li>
+                <li>Využití: pokládka optických kabelů, elektrické rozvody, vodovody.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon pink">
+                <svg viewBox="0 0 24 24"><circle cx="5" cy="5" r="2"></circle><circle cx="19" cy="5" r="2"></circle><circle cx="19" cy="19" r="2"></circle><circle cx="5" cy="19" r="2"></circle><path d="M7 5h10M19 7v10M17 19H7M5 17V7"></path></svg>
+              </div>
+              <h3 class="card-title">4. Pokrytí grafu &amp; TSP (NP-úplnost)</h3>
+            </div>
+            <div class="card-body">
+              <ul>
+                <li><strong>Eulerovský tah:</strong> Projít každou <em>hranu</em> právě jednou. Polynomiální řešitelnost O(|E|) (stačí zkontrolovat sudost stupňů).</li>
+                <li><strong>Hamiltonovská kružnice:</strong> Navštívit každý <em>uzel</em> právě jednou a vrátit se do startu. <strong>NP-úplný problém!</strong></li>
+                <li><strong>Problém obchodního cestujícího (TSP):</strong> Najít nejkratší Hamiltonovskou kružnici. Pro n měst existuje (n &minus; 1)! / 2 možností. V praxi se řeší aproximacemi a genetickými algoritmy.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Teorie grafů v reálné praxi
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Grafy v reálné praxi">
+        <div class="slide-header">
+          <h2 class="slide-title">Teorie grafů v praxi reálného světa</h2>
+          <p class="slide-subtitle">Moderní digitální civilizace funguje na grafových strukturách a algoritmech.</p>
+        </div>
+
+        <div class="content-grid-3">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path></svg>
+              </div>
+              <h3 class="card-title">GPS &amp; Doprava</h3>
+            </div>
+            <div class="card-body">
+              <p>Google Maps a Waze reprezentují silniční síť jako orientovaný vážený graf s dynamickými vahami (aktuální kolony, uzavírky).</p>
+              <div style="margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <span class="tag cyan">Dijkstra / A*</span>
+                <span class="tag purple">Kontrakční hierarchie</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <h3 class="card-title">Web &amp; Sociální sítě</h3>
+            </div>
+            <div class="card-body">
+              <p>Google vybudoval globální vyhledávač na algoritmu <strong>PageRank</strong>, který počítá důležitost stránek ze simulace náhodného surfaře v grafu odkazů.</p>
+              <div style="margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <span class="tag purple">PageRank</span>
+                <span class="tag emerald">Komunitní detekce</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M4.93 4.93a10 10 0 0 1 14.14 0M7.76 7.76a6 6 0 0 1 8.48 0M10.6 10.6a2 2 0 0 1 2.8 0M12 14v8"></path></svg>
+              </div>
+              <h3 class="card-title">Sítě &amp; Telekomunikace</h3>
+            </div>
+            <div class="card-body">
+              <p>Internetové routery počítají optimální cesty pro datové pakety pomocí grafových protokolů jako <strong>OSPF</strong> (Dijkstra Shortest Path First).</p>
+              <div style="margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <span class="tag emerald">OSPF</span>
+                <span class="tag cyan">Spanning Tree</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon pink">
+                <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+              </div>
+              <h3 class="card-title">Bioinformatika &amp; Chemie</h3>
+            </div>
+            <div class="card-body">
+              <p>Chemické molekuly jsou grafy, kde atomy jsou uzly a kovalentní vazby hrany. GNN sítě dnes navrhují nová léčiva a předpovídají strukturu proteinů (AlphaFold).</p>
+              <div style="margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <span class="tag pink">Molekulární grafy</span>
+                <span class="tag purple">Proteinové sítě</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              </div>
+              <h3 class="card-title">Kompilátory &amp; Buildy</h3>
+            </div>
+            <div class="card-body">
+              <p>Build systémy (Webpack, Make, Vite, Gradle) modelují závislosti souborů jako <strong>DAG (Orientovaný acyklický graf)</strong> pro paralelní kompilaci.</p>
+              <div style="margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <span class="tag amber">Topologické třídění</span>
+                <span class="tag cyan">Barvení registrů</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <h3 class="card-title">Distribuční sítě</h3>
+            </div>
+            <div class="card-body">
+              <p>Rozvody elektrické energie, plynovody a logistika zásilek optimalizují toky v síti pomocí <strong>Ford-Fulkersonova algoritmu</strong> (Max-Flow Min-Cut).</p>
+              <div style="margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <span class="tag cyan">Maximální tok</span>
+                <span class="tag emerald">Logistika skladů</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Interaktivní pískoviště & Simulátor
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Interaktivní grafové pískoviště">
+        <div class="slide-header" style="margin-bottom: 0.85rem;">
+          <h2 class="slide-title">Interaktivní grafové pískoviště</h2>
+          <p class="slide-subtitle">Vyzkoušejte si algoritmy naživo. Můžete pohybovat uzly, přidávat nové nebo spustit animaci krok za krokem.</p>
+        </div>
+
+        <div class="playground-container">
+          <div class="canvas-wrapper">
+            <div class="canvas-toolbar">
+              <button class="tool-btn active" data-tool="select" title="Výběr a přesun uzlů">
+                <svg viewBox="0 0 24 24"><path d="M3 3l7 18 3-7 7-3L3 3z"></path></svg>
+                Výběr / Přesun
+              </button>
+              <button class="tool-btn" data-tool="add-node" title="Klikněte do plochy pro přidání uzlu">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                Přidat uzel
+              </button>
+              <button class="tool-btn" data-tool="add-edge" title="Klikněte na uzel a pak na druhý pro spojení">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="19" x2="19" y2="5"></line><circle cx="5" cy="19" r="2"></circle><circle cx="19" cy="5" r="2"></circle></svg>
+                Přidat hranu
+              </button>
+              <button class="tool-btn" data-tool="delete" title="Klikněte na uzel pro smazání">
+                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Smazat
+              </button>
+            </div>
+            <canvas id="graphCanvas"></canvas>
+          </div>
+
+          <div class="playground-sidebar">
+            <div class="card" style="padding: 1.1rem; flex: none;">
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: #c084fc;">Spustit algoritmus:</h4>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <button class="algo-btn" id="btnRunBFS">BFS (šířka)</button>
+                <button class="algo-btn" id="btnRunDFS">DFS (hloubka)</button>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <button class="algo-btn" id="btnRunDijkstra">Dijkstra (cesta)</button>
+                <button class="algo-btn" id="btnRunMST">MST (kostra)</button>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                <button class="tool-btn" id="btnPreset" style="justify-content:center; border: 1px solid var(--border-color);">Další preset</button>
+                <button class="tool-btn" id="btnResetGraph" style="justify-content:center; border: 1px solid var(--border-color);">Vyčistit stav</button>
+              </div>
+            </div>
+
+            <div class="algo-log" id="algoLog">
+              <p class="log-hl">> Interaktivní simulátor připraven.</p>
+              <p>Zvolte algoritmus nebo tažením přemístěte uzly na plátně.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí & Didaktický checklist
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Klíčová shrnutí &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Upevnění probrané látky pro praktické programování a systémovou architekturu.</p>
+        </div>
+
+        <div class="content-grid-3">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              </div>
+              <h3 class="card-title">1. Abstrakce je klíč</h3>
+            </div>
+            <div class="card-body">
+              <p>Graf převádí složitý reálný systém do čisté topologie složené pouze z <strong>uzlů V</strong> a <strong>vztahů E</strong>, nezávisle na fyzické geometrii.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <h3 class="card-title">2. Volba reprezentace</h3>
+            </div>
+            <div class="card-body">
+              <p>Pro řídké grafy v reálném světě (|E| &ll; |V|<sup>2</sup>) je standardem <strong>seznam sousedů</strong> s pamětí O(|V| + |E|). Matice je vhodná pro husté grafy a maticové násobení v GNN.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-4.05 11a22 22 0 0 1-3.95 2z"></path><path d="M9 21s.75-2 1.5-3.5"></path><path d="M15 9s2-.75 3.5-1.5"></path></svg>
+              </div>
+              <h3 class="card-title">3. Budoucnost v AI</h3>
+            </div>
+            <div class="card-body">
+              <p>Propojování jazykových modelů (LLM) a spolehlivých faktů stojí na <strong>Knowledge Graphs (Znalostních grafech)</strong> a pokročilých architekturách <strong>GNN</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="questions-grid">
+          <div class="question-card">
+            <div class="question-num">Otázka 1 &bull; Königsberg</div>
+            <div class="question-text">Proč úloha 7 mostů města Královce neměla řešení?</div>
+            <div class="question-hint">Všechny 4 pevninské uzly měly lichý stupeň hran (3, 3, 3, 5). Uzavřený eulerovský tah vyžaduje sudé stupně všech uzlů.</div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-num">Otázka 2 &bull; Složitost</div>
+            <div class="question-text">Kdy je výhodnější použít matici sousednosti a kdy seznam sousedů?</div>
+            <div class="question-hint">Matice sousednosti se hodí pro husté grafy a algebraické dotazy O(1). Seznam sousedů šetří paměť u řídkých sítí O(|V| + |E|).</div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-num">Otázka 3 &bull; Teorie stromů</div>
+            <div class="question-text">Kolik hran má strom o n uzlech a co způsobí přidání další hrany?</div>
+            <div class="question-hint">Strom má vždy přesně n &minus; 1 hran. Přidáním libovolné nové hrany mezi existující uzly vznikne přesně jeden cyklus.</div>
+          </div>
+
+          <div class="question-card">
+            <div class="question-num">Otázka 4 &bull; Třídy problémů</div>
+            <div class="question-text">Jaký je rozdíl mezi Eulerovským tahem a Hamiltonovskou kružnicí?</div>
+            <div class="question-hint">Eulerovský tah (hrany) je řešitelný v čase O(|E|). Hamiltonovská kružnice a TSP (uzly) jsou NP-úplné problémy.</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="#" class="control-btn disabled" id="prevLessonBtn" aria-disabled="true" tabindex="-1" title="Předchozí téma (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../071-Reprezentace-grafu/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 071 Reprezentace grafu v programování (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Teorie grafů
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální dedikovaný engine grafového simulátoru -->
+  <script src="graph-playground.js"></script>
+</body>
+
+</html>

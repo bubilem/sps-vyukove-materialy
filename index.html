@@ -682,18 +682,17 @@
       </p>
 
       <!-- Metriky portálu -->
-      <!-- Metriky portálu -->
       <div class="metrics-bar">
         <div class="metric-col">
-          <span class="metric-value">2</span>
-          <span class="metric-label">Aktivní předměty (KYME, PHR)</span>
+          <span class="metric-value">3</span>
+          <span class="metric-label">Aktivní předměty (KYME, PHR, PRG)</span>
         </div>
         <div class="metric-col">
-          <span class="metric-value">4</span>
+          <span class="metric-value">3</span>
           <span class="metric-label">Předměty v přípravě</span>
         </div>
         <div class="metric-col">
-          <span class="metric-value">10</span>
+          <span class="metric-value">12</span>
           <span class="metric-label">Témat a trenažérů</span>
         </div>
         <div class="metric-col">
@@ -710,16 +709,16 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="searchInput" class="search-input" placeholder="Hledat v tématech a předmětech (např. sítě, CCNA, web, SQL, databáze, hry, Booleova algebra)..." autocomplete="off">
+        <input type="text" id="searchInput" class="search-input" placeholder="Hledat v tématech a předmětech (např. grafy, stromy, sítě, CCNA, web, SQL, databáze, hry, Booleova algebra)..." autocomplete="off">
       </div>
 
       <div class="filter-tabs">
         <button class="filter-tab active" data-filter="all">Všechny předměty</button>
         <button class="filter-tab" data-filter="kyme">KYME (Aktivní)</button>
         <button class="filter-tab" data-filter="gam">PHR (Aktivní)</button>
+        <button class="filter-tab" data-filter="prg">PRG (Aktivní)</button>
         <button class="filter-tab" data-filter="pos">Počítačové sítě</button>
         <button class="filter-tab" data-filter="web">Webové technologie</button>
-        <button class="filter-tab" data-filter="prg">Programování</button>
         <button class="filter-tab" data-filter="dbs">Databáze</button>
         <button class="filter-tab" data-filter="plan">Všechny v přípravě</button>
       </div>
@@ -822,8 +821,8 @@
         </div>
       </div>
 
-      <!-- 4. PRG: Programování (V přípravě) -->
-      <div class="subject-card" data-subject="prg" data-category="prg dev plan" data-keywords="programovani algoritmizace paterny vzory design patterns oop architektura slozitost prg" style="--subject-accent: var(--accent-prg); --subject-bg: rgba(168, 85, 247, 0.12); --subject-glow: var(--accent-prg-glow); opacity: 0.9;">
+      <!-- 4. PRG: Programování (AKTIVNÍ PŘEDMĚT) -->
+      <a href="PRG/index.html" class="subject-card" data-subject="prg" data-category="prg dev aktivni" data-keywords="programovani algoritmizace datove struktury teorie grafu grafy reprezentace matice sousednosti stromy bfs dfs dijkstra slozitost paterny oop architektura prg python" style="--subject-accent: var(--accent-prg); --subject-bg: rgba(168, 85, 247, 0.12); --subject-glow: var(--accent-prg-glow);">
         <div>
           <div class="subject-header">
             <div class="subject-icon-box">
@@ -832,23 +831,26 @@
                 <polyline points="8 6 2 12 8 18"></polyline>
               </svg>
             </div>
-            <span class="subject-badge badge-plan">V přípravě</span>
+            <span class="subject-badge">Aktivní předmět • Výukový katalog</span>
           </div>
 
           <div class="subject-code">Předmět PRG</div>
           <h3 class="subject-name">Programování</h3>
           <p class="subject-desc">
-            Algoritmizace úloh, vyhodnocování časové a paměťové složitosti (Big-O), datové struktury a objektově orientované programování (OOP). Softwarové návrhové vzory (Design Patterns – GoF: Singleton, Factory, Observer, Strategy), čistý kód a architektura moderních aplikací.
+            Algoritmizace úloh, vyhodnocování časové a paměťové složitosti (Big-O), datové struktury a objektově orientované programování (OOP). Teorie grafů, reprezentace v paměti a matice sousednosti, vyhledávací a optimalizační algoritmy a architektura moderních aplikací.
           </p>
         </div>
 
         <div class="subject-footer">
-          <span class="lesson-counter">Algoritmizace &bull; Návrhové vzory &bull; OOP</span>
-          <span class="btn-portal" style="opacity: 0.65;">
-            Připravuje se
+          <span class="lesson-counter">Témata 070, 071 &bull; Grafy &amp; Python</span>
+          <span class="btn-portal">
+            Otevřít katalog předmětu
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
           </span>
         </div>
-      </div>
+      </a>
 
       <!-- 5. DBS: Databáze (V přípravě) -->
       <div class="subject-card" data-subject="dbs" data-category="dbs sql plan" data-keywords="databaze konceptualni model sql er diagram relace normalizace transakce dbs dat" style="--subject-accent: var(--accent-dbs); --subject-bg: rgba(16, 185, 129, 0.12); --subject-glow: var(--accent-dbs-glow); opacity: 0.9;">
