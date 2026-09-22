@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS: Počítačové sítě | Výukové materiály SPŠ</title>
+  <meta name="description" content="Katalog výukových materiálů a prezentací předmětu Počítačové sítě (POS) pro studenty SPŠ: architektura sítí, hardware, Cisco CCNA, IP adresace a směrování.">
+
+  <!-- Společné styly pro katalogy a rozcestníky SPŠ -->
+  <link rel="stylesheet" href="../assets/css/dashboard-core.css">
+  <style>
+    :root {
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="dashboard-container">
+
+    <!-- 1. Drobečková navigace (SPŠ 4-úrovňový standard) -->
+    <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+      <a href="../index.html" class="breadcrumb-link" title="Zpět na centrální rozcestník SPŠ">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Rozcestník SPŠ
+      </a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Počítačové sítě (POS)</span>
+    </nav>
+
+    <!-- 2. Hlavička předmětu -->
+    <header class="dashboard-header">
+      <div class="brand-box">
+        <div class="brand-icon" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;">
+          <svg class="icon" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="8" rx="2"></rect>
+            <rect x="2" y="14" width="20" height="8" rx="2"></rect>
+            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Předmět POS: Počítačové sítě</h1>
+          <p>Střední průmyslová škola &bull; Architektura sítí, kurikulum Cisco CCNA, IP adresace, směrování a kybernetická bezpečnost</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <!-- Ikona vložena JS -->
+        </button>
+      </div>
+    </header>
+
+    <!-- 3. Vyhledávací pole -->
+    <div class="search-container">
+      <svg class="search-icon-svg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech POS (např. úvod, hardware, média, multiplexing, PDU, TCP/IP, OSI, IP adresace, switch, router)..." autocomplete="off">
+    </div>
+
+    <!-- 4. Mřížka témat (Katalog témat SPŠ POS) -->
+    <div class="lessons-grid" id="lessonsGrid">
+
+      <!-- Téma 010: Úvod do počítačových sítí (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="010 uvod pocitacove site ccna hardware media kabely optika wifi protokoly tcp ip pdu enkapsulace multiplexing switch router pos">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.12);">TÉMA 010</span>
+            <span class="lesson-exam-badge" style="color: #60a5fa; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.3);">Základy sítí &bull; CCNA:ITN</span>
+          </div>
+          <h2>Úvod do počítačových sítí</h2>
+          <p class="lesson-desc">
+            Základní principy fungování sítí, přínosy a kybernetická rizika. Čtyři pilíře síťové komunikace (zařízení, média, protokoly, zprávy), síťový hardware (hostitelé vs. aktivní prvky), přenosová média, technologie multiplexingu (TDM, FDM, paketové přepínání), PDU enkapsulace a srovnání modelů ISO/OSI a TCP/IP.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 10 snímků &bull; Simulátory</span>
+          <a href="010-Uvod-do-pocitacovych-siti/index.html" class="btn-launch-lesson" style="color: #60a5fa;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 020: IP adresace a podsítě (V přípravě) -->
+      <div class="lesson-card" data-keywords="020 ip adresace podsity subnetting ipv4 ipv6 maska vlsm cidr binarni matematika broadcast unicast multicast plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 020</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>IP adresace a podsítě (IPv4 &amp; IPv6)</h2>
+          <p class="lesson-desc">
+            Hierarchická logická adresace v síti. Struktura IPv4 adres, masky podsítě, binární výpočty, rozdělování sítí (Subnetting, VLSM a CIDR). Nová generace protokolu IPv6, typy adres (Unicast, Multicast, Anycast) a autokonfigurace SLAAC.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; CCNA:ITN</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 030: Přepínání v lokální síti (V přípravě) -->
+      <div class="lesson-card" data-keywords="030 prepinani v lan switching switch l2 vlan trunking 802.1q stp spanning tree cam tabulka broadcast storm plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 030</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Přepínání v lokální síti (LAN Switching)</h2>
+          <p class="lesson-desc">
+            Architektura ethernetového switche, učení MAC adres a plnění CAM tabulky. Segmentace sítě pomocí virtuálních LAN (VLAN), trunkové spoje (IEEE 802.1Q), směrování mezi VLAN (Router-on-a-Stick, L3 switch) a protokol Spanning Tree (STP).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; CCNA:SRWE</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 040: Směrování a směrovače (V přípravě) -->
+      <div class="lesson-card" data-keywords="040 smerovani routing router l3 staticke smerovani dynamicke ospf nat pat preklad adres default gateway plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 040</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Směrování a směrovače (Routing)</h2>
+          <p class="lesson-desc">
+            Principy činnosti L3 směrovače, vyhodnocování směrovací tabulky a výběr nejlepší cesty (Longest Prefix Match). Statické směrování, výchozí brána (Default Gateway), dynamické směrovací protokoly (OSPFv2/v3) a překlad síťových adres (NAT / PAT).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; CCNA:SRWE</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 5. Footer katalogu dle standardu SPŠ -->
+    <footer class="site-footer">
+      <div class="footer-nav">
+        <a href="../index.html" class="btn-footer-back" title="Návrat na hlavní rozcestník SPŠ">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Zpět na centrální rozcestník SPŠ
+        </a>
+      </div>
+      <p>Střední průmyslová škola &copy; 2026 &bull; Předmět Počítačové sítě (POS)</p>
+    </footer>
+
+  </div>
+
+  <!-- Sdílené jádro pro katalogy témat SPŠ -->
+  <script src="../assets/js/dashboard-core.js"></script>
+</body>
+
+</html>

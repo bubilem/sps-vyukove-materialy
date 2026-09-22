@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 010: Úvod do počítačových sítí | POS • SPŠ</title>
+  <meta name="description" content="Ucelená výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: k čemu sítě slouží, 4 pilíře (zařízení, média, protokoly, zprávy), multiplexing, PDU a modely ISO/OSI a TCP/IP.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 010 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">010 Úvod do sítí</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; Základy sítí</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (rámečky ve stylu KYME)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do počítačových sítí">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 010</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN</span>
+          </div>
+          <h1 class="hero-title">Úvod do počítačových sítí</h1>
+          <p class="hero-subtitle">
+            Architektura propojeného světa &bull; Od fyzických médií přes aktivní síťové prvky až po referenční modely ISO/OSI a TCP/IP.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #3b82f6;"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                4 Pilíře sítě
+              </h4>
+              <p>Hardware, přenosová média, komunikační protokoly a strukturované datové jednotky (PDU).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Hardware &amp; Média
+              </h4>
+              <p>Koncová zařízení (hosté) vs. aktivní prvky (L2 switch, L3 router), metalika, optika a Wi-Fi.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Multiplexing
+              </h4>
+              <p>Sdílení jednoho média více toky dat: TDM, FDM/WDM a dynamické paketové přepínání.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+                PDU &amp; Modely
+              </h4>
+              <p>Proces enkapsulace po vrstvách a srovnání referenčních modelů ISO/OSI a TCP/IP.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: K čemu sítě slouží? Přínosy & Bezpečnost
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="K čemu slouží sítě? Přínosy a rizika">
+        <div class="slide-header">
+          <h2 class="slide-title">K čemu sítě slouží? Přínosy, metriky a kybernetická rizika</h2>
+          <p class="slide-subtitle">Počítačová síť je propojení dvou či více autonomních zařízení za účelem spolehlivé výměny dat a sdílení prostředků.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Proč sítě stavíme (Výhody) -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <h3 class="card-title">Hlavní přínosy propojení</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Sdílení hardwarových prostředků:</strong> Tiskárny, velkokapacitní disková pole (SAN/NAS), výpočetní servery a GPU klastry.</li>
+                <li><strong>Centralizovaná správa a data:</strong> Uživatelské účty (Active Directory/LDAP), jednotné zálohování a databázové systémy.</li>
+                <li><strong>Okamžitá globální komunikace:</strong> E-mail, VoIP telefonie, videokonference, cloudové služby a distribuované aplikace.</li>
+                <li><strong>Vysoká dostupnost a redundance:</strong> Výpadek jednoho serveru či linky automaticky převezme záložní trasa.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Odvrácená strana (Rizika & Bezpečnost) -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <h3 class="card-title">Odvrácená strana: Kybernetická bezpečnost</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Kybernetické hrozby a útoky:</strong> Malware, ransomware šifrující firemní data, phishing a odposlech komunikace (Eavesdropping / MITM).</li>
+                <li><strong>Útoky na dostupnost (DDoS):</strong> Zahlcení síťových linek miliony požadavků vyřadí kritické servery z provozu.</li>
+                <li><strong>Kritická závislost:</strong> Výpadek konektivity zastaví provoz nemocnic, bank, dopravy i průmyslových linek.</li>
+                <li><strong>Náročnost na správu:</strong> Nutnost neustálého patchování, konfigurace firewallů, šifrování (TLS/VPN) a segmentace sítí.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Síťové metriky -->
+        <div class="metrics-row">
+          <div class="metric-pill">
+            <span class="metric-pill-val">Bandwidth</span>
+            <span class="metric-pill-lbl">Kapacita média (b/s)</span>
+          </div>
+          <div class="metric-pill">
+            <span class="metric-pill-val">Throughput</span>
+            <span class="metric-pill-lbl">Reálná propustnost dat</span>
+          </div>
+          <div class="metric-pill">
+            <span class="metric-pill-val">Latency / RTT</span>
+            <span class="metric-pill-lbl">Zpoždění odezvy (ms)</span>
+          </div>
+          <div class="metric-pill">
+            <span class="metric-pill-val">Packet Loss</span>
+            <span class="metric-pill-lbl">Ztráta paketů po cestě (%)</span>
+          </div>
+          <div class="metric-pill">
+            <span class="metric-pill-val">Jitter</span>
+            <span class="metric-pill-lbl">Kolísání zpoždění paketů</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Čtyři pilíře síťové komunikace
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Čtyři pilíře síťové komunikace">
+        <div class="slide-header">
+          <h2 class="slide-title">Čtyři pilíře síťové komunikace</h2>
+          <p class="slide-subtitle">Ať už jde o domácí Wi-Fi nebo celosvětový Internet, každá funkční síť stojí na 4 základních stavebních kamenech.</p>
+        </div>
+
+        <div class="pillars-grid">
+          <!-- Pilíř 1: Zařízení -->
+          <div class="pillar-card" style="--card-accent: #3b82f6;">
+            <div class="pillar-icon-box">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3 class="pillar-title">1. Zařízení (Hardware)</h3>
+            <p class="pillar-desc">Fyzické a virtuální prvky tvořící síť. Rozdělují se na koncová zařízení (zdroje a cíle dat) a zprostředkující prvky řídící provoz.</p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">Host / PC</span>
+              <span class="pillar-tag">Server</span>
+              <span class="pillar-tag">Switch L2</span>
+              <span class="pillar-tag">Router L3</span>
+            </div>
+          </div>
+
+          <!-- Pilíř 2: Média -->
+          <div class="pillar-card" style="--card-accent: #06b6d4;">
+            <div class="pillar-icon-box">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+            </div>
+            <h3 class="pillar-title">2. Média (Přenosové cesty)</h3>
+            <p class="pillar-desc">Fyzický kanál, kterým signál putuje mezi zařízeními. Může jít o kovové vodiče, skleněná vlákna nebo elektromagnetické vlnění ve vzduchu.</p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">Kroucená dvojlinka</span>
+              <span class="pillar-tag">Optika SMF/MMF</span>
+              <span class="pillar-tag">Wi-Fi / RF</span>
+            </div>
+          </div>
+
+          <!-- Pilíř 3: Protokoly -->
+          <div class="pillar-card" style="--card-accent: #a855f7;">
+            <div class="pillar-icon-box">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <h3 class="pillar-title">3. Protokoly (Pravidla hry)</h3>
+            <p class="pillar-desc">Dohodnutá pravidla, formát zpráv a postupy řízení komunikace. Zajišťují, že si zařízení různých výrobců a architektur vzájemně rozumí.</p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">IP (IPv4/v6)</span>
+              <span class="pillar-tag">TCP / UDP</span>
+              <span class="pillar-tag">Ethernet</span>
+              <span class="pillar-tag">HTTP/DNS</span>
+            </div>
+          </div>
+
+          <!-- Pilíř 4: Zprávy (PDU) -->
+          <div class="pillar-card" style="--card-accent: #10b981;">
+            <div class="pillar-icon-box">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+            </div>
+            <h3 class="pillar-title">4. Zprávy (PDU)</h3>
+            <p class="pillar-desc">Přenášená data zapouzdřená do strukturovaných jednotek (PDU) s kontrolními hlavičkami a adresami na jednotlivých úrovních.</p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">Data (L7)</span>
+              <span class="pillar-tag">Segment (L4)</span>
+              <span class="pillar-tag">Paket (L3)</span>
+              <span class="pillar-tag">Rámec (L2)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="infobox" style="margin-top: 1.5rem;">
+          <div class="infobox-icon">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          </div>
+          <div class="infobox-content">
+            <strong>Princip vzájemné provázanosti:</strong> Zpráva (PDU) je vytvořena aplikací na koncovém zařízení, podle pravidel protokolu zabalena do hlaviček, odeslána přes médium a směrována zprostředkujícími prvky (switche, routery) k cílovému hostiteli.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Pilíř 1 – Síťová zařízení (Hardware)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Pilíř 1: Síťová zařízení (Hardware)">
+        <div class="slide-header">
+          <h2 class="slide-title">Pilíř 1: Síťový hardware – Koncová a zprostředkující zařízení</h2>
+          <p class="slide-subtitle">V počítačových sítích striktně rozlišujeme zařízení, která data produkují/přijímají, a zařízení, která data po cestě přeposílají.</p>
+        </div>
+
+        <div class="hardware-dual-grid">
+          <!-- Koncová zařízení (Hosts / End Devices) -->
+          <div class="hardware-card">
+            <div class="hardware-header">
+              <div class="device-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight: 800;">Koncová zařízení (End Devices / Host)</h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary);">Zdroje a cíloví příjemci veškeré komunikace v síti</p>
+              </div>
+            </div>
+
+            <div class="device-list">
+              <div class="device-item">
+                <div class="device-icon">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <div>
+                  <div class="device-name">Klientské PC a NTB</div>
+                  <div class="device-role">Uživatelská stanice přistupující ke službám (web, soubory).</div>
+                </div>
+              </div>
+
+              <div class="device-item">
+                <div class="device-icon">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                </div>
+                <div>
+                  <div class="device-name">Servery (Web/DNS)</div>
+                  <div class="device-role">Poskytovatelé služeb a dat s pevnou IP adresou.</div>
+                </div>
+              </div>
+
+              <div class="device-item">
+                <div class="device-icon">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
+                <div>
+                  <div class="device-name">Mobily &amp; Tablety</div>
+                  <div class="device-role">Bezdrátoví hosté využívající DHCP pro dynamickou konfiguraci.</div>
+                </div>
+              </div>
+
+              <div class="device-item">
+                <div class="device-icon">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                </div>
+                <div>
+                  <div class="device-name">IP Kamery &amp; IoT</div>
+                  <div class="device-role">Senzory a autonomní zařízení odesílající telemetrii.</div>
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem;">
+              Každý host má unikátní fyzickou <strong>MAC adresu</strong> a logickou <strong>IP adresu</strong>.
+            </p>
+          </div>
+
+          <!-- Zprostředkující zařízení (Intermediary Devices) -->
+          <div class="hardware-card">
+            <div class="hardware-header">
+              <div class="device-icon" style="background: rgba(6, 182, 212, 0.15); color: #38bdf8;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
+              <div>
+                <h3 style="font-size: 1.15rem; font-weight: 800;">Zprostředkující zařízení (Intermediary)</h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary);">Aktivní prvky směrující, filtrující a regenerující signál</p>
+              </div>
+            </div>
+
+            <div class="device-list">
+              <div class="device-item">
+                <div class="device-icon" style="color: #06b6d4;">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                </div>
+                <div>
+                  <div class="device-name">Switch (L2 Přepínač)</div>
+                  <div class="device-role">Propojuje stanice v lokální LAN. Přepíná rámce dle MAC tabulky (CAM).</div>
+                </div>
+              </div>
+
+              <div class="device-item">
+                <div class="device-icon" style="color: #a855f7;">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                </div>
+                <div>
+                  <div class="device-name">Router (L3 Směrovač)</div>
+                  <div class="device-role">Propojuje různé sítě (LAN/WAN). Volí nejlepší trasu pro IP pakety.</div>
+                </div>
+              </div>
+
+              <div class="device-item">
+                <div class="device-icon" style="color: #10b981;">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                </div>
+                <div>
+                  <div class="device-name">Access Point (AP)</div>
+                  <div class="device-role">Bezdrátový přístupový bod převádějící signál kabel &harr; Wi-Fi vlny.</div>
+                </div>
+              </div>
+
+              <div class="device-item">
+                <div class="device-icon" style="color: #f59e0b;">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div>
+                  <div class="device-name">Firewall (Brána)</div>
+                  <div class="device-role">Bezpečnostní štít filtrující nepovolený provoz na hranici sítě.</div>
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem;">
+              Zprostředkující prvky nemění užitečný obsah zprávy – pouze vyhodnocují její adresní hlavičky.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Pilíř 2 – Přenosová média
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Pilíř 2: Přenosová média">
+        <div class="slide-header">
+          <h2 class="slide-title">Pilíř 2: Přenosová média – Fyzické cesty pro bity</h2>
+          <p class="slide-subtitle">Médium poskytuje fyzickou přenosovou trasu, po které signály (elektrické, optické či elektromagnetické) putují od odesílatele k příjemci.</p>
+        </div>
+
+        <div class="media-grid">
+          <!-- 1. Metalická vedení (Měď) -->
+          <div class="media-card">
+            <span class="media-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">
+              Metalická vedení (Měď)
+            </span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Kroucená dvojlinka (TP)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Vodiče z čisté mědi přenášející elektrické napěťové impulsy. Kroucení párů vzájemně ruší přeslechy (crosstalk) a indukované elektromagnetické rušení (EMI).
+            </p>
+            <ul class="media-feature-list">
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Typy:</strong> UTP (nestíněná), STP/FTP (stíněná fólií/opletem).</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Kategorie:</strong> Cat5e (1 Gb/s), Cat6/6a (10 Gb/s), Cat7/8.</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Konektor:</strong> 8pinový modulární RJ-45 (T568A / T568B).</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Limit dosahu:</strong> Striktně max. 100 metrů pro segment.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 2. Optická vlákna (Sklo) -->
+          <div class="media-card">
+            <span class="media-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3);">
+              Optická vlákna (Sklo / Plast)
+            </span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Optické kabely (Fiber)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Extrémně tenká vlákna z křemenného skla přenášející světelné pulzy. Světlo se odráží uvnitř jádra díky principu úplného vnitřního odrazu (TIR).
+            </p>
+            <ul class="media-feature-list">
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Single-Mode (SMF):</strong> Jádro 9 &mu;m, laser, dosah až desítky km.</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Multi-Mode (MMF):</strong> Jádro 50/62.5 &mu;m, LED/VCSEL, stovky metrů.</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Imunita:</strong> 100% netečnost vůči elektromagnetickému rušení (EMI).</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Konektory:</strong> LC, SC, ST s vysokou čistotou čela.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 3. Bezdrátová média (Wireless RF) -->
+          <div class="media-card">
+            <span class="media-badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3);">
+              Bezdrátové vlny (Wireless RF)
+            </span>
+            <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Wi-Fi, Mobilní &amp; Mikrovlny</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Přenášejí bity modulací vysokofrekvenčního elektromagnetického vlnění v neohraničeném prostoru. Médium je sdílené všemi vysílači v dosahu.
+            </p>
+            <ul class="media-feature-list">
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Frekvenční pásma:</strong> 2.4 GHz (dosah), 5 GHz (rychlost), 6 GHz (Wi-Fi 6E/7).</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Standardy IEEE:</strong> 802.11ax (Wi-Fi 6), 802.11be (Wi-Fi 7).</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Mobilní sítě:</strong> 4G LTE a moderní 5G s nízkou latencí.</span>
+              </li>
+              <li>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span><strong>Nevýhody:</strong> Útlum zdmi, rušení, nutnost silného šifrování (WPA3).</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Pilíř 3 – Síťové protokoly
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Pilíř 3: Síťové protokoly">
+        <div class="slide-header">
+          <h2 class="slide-title">Pilíř 3: Síťové protokoly – Pravidla digitální komunikace</h2>
+          <p class="slide-subtitle">Síťový protokol je formální soubor dohodnutých pravidel, syntaxe a sémantiky, který určuje, jak zařízení odesílají, formátují a zpracovávají data.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Analogie s lidskou konverzací -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon blue">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              </div>
+              <h3 class="card-title">Analogie: Lidská řeč vs. Síťový protokol</h3>
+            </div>
+            <div class="card-body">
+              <p style="font-size: 0.88rem; margin-bottom: 0.85rem;">Aby se dva lidé dorozuměli, potřebují stejná pravidla jako počítače:</p>
+              <ul class="clean-list">
+                <li><strong>Identifikace účastníků:</strong> Oslovení partnera jménem &harr; <em>IP a MAC adresa</em>.</li>
+                <li><strong>Společný jazyk a kódování:</strong> Čeština vs. angličtina &harr; <em>Formát ASCII / UTF-8, JSON, HTML</em>.</li>
+                <li><strong>Rychlost a časování (Flow Control):</strong> Mluvit přiměřenou rychlostí, aby stíhal posluchač &harr; <em>TCP Windowing</em>.</li>
+                <li><strong>Potvrzení porozumění:</strong> Přikývnutí ("Rozumím") &harr; <em>TCP Acknowledgement (ACK / SYN)</em>.</li>
+                <li><strong>Ošetření chyb:</strong> Zopakování dotazu po tichu &harr; <em>Retransmission po timeoutu</em>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Klíčové protokoly napříč vrstvami -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
+              <h3 class="card-title">Přehled klíčových protokolů</h3>
+            </div>
+            <div class="proto-table-container">
+              <table class="proto-table">
+                <thead>
+                  <tr>
+                    <th>Vrstva</th>
+                    <th>Protokol</th>
+                    <th>Účel a role v síti</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="tag purple">Aplikační</span></td>
+                    <td><span class="proto-code">HTTP / HTTPS</span></td>
+                    <td>Přenos webových stránek a REST API (porty 80, 443).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag purple">Aplikační</span></td>
+                    <td><span class="proto-code">DNS</span></td>
+                    <td>Překlad doménových jmen na IP adresy (port 53).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag purple">Aplikační</span></td>
+                    <td><span class="proto-code">DHCP</span></td>
+                    <td>Automatické přidělování IP adres a síťové konfigurace.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag blue">Transportní</span></td>
+                    <td><span class="proto-code">TCP</span></td>
+                    <td>Spolehlivý přenos, kontrola doručení a pořadí paketů.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag blue">Transportní</span></td>
+                    <td><span class="proto-code">UDP</span></td>
+                    <td>Rychlý nespojený přenos bez potvrzení (video, VoIP, hry).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag cyan">Síťová</span></td>
+                    <td><span class="proto-code">IPv4 / IPv6</span></td>
+                    <td>Globální logická adresace a směrování paketů internetem.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="tag emerald">Linková</span></td>
+                    <td><span class="proto-code">Ethernet</span></td>
+                    <td>Lokální přepínání rámců po kabelu (IEEE 802.3).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Multiplexing
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Multiplexing v síťové komunikaci">
+        <div class="slide-header">
+          <h2 class="slide-title">Multiplexing: Jak se všichni vejdeme na jedno médium?</h2>
+          <p class="slide-subtitle">Multiplexing je technologie umožňující souběžný přenos více nezávislých datových toků či uživatelů přes jedno sdílené fyzické médium.</p>
+        </div>
+
+        <!-- Interaktivní simulátor multiplexingu -->
+        <div class="mux-interactive-box">
+          <div class="mux-controls">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-right: 0.5rem;">Zvolte metodu multiplexingu:</span>
+            <button class="mux-mode-btn active" id="btnMuxPacket">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              Statistické paketové multiplexování (Internet)
+            </button>
+            <button class="mux-mode-btn" id="btnMuxTdm">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              TDM (Časový multiplex)
+            </button>
+            <button class="mux-mode-btn" id="btnMuxFdm">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M2 12h20"></path><path d="M2 6h20"></path><path d="M2 18h20"></path></svg>
+              FDM / WDM (Frekvenční / Vlnový)
+            </button>
+          </div>
+
+          <div class="mux-canvas-wrapper" id="muxVisualDisplay">
+            <!-- Dynamicky generováno z JS -->
+          </div>
+
+          <div id="muxDescription" style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 0.85rem; line-height: 1.5;">
+            <!-- Dynamicky aktualizováno -->
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 1.5rem;">
+          <div class="card" style="padding: 1rem;">
+            <h4 style="color: #3b82f6; font-size: 0.95rem; margin-bottom: 0.35rem;">TDM (Time-Division)</h4>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">Přiděluje toku vyhrazený časový slot. Pokud uzel nevysílá, slot zůstává prázdný (plýtvání kapacitou). Používáno v tradiční telefonii (E1/T1).</p>
+          </div>
+          <div class="card" style="padding: 1rem;">
+            <h4 style="color: #06b6d4; font-size: 0.95rem; margin-bottom: 0.35rem;">FDM &amp; WDM</h4>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">Rozděluje médium na frekvence (FDM v rádiu/DSL) nebo vlnové délky barevného světla (WDM/DWDM v optických kabelech s propustností terabitů/s).</p>
+          </div>
+          <div class="card" style="padding: 1rem;">
+            <h4 style="color: #10b981; font-size: 0.95rem; margin-bottom: 0.35rem;">Paketové přepínání</h4>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">Data jsou rozdělena do samostatných paketů s adresou. Vodič je využit na 100 % kapacity bez pevných slotů – revoluce, která stvořila Internet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Pilíř 4 – Zprávy, PDU & Enkapsulace
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Pilíř 4: Zprávy, PDU a Enkapsulace">
+        <div class="slide-header">
+          <h2 class="slide-title">Pilíř 4: Zprávy, PDU a proces Enkapsulace dat</h2>
+          <p class="slide-subtitle">Během průchodu vrstvami modelu se k uživatelským datům přidávají řídicí informace. Každá úroveň má svou specifickou jednotku (PDU).</p>
+        </div>
+
+        <div class="encap-interactive-container">
+          <!-- Levá část: Zásobník vrstev PDU -->
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.65rem;">Klikněte na vrstvu pro inspekci formátu PDU a hlaviček:</div>
+            <div class="pdu-stack">
+              <!-- L7-L5: Data -->
+              <button class="pdu-layer-btn" data-layer="app" style="--layer-color: #c084fc;">
+                <div class="pdu-left-info">
+                  <span class="pdu-layer-num">L7–L5</span>
+                  <span class="pdu-layer-title">Aplikační vrstva</span>
+                </div>
+                <span class="pdu-unit-badge" style="color: #c084fc; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.1);">PDU: Data (Payload)</span>
+              </button>
+
+              <!-- L4: Segment -->
+              <button class="pdu-layer-btn" data-layer="transport" style="--layer-color: #60a5fa;">
+                <div class="pdu-left-info">
+                  <span class="pdu-layer-num">L4</span>
+                  <span class="pdu-layer-title">Transportní vrstva</span>
+                </div>
+                <span class="pdu-unit-badge" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.1);">PDU: Segment (TCP/UDP)</span>
+              </button>
+
+              <!-- L3: Paket -->
+              <button class="pdu-layer-btn active" data-layer="network" style="--layer-color: #38bdf8;">
+                <div class="pdu-left-info">
+                  <span class="pdu-layer-num">L3</span>
+                  <span class="pdu-layer-title">Síťová vrstva</span>
+                </div>
+                <span class="pdu-unit-badge" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); background: rgba(56, 189, 248, 0.1);">PDU: Paket (IP Packet)</span>
+              </button>
+
+              <!-- L2: Rámec -->
+              <button class="pdu-layer-btn" data-layer="datalink" style="--layer-color: #34d399;">
+                <div class="pdu-left-info">
+                  <span class="pdu-layer-num">L2</span>
+                  <span class="pdu-layer-title">Linková vrstva</span>
+                </div>
+                <span class="pdu-unit-badge" style="color: #34d399; border-color: rgba(52, 211, 153, 0.3); background: rgba(52, 211, 153, 0.1);">PDU: Rámec (Frame)</span>
+              </button>
+
+              <!-- L1: Bity -->
+              <button class="pdu-layer-btn" data-layer="physical" style="--layer-color: #fbbf24;">
+                <div class="pdu-left-info">
+                  <span class="pdu-layer-num">L1</span>
+                  <span class="pdu-layer-title">Fyzická vrstva</span>
+                </div>
+                <span class="pdu-unit-badge" style="color: #fbbf24; border-color: rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.1);">PDU: Bity (Bits)</span>
+              </button>
+            </div>
+
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.85rem;">
+              <strong>Enkapsulace (Odesílání):</strong> Data &rarr; Segment &rarr; Paket &rarr; Rámec &rarr; Bity.<br>
+              <strong>Dekapsulace (Příjem):</strong> Bity &rarr; Rámec &rarr; Paket &rarr; Segment &rarr; Data.
+            </div>
+          </div>
+
+          <!-- Pravá část: Inspekce struktury PDU -->
+          <div class="pdu-inspector-panel">
+            <div class="pdu-inspector-header">
+              <span class="pdu-inspector-title" id="pduInspTitle">Síťová vrstva (L3)</span>
+              <span class="tag" id="pduInspUnit">PDU: Paket</span>
+            </div>
+
+            <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);" id="pduInspAddr">
+              Adresace: Logická IP adresa
+            </div>
+
+            <div class="pdu-header-visual" id="pduInspVisual">
+              <!-- Dynamicky generováno JS -->
+            </div>
+
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5; margin-top: auto;" id="pduInspDesc">
+              Přidává IP hlavičku obsahující zdrojovou a cílovou IP adresu. Zajišťuje logické směrování (routing) napříč různými sítěmi a celým Internetem.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Modely ISO/OSI vs. TCP/IP
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Síťové modely: ISO/OSI vs. TCP/IP">
+        <div class="slide-header">
+          <h2 class="slide-title">Síťové referenční modely: ISO/OSI vs. TCP/IP</h2>
+          <p class="slide-subtitle">Vrstevnatá architektura umožňuje nezávislý vývoj technologií na jednotlivých úrovních. Inovace Wi-Fi nevyžaduje přepsání webového prohlížeče.</p>
+        </div>
+
+        <div class="models-grid">
+          <!-- Model ISO/OSI -->
+          <div class="model-column">
+            <div class="model-col-header">
+              <h3>Referenční model ISO/OSI</h3>
+              <p>7 vrstev &bull; Teoretický mezinárodní standard ISO (1984)</p>
+            </div>
+
+            <div class="layer-stack">
+              <div class="layer-bar layer-app">
+                <span><strong>7. Aplikační</strong> (Application)</span>
+                <span class="tag">Uživatelské služby (HTTP, DNS)</span>
+              </div>
+              <div class="layer-bar layer-app">
+                <span><strong>6. Prezenční</strong> (Presentation)</span>
+                <span class="tag">Kódování, šifrování, komprese</span>
+              </div>
+              <div class="layer-bar layer-app">
+                <span><strong>5. Relační</strong> (Session)</span>
+                <span class="tag">Správa a synchronizace relací</span>
+              </div>
+              <div class="layer-bar layer-trans">
+                <span><strong>4. Transportní</strong> (Transport)</span>
+                <span class="tag">End-to-End přenos (TCP / UDP)</span>
+              </div>
+              <div class="layer-bar layer-net">
+                <span><strong>3. Síťová</strong> (Network)</span>
+                <span class="tag">Směrování a IP adresace</span>
+              </div>
+              <div class="layer-bar layer-link">
+                <span><strong>2. Linková</strong> (Data Link)</span>
+                <span class="tag">MAC adresy, rámce, přepínání</span>
+              </div>
+              <div class="layer-bar layer-phys">
+                <span><strong>1. Fyzická</strong> (Physical)</span>
+                <span class="tag">Bity, napětí, světlo, kabely</span>
+              </div>
+            </div>
+
+            <div class="mnemonic-box">
+              <strong>Mnemotechnická pomůcka (L7 &rarr; L1):</strong><br>
+              <em>"<strong>A</strong>ť <strong>P</strong>řítel <strong>R</strong>adek <strong>T</strong>rpělivě <strong>S</strong>bírá <strong>L</strong>uční <strong>F</strong>ialky"</em>
+            </div>
+          </div>
+
+          <!-- Model TCP/IP -->
+          <div class="model-column">
+            <div class="model-col-header">
+              <h3>Praktický model TCP/IP</h3>
+              <p>4 až 5 vrstev &bull; Skutečná architektura Internetu (DoD / IETF)</p>
+            </div>
+
+            <div class="layer-stack">
+              <div class="layer-bar layer-app" style="min-height: 105px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 0.25rem;">
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                  <span><strong>Aplikační vrstva</strong> (Application)</span>
+                  <span class="tag">L7 + L6 + L5</span>
+                </div>
+                <div style="font-size: 0.76rem; opacity: 0.85;">Zahrnuje veškerou aplikační logiku, formátování i správu spojení (HTTP, SSH, DNS, FTP).</div>
+              </div>
+
+              <div class="layer-bar layer-trans">
+                <span><strong>Transportní</strong> (Transport)</span>
+                <span class="tag">TCP / UDP (Porty)</span>
+              </div>
+
+              <div class="layer-bar layer-net">
+                <span><strong>Internetová</strong> (Internet)</span>
+                <span class="tag">IP (IPv4, IPv6), ICMP, ARP</span>
+              </div>
+
+              <div class="layer-bar layer-link" style="min-height: 70px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 0.25rem;">
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                  <span><strong>Síťový přístup</strong> (Network Access)</span>
+                  <span class="tag">Linková + Fyzická</span>
+                </div>
+                <div style="font-size: 0.76rem; opacity: 0.85;">Ethernet, Wi-Fi karty, optické transceivery a fyzická média.</div>
+              </div>
+            </div>
+
+            <div class="mnemonic-box">
+              <strong>Zásadní rozdíl pro praxi:</strong><br>
+              ISO/OSI slouží jako <em>univerzální didaktický a referenční model</em> (proto říkáme "L2 switch" nebo "L3 router"), zatímco TCP/IP je <em>reálný implementační protokolový stack</em> dnešního světa.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí a opakovací otázky SPŠ
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí tématu a kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a kontrolní otázky SPŠ</h2>
+          <p class="slide-subtitle">Ověření pochopení základních konceptů, architektury a terminologie počítačových sítí.</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon blue">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <h3 class="card-title">1. Účel a bezpečnost</h3>
+            </div>
+            <div class="card-body" style="font-size: 0.84rem;">
+              Sítě umožňují sdílení zdrojů a okamžitou komunikaci, přinášejí však nutnost obrany proti kybernetickým útokům, šifrování a zálohování.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
+              <h3 class="card-title">2. Hardware a média</h3>
+            </div>
+            <div class="card-body" style="font-size: 0.84rem;">
+              Hosté produkují data, switche (L2) přepínají v LAN dle MAC adres a routery (L3) směrují napříč sítěmi po metalice, optice či bezdrátu.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon purple">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+              </div>
+              <h3 class="card-title">3. Protokoly &amp; Multiplex</h3>
+            </div>
+            <div class="card-body" style="font-size: 0.84rem;">
+              Pravidla komunikace zajišťují interoperabilitu. Statistické paketové multiplexování umožňuje tisícům uživatelů sdílet jedno fyzické médium.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+              </div>
+              <h3 class="card-title">4. PDU &amp; Modely</h3>
+            </div>
+            <div class="card-body" style="font-size: 0.84rem;">
+              Proces enkapsulace balí Data &rarr; Segment &rarr; Paket &rarr; Rámec &rarr; Bity. Referenční model ISO/OSI má 7 vrstev, implementovaný TCP/IP 4 až 5.
+            </div>
+          </div>
+        </div>
+
+        <!-- Otázky pro zkoušení žáků SPŠ -->
+        <div class="questions-grid">
+          <!-- Otázka 1 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 1 &bull; Hardware a L2 vs L3</span>
+            </div>
+            <div class="question-text">Jaký je principiální rozdíl mezi rolí switche (přepínače) a routeru (směrovače) v síti?</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              <strong>Switch (L2)</strong> pracuje v rámci jedné lokální sítě (LAN) a přepíná rámce na základě fyzických MAC adres. <strong>Router (L3)</strong> propojuje navzájem různé sítě a směruje pakety podle logických IP adres a směrovacích tabulek.
+            </div>
+          </div>
+
+          <!-- Otázka 2 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 2 &bull; Média a fyzikální limity</span>
+            </div>
+            <div class="question-text">Jaký je maximální doporučený dosah jednoho segmentu kroucené dvojlinky (UTP/STP) a proč?</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Maximální délka je <strong>100 metrů</strong> (90 m pevný rozvod + 10 m patch kabely dle standardu TIA/EIA). Nad tuto vzdálenost dochází k vysokému útlumu elektrického signálu a časovým deformacím kolizní domény Ethernetu.
+            </div>
+          </div>
+
+          <!-- Otázka 3 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 3 &bull; PDU a Enkapsulace</span>
+            </div>
+            <div class="question-text">Přiřaďte správné názvy PDU k vrstvám: Transportní (L4), Síťová (L3) a Linková (L2).</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Transportní vrstva (L4) = <strong>Segment</strong> (nebo Datagram u UDP).<br>
+              Síťová vrstva (L3) = <strong>Paket (Packet)</strong>.<br>
+              Linková vrstva (L2) = <strong>Rámec (Frame)</strong>.
+            </div>
+          </div>
+
+          <!-- Otázka 4 -->
+          <div class="question-card">
+            <div class="question-top">
+              <span class="question-num">Otázka 4 &bull; Multiplexing</span>
+            </div>
+            <div class="question-text">Proč moderní Internet využívá statistické paketové přepínání místo tradičního TDM multiplexingu?</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              TDM přiděluje pevné časové sloty – pokud uzel nevysílá, slot je prázdný a linka zahálí. <strong>Paketové přepínání</strong> využívá médium dynamicky podle potřeby (statisticky), což dramaticky zvyšuje efektivitu využití drahých síťových linek.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="#" class="control-btn disabled" id="prevLessonBtn" aria-disabled="true" tabindex="-1" title="Předchozí téma (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (bude doplněno v katalogu)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Úvod do počítačových sítí
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro simulátor multiplexingu a enkapsulace PDU -->
+  <script src="network-playground.js"></script>
+</body>
+
+</html>
