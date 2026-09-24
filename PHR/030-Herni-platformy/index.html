@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 030: Herní platformy | PHR &bull; SPŠ</title>
+  
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+    }
+
+    /* Specifické styly pro téma 030 Herní platformy */
+    .platform-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .platform-tab-btn {
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition);
+    }
+
+    .platform-tab-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent);
+      background: rgba(6, 182, 212, 0.08);
+    }
+
+    .platform-tab-btn.active {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .spec-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+
+    .spec-table th,
+    .spec-table td {
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .spec-table th {
+      color: var(--text-secondary);
+      font-weight: 600;
+      width: 32%;
+    }
+
+    .spec-table td {
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    .arch-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .arch-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.85rem;
+      text-align: center;
+      min-width: 110px;
+      flex-shrink: 0;
+    }
+
+    .arch-node-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .arch-node-val {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--accent);
+      margin-top: 0.2rem;
+    }
+
+    .arch-arrow {
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* Interaktivní porovnávač platforem */
+    .comparator-container {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      align-items: start;
+    }
+
+    .filter-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .filter-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .filter-select {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      border-color: var(--accent);
+    }
+
+    .result-card {
+      background: var(--bg-card);
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      width: fit-content;
+    }
+
+    .pill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .pill-box {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.75rem;
+    }
+
+    .pill-box-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .pill-box-val {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      margin-top: 0.15rem;
+    }
+
+    /* FAQ akordeon */
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.65rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-question {
+      padding: 0.85rem 1.15rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .faq-question svg {
+      transition: transform 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question svg {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.15rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: -0.25rem;
+      padding-top: 0.75rem;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .comparator-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+    
+    <!-- Horní lišta s drobečkovou navigací (SPŠ 4-úrovňový standard) -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PHR">PHR</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">030 Herní platformy</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hlavní prezentační plocha se snímky -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: TITULNÍ SNÍMEK
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Herní platformy: Úvod">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět PHR &bull; Téma 030</span>
+            <span class="badge">Hardware, software a ekosystémy videoher</span>
+          </div>
+          <h1 class="hero-title">Herní platformy: Hardware, software a cloud</h1>
+          <p class="hero-subtitle">
+            Kde a na čem všude dnes běží moderní hry. Od masivních stolních PC přes dedikované herní konzole, kapesní hybridy, smartphony až po herní virtualizaci a datacentra v cloudu.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4 style="color: var(--accent);">Výkon a architektury</h4>
+              <p>x86_64 vs. ARM, unifikovaná paměť, dedikovaná GPU, APU, zakázkové I/O řadiče a rychlá NVMe úložiště.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #38bdf8;">Mobilita a hybridy</h4>
+              <p>Nintendo Switch, Steam Deck, herní telefony a fenomén překladových vrstev (Proton, DXVK) pod Linuxem.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #a855f7;">Hra běží jinde</h4>
+              <p>Cloud Gaming (GeForce NOW, xCloud), domácí LAN streaming (Sunshine/Moonlight) a GPU Passthrough virtualizace.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: TAXONOMIE PLATFOREM
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Taxonomie herních platforem">
+        <div class="slide-content">
+          <h2>Taxonomie herních platforem: Kde a jak hrát</h2>
+          <p class="slide-lead">Herní platforma není pouhá krabička s plasty – je to provázaný ekosystém <strong>křemíku, operačního systému, grafických API a distribuční sítě</strong>:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="card card-glow">
+              <div class="card-icon" style="color: var(--accent);">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Dle výpočetního uzlu</h3>
+              <ul style="margin-top: 0.5rem; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.2rem;">
+                <li><strong>Lokální (Edge / Local HW):</strong> Kód, fyzika i vykreslování běží přímo na zařízení před hráčem (minimální latence).</li>
+                <li><strong>Vzdálené (Cloud / Remote):</strong> Výpočet probíhá na serveru v datacentru nebo na domácím PC; k hráči proudí komprimované video.</li>
+              </ul>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #38bdf8;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Dle mobility a šasi</h3>
+              <ul style="margin-top: 0.5rem; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.2rem;">
+                <li><strong>Stacionární:</strong> Stolní PC, domácí konzole (PS5, Xbox), herní automaty (Arcade) – bez limitu hmotnosti a chlazení.</li>
+                <li><strong>Přenosné & Hybridní:</strong> Herní notebooky, handheld PC (Steam Deck), Nintendo Switch, mobily a tablety.</li>
+              </ul>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #a855f7;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Dle otevřenosti softwaru</h3>
+              <ul style="margin-top: 0.5rem; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6; padding-left: 1.2rem;">
+                <li><strong>Otevřené ekosystémy:</strong> PC (Windows, Linux, macOS). Hráč má přístup k souborům, může instalovat modifikace a libovolné obchody.</li>
+                <li><strong>Uzavřené zahrady (Walled Gardens):</strong> Konzole, iOS. Zabezpečený bootloader, kód musí projít certifikací výrobce.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="arch-flow" style="margin-top: 1.25rem;">
+            <div class="arch-node">
+              <div class="arch-node-title">Křemík (HW)</div>
+              <div class="arch-node-val">CPU / GPU / SoC</div>
+            </div>
+            <div class="arch-arrow">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+            <div class="arch-node">
+              <div class="arch-node-title">Kernel & Ovladač</div>
+              <div class="arch-node-val">Ring 0 Driver</div>
+            </div>
+            <div class="arch-arrow">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+            <div class="arch-node">
+              <div class="arch-node-title">Grafické API</div>
+              <div class="arch-node-val">DirectX / Vulkan / Metal</div>
+            </div>
+            <div class="arch-arrow">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+            <div class="arch-node">
+              <div class="arch-node-title">Herní Engine</div>
+              <div class="arch-node-val">Unreal / Unity / Custom</div>
+            </div>
+            <div class="arch-arrow">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+            <div class="arch-node" style="border-color: var(--accent); background: rgba(6, 182, 212, 0.1);">
+              <div class="arch-node-title" style="color: var(--accent);">Výsledek</div>
+              <div class="arch-node-val">Herní zážitek</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: OSOBNÍ POČÍTAČE (PC GAMING)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Osobní počítače (PC Gaming)">
+        <div class="slide-content">
+          <h2>Osobní počítače (PC Gaming): Evoluce hardware a software</h2>
+          <p class="slide-lead">PC představuje technologický vrchol flexibility: modulární hardware, škálovatelné detaily a neomezená zpětná kompatibilita.</p>
+
+          <!-- Taby milníků PC -->
+          <div class="platform-tabs" id="pcEraTabs">
+            <button class="platform-tab-btn active" onclick="switchPcEra('dos')">1. Éra MS-DOS (1981–1995)</button>
+            <button class="platform-tab-btn" onclick="switchPcEra('win95')">2. 3D Akcelerace & Win95 (1995–2000)</button>
+            <button class="platform-tab-btn" onclick="switchPcEra('shader')">3. Unifikované shadery (2001–2015)</button>
+            <button class="platform-tab-btn" onclick="switchPcEra('modern')">4. Moderní PC & Ray Tracing (2020+)</button>
+          </div>
+
+          <div class="spec-card" id="pcSpecCard">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <h3 id="pcEraTitle" style="color: var(--accent); font-size: 1.15rem;">Éra MS-DOS a procesorů x86: Zlaté časy ručního ladění</h3>
+              <span id="pcEraBadge" class="badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent);">Základ herního průmyslu</span>
+            </div>
+            <p id="pcEraDesc" style="color: var(--text-secondary); font-size: 0.9rem;">
+              Hry komunikovaly přímo s hardwarem bez ochranných vrstev operačního systému. Každý bajt paměti byl vzácný a hráči před spuštěním konfigurovali soubory autoexec.bat a config.sys.
+            </p>
+
+            <table class="spec-table">
+              <tbody>
+                <tr>
+                  <th>Typický procesor (CPU)</th>
+                  <td id="pcCpu">Intel 8086 (4.77 MHz) až 486 DX2 (66 MHz)</td>
+                </tr>
+                <tr>
+                  <th>Operační paměť (RAM)</th>
+                  <td id="pcRam">640 KB konvenční paměť (EMS / XMS správa paměti)</td>
+                </tr>
+                <tr>
+                  <th>Grafický subsystém</th>
+                  <td id="pcGpu">CGA (4 barvy) -> EGA (16 barev) -> VGA (320x200 bodů, 256 barev, Mode 13h)</td>
+                </tr>
+                <tr>
+                  <th>Zvukový standard</th>
+                  <td id="pcAudio">PC Speaker (pípání) -> AdLib FM syntéza -> Creative Sound Blaster 16</td>
+                </tr>
+                <tr>
+                  <th>Softwarová vrstva & API</th>
+                  <td id="pcApi">MS-DOS, přímý zápis do video paměti (0xA0000000), DOS4GW DOS extender (32-bit chráněný režim)</td>
+                </tr>
+                <tr>
+                  <th>Klíčové herní tituly</th>
+                  <td id="pcGames">Wolfenstein 3D (1992), DOOM (1993), Dune II (1992), Prince of Persia (1989)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 1rem; border-left-color: var(--accent);">
+            <strong>Moderní fenomén: Linux vs. Windows Gaming</strong>
+            <p style="font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-secondary);">
+              Díky překladovým knihovnám <code>Vulkan</code> a <code>Proton (DXVK)</code> dnes na Linuxu běží přes 85 % všech Windows her z platformy Steam bez ztráty výkonu, často i s vyšší stabilitou než na nativních Windows 11.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: DOMÁCÍ HERNÍ KONZOLE
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Domácí herní konzole">
+        <div class="slide-content">
+          <h2>Domácí herní konzole: 9 generací a hardwarová architektura</h2>
+          <p class="slide-lead">Konzole sází na model <strong>unifikovaného uzavřeného hardware</strong>: Vývojáři píší kód pro jedinou konfiguraci bez režie obecného PC operačního systému.</p>
+
+          <!-- Taby generací konzolí -->
+          <div class="platform-tabs" id="consoleGenTabs">
+            <button class="platform-tab-btn active" onclick="switchConsoleGen('gen34')">3. & 4. gen (NES / SNES / Mega Drive)</button>
+            <button class="platform-tab-btn" onclick="switchConsoleGen('gen56')">5. & 6. gen (PS1 / N64 / PS2 / Xbox)</button>
+            <button class="platform-tab-btn" onclick="switchConsoleGen('gen7')">7. gen (PS3 Cell vs. Xbox 360)</button>
+            <button class="platform-tab-btn" onclick="switchConsoleGen('gen8')">8. gen (PS4 / Xbox One - x86 APU)</button>
+            <button class="platform-tab-btn" onclick="switchConsoleGen('gen9')">9. gen (PS5 / Xbox Series X - NVMe éra)</button>
+          </div>
+
+          <div class="spec-card" id="consoleSpecCard">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <h3 id="conGenTitle" style="color: var(--accent); font-size: 1.15rem;">3. a 4. generace: Éra 8-bit a 16-bit cartridgí</h3>
+              <span id="conGenBadge" class="badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent);">1983–1996</span>
+            </div>
+            <p id="conGenDesc" style="color: var(--text-secondary); font-size: 0.9rem;">
+              Hry uloženy na ROM cartridgích s nulovou přístupovou dobou (bez načítání). Hardware byl postaven na diskrétních grafických obvodech specializovaných na hardwarový posun dlaždic a sprajtů (Tilemaps).
+            </p>
+
+            <table class="spec-table">
+              <tbody>
+                <tr>
+                  <th>Vlajkové konzole</th>
+                  <td id="conNames">Nintendo Entertainment System (NES), Sega Mega Drive, Super Nintendo (SNES)</td>
+                </tr>
+                <tr>
+                  <th>Architektura procesoru</th>
+                  <td id="conCpu">Ricoh 2A03 (8-bit, 1.79 MHz) / Motorola 68000 (16-bit, 7.6 MHz)</td>
+                </tr>
+                <tr>
+                  <th>Paměťový subsystém</th>
+                  <td id="conRam">2 KB až 64 KB RAM + paměť v cartridgi</td>
+                </tr>
+                <tr>
+                  <th>Média & Úložiště</th>
+                  <td id="conStorage">Mask ROM Cartridge (od 32 KB po 6 MB), bateriově zálohovaná SRAM pro uložení pozice</td>
+                </tr>
+                <tr>
+                  <th>Technologický milník</th>
+                  <td id="conTech">Hardwarový scrolling, paletové přepínání, koprocesory v cartridgích (Super FX čip pro 3D grafiku)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="grid-2" style="margin-top: 1rem; gap: 0.75rem;">
+            <div class="content-card" style="padding: 0.85rem;">
+              <h4 style="font-size: 0.9rem; color: var(--accent);">Proč došlo k unifikaci na x86?</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary);">
+                Po extrémně komplikovaném procesoru Cell v PS3 (který vyžadoval ruční psaní asynchronních DMA přenosů) výrobci od 8. generace přešli na standardní PC architekturu <strong>AMD x86-64</strong>, což dramaticky zlevnilo a zrychlilo multiplatformní vývoj.
+              </p>
+            </div>
+            <div class="content-card" style="padding: 0.85rem;">
+              <h4 style="font-size: 0.9rem; color: #38bdf8;">Architektura UMA (Unified Memory)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary);">
+                Na rozdíl od PC (kde je zvlášť RAM a VRAM na grafické kartě) konzole PS5 a Xbox Series X sdílí <strong>16 GB GDDR6</strong> paměti mezi CPU i GPU přes ultra-širokou sběrnici (až 560 GB/s propustnost).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: NINTENDO: INOVACE NAD VÝKON
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Ekosystém Nintendo">
+        <div class="slide-content">
+          <h2>Svět Nintenda: Filozofie inovace a hybridního hraní</h2>
+          <p class="slide-lead">Zatímco Sony a Microsoft bojují o surové TFLOPS a fotorealismus, Nintendo se drží doktríny <strong>„Laterálního myšlení s vyzrálou technologií“</strong> (Gunpei Yokoi).</p>
+
+          <div class="grid-2" style="margin-top: 1rem; align-items: stretch;">
+            <div class="card card-glow" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge badge-accent">Architektura Nintendo Switch (2017+)</span>
+                <h3 style="margin-top: 0.75rem; font-size: 1.15rem;">Hybridní koncept: Mobilita i televizní konzole</h3>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+                  Zařízení funguje jako plnohodnotný kapesní tablet s odpojitelnými ovladači <code>Joy-Con</code> (akcelerometry, gyroskopy, HD haptika, IR senzor). Během vteřiny jej lze vložit do dokovací stanice s HDMI výstupem na televizi.
+                </p>
+              </div>
+
+              <div style="margin-top: 1rem; background: rgba(0, 0, 0, 0.25); border-radius: var(--radius-sm); padding: 0.85rem; border: 1px solid var(--border-color);">
+                <div style="font-weight: 600; font-size: 0.82rem; color: var(--accent); margin-bottom: 0.4rem;">Hardwarová konfigurace Switch:</div>
+                <ul style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; padding-left: 1.1rem;">
+                  <li><strong>SoC čipset:</strong> Zakázkový čip NVIDIA Tegra X1 (4x ARM Cortex-A57 CPU)</li>
+                  <li><strong>Grafické jádro:</strong> 256 Maxwell CUDA jader (architektura známá z PC řady GTX 900)</li>
+                  <li><strong>Operační paměť:</strong> 4 GB LPDDR4 (sdílená pro systém i hry)</li>
+                  <li><strong>Operační systém:</strong> Horizon OS (ultra-štíhlý proprietární mikrojádrový systém)</li>
+                  <li><strong>Nízkoúrovňové API:</strong> NVN API navržené Nvidií přímo na míru čipu Tegra</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card card-glow">
+              <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Dynamické profily taktování čipu</span>
+              <h3 style="margin-top: 0.75rem; font-size: 1.15rem;">Takt CPU a GPU v závislosti na napájení</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                Aby baterie vydržela 3 až 9 hodin a zařízení se v rukou neupeklo, operační systém dynamicky mění frekvence křemíku:
+              </p>
+
+              <div class="pill-grid" style="margin-top: 1rem;">
+                <div class="pill-box">
+                  <div class="pill-box-label">Handheld Mód (Baterie)</div>
+                  <div class="pill-box-val" style="color: #f59e0b;">GPU: 307–384 MHz</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Cílové rozlišení 720p, TDP ~7 W</div>
+                </div>
+                <div class="pill-box">
+                  <div class="pill-box-label">Dokovaný Mód (Napájení ze sítě)</div>
+                  <div class="pill-box-val" style="color: #10b981;">GPU: 768 MHz (2x výkon)</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Výstup 1080p na TV, aktivní ventilátor</div>
+                </div>
+              </div>
+
+              <div style="margin-top: 1rem; border-top: 1px solid var(--border-subtle); padding-top: 0.75rem;">
+                <h4 style="font-size: 0.88rem; color: var(--text-primary);">Dědictví přenosných konzolí Nintenda:</h4>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.3rem;">
+                  <strong>Game Boy (1989):</strong> 118 mil. kusů, Z80 procesor &bull; 
+                  <strong>Nintendo DS (2004):</strong> 154 mil. kusů, dotykový stylus a dva displeje &bull; 
+                  <strong>Nintendo Wii (2006):</strong> 101 mil. kusů, masový nástup pohybového ovládání.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: MOBILNÍ ZAŘÍZENÍ (SMARTPHONY & TABLETY)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Mobilní platformy">
+        <div class="slide-content">
+          <h2>Mobilní zařízení: Smartphony a tablety v kapse každého hráče</h2>
+          <p class="slide-lead">Globálně největší herní trh: přes <strong>3,2 miliardy aktivních hráčů</strong> a více než 50 % celkových finančních příjmů globálního videoherního průmyslu.</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="card card-glow">
+              <div class="card-icon" style="color: var(--accent);">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">SoC Architektura (ARM)</h3>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem; padding-left: 1.1rem;">
+                <li><strong>Apple Silicon (A17 Pro / A18 / M-série):</strong> Extrémní jednovláknový výkon, hardwarový ray tracing, unifikovaná paměť.</li>
+                <li><strong>Qualcomm Snapdragon (8 Gen 2/3/4) & Dimensity:</strong> Adreno grafická jádra, podpora ray tracingu v reálném čase.</li>
+                <li>Integrovaný NPU čip pro neurální upscaling a AI výpočty.</li>
+              </ul>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #38bdf8;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Problém: Thermal Throttling</h3>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem;">
+                Mobilní telefony postrádají aktivní ventilátory. Po 10–15 minutách intenzivního hraní 3D hry čip dosáhne kritické teploty (~85 °C na jádře) a řídicí logika <strong>sníží frekvenci GPU až o 30–50 %</strong> pro ochranu baterie a šasi.
+              </p>
+              <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #f43f5e; margin-top: 0.5rem;">
+                Výsledek: propady snímkové frekvence (FPS stutters).
+              </div>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #a855f7;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Grafická API & Ecosystémy</h3>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem; padding-left: 1.1rem;">
+                <li><strong>Android (Google Play):</strong> API Vulkan a OpenGL ES. Otevřená možnost instalace vlastních APK a emulátorů.</li>
+                <li><strong>iOS (Apple App Store):</strong> Nízkoúrovňové API Apple Metal 3 (Mesh Shaders, MetalFX Upscaling).</li>
+                <li><strong>Trend nativních AAA her:</strong> Porty plných konzolových her (Resident Evil Village, Death Stranding, Assassin's Creed) přímo pro smartphony.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 1rem; border-left-color: #38bdf8;">
+            <strong>Specifika herního designu na mobilních zařízeních</strong>
+            <p style="font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-secondary);">
+              Vstupní bariéra dotykového displeje si vynutila vznik specializovaných žánrů (Infinite runner, Match-3, Auto-battler, Gacha RPG). Hráči vyžadují asynchronní ukládání do cloudu, možnost hru kdykoli přerušit při příchozím hovoru a podporu magnetických periferií (např. Backbone One, Razer Kishi).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: STEAM DECK A PC HANDHELDY
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Steam Deck & PC Handheldy">
+        <div class="slide-content">
+          <h2>Přenosná PC: Revoluce Valve Steam Deck a PC Handheldů</h2>
+          <p class="slide-lead">V roce 2022 společnost Valve prolomila bariéru mezi PC a handheldy: Plnohodnotná PC architektura v kapesním těle s konzolovou jednoduchostí.</p>
+
+          <div class="grid-2" style="margin-top: 1rem; align-items: start;">
+            <div class="spec-card">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="color: var(--accent); font-size: 1.1rem;">Hardwarová specifikace (Steam Deck LCD/OLED)</h3>
+                <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent);">Custom AMD APU</span>
+              </div>
+
+              <table class="spec-table" style="margin-top: 0.5rem;">
+                <tbody>
+                  <tr>
+                    <th>Procesor (CPU)</th>
+                    <td>AMD Zen 2 (4 jádra / 8 vláken, takt 2.4 až 3.5 GHz)</td>
+                  </tr>
+                  <tr>
+                    <th>Grafika (GPU)</th>
+                    <td>8x RDNA 2 Compute Units (~1.6 TFLOPS FP32)</td>
+                  </tr>
+                  <tr>
+                    <th>Operační paměť</th>
+                    <td>16 GB LPDDR5 (5500 MT/s) / LPDDR5X (6400 MT/s u OLED)</td>
+                  </tr>
+                  <tr>
+                    <th>Displej</th>
+                    <td>7" LCD (1280x800, 60 Hz) / 7.4" HDR OLED (1280x800, 90 Hz)</td>
+                  </tr>
+                  <tr>
+                    <th>Příkon (TDP)</th>
+                    <td>Nastavitelný v reálném čase: 3 W až 15 W (výdrž 2 až 8 hodin)</td>
+                  </tr>
+                  <tr>
+                    <th>Ovládání</th>
+                    <td>2x haptický trackpad s gyro mířením, zadní makro tlačítka</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card card-glow" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">Softwarový zázrak: SteamOS & Proton</span>
+                <h3 style="margin-top: 0.75rem; font-size: 1.1rem;">Jak funguje běh Windows her pod Linuxem?</h3>
+                <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.55;">
+                  Steam Deck nepoužívá Windows, ale <strong>SteamOS 3 (založený na Arch Linuxu)</strong>. Aby na něm běžely desetitisíce her určených pro Windows, Valve vyvinulo kompatibilní vrstvu <code>Proton</code>.
+                </p>
+
+                <div class="arch-flow" style="margin: 0.75rem 0; padding: 0.65rem;">
+                  <div class="arch-node" style="min-width: 80px; padding: 0.4rem;">
+                    <div class="arch-node-title">Hra</div>
+                    <div style="font-size: 0.75rem; font-weight: 700;">Windows .exe</div>
+                  </div>
+                  <div class="arch-arrow">-></div>
+                  <div class="arch-node" style="min-width: 90px; padding: 0.4rem; border-color: var(--accent);">
+                    <div class="arch-node-title" style="color: var(--accent);">DXVK / VKD3D</div>
+                    <div style="font-size: 0.75rem; font-weight: 700;">DX11/12 do Vulkanu</div>
+                  </div>
+                  <div class="arch-arrow">-></div>
+                  <div class="arch-node" style="min-width: 80px; padding: 0.4rem;">
+                    <div class="arch-node-title">Hardware</div>
+                    <div style="font-size: 0.75rem; font-weight: 700;">RDNA 2 GPU</div>
+                  </div>
+                </div>
+
+                <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; padding-left: 1.1rem;">
+                  <li><strong>Proton NENÍ emulátor:</strong> Instrukce procesoru x86 se vykonávají přímo na nativním křemíku bez zpomalení.</li>
+                  <li><strong>Quick Suspend/Resume:</strong> Možnost stisknout tlačítko napájení a okamžitě uspat náročnou 3D PC hru do RAM za 1 sekundu.</li>
+                </ul>
+              </div>
+
+              <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
+                <strong>Konkurenti s Windows 11:</strong> ASUS ROG Ally (AMD Z1 Extreme čip), Lenovo Legion Go – vyšší surový výkon, ale vyšší spotřeba a horší ergonomie desktopových Windows.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: CLOUDOVÉ HRANÍ (CLOUD GAMING)
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Cloudové hraní (Hra v datacentru)">
+        <div class="slide-content">
+          <h2>Cloudové hraní: Hra běží v datacentru, hráč vidí video</h2>
+          <p class="slide-lead">Konec nutnosti vlastnit drahý herní hardware. Všechny výpočty provádí serverová farma, k uživateli proudí interaktivní video přes internet.</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="card card-glow">
+              <div class="card-icon" style="color: var(--accent);">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">NVIDIA GeForce NOW</h3>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem;">
+                Model <em>„Bring Your Own Games“</em>: Propojí se s vaší knihovnou na Steamu, Epiku či Xboxu. Tarif Ultimate nabízí virtuální grafické karty <strong>RTX 4080</strong>, 4K rozlišení při 120/240 FPS a ultranízkou latenci s NVIDIA Reflex.
+              </p>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #10b981;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Xbox Cloud Gaming (xCloud)</h3>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem;">
+                Součást předplatného Xbox Game Pass Ultimate. Běží na zakázkově upravených serverech s hardwarem <strong>Xbox Series X</strong>. Umožňuje hrát stovky konzolových her přímo v prohlížeči, na chytré TV Samsung nebo v mobilu.
+              </p>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #f43f5e;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Případová studie: Google Stadia</h3>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem;">
+                Spuštěna 2019, ukončena 2023. Proč selhala? Nutnost kupovat hry znovu za plnou cenu na uzavřeném Linuxovém backendu, absence first-party exkluzivit a nízká důvěra hráčů v dlouhodobou podporu ze strany Googlu.
+              </p>
+            </div>
+          </div>
+
+          <!-- Anatomie latence -->
+          <div class="spec-card" style="margin-top: 1rem;">
+            <div style="font-weight: 700; font-size: 0.95rem; color: var(--accent);">Fyzikální anatomie Round-Trip Latence (RTT) v cloudu:</div>
+            <div class="arch-flow" style="margin: 0.65rem 0; padding: 0.65rem;">
+              <div class="arch-node" style="min-width: 95px; padding: 0.35rem;">
+                <div class="arch-node-title">1. Vstup hráče</div>
+                <div style="font-size: 0.72rem; color: var(--text-secondary);">USB polling: 2 ms</div>
+              </div>
+              <div class="arch-arrow">-></div>
+              <div class="arch-node" style="min-width: 105px; padding: 0.35rem;">
+                <div class="arch-node-title">2. Síťový upload</div>
+                <div style="font-size: 0.72rem; color: var(--text-secondary);">Internet ping: 8–20 ms</div>
+              </div>
+              <div class="arch-arrow">-></div>
+              <div class="arch-node" style="min-width: 110px; padding: 0.35rem; border-color: var(--accent);">
+                <div class="arch-node-title" style="color: var(--accent);">3. Render & Kódování</div>
+                <div style="font-size: 0.72rem; color: var(--text-secondary);">GPU + NVENC: 8–12 ms</div>
+              </div>
+              <div class="arch-arrow">-></div>
+              <div class="arch-node" style="min-width: 105px; padding: 0.35rem;">
+                <div class="arch-node-title">4. Síťový download</div>
+                <div style="font-size: 0.72rem; color: var(--text-secondary);">Video stream: 8–20 ms</div>
+              </div>
+              <div class="arch-arrow">-></div>
+              <div class="arch-node" style="min-width: 100px; padding: 0.35rem;">
+                <div class="arch-node-title">5. Dekódování & TV</div>
+                <div style="font-size: 0.72rem; color: var(--text-secondary);">AV1/HEVC: 4–10 ms</div>
+              </div>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap;">
+              <span>Lokální PC odezva: <strong>~12 až 25 ms</strong></span>
+              <span>Kvalitní cloud na optice: <strong>~35 až 60 ms</strong> (výborné pro RPG a adventury, limitující pro eSport střílečky)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: LOKÁLNÍ STREAMING A VIRTUÁLNÍ PC
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Lokální streaming a virtualizace">
+        <div class="slide-content">
+          <h2>Lokální herní streaming a privátní virtualizace (Self-Hosted)</h2>
+          <p class="slide-lead">Když chcete hrát kdekoli v bytě, ale odmítáte kompromisy veřejného cloudu: <strong>Výkonné PC v pracovně, hraní na televizi v obýváku přes gigabitovou LAN</strong>.</p>
+
+          <div class="grid-2" style="margin-top: 1rem; align-items: stretch;">
+            <div class="card card-glow">
+              <span class="badge badge-accent">Zlatý standard open-source streamingu</span>
+              <h3 style="margin-top: 0.75rem; font-size: 1.15rem;">Sunshine (Hostitel) + Moonlight (Klient)</h3>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+                Protokol vyvinutý původně Nvidií pro technologii GameStream byl komunitou přepsán do open-source řešení <code>Sunshine</code> (hostitelský server) a <code>Moonlight</code> (klient pro Windows, Mac, Android, iOS, Apple TV, Steam Deck i modifikované Nintendo Switch).
+              </p>
+
+              <div style="margin-top: 0.85rem; background: rgba(0, 0, 0, 0.25); border-radius: var(--radius-sm); padding: 0.85rem; border: 1px solid var(--border-color);">
+                <div style="font-weight: 600; font-size: 0.82rem; color: var(--accent);">Proč překonává běžný cloud?</div>
+                <ul style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-top: 0.35rem; padding-left: 1.1rem;">
+                  <li><strong>Latence v lokální síti pod 2–4 ms:</strong> Na gigabitovém kabelu nebo Wi-Fi 6 je odezva k nerozeznání od monitoru připojeného kabelem.</li>
+                  <li><strong>Bitrate až 100+ Mbps:</strong> Křišťálově čistý 4K 120 FPS obraz bez kompresních pixelů a artefaktů.</li>
+                  <li><strong>Hardware encoding:</strong> Využití kódovacích čipů NVENC (Nvidia) nebo AMF (AMD) s nulovou zátěží na herní procesor.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card card-glow">
+              <span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #a855f7;">Pokročilá IT infrastruktura</span>
+              <h3 style="margin-top: 0.75rem; font-size: 1.15rem;">GPU Passthrough virtualizace (Proxmox / KVM)</h3>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.6;">
+                Architektura využívaná správci sítí a technickými nadšenci: Herní počítač neběží jako běžná instalace Windows, ale jako <strong>virtuální stroj (VM)</strong> nad linuxovým hypervizorem (Proxmox VE, Unraid, Arch KVM).
+              </p>
+
+              <div class="pill-grid" style="margin-top: 0.85rem;">
+                <div class="pill-box">
+                  <div class="pill-box-label">Technologie IOMMU</div>
+                  <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                    PCIe slot s grafickou kartou je izolován od hostitelského OS a předán přímo virtuálnímu stroji s Windows s <strong>98–99 % nativního výkonu</strong>.
+                  </div>
+                </div>
+                <div class="pill-box">
+                  <div class="pill-box-label">Multi-Seat herní server</div>
+                  <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                    Jeden fyzický server osazený dvěma grafickými kartami může napájet dvě nezávislá herní pracoviště současně pro dva hráče.
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem;">
+                Další ekosystémy: <strong>Steam Remote Play</strong>, <strong>PlayStation Remote Play</strong> (na zařízeních PS Portal).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: SPECIÁLNÍ PLATFORMY: VR, WEB & RETRO
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="VR, Webové hry a Retro FPGA">
+        <div class="slide-content">
+          <h2>Specializované platformy: Virtuální realita, web a retro čipy</h2>
+          <p class="slide-lead">Herní zážitky sahají daleko za hranice klasického monitoru a televize:</p>
+
+          <div class="grid-3" style="margin-top: 1rem;">
+            <div class="card card-glow">
+              <div class="card-icon" style="color: var(--accent);">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M2 10a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v4a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4v-4z"></path><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="12" r="2"></circle></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Virtuální realita (VR / XR)</h3>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem; padding-left: 1.1rem;">
+                <li><strong>Standalone VR (Meta Quest 3):</strong> Samostatný headset s mobilním čipsetem Snapdragon XR2 Gen 2 a Android jádrem. Sledování 6DoF a rukou v prostoru bez kabelů.</li>
+                <li><strong>PCVR (Tethered / Wi-Fi streaming):</strong> Výpočet provádí PC grafika, headset slouží jako stereoskopický displej s obnovovací frekvencí 90 až 144 Hz pro prevenci kinetózy.</li>
+              </ul>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #38bdf8;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Webové hraní (WebGPU & Wasm)</h3>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem; padding-left: 1.1rem;">
+                <li><strong>WebAssembly (Wasm):</strong> Spouštění C++ nebo Rust kódu přímo v internetovém prohlížeči rychlostí blízkou nativnímu kódu.</li>
+                <li><strong>WebGPU API:</strong> Následovník WebGL. Přináší nízkoúrovňový přístup k moderním GPU shaderům přímo do prohlížeče bez instalace doplňků.</li>
+                <li>Hry dostupné okamžitě přes jediné URL kliknutí.</li>
+              </ul>
+            </div>
+
+            <div class="card card-glow">
+              <div class="card-icon" style="color: #f59e0b;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+              </div>
+              <h3 style="margin-top: 0.5rem; font-size: 1.05rem;">Retro & FPGA Replikace</h3>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; margin-top: 0.4rem; padding-left: 1.1rem;">
+                <li><strong>Softwarová emulace (RetroArch):</strong> Běžný program aproximuje instrukce cizího procesoru. Vnáší drobnou softwarovou latenci.</li>
+                <li><strong>Hardwarová FPGA replikace (MiSTer FPGA):</strong> Programovatelné hradlové pole přepojí fyzické logické bloky tak, aby přesně kopírovaly původní křemíkový čip (SNES, Amiga, Sega) na úrovni jednotlivých hodinových cyklů.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 1rem; border-left-color: #f59e0b;">
+            <strong>Proč je FPGA replikace zásadní pro digitální archivaci?</strong>
+            <p style="font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-secondary);">
+              Původní herní hardware z 80. a 90. let postupně fyzicky umírá (degradace elektrolytických kondenzátorů a křemíku). FPGA umožňuje zachovat původní hardware s absolutní 100% přesností včetně všech nízkoúrovňových chyb a časování bez jakékoli emulační vrstvy.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: INTERAKTIVNÍ SROVNÁVAČ PLATFOREM
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Průvodce výběrem platformy">
+        <div class="slide-content">
+          <h2>Interaktivní průvodce: Jaká platforma je pro vás optimální?</h2>
+          <p class="slide-lead">Zvolte své priority a požadavky na hraní. Náš systém vyhodnotí kompromisy mezi cenou, mobilitou, latencí a možnostmi modifikace.</p>
+
+          <div class="comparator-container">
+            <!-- Vstupní filtry -->
+            <div class="filter-panel">
+              <div class="filter-group">
+                <label class="filter-label" for="selBudget">
+                  <span>Rozpočet na hardware:</span>
+                </label>
+                <select id="selBudget" class="filter-select" onchange="runPlatformAdvisor()">
+                  <option value="low">Nízký (do 10 000 Kč / vlastněný mobil či starý PC)</option>
+                  <option value="mid" selected>Střední (12 000 až 18 000 Kč)</option>
+                  <option value="high">Vysoký (30 000 Kč a více)</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label class="filter-label" for="selMobility">
+                  <span>Místo hraní (Mobilita):</span>
+                </label>
+                <select id="selMobility" class="filter-select" onchange="runPlatformAdvisor()">
+                  <option value="home">Pouze doma (obývák na gauči nebo pracovní stůl)</option>
+                  <option value="travel">Na cestách (vlak, škola, postel, cesty)</option>
+                  <option value="hybrid" selected>Chci mít možnost hrát doma i na cestách</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label class="filter-label" for="selGameType">
+                  <span>Požadovaná grafika a herní styl:</span>
+                </label>
+                <select id="selGameType" class="filter-select" onchange="runPlatformAdvisor()">
+                  <option value="esport">Kompetitivní eSport (144+ FPS, klávesnice a myš, CS2, LoL)</option>
+                  <option value="aaa" selected>Moderní AAA příběhové trháky (4K, filmový zážitek)</option>
+                  <option value="casual">Nenáročné indie hry, párty hry a rodinná zábava</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label class="filter-label" for="selInternet">
+                  <span>Kvalita internetu:</span>
+                </label>
+                <select id="selInternet" class="filter-select" onchange="runPlatformAdvisor()">
+                  <option value="fast" selected>Rychlá stabilní optika / Wi-Fi 6 (ping &lt; 15 ms)</option>
+                  <option value="slow">Pomalé nebo datově omezené připojení (hraní offline)</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label class="filter-label" for="selTinker">
+                  <span>Technické preference:</span>
+                </label>
+                <select id="selTinker" class="filter-select" onchange="runPlatformAdvisor()">
+                  <option value="plug" selected>Plug & Play (zapnout a okamžitě hrát bez ladění)</option>
+                  <option value="tinker">Rád ladím detaily, grafická nastavení a instaluji módy</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Výstupní doporučení -->
+            <div class="result-card" id="advisorResultCard">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <span class="result-badge" id="advBadge">Doporučená primární volba</span>
+                <span id="advMatchScore" style="font-family: var(--font-mono); font-weight: 700; color: var(--accent); font-size: 0.95rem;">95 % shoda</span>
+              </div>
+
+              <h3 id="advTitle" style="font-size: 1.4rem; color: #fff; margin-top: -0.25rem;">Herní konzole (PlayStation 5 / Xbox Series X)</h3>
+              
+              <p id="advDesc" style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55;">
+                Ideální kompromis mezi pořizovací cenou (okolo 13 000 Kč) a špičkovým výkonem na velké televizi v obývacím pokoji. Garantovaný plynulý běh her, nulová nutnost konfigurovat ovladače a skvělé first-party exkluzivity.
+              </p>
+
+              <div class="pill-grid">
+                <div class="pill-box">
+                  <div class="pill-box-label">Vstupní náklady</div>
+                  <div class="pill-box-val" id="advCost">~13 000 Kč</div>
+                </div>
+                <div class="pill-box">
+                  <div class="pill-box-label">Zpoždění (Latence)</div>
+                  <div class="pill-box-val" id="advLat">Minimální (Nativní)</div>
+                </div>
+                <div class="pill-box">
+                  <div class="pill-box-label">Typ ovládání</div>
+                  <div class="pill-box-val" id="advCtrl">Gamepad (DualSense)</div>
+                </div>
+                <div class="pill-box">
+                  <div class="pill-box-label">Modding & Otevřenost</div>
+                  <div class="pill-box-val" id="advOpen">Uzavřené (Bez módů)</div>
+                </div>
+              </div>
+
+              <div style="background: rgba(0, 0, 0, 0.3); border-radius: var(--radius-sm); padding: 0.85rem; border: 1px solid var(--border-subtle);">
+                <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Alternativní možnost ke zvážení:</div>
+                <div id="advAlt" style="font-size: 0.85rem; color: var(--text-primary); margin-top: 0.2rem; font-weight: 600;">
+                  Cloud Gaming (GeForce NOW) – pokud nechcete kupovat novou krabičku a máte optický internet.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: SHRNUTÍ A OPAKOVACÍ OTÁZKY
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <h2>Shrnutí herních platforem a opakovací otázky</h2>
+          <p class="slide-lead">Klíčové poznatky, které by si měl každý student střední průmyslové školy odnést do praxe:</p>
+
+          <div class="summary-grid" style="margin-bottom: 1.5rem;">
+            <div class="content-card">
+              <h4 style="color: var(--accent);">Konvergence hardwaru</h4>
+              <p>Éra exotických architektur skončila. Konzole i PC dnes sdílejí procesory x86-64 a moderní GPU (AMD RDNA / NVIDIA Ada Lovelace).</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #38bdf8;">Průlom kompatibilních vrstev</h4>
+              <p>Nástroje jako Proton dokazují, že díky Vulkanu a překladu instrukcí v reálném čase již Windows nemají monopol na herní vývoj.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #10b981;">Fyzikální limity cloudu</h4>
+              <p>Cloud Gaming nabízí neuvěřitelnou svobodu, ale rychlost světla v optickém vlákně nastavuje pevný limit pro latenci v kompetitivních hrách.</p>
+            </div>
+            <div class="content-card">
+              <h4 style="color: #a855f7;">Specializace periferií</h4>
+              <p>Volba platformy není jen o výkonu, ale o způsobu interakce: od myši s klávesnicí přes haptické gamepady až po VR sledování těla v prostoru.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.75rem;">Opakovací kontrolní otázky (FAQ)</h3>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>1. Proč konzole 8. a 9. generace přešly na architekturu PC (x86-64) místo vývoje vlastních čipů (jako Cell v PS3)?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Vývoj zakázkových architektur byl astronomicky drahý a programování pro asymetrická jádra procesoru Cell v PS3 bylo pro herní studia extrémně náročné, což vedlo k horší optimalizaci multiplatformních her. Přechodem na standardní architekturu AMD x86-64 mohou vývojáři psát stejný kód pro PC, PlayStation i Xbox s minimálními úpravami.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>2. Jak funguje Proton na zařízení Steam Deck a proč se zásadně liší od běžného emulátoru?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Proton není emulátor, protože CPU instrukce x86-64 běží přímo nativně na procesoru AMD bez jakékoli softwarové interpretace instrukční sady. Proton (postavený na WINE) překládá pouze volání Windows API funkcí a grafické knihovny DirectX 9/11/12 do nativních volání Linuxu a grafického API Vulkan (pomocí DXVK a VKD3D) v reálném čase s minimální režií.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>3. Jaké jsou hlavní fyzikální a síťové překážky, které brání cloudu plně nahradit lokální herní hardware v esportu?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Hlavní překážkou je Round-Trip Time (RTT) latence způsobená vzdáleností od serveru, směrováním v síti, časem kódování videa (NVENC) a dekódování na klientovi. I na špičkovém připojení činí celková latence cloudu 35–60 ms, zatímco na lokálním PC s 240Hz monitorem je to 10–20 ms. V kompetitivních hrách (CS2, Valorant) představuje tento rozdíl nepřekonatelnou nevýhodu.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>4. Proč moderní hry na PS5 a Xbox Series X striktně vyžadují rychlé NVMe SSD a nelze je spustit z HDD?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Díky technologiím jako DirectStorage a zakázkovým hardwarovým dekompresorům (např. čip Kraken v PS5 s propustností až 9 GB/s) se herní data streamují přímo do unifikované GDDR6 paměti během několika milisekund, když se hráč otáčí v otevřeném světě. Rotační mechanický disk s propustností pouhých ~100 MB/s a vysokou přístupovou dobou by způsobil masivní zasekávání a opožděné doskakování textur a geometrie.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>5. Jaký je rozdíl mezi softwarovou emulací starých her a hardwarovou replikací pomocí FPGA?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Softwarový emulátor je běžný program běžící na moderním CPU, který v nekonečné smyčce čte instrukce starého procesoru a snaží se odhadnout jejich výsledek, což způsobuje drobná zpoždění a odchylky v časování. FPGA (Field-Programmable Gate Array) je fyzický obvod z tisíců logických buněk, které se nakonfigurují tak, že fyzicky elektricky replikují původní křemíkový čip cyklus po cyklu s nulovou softwarovou režií a absolutní věrností.
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: center;">
+            <a href="../index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); color: #fff; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Zpět na katalog předmětu PHR
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Spodní ovládací lišta prezentace (SPŠ Framework Standard) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../020-Casova-osa-a-milniky/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 020 Časová osa (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PHR">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (v přípravě)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Fullscreen (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <!-- Postranní panel osnovy -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Herní platformy
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Jádro frameworku prezentací -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Specifický interaktivní engine pro téma 030 Platformy -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ==========================================================
+         1. DATOVÁ STRUKTURA: MILNÍKY PC ÉRY
+         ========================================================== */
+      const pcEras = {
+        dos: {
+          title: 'Éra MS-DOS a procesorů x86: Zlaté časy ručního ladění',
+          badge: '1981–1995 &bull; Real Mode & 640 KB',
+          desc: 'Hry komunikovaly přímo s hardwarem bez ochranných vrstev operačního systému. Každý bajt paměti byl vzácný a hráči před spuštěním konfigurovali soubory autoexec.bat a config.sys.',
+          cpu: 'Intel 8086 (4.77 MHz) až 486 DX2 (66 MHz)',
+          ram: '640 KB konvenční paměť (správa EMS přes EMM386, XMS přes HIMEM.SYS)',
+          gpu: 'CGA (4 barvy) -> EGA (16 barev) -> VGA (320x200 bodů, 256 barev, slavný Mode 13h)',
+          audio: 'PC Speaker (pípání) -> AdLib FM syntéza -> Creative Sound Blaster 16 (ISA sběrnice)',
+          api: 'MS-DOS, přímý zápis do video RAM (segment 0xA000), DOS4GW 32-bit chráněný režim',
+          games: 'Wolfenstein 3D (1992), DOOM (1993), Dune II (1992), Prince of Persia (1989)'
+        },
+        win95: {
+          title: 'Nástup 3D akcelerátorů a Windows 95: Voodoo revoluce',
+          badge: '1995–2000 &bull; Zrod 3D hraní',
+          desc: 'Konec softwarového vykreslování na procesoru. K PC se do slotu PCI přidal samostatný 3D akcelerátor, který se propojil externím kabelem s 2D kartou. Zrodilo se rozhraní Microsoft DirectX.',
+          cpu: 'Intel Pentium 75–233 MHz, Pentium II/III, AMD K6-2 (instrukce 3DNow!)',
+          ram: '16 MB až 128 MB SDRAM',
+          gpu: '3dfx Voodoo Graphics (4 MB EDO RAM), Voodoo 2, Riva TNT2, GeForce 256 (první hardwarové T&L)',
+          audio: 'PCI zvukové karty, Creative Sound Blaster Live! (EAX prostorový 3D zvuk)',
+          api: '3dfx Glide API, Microsoft DirectX (DirectDraw, Direct3D 2 až 7), OpenGL',
+          games: 'Quake II (1997), Unreal (1998), Half-Life (1998), Need for Speed II SE'
+        },
+        shader: {
+          title: 'Unifikované shadery a vícejádrové procesory',
+          badge: '2001–2015 &bull; DirectX 9.0c až 11',
+          desc: 'Architektura pevných renderovacích jednotek (Fixed Function Pipeline) byla nahrazena plně programovatelnými shadery. Procesory přešly na 64-bit a více jader, objevily se moderní sběrnice PCIe.',
+          cpu: 'Intel Core 2 Duo / Quad, Core i7 2600K (Sandy Bridge), AMD Athlon 64 X2',
+          ram: '2 GB DDR2 až 16 GB DDR3',
+          gpu: 'NVIDIA GeForce 8800 GTX (první unifikované shadery), GTX 970 / AMD Radeon HD 4870',
+          audio: 'Integrované kodeky na základní desce (Realtek High Definition Audio)',
+          api: 'DirectX 9.0c (Pixel Shader 3.0), DirectX 10 a 11 (Tessellation, Compute Shaders)',
+          games: 'Crysis (2007), The Witcher 3 (2015), Skyrim (2011), Battlefield 3 (2011)'
+        },
+        modern: {
+          title: 'Moderní PC: Hardwarový Ray Tracing, AI Upscaling a NVMe',
+          badge: '2020+ &bull; DX12 Ultimate & Vulkan',
+          desc: 'Fotorealistické sledování paprsků světla (Ray Tracing) v reálném čase. Dedikovaná Tensor jádra dopočítávají rozlišení i celé snímky pomocí neuronových sítí (DLSS, FSR, XeSS). Úložiště se zapojilo přímo do GPU přes DirectStorage.',
+          cpu: 'AMD Ryzen 7000/9000 (Zen 4/5) / Intel Core 14th gen / Core Ultra (až 24 jader)',
+          ram: '32 GB až 64 GB DDR5 (6000+ MT/s)',
+          gpu: 'NVIDIA GeForce RTX 4000/5000 (Ada Lovelace / Blackwell), AMD Radeon RX 7000',
+          audio: 'Prostorové formáty Dolby Atmos for Headphones, Windows Sonic, 32-bit DACy',
+          api: 'DirectX 12 Ultimate (Raytracing Tier 1.1, Mesh Shaders, Sampler Feedback), Vulkan 1.3',
+          games: 'Cyberpunk 2077 (Path Tracing), Alan Wake 2, Black Myth: Wukong (2024)'
+        }
+      };
+
+      window.switchPcEra = function (key) {
+        const data = pcEras[key];
+        if (!data) return;
+
+        document.querySelectorAll('#pcEraTabs .platform-tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        if (event && event.currentTarget) {
+          event.currentTarget.classList.add('active');
+        }
+
+        document.getElementById('pcEraTitle').textContent = data.title;
+        document.getElementById('pcEraBadge').innerHTML = data.badge;
+        document.getElementById('pcEraDesc').textContent = data.desc;
+        document.getElementById('pcCpu').textContent = data.cpu;
+        document.getElementById('pcRam').textContent = data.ram;
+        document.getElementById('pcGpu').textContent = data.gpu;
+        document.getElementById('pcAudio').textContent = data.audio;
+        document.getElementById('pcApi').textContent = data.api;
+        document.getElementById('pcGames').textContent = data.games;
+      };
+
+      /* ==========================================================
+         2. DATOVÁ STRUKTURA: GENERACE DOMÁCÍCH KONZOLÍ
+         ========================================================== */
+      const consoleGens = {
+        gen34: {
+          title: '3. a 4. generace: Éra 8-bit a 16-bit cartridgí',
+          badge: '1983–1996 &bull; Cartridge bez načítání',
+          desc: 'Hry uloženy na ROM cartridgích s okamžitým startem. Hardware byl postaven na diskrétních grafických obvodech specializovaných na hardwarový posun dlaždic a sprajtů (Tilemaps).',
+          names: 'Nintendo Entertainment System (NES), Sega Mega Drive, Super Nintendo (SNES)',
+          cpu: 'Ricoh 2A03 (8-bit, 1.79 MHz) / Motorola 68000 (16-bit, 7.6 MHz)',
+          ram: '2 KB až 64 KB RAM + paměť v cartridgi',
+          storage: 'Mask ROM Cartridge (od 32 KB po 6 MB), bateriově zálohovaná SRAM pro savy',
+          tech: 'Hardwarový scrolling, paletové přepínání, koprocesory v cartridgích (Super FX čip pro 3D grafiku)'
+        },
+        gen56: {
+          title: '5. a 6. generace: Příchod 3D polygonů a optických disků',
+          badge: '1994–2006 &bull; CD-ROM a DVD revoluce',
+          desc: 'Masivní přechod na 3D polygonální renderování a optická média (CD a DVD), která nabídla gigantický prostor pro nahranou hudbu a filmové cutscény.',
+          names: 'Sony PlayStation (PS1), Nintendo 64, PlayStation 2 (155 mil. kusů), původní Microsoft Xbox',
+          cpu: 'MIPS R3000A (PS1, 33 MHz) / Emotion Engine (PS2, 294 MHz) / Intel Pentium III 733 MHz (Xbox)',
+          ram: '2 MB (PS1) / 32 MB RDRAM (PS2) / 64 MB DDR (Xbox)',
+          storage: 'CD-ROM (650 MB), DVD-ROM (4.7–8.5 GB), Xbox integrovaný 8 GB pevný disk (HDD)',
+          tech: 'První geometrické 3D koprocesory, DVD filmový přehrávač v PS2, integrovaná síťová karta u Xboxu'
+        },
+        gen7: {
+          title: '7. generace: Architektura Cell vs. Xenon v HD rozlišení',
+          badge: '2005–2013 &bull; Éra 720p/1080i a online sítí',
+          desc: 'Nástup HD televizí a online služeb (PlayStation Network, Xbox Live). Technologicky nejkomplikovanější souboj architektur v herní historii.',
+          names: 'Sony PlayStation 3, Microsoft Xbox 360, Nintendo Wii',
+          cpu: 'PS3 Cell Broadband Engine (1 PPE + 7 SPE jádra, 3.2 GHz) / Xbox 360 Xenon (3x PowerPC, 3.2 GHz)',
+          ram: 'PS3: Asymetrická 256 MB XDR + 256 MB GDDR3 / Xbox 360: Unifikovaná 512 MB GDDR3',
+          storage: 'Blu-ray mechanika (PS3, 25/50 GB), DVD-DL (Xbox 360), interní 2.5" SATA HDD',
+          tech: 'Hardwarový eDRAM buffer pro bezplatný anti-aliasing u Xboxu, masivní paralelní SPE výpočty u Cellu'
+        },
+        gen8: {
+          title: '8. generace: Standardizace na PC architekturu AMD x86',
+          badge: '2013–2020 &bull; Konec exotického křemíku',
+          desc: 'Výrobci zcela opustili drahé proprietární čipy a nasadili standardní PC architekturu od společnosti AMD. Přechod na unifikovanou paměť a mezigenerační vylepšené verze (PS4 Pro, Xbox One X).',
+          names: 'Sony PlayStation 4 / PS4 Pro, Microsoft Xbox One / Xbox One X, Nintendo Switch',
+          cpu: 'AMD Jaguar (8 jader x86-64, takt 1.6 až 2.3 GHz)',
+          ram: '8 GB unifikované GDDR5 (PS4, 176 GB/s) / 8 GB DDR3 + 32 MB rychlé ESRAM (Xbox One)',
+          storage: 'Interní 500 GB až 1 TB mechanický 2.5" HDD (rotační 5400 RPM)',
+          tech: 'Nízká spotřeba APU, unifikovaná paměťová sběrnice, první 4K šachovnicové renderování (Checkerboard)'
+        },
+        gen9: {
+          title: '9. generace: Architektura Zen 2, RDNA 2/3 a ultra-rychlá NVMe SSD',
+          badge: '2020+ &bull; Okamžité načítání & Ray Tracing',
+          desc: 'Konec načítacích obrazovek. Zakázková PCIe 4.0 NVMe úložiště s hardwarovou dekompresí dat streamují geometrii a textury přímo do GPU za běhu. Podpora 4K při 60–120 FPS a Ray Tracing.',
+          names: 'Sony PlayStation 5 / PS5 Pro, Microsoft Xbox Series X / Series S',
+          cpu: 'AMD Zen 2 (8 jader / 16 vláken, takt 3.5 až 3.8 GHz)',
+          ram: '16 GB GDDR6 (propustnost až 560 GB/s) sdílená pro systém, kód i grafiku',
+          storage: 'Custom PCIe 4.0 NVMe SSD (PS5 surový tok 5.5 GB/s, dekomprese Kraken až 9 GB/s)',
+          tech: 'Hardwarový Ray Tracing, Variable Rate Shading, ovladače DualSense s haptickou odezvou a adaptivními spouštěmi'
+        }
+      };
+
+      window.switchConsoleGen = function (key) {
+        const data = consoleGens[key];
+        if (!data) return;
+
+        document.querySelectorAll('#consoleGenTabs .platform-tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        if (event && event.currentTarget) {
+          event.currentTarget.classList.add('active');
+        }
+
+        document.getElementById('conGenTitle').textContent = data.title;
+        document.getElementById('conGenBadge').innerHTML = data.badge;
+        document.getElementById('conGenDesc').textContent = data.desc;
+        document.getElementById('conNames').textContent = data.names;
+        document.getElementById('conCpu').textContent = data.cpu;
+        document.getElementById('conRam').textContent = data.ram;
+        document.getElementById('conStorage').textContent = data.storage;
+        document.getElementById('conTech').textContent = data.tech;
+      };
+
+      /* ==========================================================
+         3. INTERAKTIVNÍ PRŮVODCE VÝBĚREM PLATFORMY (ADVISOR)
+         ========================================================== */
+      window.runPlatformAdvisor = function () {
+        const budget = document.getElementById('selBudget').value;
+        const mobility = document.getElementById('selMobility').value;
+        const gameType = document.getElementById('selGameType').value;
+        const internet = document.getElementById('selInternet').value;
+        const tinker = document.getElementById('selTinker').value;
+
+        let res = {
+          title: 'Herní konzole (PlayStation 5 / Xbox Series X)',
+          score: 95,
+          desc: 'Ideální kompromis mezi pořizovací cenou (okolo 13 000 Kč) a špičkovým výkonem na velké televizi v obývacím pokoji. Garantovaný plynulý běh her, nulová nutnost konfigurovat ovladače a skvělé first-party exkluzivity.',
+          cost: '~13 000 Kč',
+          lat: 'Minimální (Nativní)',
+          ctrl: 'Gamepad (DualSense / Xbox)',
+          open: 'Uzavřené (Zabezpečený OS)',
+          alt: 'Cloud Gaming (GeForce NOW) – pokud nechcete kupovat novou krabičku a máte optický internet.'
+        };
+
+        // Vyhodnocovací rozhodovací logika
+        if (gameType === 'esport' || tinker === 'tinker' || (budget === 'high' && mobility === 'home')) {
+          res.title = 'Stolní herní PC (Desktop PC Gaming)';
+          res.score = 98;
+          res.desc = 'Absolutní král výkonu, přesnosti ovládání a svobody. Umožňuje hraní při 144 až 360 FPS na rychlých monitorech, instalaci komunitních modifikací a kompletní volbu komponent.';
+          res.cost = '25 000 až 60 000+ Kč';
+          res.lat = 'Extrémně nízká (< 15 ms)';
+          res.ctrl = 'Klávesnice + Myš / Ovladače';
+          res.open = '100% Otevřené (Windows / Linux)';
+          res.alt = 'Herní notebook nebo konzole PlayStation 5, pokud chcete ušetřit peníze za komponenty.';
+        } else if (mobility === 'travel' && budget === 'low') {
+          res.title = 'Mobilní hraní (Smartphone / Tablet)';
+          res.score = 92;
+          res.desc = 'Zařízení, které nosíte neustále v kapse. Obrovská nabídka Free-to-Play titulů, cloudových klientů a možnost připojit magnetický gamepad (např. Backbone).';
+          res.cost = '0 Kč (využití vlastního telefonu)';
+          res.lat = 'Závisí na hře a síti';
+          res.ctrl = 'Dotykový displej / Přídavný ovladač';
+          res.open = 'Střední (Android) / Uzavřené (iOS)';
+          res.alt = 'Nintendo Switch Lite nebo použitý Steam Deck z bazaru.';
+        } else if (mobility === 'hybrid' || (mobility === 'travel' && budget !== 'low')) {
+          if (tinker === 'tinker' || gameType === 'aaa') {
+            res.title = 'Přenosné PC (Valve Steam Deck / ROG Ally)';
+            res.score = 96;
+            res.desc = 'Plnohodnotná PC knihovna z platformy Steam v kapesním formátu. Špičkový systém SteamOS s Protonem umožňuje uspat a probudit hru během vteřiny, nastavovat TDP a hrát plnohodnotné AAA tituly kdekoli na cestách.';
+            res.cost = '10 000 až 16 000 Kč';
+            res.lat = 'Minimální (Nativní x86)';
+            res.ctrl = 'Páčky + D-Pad + Trackpady + Gyro';
+            res.open = 'Vysoká (Linux / Desktopový režim)';
+            res.alt = 'Nintendo Switch OLED, pokud preferujete exkluzivní rodinné hry od Nintenda.';
+          } else {
+            res.title = 'Nintendo Switch (OLED / Standard)';
+            res.score = 94;
+            res.desc = 'Dokonalá rodinná a párty konzole. Okamžitý přechod mezi hraním v posteli a na televizi v obýváku. Nepřekonatelné exkluzivní hry (Mario, Zelda, Pokémon) a bezproblémový lokální multiplayer.';
+            res.cost = '6 500 až 8 500 Kč';
+            res.lat = 'Minimální (Nativní)';
+            res.ctrl = 'Odpojitelné Joy-Con ovladače';
+            res.open = 'Zcela uzavřené';
+            res.alt = 'Steam Deck, pokud máte velkou knihovnu her na PC a chcete vyšší grafický výkon.';
+          }
+        } else if (budget === 'low' && internet === 'fast' && mobility === 'home') {
+          res.title = 'Cloudové hraní (NVIDIA GeForce NOW / xCloud)';
+          res.score = 90;
+          res.desc = 'Nemusíte investovat desetitisíce do nové grafické karty. Hra běží v datacentru na serveru s RTX 4080 a k vám na starý notebook či televizi se streamuje pouze video.';
+          res.cost = 'Předplatné (~250–500 Kč/měsíc)';
+          res.lat = 'Střední (35–60 ms dle vzdálenosti nodu)';
+          res.ctrl = 'Libovolný gamepad / Klávesnice';
+          res.open = 'Dle platformy (Steam / Xbox)';
+          res.alt = 'Koupě konzole Xbox Series S z bazaru pro plně offline nativní hraní.';
+        }
+
+        // Aktualizace DOM
+        document.getElementById('advTitle').textContent = res.title;
+        document.getElementById('advMatchScore').textContent = `${res.score} % shoda`;
+        document.getElementById('advDesc').textContent = res.desc;
+        document.getElementById('advCost').textContent = res.cost;
+        document.getElementById('advLat').textContent = res.lat;
+        document.getElementById('advCtrl').textContent = res.ctrl;
+        document.getElementById('advOpen').textContent = res.open;
+        document.getElementById('advAlt').textContent = res.alt;
+      };
+
+      // Spustit doporučovač jednou při načtení
+      runPlatformAdvisor();
+
+    })();
+  </script>
+</body>
+
+</html>
