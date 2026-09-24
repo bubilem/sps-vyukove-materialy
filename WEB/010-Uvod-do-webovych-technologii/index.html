@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 010: Úvod do webových technologií | WEB • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Webové technologie (WEB) SPŠ: architektura webu, model klient-server, hardware, software, domény, DNS, hostingové modely a digitální přístupnost.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 010 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">010 Úvod do webu</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Základy webu &bull; Architektura</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do webových technologií">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent" style="background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Předmět WEB &bull; Téma 010</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Architektura &amp; Principy</span>
+          </div>
+          <h1 class="hero-title">Úvod do webových technologií</h1>
+          <p class="hero-subtitle">
+            Komplexní průvodce architekturou webu &bull; Od fyzických datacenter, modelu klient–server a DNS až po moderní hostingy, webové standardy a digitální přístupnost.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Podstata Webu
+              </h4>
+              <p>Rozdíl mezi Internetem a WWW, historie Tim Berners-Lee, standardy W3C a WHATWG.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Klient &bull; Server
+              </h4>
+              <p>Architektura webového provozu, CDN, reverzní proxy servery a vícevrstvý backend.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                DNS &bull; Hostingy
+              </h4>
+              <p>Překlad domén, hierarchie stromu DNS, sdílený webhosting, VPS, Cloud a statický Jamstack.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                Standardy &bull; a11y
+              </h4>
+              <p>Pilíře HTML/CSS/JS, digitální přístupnost WCAG 2.2 pro znevýhodněné a bezpečnostní rizika.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Co je to web? Internet vs. WWW
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Co je to web? Internet vs. WWW">
+        <div class="slide-header">
+          <h2 class="slide-title">Co je to web? Zásadní rozdíl mezi Internetem a WWW</h2>
+          <p class="slide-subtitle">V běžné řeči se pojmy zaměňují, technicky však představují zcela odlišné vrstvy digitálního světa.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Internet -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
+              </div>
+              <h3 class="card-title">Internet: Fyzická a síťová infrastruktura</h3>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: 0.75rem;">
+                <strong>Internet</strong> je globální soustava navzájem propojených počítačových sítí fungující na sadě protokolů <strong>TCP/IP</strong>.
+              </p>
+              <ul class="clean-list">
+                <li><strong>Hardware a konektivita:</strong> Transatlantické podmořské optické kabely, páteřní směrovače (BGP routery), satelity a datacentra.</li>
+                <li><strong>Nezávislost na službě:</strong> Poskytuje pouze transportní vrstvu pro přenos paketů mezi IP adresami.</li>
+                <li><strong>Mnoho různých služeb:</strong> Nad internetem běží e-mail (SMTP/IMAP), přenos souborů (SFTP), hlasová komunikace (VoIP), herní protokoly, streamování médií i samotný Web.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- WWW -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              </div>
+              <h3 class="card-title">World Wide Web (WWW): Aplikační hypertextová služba</h3>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: 0.75rem;">
+                <strong>WWW</strong> je jen <em>jedna z mnoha služeb</em> provozovaných na internetu, navržená v roce 1989 <strong>Timem Berners-Leem</strong> v CERNu.
+              </p>
+              <ul class="clean-list">
+                <li><strong>Hypertext a odkazy:</strong> Dokumenty navzájem propojené aktivními odkazy (hyperlinks), které umožňují nelineární čtení.</li>
+                <li><strong>Protokol HTTP/HTTPS:</strong> Aplikační komunikační protokol pro předávání webových zdrojů.</li>
+                <li><strong>Jednotný identifikátor (URI/URL):</strong> Standardizovaný formát adresování jakéhokoli zdroje na planetě.</li>
+                <li><strong>Standardizační autority:</strong> <em>W3C</em> (World Wide Web Consortium) a <em>WHATWG</em> (specifikace živého standardu HTML5).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card" style="margin-top: 1.25rem;">
+          <h4 style="display: flex; align-items: center; gap: 0.5rem; color: #fb923c;">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            Anatomie webové adresy (URL – Uniform Resource Locator)
+          </h4>
+          <p style="font-family: var(--font-mono); font-size: 0.95rem; margin: 0.5rem 0; background: rgba(0,0,0,0.25); padding: 0.6rem; border-radius: 6px;">
+            <span style="color: #38bdf8;">https://</span><span style="color: #fb923c;">www.skolavdf.cz</span><span style="color: #a855f7;">:443</span><span style="color: #4ade80;">/studenti/katalog/</span><span style="color: #f43f5e;">?rocnik=3&amp;obor=it</span><span style="color: #e2e8f0;">#tema-010</span>
+          </p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+            <span><strong style="color: #38bdf8;">Schéma:</strong> Protokol (HTTPS)</span>
+            <span><strong style="color: #fb923c;">Hostitel:</strong> Doménové jméno (FQDN)</span>
+            <span><strong style="color: #a855f7;">Port:</strong> Síťový port (výchozí 443 pro HTTPS)</span>
+            <span><strong style="color: #4ade80;">Cesta:</strong> Adresářová struktura</span>
+            <span><strong style="color: #f43f5e;">Query:</strong> Parametry dotazu</span>
+            <span><strong style="color: #e2e8f0;">Fragment:</strong> Kotva na snímek</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Architektura Klient-Server
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Architektura Klient–Server a vrstvy">
+        <div class="slide-header">
+          <h2 class="slide-title">Model Klient–Server a moderní vícevrstvá architektura</h2>
+          <p class="slide-subtitle">Web není jen spojení jednoho počítače se serverem. Moderní webový systém sestává z pěti klíčových vrstev.</p>
+        </div>
+
+        <div class="arch-diagram-wrapper">
+          <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>Klikněte na jednotlivé uzly pro prozkoumání jejich technické role v systému:</span>
+            <span style="color: #fb923c; font-family: var(--font-mono);">Interaktivní schéma vrstev</span>
+          </div>
+
+          <!-- Schéma uzlů -->
+          <div class="arch-nodes-container">
+            <div class="arch-node active" data-node="client" style="--node-color: #38bdf8; --node-glow: rgba(56, 189, 248, 0.25);">
+              <div class="arch-node-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
+              <div class="arch-node-title">1. Klient</div>
+              <div class="arch-node-tag">Webový prohlížeč</div>
+            </div>
+
+            <div class="arch-node-connector">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="arch-node" data-node="cdn" style="--node-color: #06b6d4; --node-glow: rgba(6, 182, 212, 0.25);">
+              <div class="arch-node-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <div class="arch-node-title">2. Edge / CDN</div>
+              <div class="arch-node-tag">Globální cache</div>
+            </div>
+
+            <div class="arch-node-connector">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="arch-node" data-node="proxy" style="--node-color: #a855f7; --node-glow: rgba(168, 85, 247, 0.25);">
+              <div class="arch-node-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              </div>
+              <div class="arch-node-title">3. Reverzní Proxy</div>
+              <div class="arch-node-tag">TLS &amp; Load Balancer</div>
+            </div>
+
+            <div class="arch-node-connector">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="arch-node" data-node="backend" style="--node-color: #f97316; --node-glow: rgba(249, 115, 22, 0.25);">
+              <div class="arch-node-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              </div>
+              <div class="arch-node-title">4. Aplikační Server</div>
+              <div class="arch-node-tag">Obchodní logika</div>
+            </div>
+
+            <div class="arch-node-connector">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="arch-node" data-node="database" style="--node-color: #10b981; --node-glow: rgba(16, 185, 129, 0.25);">
+              <div class="arch-node-icon">
+                <svg class="icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              </div>
+              <div class="arch-node-title">5. Databáze</div>
+              <div class="arch-node-tag">Data &amp; Perzistence</div>
+            </div>
+          </div>
+
+          <!-- Detailní panel zvolené vrstvy -->
+          <div class="arch-detail-panel">
+            <h4 class="arch-detail-title" id="archDetailTitle">Klient (Webový prohlížeč / Mobilní aplikace)</h4>
+            <p class="arch-detail-text" id="archDetailText">
+              Zařízení a software koncového uživatele (Chrome, Firefox, Safari, Edge). Odesílá HTTP/HTTPS požadavky a interpretuje přijatý HTML kód, kaskádové styly CSS a spouští JavaScript v izolovaném sandboxu. Klient se stará o vykreslení UI a bezprostřední interakci s uživatelem.
+            </p>
+            <div class="arch-tech-badges" id="archTechBadges">
+              <span class="tech-badge">Google Chrome</span>
+              <span class="tech-badge">Mozilla Firefox</span>
+              <span class="tech-badge">WebKit / Safari</span>
+              <span class="tech-badge">V8 JavaScript Engine</span>
+              <span class="tech-badge">Blink / Gecko</span>
+              <span class="tech-badge">DOM API</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Hardware a software webu
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Hardware a software webové infrastruktury">
+        <div class="slide-header">
+          <h2 class="slide-title">Hardware a software webové infrastruktury</h2>
+          <p class="slide-subtitle">Z čeho se fyzicky skládá serverový svět a jaký software řídí nepřetržitý provoz webu 24/7/365.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Hardware -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              </div>
+              <h3 class="card-title">Serverový hardware &amp; Datacentra</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Rackové servery (1U–4U):</strong> Speciální štíhlé konstrukce navržené pro standardní 19palcové serverové skříně (racky) s optimalizovaným prouděním vzduchu zepředu dozadu.</li>
+                <li><strong>Redundance komponent:</strong> Zdvojené napájecí zdroje (PSU A+B zapojené do nezávislých fází), paměti <strong>ECC RAM</strong> detekující a opravující bitové chyby, hot-swap NVMe disky v polích RAID.</li>
+                <li><strong>Podmínky datacentra (Tier III/IV):</strong> Záložní dieselagregáty (motorgenerátory), obří akumulátory UPS, precizní klimatizace s uličkami teplého a studeného vzduchu, automatické hasicí systémy inertním plynem.</li>
+                <li><strong>Páteřní konektivita:</strong> Více nezávislých 100Gbps optických tras od různých telekomunikačních operátorů (multihoming).</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Software -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              </div>
+              <h3 class="card-title">Serverový software &amp; Webservery</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Serverový operační systém:</strong> Více než 80 % webových serverů běží na <strong>Linuxu</strong> (Ubuntu Server, Debian, RHEL, AlmaLinux), menší část na Windows Serveru (IIS).</li>
+                <li><strong>Webové HTTP servery (Démoni):</strong>
+                  <div style="margin-top: 0.35rem; font-size: 0.88rem; line-height: 1.5;">
+                    &bull; <strong>Nginx:</strong> Event-driven, asynchronní, bleskový pro statický obsah a reverzní proxy.<br>
+                    &bull; <strong>Apache HTTP Server:</strong> Robustní modulární server s podporou <code>.htaccess</code>.<br>
+                    &bull; <strong>Caddy:</strong> Moderní server v Go s automatickou správou HTTPS certifikátů Let's Encrypt.
+                  </div>
+                </li>
+                <li><strong>Běhová prostředí (Runtimes):</strong> Node.js, Python (WSGI/ASGI), PHP-FPM, .NET Kestrel, JVM.</li>
+                <li><strong>Správci procesů:</strong> <code>systemd</code> démoni, Docker kontejnery a orchestrace v Kubernetes.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Domény a DNS
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Domény a systém DNS překladu">
+        <div class="slide-header">
+          <h2 class="slide-title">Doménová jména a systém DNS (Domain Name System)</h2>
+          <p class="slide-subtitle">Lidé si pamatují jména jako <code>skolavdf.cz</code>, ale síťové směrovače komunikují výhradně pomocí číselných IP adres.</p>
+        </div>
+
+        <div class="dns-sim-box">
+          <div class="dns-controls">
+            <span style="font-size: 0.88rem; font-weight: 700; color: var(--text);">Cílová doména školy:</span>
+            <input type="text" id="dnsDomainInput" class="dns-input" value="skolavdf.cz" readonly style="background: rgba(249, 115, 22, 0.08); border-color: rgba(249, 115, 22, 0.4); font-weight: 700; color: #fb923c; cursor: default;">
+            <button class="dns-btn" id="dnsStepBtn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              Krokovat překlad
+            </button>
+            <button class="dns-btn dns-btn-secondary" id="dnsAutoBtn">Spustit animaci</button>
+            <button class="dns-btn dns-btn-secondary" id="dnsResetBtn">Resetovat</button>
+          </div>
+
+          <!-- Pět stádií překladu -->
+          <div class="dns-steps-grid">
+            <div class="dns-step-card" id="dnsStep1">
+              <div class="dns-step-num">1</div>
+              <div class="dns-step-title">Browser &amp; OS</div>
+              <div class="dns-step-desc">Lokální mezipaměť a soubor hosts</div>
+            </div>
+
+            <div class="dns-step-card" id="dnsStep2">
+              <div class="dns-step-num">2</div>
+              <div class="dns-step-title">DNS Resolver</div>
+              <div class="dns-step-desc">ISP / 1.1.1.1 / 8.8.8.8</div>
+            </div>
+
+            <div class="dns-step-card" id="dnsStep3">
+              <div class="dns-step-num">3</div>
+              <div class="dns-step-title">Root Server (.)</div>
+              <div class="dns-step-desc">13 celosvětových kořenových clusterů</div>
+            </div>
+
+            <div class="dns-step-card" id="dnsStep4">
+              <div class="dns-step-num">4</div>
+              <div class="dns-step-title">TLD Server (.cz)</div>
+              <div class="dns-step-desc">Správce národní domény CZ.NIC</div>
+            </div>
+
+            <div class="dns-step-card" id="dnsStep5">
+              <div class="dns-step-num">5</div>
+              <div class="dns-step-title">Autoritativní NS</div>
+              <div class="dns-step-desc">Vrací finální A záznam (IP)</div>
+            </div>
+          </div>
+
+          <!-- Konzole výpisu -->
+          <div class="dns-log-console">
+            <div id="dnsLogText">
+              Zadejte doménu a klikněte na <strong>Krokovat překlad</strong> pro zobrazení rekurzivního dotazování.
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 1rem; gap: 1rem;">
+          <div class="content-card">
+            <h4><code style="color: #fb923c;">A</code> &amp; <code style="color: #fb923c;">AAAA</code> Záznamy</h4>
+            <p>Převádí doménu na 32bitovou IPv4 adresu (A) nebo 128bitovou IPv6 adresu (AAAA).</p>
+          </div>
+          <div class="content-card">
+            <h4><code style="color: #38bdf8;">CNAME</code> Alias</h4>
+            <p>Kanonické jméno – přesměruje jednu doménu na jinou (např. <code>www</code> na hlavní doménu).</p>
+          </div>
+          <div class="content-card">
+            <h4><code style="color: #10b981;">MX</code> &amp; <code style="color: #a855f7;">TXT</code> Záznamy</h4>
+            <p>MX určuje poštovní servery, TXT nese ověření vlastnictví a bezpečnostní SPF/DKIM záznamy.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Hostingové modely
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Kde web provozovat? Webhosting, VPS a Cloud">
+        <div class="slide-header">
+          <h2 class="slide-title">Kde a jak web provozovat? Možnosti hostingu a cloudů</h2>
+          <p class="slide-subtitle">Od studentského projektu po globální systém s miliony návštěvníků: srovnání hostingových architektur.</p>
+        </div>
+
+        <div class="table-container hosting-table-card">
+          <table class="hosting-table">
+            <thead>
+              <tr>
+                <th>Model provozu</th>
+                <th>Princip a architektura</th>
+                <th>Správa a údržba</th>
+                <th>Výhody &amp; Omezení</th>
+                <th>Typické využití</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Sdílený Webhosting</strong></td>
+                <td>Stovky webů sdílí jeden fyzický OS a webserver. Odděleny jsou pouze složky a oprávnění.</td>
+                <td>Plně spravuje poskytovatel. Přístup pouze přes FTP/SFTP a administraci (cPanel, Wedos).</td>
+                <td><span style="color: #4ade80;">+ Velmi levné, bezúdržbové</span><br><span style="color: #ef4444;">- Žádný root přístup, omezený výkon, vliv sousedních webů</span></td>
+                <td>Prezentace firem, osobní blogy, jednoduchý WordPress.</td>
+              </tr>
+              <tr>
+                <td><strong>VPS (Virtuální server)</strong></td>
+                <td>Virtualizovaný stroj (KVM) s vyhrazeným CPU, RAM a SSD disky na velkém hypervizoru.</td>
+                <td>Vlastní plný přístup <code>root</code> přes SSH. Správce si instaluje libovolný OS a balíčky.</td>
+                <td><span style="color: #4ade80;">+ Plná svoboda konfigurace, garantované prostředky</span><br><span style="color: #ef4444;">- Nutnost spravovat bezpečnost, zálohy a aktualizace OS</span></td>
+                <td>Zakázkové aplikace (Node.js, Python), e-shopy, interní školní systémy.</td>
+              </tr>
+              <tr>
+                <td><strong>Dedikovaný Server</strong></td>
+                <td>Celý fyzický serverový hardware v datacentru pronajatý pouze pro jednoho zákazníka.</td>
+                <td>Kompletní správa včetně hardwarového IPMI/iLO rozhraní pro vzdálený restart.</td>
+                <td><span style="color: #4ade80;">+ Maximální hrubý výpočetní výkon bez virtualizační režie</span><br><span style="color: #ef4444;">- Vysoká měsíční cena, pomalejší škálování</span></td>
+                <td>Velké databáze, herní servery, náročné výpočetní platformy.</td>
+              </tr>
+              <tr>
+                <td><strong>Cloud &amp; Serverless / Jamstack</strong></td>
+                <td>Distribuované služby (AWS, Azure, GCP, Cloudflare, Vercel). Platba za reálně spotřebované sekundy CPU.</td>
+                <td>Infrastruktura je plně abstrahována (PaaS / Serverless Functions / Static Edge).</td>
+                <td><span style="color: #4ade80;">+ Automatické škálování od nuly po miliony uživatelů, vysoká dostupnost</span><br><span style="color: #ef4444;">- Riziko vendor lock-in a nečekaných nákladů</span></td>
+                <td>Moderní webové aplikace, startupy, statické weby na GitHub Pages.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Základní pilíře webového obsahu
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Základní pilíře webového obsahu">
+        <div class="slide-header">
+          <h2 class="slide-title">Tři základní pilíře webového vývoje: HTML, CSS a JavaScript</h2>
+          <p class="slide-subtitle">Každá webová stránka je ve svém jádru tvořena dokonalou symbiózou struktury, vizuálu a interaktivity.</p>
+        </div>
+
+        <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+          <!-- HTML -->
+          <div class="card" style="border-top: 4px solid #f97316;">
+            <div class="card-header-icon">
+              <div class="card-icon" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
+              <h3 class="card-title">HTML5: Sémantická kostra</h3>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: 0.75rem;"><strong>HyperText Markup Language:</strong> Definuje význam a strukturu informací na stránce.</p>
+              <ul class="clean-list">
+                <li>Sémantické značky (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;footer&gt;</code>).</li>
+                <li>Dává obsahu hierarchii (nadpisy h1–h6, odstavce, tabulky, seznamy).</li>
+                <li>Nese metadata pro vyhledávače a sociální sítě.</li>
+                <li>Klíčový pro čtečky obrazovky a přístupnost.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- CSS -->
+          <div class="card" style="border-top: 4px solid #38bdf8;">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+              </div>
+              <h3 class="card-title">CSS3: Vizuální podoba &amp; Styl</h3>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: 0.75rem;"><strong>Cascading Style Sheets:</strong> Řídí estetickou prezentaci a rozvržení prvků na různých obrazovkách.</p>
+              <ul class="clean-list">
+                <li>Responzivní design (Media queries, Fluidní layout).</li>
+                <li>Moderní layoutové systémy <strong>Flexbox</strong> a <strong>CSS Grid</strong>.</li>
+                <li>Barvy, typografie, stíny, glassmorphism a adaptace na tmavý režim.</li>
+                <li>Plynulé animace a CSS transformace akcelerované GPU.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- JS -->
+          <div class="card" style="border-top: 4px solid #eab308;">
+            <div class="card-header-icon">
+              <div class="card-icon" style="background: rgba(234, 179, 8, 0.15); color: #eab308;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <h3 class="card-title">JavaScript: Mozek &amp; Chování</h3>
+            </div>
+            <div class="card-body">
+              <p style="margin-bottom: 0.75rem;"><strong>Programovací jazyk ECMAScript:</strong> Vdechuje stránce dynamický život a interaktivitu.</p>
+              <ul class="clean-list">
+                <li>Manipulace s Document Object Modelem (dynamické úpravy DOM bez reloadu).</li>
+                <li>Reakce na události uživatele (kliknutí, klávesnice, scroll).</li>
+                <li>Asynchronní stahování dat na pozadí pomocí <code>fetch()</code> a AJAX.</li>
+                <li>Moderní frontendové frameworky (React, Vue, Svelte, Angular).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-card" style="margin-top: 1.25rem;">
+          <h4 style="display: flex; align-items: center; gap: 0.5rem; color: #a855f7;">
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            Čtvrtý nastupující pilíř: WebAssembly (Wasm)
+          </h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-top: 0.3rem;">
+            Binární instrukční formát navržený pro běh kódu psaného v C++, Rustu nebo Go přímo v prohlížeči téměř nativní rychlostí procesoru. Využívá se pro náročné grafické editory (Figma), 3D hry, video střižny a vědecké simulace.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Přístupnost (a11y)
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Webová přístupnost (a11y) a inkluze">
+        <div class="slide-header">
+          <h2 class="slide-title">Webová přístupnost (a11y) a standardy WCAG</h2>
+          <p class="slide-subtitle">Web byl stvořen pro každého. Přístupnost zajišťuje, že web mohou plnohodnotně používat i lidé se zrakovým, sluchovým či motorickým omezením.</p>
+        </div>
+
+        <div class="a11y-modes-toolbar">
+          <span style="font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; margin-right: 0.5rem;">Simulátor zrakového vnímání:</span>
+          <button class="mode-btn active" data-mode="normal">Normální vidění</button>
+          <button class="mode-btn" data-mode="protanopia">Protanopie (barvoslepost na červenou)</button>
+          <button class="mode-btn" data-mode="blur">Slabozrakost / Zákal (rozostření)</button>
+        </div>
+
+        <div class="a11y-demo-container">
+          <!-- Špatná praxe -->
+          <div class="a11y-box">
+            <div class="a11y-box-header">
+              <span class="a11y-status-badge badge-bad">Špatná praxe (Nepřístupné)</span>
+              <span style="font-size: 0.78rem; color: #ef4444; font-family: var(--font-mono);">Kontrast 1.6 : 1 (Selhání WCAG)</span>
+            </div>
+            <div class="a11y-sample-content sample-bad">
+              <h4>Důležité upozornění o změně termínu</h4>
+              <p>Tento text má extrémně nízký barevný kontrast vůči pozadí. Uživatelé se zrakovým znevýhodněním nebo na přímém slunci text vůbec nepřečtou.</p>
+              <div class="btn-fake-bad">Pokračovat v nákupu</div>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+              &bull; Tlačítko je vytvořeno jako obyčejný <code>&lt;div&gt;</code> – nelze na něj najet klávesou Tab ani jej potvrdit klávesou Enter.<br>
+              &bull; Čtečka obrazovky neoznámí, že se jedná o klikatelný ovládací prvek.
+            </div>
+          </div>
+
+          <!-- Správná praxe -->
+          <div class="a11y-box">
+            <div class="a11y-box-header">
+              <span class="a11y-status-badge badge-good">Správná praxe (WCAG AAA)</span>
+              <span style="font-size: 0.78rem; color: #10b981; font-family: var(--font-mono);">Kontrast 12.5 : 1 (Splněno)</span>
+            </div>
+            <div class="a11y-sample-content sample-good">
+              <h4>Důležité upozornění o změně termínu</h4>
+              <p>Tento text splňuje přísná kritéria kontrastu (minimálně 4.5:1 pro běžný text, 7:1 pro úroveň AAA). Je perfektně čitelný za všech světelných podmínek.</p>
+              <button class="btn-real-good" id="demoRealBtn" type="button">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Pokračovat v nákupu
+              </button>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+              &bull; Sémantický element <code>&lt;button&gt;</code> má nativní fokusovatelný stav a viditelný modrý obrys při navigaci klávesnicí.<br>
+              &bull; Hlasová čtečka okamžitě ohlásí: <em>„Tlačítko, Pokračovat v nákupu“</em>.
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 1rem; gap: 0.75rem;">
+          <div class="content-card" style="padding: 0.8rem;">
+            <strong style="color: #fb923c;">1. Vnímatelný (P)</strong>
+            <p style="font-size: 0.78rem;">Alternativní texty obrázků (alt), titulky u videí.</p>
+          </div>
+          <div class="content-card" style="padding: 0.8rem;">
+            <strong style="color: #38bdf8;">2. Ovladatelný (O)</strong>
+            <p style="font-size: 0.78rem;">Kompletní ovládání z klávesnice bez nutnosti myši.</p>
+          </div>
+          <div class="content-card" style="padding: 0.8rem;">
+            <strong style="color: #10b981;">3. Srozumitelný (U)</strong>
+            <p style="font-size: 0.78rem;">Předvídatelná navigace, srozumitelná hlášení chyb formuláře.</p>
+          </div>
+          <div class="content-card" style="padding: 0.8rem;">
+            <strong style="color: #a855f7;">4. Robustní (R)</strong>
+            <p style="font-size: 0.78rem;">Validní kód kompatibilní s asistenčními technologiemi.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Přínosy a rizika moderního webu
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Přínosy, výzvy a rizika webu">
+        <div class="slide-header">
+          <h2 class="slide-title">Přínosy, technologické výzvy a bezpečnostní rizika</h2>
+          <p class="slide-subtitle">Proč se web stal dominantní aplikační platformou světa a s jakými úskalími musí webový vývojář počítat.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Přínosy -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <h3 class="card-title">Hlavní přínosy webových technologií</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Okamžitý přístup bez instalace:</strong> Uživatel otevře odkaz a má k dispozici plnohodnotný software bez stahování instalátorů a zabírání místa na disku.</li>
+                <li><strong>Univerzální multiplatformnost:</strong> Jeden kód běží na Windows, macOS, Linuxu, Androidu i iOS uvnitř standardizovaného prohlížeče.</li>
+                <li><strong>Průběžné aktualizace:</strong> Opravy chyb a nové funkce se nasadí na server a okamžitě jsou dostupné všem uživatelům světa najednou.</li>
+                <li><strong>PWA (Progresivní webové aplikace):</strong> Schopnost běžet offline, instalovat se na plochu telefonu a odesílat push notifikace.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Rizika -->
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </div>
+              <h3 class="card-title">Úskalí, limity a bezpečnostní rizika</h3>
+            </div>
+            <div class="card-body">
+              <ul class="clean-list">
+                <li><strong>Bezpečnostní vektory útoků:</strong> XSS (Cross-Site Scripting), CSRF podvržení požadavku, SQL Injection a Man-in-the-Middle odposlechy nezašifrované komunikace.</li>
+                <li><strong>Závislost na síťovém spojení:</strong> Bez stabilního internetu je většina tradičních webových aplikací zcela paralyzována.</li>
+                <li><strong>Masivní profilování a ochrana soukromí:</strong> Sledovací cookies, digitální otisk zařízení (browser fingerprinting) a legislativní regulace (GDPR, ePrivacy).</li>
+                <li><strong>Fragmentace a výkon:</strong> Rozdíly mezi verzemi prohlížečů, paměťová náročnost JavaScriptových SPA aplikací a pomalé načítání na mobilních sítích.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí a kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí učiva a kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí učiva &bull; Znalostní prověrka</h2>
+          <p class="slide-subtitle">Zopakujte si klíčové koncepty úvodu do webových technologií před přechodem na webovou komunikaci.</p>
+        </div>
+
+        <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem; gap: 1rem;">
+          <div class="content-card">
+            <h4>Internet vs. WWW</h4>
+            <p>Internet je síťová transportní infrastruktura TCP/IP, Web je hypertextová aplikační služba navržená Timem Berners-Leem.</p>
+          </div>
+          <div class="content-card">
+            <h4>Klient &bull; Proxy &bull; Backend</h4>
+            <p>Prohlížeč žádá data, CDN cachuje, reverzní proxy balancuje provoz a backend s databází generuje aplikační data.</p>
+          </div>
+          <div class="content-card">
+            <h4>DNS &bull; Standardy &bull; a11y</h4>
+            <p>DNS hierarchicky překládá domény na IP adresy. Standardy WCAG zajišťují přístupnost pro všechny uživatele bez rozdílu.</p>
+          </div>
+        </div>
+
+        <div class="questions-container">
+          <!-- Otázka 1 -->
+          <div class="question-card">
+            <div class="question-header">
+              <span class="question-number">1</span>
+              <p class="question-text">Jaký je hlavní rozdíl mezi internetem a službou World Wide Web?</p>
+            </div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              <strong>Internet</strong> je globální síťová infrastruktura propojující hardware a zajišťující přenos paketů (TCP/IP). <strong>WWW (Web)</strong> je pouze jednou z mnoha aplikačních služeb provozovaných nad internetem, založenou na přenosu hypertextových dokumentů a multimédií přes HTTP/HTTPS.
+            </div>
+          </div>
+
+          <!-- Otázka 2 -->
+          <div class="question-card">
+            <div class="question-header">
+              <span class="question-number">2</span>
+              <p class="question-text">K čemu v moderní architektuře slouží reverzní proxy (např. Nginx) a proč se klienti nepřipojují přímo na aplikační server?</p>
+            </div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Reverzní proxy funguje jako bezpečnostní a výkonnostní štít. Provádí <strong>terminaci SSL/TLS šifrování</strong>, <strong>rozložení zátěže (Load Balancing)</strong> mezi více backendových serverů, cachuje statické odpovědi a chrání citlivý backend s databází před přímým přístupem z veřejného internetu.
+            </div>
+          </div>
+
+          <!-- Otázka 3 -->
+          <div class="question-card">
+            <div class="question-header">
+              <span class="question-number">3</span>
+              <p class="question-text">Proč pouhé obarvení textu nestačí k zajištění dobré přístupnosti (a11y) a jaké je základní pravidlo pro tlačítka?</p>
+            </div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Barvoslepí či slabozrací uživatelé nemusí barevný rozdíl vnímat, proto musí mít text <strong>vysoký kontrastní poměr</strong> (dle WCAG minimálně 4.5:1) a informace nesmí stát pouze na barvě. Tlačítka musí být tvořena sémantickou značkou <code>&lt;button&gt;</code> (nikoli pouhým <code>div</code>em), aby byla dostupná z klávesnice přes klávesu Tab a čtečky obrazovky poznaly její interaktivní účel.
+            </div>
+          </div>
+
+          <!-- Otázka 4 -->
+          <div class="question-card">
+            <div class="question-header">
+              <span class="question-number">4</span>
+              <p class="question-text">Jaký je rozdíl mezi DNS záznamy typu A, CNAME a MX?</p>
+            </div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              Zobrazit odpověď
+            </button>
+            <div class="question-hint">
+              Záznam <strong>A</strong> mapuje doménové jméno přímo na IPv4 adresu serveru (např. <code>skolavdf.cz</code> ➔ <code>81.2.195.118</code>). Záznam <strong>CNAME</strong> vytváří alias odkazující na jiné doménové jméno (např. <code>www.skolavdf.cz</code> ➔ <code>skolavdf.cz</code>). Záznam <strong>MX</strong> definuje poštovní servery určené pro příjem e-mailových zpráv pro danou doménu.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="#" class="control-btn disabled" id="prevLessonBtn" aria-disabled="true" tabindex="-1" title="Předchozí téma není k dispozici">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../011-Webova-komunikace/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: Webová komunikace a vykreslovací pipeline (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Úvod do webových technologií
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální interaktivní engine pro téma 010 -->
+  <script src="web-intro.js"></script>
+</body>
+
+</html>

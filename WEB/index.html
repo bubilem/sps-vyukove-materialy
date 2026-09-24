@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB: Webové technologie | Výukové materiály SPŠ</title>
+  <meta name="description" content="Katalog výukových materiálů a prezentací předmětu Webové technologie (WEB) pro studenty SPŠ: architektura webu, protokoly HTTP, vykreslovací pipeline, HTML5, CSS3 a moderní optimalizace.">
+
+  <!-- Společné styly pro katalogy a rozcestníky SPŠ -->
+  <link rel="stylesheet" href="../assets/css/dashboard-core.css">
+  <style>
+    :root {
+      --accent: #f97316;
+      --accent-glow: rgba(249, 115, 22, 0.25);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <div class="dashboard-container">
+
+    <!-- 1. Drobečková navigace (SPŠ 4-úrovňový standard) -->
+    <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+      <a href="../index.html" class="breadcrumb-link" title="Zpět na centrální rozcestník SPŠ">
+        <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Rozcestník SPŠ
+      </a>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-current">Webové technologie (WEB)</span>
+    </nav>
+
+    <!-- 2. Hlavička předmětu -->
+    <header class="dashboard-header">
+      <div class="brand-box">
+        <div class="brand-icon" style="background: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 0.3); color: #fb923c;">
+          <svg class="icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Předmět WEB: Webové technologie</h1>
+          <p>Střední průmyslová škola &bull; Architektura webu, síťová HTTP pipeline, vykreslování v prohlížeči, moderní standardy a optimalizace</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <!-- Ikona vložena JS -->
+        </button>
+      </div>
+    </header>
+
+    <!-- 3. Vyhledávací pole -->
+    <div class="search-container">
+      <svg class="search-icon-svg" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech WEB (např. klient server, HTTP, pipeline, CRP, DOM, CSSOM, async, defer, DNS, hosting, DevTools)..." autocomplete="off">
+    </div>
+
+    <!-- 4. Mřížka témat (Katalog témat SPŠ WEB) -->
+    <div class="lessons-grid" id="lessonsGrid">
+
+      <!-- Téma 010: Úvod do webových technologií (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="010 uvod do webovych technologii principy hardware software klient server domeny dns hostingy vps cloud pristupnost a11y wcag vyhody uskali rizika standardy w3c web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 010</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Architektura &bull; Základy webu</span>
+          </div>
+          <h2>Úvod do webových technologií</h2>
+          <p class="lesson-desc">
+            Základní koncepty, protokoly a standardy World Wide Webu. Model klient–server, vícevrstvá architektura a rozdíl mezi fyzickým hardwarem a webovými servery. Hierarchie domén, překlad jmen DNS, srovnání hostingových modelů (sdílený hosting, VPS, cloud) a základy webové přístupnosti (a11y/WCAG) včetně přínosů a rizik moderního webu.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 10 snímků &bull; DNS simulátor</span>
+          <a href="010-Uvod-do-webovych-technologii/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 011: Webová komunikace a vykreslovací pipeline (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="011 webova komunikace pipeline http pozadavek odpoved status kody hlavicky crp critical rendering path dom cssom render tree layout reflow paint composite neblokovani async defer waterfall devtools network ttfb optimalizace web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 011</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Pipeline &bull; Vykreslování &bull; DevTools</span>
+          </div>
+          <h2>Webová komunikace a vykreslovací pipeline</h2>
+          <p class="lesson-desc">
+            Kompletní cesta od stisku klávesy Enter v adresním řádku až po finální vykreslení pixelů v prohlížeči. Struktura HTTP požadavků a odpovědí, stavové kódy a klíčové hlavičky. Vykreslovací proces (Critical Rendering Path: DOM, CSSOM, Render Tree, Layout, Paint, Composite), blokování parseru a rozdíl mezi script, async a defer. Síťový waterfall, HTTP/1.1 vs. HTTP/2 multiplexing a diagnostika v klientských DevTools.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 11 snímků &bull; Interaktivní pipeline</span>
+          <a href="011-Webova-komunikace/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 020: Sémantický HTML5 a digitální přístupnost (V přípravě) -->
+      <div class="lesson-card" data-keywords="020 semanticky html5 pristupnost a11y formulare tagy struktura webu seo plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 020</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Sémantický HTML5 a přístupnost</h2>
+          <p class="lesson-desc">
+            Sémantická struktura moderních webových stránek: header, main, nav, section, article, aside a footer. Standardy digitální přístupnosti WCAG 2.2 a ARIA atributy, validní formulářové prvky a nativní multimédia (audio, video, picture).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; HTML5 &bull; a11y</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 030: Moderní CSS3 a layouty (V přípravě) -->
+      <div class="lesson-card" data-keywords="030 moderni css3 kaskada flexbox css grid responzivita media queries promenne custom properties animace plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 030</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Moderní CSS3 a layouty</h2>
+          <p class="lesson-desc">
+            Kaskádové styly do hloubky: specificita selektorů, box-model, moderní rozvržení stránek pomocí Flexboxu a dvoudimenzionálního CSS Gridu. Responzivní design pomocí media queries a kontejnerových dotazů (container queries), CSS proměnné a plynulé animace.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; CSS3 &bull; Flex &amp; Grid</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 040: Programování v JavaScriptu (V přípravě) -->
+      <div class="lesson-card" data-keywords="040 javascript es6 dom udalosti fetch api manipulace se stromem objekty pole async await plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 040</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Programování v JavaScriptu a DOM</h2>
+          <p class="lesson-desc">
+            Interaktivita na straně klienta. Standardy ECMAScript (ES6+), práce s Document Object Modelem (DOM) a Event Listener systémem. Asynchronní JavaScript (Promises, async/await), stahování dat přes Fetch API a zpracování formátu JSON.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; JavaScript &bull; DOM</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 050: Technické SEO a Core Web Vitals (V přípravě) -->
+      <div class="lesson-card" data-keywords="050 optimalizace seo vyhledavace core web vitals lcp cls fid inp crawlability indexace plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 050</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Optimalizace výkonu a SEO</h2>
+          <p class="lesson-desc">
+            Technická optimalizace pro internetové vyhledávače a uživatelský zážitek. Metriky Google Core Web Vitals (LCP, INP, CLS), crawlability, indexace vyhledávacími roboty, strukturovaná data Schema.org a komprese datových formátů.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; Web Vitals &bull; SEO</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 5. Footer katalogu dle standardu SPŠ -->
+    <footer class="site-footer">
+      <div class="footer-nav">
+        <a href="../index.html" class="btn-footer-back" title="Návrat na hlavní rozcestník SPŠ">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Zpět na centrální rozcestník SPŠ
+        </a>
+      </div>
+      <p>Střední průmyslová škola &copy; 2026 &bull; Předmět Webové technologie (WEB)</p>
+    </footer>
+
+  </div>
+
+  <!-- Sdílené jádro pro katalogy témat SPŠ -->
+  <script src="../assets/js/dashboard-core.js"></script>
+</body>
+
+</html>

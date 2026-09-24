@@ -1,0 +1,734 @@
+/* ==========================================================================
+   SPŠ Webové technologie - Téma 010: Úvod do webových technologií
+   Lokální dedikované styly pro předmět WEB (Webové technologie SPŠ)
+   ========================================================================== */
+
+/* Specifické akcenty a barvy pro web téma */
+:root {
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.28);
+  --web-accent-light: #fb923c;
+  --client-color: #38bdf8;
+  --proxy-color: #a855f7;
+  --server-color: #f97316;
+  --db-color: #10b981;
+}
+
+/* ==========================================================================
+   1. Záhlaví snímků: Nadpis a podnadpis striktně pod sebou
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   2. Hlavičky karet: Ikonka a nadpis karty vedle sebe (ne pod sebou)
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px !important;
+  height: 20px !important;
+  display: block !important;
+}
+
+.card-icon.cyan {
+  background: rgba(6, 182, 212, 0.15) !important;
+  color: #06b6d4 !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+}
+
+.card-title {
+  margin: 0 !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.3 !important;
+}
+
+/* ==========================================================================
+   3. Tabulka hostingu (Slide 6) - Rámeček, pozadí a vysoký kontrast
+   ========================================================================== */
+.table-container,
+.hosting-table-card {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+[data-theme="light"] .hosting-table-card {
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.hosting-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.hosting-table th,
+.hosting-table td {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.hosting-table thead th {
+  background: rgba(249, 115, 22, 0.08);
+  font-weight: 800;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+  font-size: 0.84rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-theme="light"] .hosting-table thead th {
+  background: rgba(249, 115, 22, 0.1);
+}
+
+.hosting-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.hosting-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+[data-theme="light"] .hosting-table tbody tr:hover td {
+  background: rgba(0, 0, 0, 0.015);
+}
+
+/* ==========================================================================
+   4. Kontrolní otázky (Slide 10) - Rámečky, mřížka a interaktivní akordeon
+   ========================================================================== */
+.questions-container,
+.questions-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1.25rem !important;
+  margin-top: 1.25rem !important;
+}
+
+@media (max-width: 900px) {
+  .questions-container,
+  .questions-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.question-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 1.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: all 0.25s ease !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="light"] .question-card {
+  background: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+.question-card:hover {
+  border-color: var(--web-accent) !important;
+  box-shadow: 0 6px 20px var(--web-accent-glow) !important;
+  transform: translateY(-2px);
+}
+
+.question-header {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.question-number {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  background: rgba(249, 115, 22, 0.15) !important;
+  border: 1px solid rgba(249, 115, 22, 0.35) !important;
+  color: var(--web-accent) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.question-text {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+  line-height: 1.45 !important;
+}
+
+.question-answer-btn {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+  font-size: 0.8rem !important;
+  padding: 0.4rem 0.85rem !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  width: fit-content !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  margin-top: auto !important;
+  transition: all 0.2s ease !important;
+}
+
+.question-answer-btn:hover {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: var(--web-accent) !important;
+  border-color: var(--web-accent) !important;
+}
+
+.question-hint {
+  font-size: 0.86rem !important;
+  color: var(--text-secondary) !important;
+  margin-top: 0.75rem !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-left: 3px solid var(--web-accent) !important;
+  line-height: 1.5 !important;
+  display: none;
+}
+
+[data-theme="light"] .question-hint {
+  background: rgba(0, 0, 0, 0.03) !important;
+}
+
+.question-hint.visible {
+  display: block !important;
+  animation: fadeIn 0.25s ease !important;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   5. Interaktivní architektura Klient - Server
+   ========================================================================== */
+.arch-diagram-wrapper {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+[data-theme="light"] .arch-diagram-wrapper {
+  background: rgba(241, 245, 249, 0.7);
+}
+
+.arch-nodes-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  position: relative;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+
+.arch-node {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 1rem 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.arch-node:hover {
+  transform: translateY(-4px);
+  border-color: var(--node-color, var(--web-accent));
+  box-shadow: 0 8px 24px var(--node-glow, var(--web-accent-glow));
+}
+
+.arch-node.active {
+  border-color: var(--node-color, var(--web-accent));
+  background: rgba(249, 115, 22, 0.08);
+  box-shadow: 0 0 20px var(--node-glow, var(--web-accent-glow));
+}
+
+.arch-node-icon {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 0.75rem;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--node-color, var(--text-primary));
+  transition: transform 0.2s ease;
+}
+
+.arch-node:hover .arch-node-icon {
+  transform: scale(1.1);
+}
+
+.arch-node-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.arch-node-tag {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+}
+
+.arch-node-connector {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arch-node-connector svg {
+  width: 22px;
+  height: 22px;
+}
+
+.arch-detail-panel {
+  margin-top: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.arch-detail-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.arch-detail-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.arch-tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.tech-badge {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   6. DNS Resolving Simulátor
+   ========================================================================== */
+.dns-sim-box {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+[data-theme="light"] .dns-sim-box {
+  background: rgba(241, 245, 249, 0.7);
+}
+
+.dns-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dns-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 0.65rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.dns-input:focus {
+  border-color: var(--web-accent);
+}
+
+.dns-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background: var(--web-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dns-btn:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+.dns-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.dns-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dns-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .dns-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dns-step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 1rem 0.75rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.dns-step-card.active {
+  border-color: var(--web-accent);
+  background: rgba(249, 115, 22, 0.1);
+  box-shadow: 0 0 15px var(--web-accent-glow);
+  transform: translateY(-2px);
+}
+
+.dns-step-card.completed {
+  border-color: #10b981;
+}
+
+.dns-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.5rem;
+  color: var(--text-secondary);
+}
+
+.dns-step-card.active .dns-step-num {
+  background: var(--web-accent);
+  color: #fff;
+}
+
+.dns-step-card.completed .dns-step-num {
+  background: #10b981;
+  color: #fff;
+}
+
+.dns-step-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.dns-step-desc {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.dns-log-console {
+  background: #090d16;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #94a3b8;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+[data-theme="light"] .dns-log-console {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.dns-log-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dns-log-highlight {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.dns-log-success {
+  color: #4ade80;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   7. A11y & Kontrastní Simulátor
+   ========================================================================== */
+.a11y-demo-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 800px) {
+  .a11y-demo-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.a11y-box {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  background: var(--bg-card);
+  position: relative;
+  transition: filter 0.3s ease;
+}
+
+.a11y-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.a11y-status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.badge-bad {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-good {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.a11y-sample-content {
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+}
+
+.sample-bad {
+  background: #334155;
+  color: #64748b;
+}
+
+[data-theme="light"] .sample-bad {
+  background: #f1f5f9;
+  color: #cbd5e1;
+}
+
+.btn-fake-bad {
+  display: inline-block;
+  background: #475569;
+  color: #94a3b8;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sample-good {
+  background: #0f172a;
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .sample-good {
+  background: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-real-good {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--web-accent);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  outline-offset: 2px;
+}
+
+.btn-real-good:focus-visible {
+  outline: 3px solid #38bdf8;
+}
+
+.a11y-modes-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.mode-btn {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.mode-btn.active {
+  background: var(--web-accent);
+  color: #fff;
+  border-color: var(--web-accent);
+}
+
+.filter-protanopia {
+  filter: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><filter id="protanopia"><feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0 0.242, 0.758, 0, 0 0, 0, 0, 1, 0"/></filter></svg>#protanopia');
+}
+
+.filter-blur {
+  filter: blur(2.5px);
+}
