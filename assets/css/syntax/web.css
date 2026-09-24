@@ -24,3 +24,24 @@
 .js-num     { color: #f59e0b; }
 .js-comment { color: #6b7280; font-style: italic; }
 .js-var     { color: #e2e8f0; }
+
+/* ==========================================================================
+   Předmět WEB: Akcentní barvy a odznáčky
+   ========================================================================== */
+:root {
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.22);
+}
+
+.badge-accent {
+  background: rgba(249, 115, 22, 0.15) !important;
+  border-color: rgba(249, 115, 22, 0.45) !important;
+  color: #fb923c !important;
+}
+
+[data-theme="light"] .badge-accent {
+  background: rgba(249, 115, 22, 0.12) !important;
+  border-color: rgba(249, 115, 22, 0.5) !important;
+  color: #ea580c !important;
+}
+

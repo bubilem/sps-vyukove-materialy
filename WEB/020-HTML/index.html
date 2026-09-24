@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 020: Základy jazyka HTML | WEB • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Webové technologie (WEB) SPŠ: historie Tim Berners-Lee, principy markup jazyků, XML vs HTML, verze, anatomie tagů, atributy, struktura stránky, DOM strom a dobré praktiky.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 020 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">020 HTML</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Syntaxe &bull; Značkovací jazyky</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Základy jazyka HTML">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 020</span>
+            <span class="badge">Základní stavební kámen</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Struktura &amp; Syntaxe</span>
+          </div>
+          <h1 class="hero-title">Základy jazyka HTML</h1>
+          <p class="hero-subtitle">
+            Hypertext Markup Language jako základní kostra celosvětového webu &bull; Od vizionářského nápadu Tima Berners-Leeho v CERNu, přes anatomii tagů a atributů až po stromovou strukturu DOM a osvědčené praktiky.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Příběh Tima B. Lee
+              </h4>
+              <p>CERN 1989, problém ztrácení vědeckých poznatků, počítač NeXTcube a první hypertextový web.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Principy &amp; Syntaxe
+              </h4>
+              <p>Značkovací jazyk Markup, HTML vs XML, párové a nepárové značky, atributy a hodnoty.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Kostra &amp; Metadata
+              </h4>
+              <p>DOCTYPE, kořenové elementy, hlavička head vs tělo body, kódování UTF-8 a Open Graph.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Strom DOM &amp; Best Practices
+              </h4>
+              <p>Jak prohlížeč staví Document Object Model, uzly, potomci, validace W3C a čistý kód.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Příběh Tima Berners-Leeho a zrod webu
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Příběh vzniku webu">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Příběh vzniku webu: Tim Berners-Lee a CERN</h2>
+            <p class="slide-subtitle">
+              Jak britský vědec vyřešil chaos v předávání vědeckých informací a stvořil základ celosvětové digitální společnosti.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1.15fr 0.85fr; gap: 1.25rem;">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <h3 class="card-title">CERN, březen 1989: Problém ztracených poznatků</h3>
+              </div>
+              <p style="font-size: 0.93rem; line-height: 1.6; color: var(--text-secondary);">
+                V Evropské organizaci pro jaderný výzkum (<strong>CERN</strong>) ve Švýcarsku pracovaly tisíce fyziků z desítek zemí. Každý tým používal jiný počítač, jiný operační systém a odlišné formáty souborů. Dokumenty se ztrácely, když výzkumníci CERN opouštěli, a propojit související práce bylo téměř nemožné.
+              </p>
+              <p style="font-size: 0.93rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.6rem;">
+                Tim Berners-Lee předložil návrh s názvem <em>„Information Management: A Proposal“</em>. Jeho nadřízený Mike Sendall si projekt přečetl a na titulní stranu připsal legendární poznámku: <strong style="color: #fb923c;">„Vague but exciting...“</strong> (Nejasné, ale vzrušující...).
+              </p>
+              <div style="margin-top: 1rem; padding: 0.85rem; border-radius: var(--radius-sm); background: rgba(249, 115, 22, 0.08); border-left: 3px solid #f97316; font-size: 0.88rem;">
+                <strong>Klíčová myšlenka hypertextu:</strong> Text nemusí být lineární jako kniha. Kliknutím na vyznačené slovo (odkaz) se čtenář okamžitě přenese na jiný dokument kdekoliv na světě.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <h3 class="card-title">Tři pilíře, které Tim sestavil (1990)</h3>
+              </div>
+              <ul style="font-size: 0.88rem; line-height: 1.65; color: var(--text-secondary); padding-left: 1.2rem; margin: 0;">
+                <li><strong style="color: #f43f5e;">HTML (Hypertext Markup Language):</strong> Formát pro popis struktury a odkazů.</li>
+                <li><strong style="color: #38bdf8;">HTTP (Hypertext Transfer Protocol):</strong> Protokol pro přenos hypertextu po síti TCP/IP.</li>
+                <li><strong style="color: #10b981;">URI / URL (Uniform Resource Identifier):</strong> Globálně unikátní adresní systém pro každý zdroj na světě.</li>
+              </ul>
+              <div style="margin-top: 1rem; padding: 0.75rem; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); font-size: 0.82rem;">
+                <strong>Vánoce 1990:</strong> Na černém počítači <strong>NeXTcube</strong> běží první webový server a prohlížeč na světě. První webová adresa: <code>http://info.cern.ch/hypertext/WWW/TheProject.html</code>.
+              </div>
+              <div style="margin-top: 0.75rem; padding: 0.75rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.82rem; color: #34d399;">
+                <strong>30. dubna 1993:</strong> CERN uvolnil technologii WWW jako public domain – bez licenčních poplatků, navždy otevřenou pro celé lidstvo.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Co je to Markup a principy značkovacích jazyků
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Principy značkovacích jazyků">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Co je to Markup: Principy značkovacího jazyka</h2>
+            <p class="slide-subtitle">
+              Značkovací jazyk není programovací jazyk. Jak se liší deklarace významu od algoritmického kódu a kde se vzala syntaxe.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                </div>
+                <h3 class="card-title">Původ slova „Markup“</h3>
+              </div>
+              <p style="font-size: 0.9rem; line-height: 1.55; color: var(--text-secondary);">
+                Pojem pochází z tradičního tiskařského průmyslu. Korektor v tiskárně vzal rukopis autora a červenou tužkou na okraje připisoval značky pro sazeče: <em>„toto vysázej tučně“</em>, <em>„tady začni nový odstavec“</em> nebo <em>„tento text je nadpis kapitoly“</em>.
+              </p>
+              <div style="margin-top: 0.75rem; font-size: 0.85rem; color: #fbbf24; font-weight: 600;">
+                Značky přidávají surovému textu význam (sémantiku) a strukturu.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                </div>
+                <h3 class="card-title">Značkovací vs. Programovací jazyk</h3>
+              </div>
+              <p style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary);">
+                HTML <strong>není</strong> programovací jazyk. Nemá cykly (for, while), podmínky (if/else), proměnné ani aritmetickou logiku.
+              </p>
+              <div style="margin-top: 0.5rem; font-size: 0.82rem; padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(56, 189, 248, 0.08); border-left: 2px solid #38bdf8;">
+                <strong>Deklarativní přístup:</strong> V HTML píšeme <em>CO</em> dokument obsahuje, nikoli <em>JAKÝM ALGORITMEM</em> se má vypočítat.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h3 class="card-title">Předchůdce SGML: Co to bylo?</h3>
+              </div>
+              <p style="font-size: 0.86rem; line-height: 1.55; color: var(--text-secondary);">
+                <strong>SGML</strong> (<em>Standard Generalized Markup Language</em>, norma <strong>ISO 8879</strong> z roku 1986) nebyl jeden jazyk, ale obrovský a složitý <strong>meta-jazyk</strong> – tedy jazyk sloužící k definování dalších značkovacích jazyků pomocí DTD (Document Type Definition).
+              </p>
+              <div style="margin-top: 0.5rem; font-size: 0.8rem; line-height: 1.5; padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.08); border-left: 2px solid #10b981;">
+                <strong>Využití v armádě a letectví:</strong> SGML používalo americké ministerstvo obrany (US DoD) a letecké firmy (Boeing) pro správu statisíců stran technických manuálů ke stíhačkám na sálových počítačích.
+              </div>
+              <p style="font-size: 0.82rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.5rem;">
+                <strong>Proč nemohlo být na webu?</strong> Plný SGML parser byl tak monstrózní a drahý, že by se nevešel do tehdejších osobních počítačů. Tim Berners-Lee proto z SGML vypreparoval pouhých 18 základních značek, přidal tag <code>&lt;a href="..."&gt;</code> pro hypertextový skok a stvořil HTML. Později v roce 1998 vzniklo <strong>XML</strong> jako 80% odlehčená podmnožka SGML pro univerzální výměnu dat.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Vývojové verze HTML, XML a éra XHTML
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Verze HTML a XML">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Vývojové verze HTML, XML a slepá ulička XHTML</h2>
+            <p class="slide-subtitle">
+              Cesta od 18 původních značek k modernímu living standardu a dramatický rozkol mezi W3C a konsorciem WHATWG.
+            </p>
+          </header>
+
+          <div class="compare-columns">
+            <!-- Časová osa verzí -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                </div>
+                <h3 class="card-title">Evoluce HTML verzí</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.85rem;">
+                <div style="padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); border-left: 3px solid #94a3b8;">
+                  <strong>1991 – HTML Tags:</strong> Pouhých 18 značek (z nichž 11 přežilo dodnes).
+                </div>
+                <div style="padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); border-left: 3px solid #38bdf8;">
+                  <strong>1995 – HTML 2.0 (RFC 1866):</strong> První oficiální standard IETF. Podpora formulářů.
+                </div>
+                <div style="padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); border-left: 3px solid #fbbf24;">
+                  <strong>1997 – HTML 3.2:</strong> Zavedení tabulek, appletů a obtékání textu kolem obrázků.
+                </div>
+                <div style="padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); border-left: 3px solid #f97316;">
+                  <strong>1999 – HTML 4.01:</strong> Zásadní milník na dalších 15 let. Oddělení obsahu od CSS stylů.
+                </div>
+                <div style="padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); background: rgba(16,185,129,0.1); border-left: 3px solid #10b981;">
+                  <strong>2014+ – HTML5 &amp; Living Standard:</strong> WHATWG standard bez čísel verzí, neustále vyvíjený standard.
+                </div>
+              </div>
+            </div>
+
+            <!-- XML vs HTML a XHTML krize -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3 class="card-title">Krize XHTML 2.0 a drakonický XML parser</h3>
+              </div>
+              <p style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary);">
+                Kolem roku 2000 se W3C rozhodlo předělat HTML na striktní <strong>XHTML</strong> (Extensible Hypertext Markup Language) založené na XML pravidlech.
+              </p>
+              <div style="margin-top: 0.6rem; padding: 0.75rem; border-radius: var(--radius-sm); background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.3); font-size: 0.82rem; color: #fb7185;">
+                <strong>Fatal XML Error (Žlutá obrazovka smrti):</strong> Pokud v XHTML chybělo jediné lomítko nebo uvozovka, prohlížeč odmítl celou stránku vykreslit a zobrazil chybu parsování.
+              </div>
+              <p style="font-size: 0.86rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.6rem;">
+                <strong>Vznik WHATWG (2004):</strong> Vývojáři prohlížečů (Apple, Mozilla, Opera) odmítli nepraktické XHTML 2.0, které by rozbilo existující weby. Založili pracovní skupinu WHATWG a definovali pragmatický přístup: <em>Web musí fungovat pro lidi i při drobných chybách v kódu</em>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Anatomie HTML elementu a tagů
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Anatomie tagu a elementu">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Anatomie HTML elementu: Tagy, atributy a obsah</h2>
+            <p class="slide-subtitle">
+              Klikněte na jednotlivé části značky níže a prozkoumejte jejich přesnou syntaktickou roli.
+            </p>
+          </header>
+
+          <div class="anatomy-box">
+            <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+              <span>Interaktivní rozklad značky (klikněte na prvek):</span>
+              <span style="color: #fb923c; font-family: var(--font-mono);">&lt;a href="..." target="..."&gt;Text&lt;/a&gt;</span>
+            </div>
+
+            <!-- Interaktivní řádek -->
+            <div class="tag-anatomy-display">
+              <span class="anatomy-part part-open-tag active" data-part="open-tag">&lt;a</span>
+              <span class="anatomy-part part-attr-name" data-part="attr-href">href</span>=<span class="anatomy-part part-attr-val" data-part="attr-href">"https://skolavdf.cz"</span>
+              <span class="anatomy-part part-attr-name" data-part="attr-target">target</span>=<span class="anatomy-part part-attr-val" data-part="attr-target">"_blank"</span>&gt;
+              <span class="anatomy-part part-content" data-part="content">Web SPŠ Varnsdorf</span>
+              <span class="anatomy-part part-close-tag" data-part="close-tag">&lt;/a&gt;</span>
+            </div>
+
+            <!-- Panel s popiskem vybrané části -->
+            <div class="anatomy-info-panel">
+              <div class="anatomy-info-title" id="anatomyInfoTitle">
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e; width: 18px; height: 18px;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Počáteční značka (Opening Tag)
+              </div>
+              <p class="anatomy-info-desc" id="anatomyInfoDesc">
+                Otevírá HTML element. Začíná ostrou závorkou &lt; a končí &gt;. Obsahuje název značky (zde <code>a</code> pro hypertextový odkaz) a volitelné atributy oddělené mezerou.
+              </p>
+            </div>
+          </div>
+
+          <!-- Párové vs nepárové tagy -->
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <div class="content-card">
+              <h4 style="color: #38bdf8; display: flex; align-items: center; gap: 0.5rem;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                Párové elementy (Standardní)
+              </h4>
+              <p style="font-size: 0.86rem; line-height: 1.5; color: var(--text-secondary);">
+                Mají otevírací značku, vnitřní obsah a uzavírací značku s lomítkem <code>&lt;/název&gt;</code>.
+              </p>
+              <div class="code-window" style="margin-top: 0.5rem;">
+                <pre class="code-window-body" style="padding: 0.6rem 0.8rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span><span class="code-content">Odstavec textu</span><span class="tag-bracket">&lt;/</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">button</span><span class="tag-bracket">&gt;</span><span class="code-content">Odeslat</span><span class="tag-bracket">&lt;/</span><span class="tag-name">button</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #f97316; display: flex; align-items: center; gap: 0.5rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                Nepárové elementy (Void Elements)
+              </h4>
+              <p style="font-size: 0.86rem; line-height: 1.5; color: var(--text-secondary);">
+                Nemohou mít žádný vnitřní text ani potomky. Nemají koncovou značku. Lomítko na konci (<code>/&gt;</code>) je v HTML5 volitelné.
+              </p>
+              <div class="code-window" style="margin-top: 0.5rem;">
+                <pre class="code-window-body" style="padding: 0.6rem 0.8rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">img</span> <span class="attr-name">src</span>=<span class="attr-val">"foto.webp"</span> <span class="attr-name">alt</span>=<span class="attr-val">"Popis"</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">input</span> <span class="attr-name">type</span>=<span class="attr-val">"text"</span><span class="tag-bracket">&gt;</span> <span class="code-comment">&lt;!-- &lt;br&gt;, &lt;hr&gt;, &lt;meta&gt;, &lt;link&gt; --&gt;</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Atributy a jejich hodnoty
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Atributy a hodnoty">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Atributy HTML značek a pravidla zápisu</h2>
+            <p class="slide-subtitle">
+              Jak předávat elementům dodatečné vlastnosti, identifikátory a konfiguraci.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <!-- Globální atributy -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </div>
+                <h3 class="card-title">Globální atributy</h3>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Lze je použít u <strong>libovolného</strong> HTML elementu:
+              </p>
+              <ul style="font-size: 0.82rem; line-height: 1.6; color: var(--text-secondary); padding-left: 1.1rem; margin-top: 0.4rem;">
+                <li><code>id="main-nav"</code>: Unikátní identifikátor (max. 1× na stránce).</li>
+                <li><code>class="btn active"</code>: Třída pro CSS styly (může být opakovaná a vícenásobná).</li>
+                <li><code>title="..."</code>: Doplňkový tooltip po najetí myší.</li>
+                <li><code>lang="cs"</code>: Jazyk obsahu v daném elementu.</li>
+                <li><code>hidden</code>: Skryje element z renderování i a11y.</li>
+                <li><code>tabindex="0"</code>: Řadí prvek do focus cyklu tabulátoru.</li>
+              </ul>
+            </div>
+
+            <!-- Pravidla uvozovek a boolean -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                </div>
+                <h3 class="card-title">Pravidla zápisu &amp; Boolean</h3>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Hodnoty píšeme vždy v rovných uvozovkách (<code>"hodnota"</code>):
+              </p>
+              <div style="margin-top: 0.5rem; padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(249, 115, 22, 0.08); font-size: 0.82rem; line-height: 1.5;">
+                <strong>Boolean atributy:</strong> Nemusí mít hodnotu! Jejich pouhá přítomnost zapíná stav true:
+                <div style="margin-top: 0.35rem; font-family: var(--font-mono); color: #fb923c;">
+                  &lt;input type="text" <strong>required disabled</strong>&gt;
+                </div>
+                Zápisy <code>disabled="true"</code> nebo <code>disabled="disabled"</code> jsou zbytečné.
+              </div>
+            </div>
+
+            <!-- Vlastní data-* atributy -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </div>
+                <h3 class="card-title">Vlastní data-* atributy</h3>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Umožňují uložit vlastní nestandardní data přímo k DOM prvku pro JavaScript:
+              </p>
+              <div class="code-window" style="margin-top: 0.4rem;">
+                <pre class="code-window-body" style="padding: 0.5rem 0.7rem; font-size: 0.78rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">div</span> 
+  <span class="attr-name">data-user-id</span>=<span class="attr-val">"4081"</span>
+  <span class="attr-name">data-role</span>=<span class="attr-val">"student"</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">div</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+                V JS se čtou čistě přes <code>element.dataset.userId</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Základní stavební kameny obsahu
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Základní stavební kameny">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Základní stavební kameny textu a obsahu</h2>
+            <p class="slide-subtitle">
+              Nadpisy, odstavce, logické formátování textu a rozdíl mezi významem a pouhým vzhledem.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Nadpisy a odstavce -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #38bdf8; margin-bottom: 0.6rem;">Hierarchie nadpisů &lt;h1&gt; až &lt;h6&gt;</h3>
+              <p style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary);">
+                Nadpisy tvoří logickou osnovu stránky (jako obsah v knize). Čtečky obrazovky podle nich umožňují nevidomým skákat po kapitolách.
+              </p>
+              <div class="code-window" style="margin-top: 0.6rem;">
+                <pre class="code-window-body" style="padding: 0.6rem 0.8rem; font-size: 0.82rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span><span class="code-content">Hlavní nadpis stránky (pouze 1x na webu!)</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">h2</span><span class="tag-bracket">&gt;</span><span class="code-content">Kapitola 1: Historie</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h2</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">h3</span><span class="tag-bracket">&gt;</span><span class="code-content">Podsekce: Vynález hypertextu</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h3</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">h2</span><span class="tag-bracket">&gt;</span><span class="code-content">Kapitola 2: Současnost</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h2</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči (Render):
+                </span>
+                <div style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); line-height: 1.2;">Hlavní nadpis stránky (h1)</div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-top: 0.35rem; margin-left: 0.5rem;">Kapitola 1: Historie (h2)</div>
+                <div style="font-size: 0.9rem; font-weight: 600; color: #fb923c; margin-top: 0.2rem; margin-left: 1rem;">Podsekce: Vynález hypertextu (h3)</div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-top: 0.35rem; margin-left: 0.5rem;">Kapitola 2: Současnost (h2)</div>
+              </div>
+
+              <div style="margin-top: 0.6rem; font-size: 0.82rem; color: #fb7185; padding: 0.5rem; background: rgba(244, 63, 94, 0.08); border-radius: var(--radius-sm);">
+                <strong>Chyba:</strong> Nikdy nepoužívejte h3 jen proto, že chcete menší písmo! Vzhled se řídí v CSS, nadpisy určují striktně význam.
+              </div>
+            </div>
+
+            <!-- Formátování textu -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #fb923c; margin-bottom: 0.6rem;">Významové značky textu</h3>
+              <p style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary);">
+                V HTML vždy preferujeme sémantiku před prezentačními prvky:
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem; margin-top: 0.5rem;">
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px;">
+                  <code>&lt;strong&gt;Text&lt;/strong&gt;</code>: Silný důraz, varování (čtečka zvýší intonaci; vizuálně tučně).
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px;">
+                  <code>&lt;em&gt;Text&lt;/em&gt;</code>: Zdůraznění v kontextu věty (vizuálně kurzíva).
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px;">
+                  <code>&lt;code&gt;</code> a <code>&lt;pre&gt;</code>: Počítačový kód a předformátovaný blok se zachováním mezer.
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px;">
+                  <code>&lt;blockquote&gt;</code>: Rozsáhlá citace z externího zdroje (atribut <code>cite</code>).
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px;">
+                  <code>&lt;br&gt;</code> vs <code>&lt;hr&gt;</code>: Zalomení řádku v básni vs tematický předěl mezi tématy.
+                </div>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output" style="margin-top: 0.75rem;">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči (Render):
+                </span>
+                <p style="margin: 0; line-height: 1.45; font-size: 0.84rem;">
+                  Ukázka <strong>silného důrazu strong</strong> a <em>sémantického zvýraznění em</em> v souvislém textu odstavce.
+                </p>
+                <blockquote style="margin: 0.35rem 0; padding: 0.35rem 0.65rem; border-left: 3px solid #38bdf8; background: rgba(56,189,248,0.06); font-style: italic; font-size: 0.8rem; color: #cbd5e1;">
+                  „Inovace rozlišuje mezi vůdcem a následovníkem.“
+                </blockquote>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.2rem;">
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">Příklad kódu:</span>
+                  <code style="font-size: 0.8rem; background: rgba(255,255,255,0.08); padding: 0.15rem 0.45rem; border-radius: 4px; color: #34d399;">const web = "SPŠ";</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Odkazy a hypertextové propojení
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Odkazy a hypertext">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Hypertextové odkazy: Značka &lt;a&gt; a typy cílů</h2>
+            <p class="slide-subtitle">
+              Srdce World Wide Webu. Jak správně odkazovat na lokální soubory, externí servery a kotvy na stránce.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Typy URL adres -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #38bdf8; margin-bottom: 0.6rem;">Absolutní vs. Relativní adresy</h3>
+              <div class="code-window" style="margin-top: 0.4rem;">
+                <pre class="code-window-body" style="padding: 0.65rem 0.85rem; font-size: 0.8rem;"><span class="code-comment">&lt;!-- 1. Absolutní URL (externí web s protokolem) --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"https://w3.org/TR/html5/"</span><span class="tag-bracket">&gt;</span><span class="code-content">W3C Standard</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;</span>
+
+<span class="code-comment">&lt;!-- 2. Relativní URL (soubor ve stejné složce) --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"kontakt.html"</span><span class="tag-bracket">&gt;</span><span class="code-content">Kontakt</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;</span>
+
+<span class="code-comment">&lt;!-- 3. Relativní URL o úroveň výše (../) --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"../index.html"</span><span class="tag-bracket">&gt;</span><span class="code-content">Zpět na katalog</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;</span>
+
+<span class="code-comment">&lt;!-- 4. Kotevní odkaz (skok na id elementu na stránce) --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"#kapitola-2"</span><span class="tag-bracket">&gt;</span><span class="code-content">Přejít na kapitolu 2</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči (Render):
+                </span>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+                  <a href="#" style="color: #38bdf8; text-decoration: underline; font-weight: 600;" onclick="event.preventDefault();">W3C Standard &nearr;</a>
+                  <span style="color: var(--text-dim);">&bull;</span>
+                  <a href="#" style="color: #fb923c; text-decoration: underline;" onclick="event.preventDefault();">Kontakt</a>
+                  <span style="color: var(--text-dim);">&bull;</span>
+                  <a href="#" style="color: #a855f7; text-decoration: underline;" onclick="event.preventDefault();">&larr; Zpět na katalog</a>
+                  <span style="color: var(--text-dim);">&bull;</span>
+                  <a href="#" style="color: #10b981; text-decoration: underline;" onclick="event.preventDefault();"># Přejít na kapitolu 2 &darr;</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Speciální protokoly a bezpečnost -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #fb923c; margin-bottom: 0.6rem;">Speciální protokoly a bezpečnost s target="_blank"</h3>
+              <p style="font-size: 0.86rem; line-height: 1.5; color: var(--text-secondary);">
+                Odkazy umí přímo spouštět e-mailové klienty nebo vytáčet telefonní čísla na chytrých telefonech:
+              </p>
+              <div class="code-window" style="margin-top: 0.4rem;">
+                <pre class="code-window-body" style="padding: 0.5rem 0.75rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"mailto:skola@skolavdf.cz"</span><span class="tag-bracket">&gt;</span><span class="code-content">Napsat e-mail</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"tel:+420412371234"</span><span class="tag-bracket">&gt;</span><span class="code-content">Zavolat na sekretariát</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči (Render):
+                </span>
+                <div style="display: flex; gap: 0.75rem;">
+                  <span style="color: #38bdf8; text-decoration: underline; display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.82rem;">
+                    ✉ Napsat e-mail
+                  </span>
+                  <span style="color: #10b981; text-decoration: underline; display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.82rem;">
+                    ☎ Zavolat na sekretariát
+                  </span>
+                </div>
+              </div>
+              <div style="margin-top: 0.75rem; padding: 0.75rem; border-radius: var(--radius-sm); background: rgba(244, 63, 94, 0.08); border-left: 3px solid #f43f5e; font-size: 0.82rem; line-height: 1.55;">
+                <strong style="color: #fb7185;">Kritická bezpečnostní zranitelnost tabnabbing:</strong><br>
+                Při otevření nového okna přes <code>target="_blank"</code> má cizí stránka přístup k původnímu oknu přes <code>window.opener</code>. Vždy doplňujte:
+                <div style="font-family: var(--font-mono); color: #34d399; margin-top: 0.25rem;">
+                  rel="noopener noreferrer"
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Seznamy a strukturování informací
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Seznamy a struktury">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Seznamy v HTML: &lt;ul&gt;, &lt;ol&gt; a definiční &lt;dl&gt;</h2>
+            <p class="slide-subtitle">
+              Strukturování výčtů položek, kroků v postupu a párování pojmů s jejich definicemi.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <!-- Nečíslovaný seznam -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #38bdf8; margin-bottom: 0.5rem;">Nečíslovaný seznam &lt;ul&gt;</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                Unordered List pro položky, u kterých nezáleží na pořadí (nákupní seznam, vlastnosti, navigační menu).
+              </p>
+              <div class="code-window" style="margin-top: 0.5rem;">
+                <pre class="code-window-body" style="padding: 0.5rem 0.7rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">ul</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span><span class="code-content">HTML5</span><span class="tag-bracket">&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span><span class="code-content">CSS3</span><span class="tag-bracket">&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span><span class="code-content">JavaScript</span><span class="tag-bracket">&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">ul</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči:
+                </span>
+                <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.82rem; line-height: 1.5; color: var(--text-primary);">
+                  <li>HTML5</li>
+                  <li>CSS3</li>
+                  <li>JavaScript</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Číslovaný seznam -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #fb923c; margin-bottom: 0.5rem;">Číslovaný seznam &lt;ol&gt;</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                Ordered List pro chronologické kroky a postupy. Podporuje atributy <code>start="1"</code> a <code>reversed</code>.
+              </p>
+              <div class="code-window" style="margin-top: 0.5rem;">
+                <pre class="code-window-body" style="padding: 0.5rem 0.7rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">ol</span> <span class="attr-name">start</span>=<span class="attr-val">"1"</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span><span class="code-content">Napiš HTML kód</span><span class="tag-bracket">&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span><span class="code-content">Zvaliduj dle W3C</span><span class="tag-bracket">&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span><span class="code-content">Nasaď na hosting</span><span class="tag-bracket">&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">ol</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči:
+                </span>
+                <ol style="margin: 0; padding-left: 1.25rem; font-size: 0.82rem; line-height: 1.5; color: var(--text-primary);">
+                  <li>Napiš HTML kód</li>
+                  <li>Zvaliduj dle W3C</li>
+                  <li>Nasaď na hosting</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- Definiční seznam -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #10b981; margin-bottom: 0.5rem;">Definiční seznam &lt;dl&gt;</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                Páruje termíny (<code>&lt;dt&gt;</code>) s jejich popisy (<code>&lt;dd&gt;</code>). Skvělé pro slovníky pojmů a technické parametry.
+              </p>
+              <div class="code-window" style="margin-top: 0.5rem;">
+                <pre class="code-window-body" style="padding: 0.5rem 0.7rem; font-size: 0.78rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">dl</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">dt</span><span class="tag-bracket">&gt;</span><span class="code-content">DNS</span><span class="tag-bracket">&lt;/</span><span class="tag-name">dt</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">dd</span><span class="tag-bracket">&gt;</span><span class="code-content">Překlad jmen na IP.</span><span class="tag-bracket">&lt;/</span><span class="tag-name">dd</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">dt</span><span class="tag-bracket">&gt;</span><span class="code-content">DOM</span><span class="tag-bracket">&lt;/</span><span class="tag-name">dt</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">dd</span><span class="tag-bracket">&gt;</span><span class="code-content">Objektový strom stránky.</span><span class="tag-bracket">&lt;/</span><span class="tag-name">dd</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">dl</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči:
+                </span>
+                <dl style="margin: 0; font-size: 0.8rem; line-height: 1.45;">
+                  <dt style="font-weight: 700; color: #10b981;">DNS</dt>
+                  <dd style="margin-left: 0.75rem; margin-bottom: 0.25rem; color: var(--text-secondary);">Překlad jmen na IP.</dd>
+                  <dt style="font-weight: 700; color: #10b981;">DOM</dt>
+                  <dd style="margin-left: 0.75rem; color: var(--text-secondary);">Objektový strom stránky.</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Minimální kostra HTML a metadata
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Struktura stránky a meta">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Minimální kostra dokumentu a hlavička &lt;head&gt;</h2>
+            <p class="slide-subtitle">
+              Základní šablona každého validního webu, nastavení UTF-8, mobilní viewport a sociální metadata.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1.15fr 0.85fr; gap: 1.25rem;">
+            <!-- Kompletní kostra -->
+            <div class="code-window">
+              <div class="code-window-header">
+                <div class="code-window-dots">
+                  <div class="code-window-dot dot-red"></div>
+                  <div class="code-window-dot dot-yellow"></div>
+                  <div class="code-window-dot dot-green"></div>
+                </div>
+                <span class="code-window-title">index.html — Standardní kostra HTML5</span>
+              </div>
+              <pre class="code-window-body"><span class="code-doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">html</span> <span class="attr-name">lang</span>=<span class="attr-val">"cs"</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">head</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">meta</span> <span class="attr-name">charset</span>=<span class="attr-val">"UTF-8"</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">meta</span> <span class="attr-name">name</span>=<span class="attr-val">"viewport"</span> <span class="attr-name">content</span>=<span class="attr-val">"width=device-width, initial-scale=1.0"</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">title</span><span class="tag-bracket">&gt;</span><span class="code-content">Výukový portál SPŠ</span><span class="tag-bracket">&lt;/</span><span class="tag-name">title</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">meta</span> <span class="attr-name">name</span>=<span class="attr-val">"description"</span> <span class="attr-name">content</span>=<span class="attr-val">"Materiály pro studenty SPŠ."</span><span class="tag-bracket">&gt;</span>
+  
+  <span class="code-comment">&lt;!-- Propojení stylopisu a ikony --&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">link</span> <span class="attr-name">rel</span>=<span class="attr-val">"stylesheet"</span> <span class="attr-name">href</span>=<span class="attr-val">"style.css"</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">link</span> <span class="attr-name">rel</span>=<span class="attr-val">"icon"</span> <span class="attr-name">href</span>=<span class="attr-val">"favicon.svg"</span> <span class="attr-name">type</span>=<span class="attr-val">"image/svg+xml"</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">head</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">body</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span><span class="code-content">Vítejte ve světě webu!</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span><span class="code-content">První funkční stránka.</span><span class="tag-bracket">&lt;/</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">body</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">html</span><span class="tag-bracket">&gt;</span></pre>
+            </div>
+
+            <!-- Výklad klíčových řádků -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #fb923c; margin-bottom: 0.6rem;">Význam klíčových značek</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.82rem; line-height: 1.55;">
+                <div style="padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b;">
+                  <strong style="color: #fbbf24;">&lt;!DOCTYPE html&gt; &bull; Standards Mode vs. Quirks Mode:</strong>
+                  <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                    V 90. letech měly prohlížeče (IE 4/5 a Netscape) vážné chyby v počítání rozměrů (box model počítal padding i border do width). Když W3C vytvořilo oficiální standard, prohlížeče zavedly tzv. <strong>DOCTYPE Sniffing</strong>:
+                  </p>
+                  <ul style="margin: 0.3rem 0 0 0; padding-left: 1.1rem; font-size: 0.78rem; line-height: 1.45; color: var(--text-secondary);">
+                    <li><strong>Standards Mode:</strong> S <code>&lt;!DOCTYPE html&gt;</code> se stránka renderuje striktně dle moderních standardů W3C.</li>
+                    <li><strong>Quirks Mode („režim podivností“):</strong> Pokud DOCTYPE chybí, prohlížeč emuluje chyby z roku 1999 kvůli starým webům, což dnes okamžitě rozbije moderní layout a responzivitu!</li>
+                  </ul>
+                </div>
+                <div>
+                  <strong style="color: #38bdf8;">html lang="cs":</strong> Oznámí prohlížeči a odečítači, že text je v češtině (správná výslovnost a dělení slov).
+                </div>
+                <div>
+                  <strong style="color: #10b981;">meta charset="UTF-8":</strong> Zajišťuje bezchybné zobrazení české diakritiky (ě, š, č, ř, ž, ý, á, í, é).
+                </div>
+                <div>
+                  <strong style="color: #f43f5e;">meta viewport:</strong> Bez tohoto řádku mobilní telefony zobrazí web jako zmenšenou desktopovou stránku a nepůjde responzivita.
+                </div>
+                <div style="padding: 0.5rem; background: rgba(56, 189, 248, 0.08); border-radius: var(--radius-sm); border-left: 2px solid #38bdf8;">
+                  <strong>Open Graph (og:title, og:image):</strong> Definuje obrázek a název náhledu při vložení odkazu na sociální sítě a Discord.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Od HTML kódu k DOM stromu a dobré praktiky
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="DOM strom a dobré praktiky">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Od HTML kódu k DOM stromu a dobré praktiky</h2>
+            <p class="slide-subtitle">
+              Jak prohlížeč převádí text na živou stromovou strukturu objektů. Klikněte na uzel stromu nebo řádek kódu.
+            </p>
+          </header>
+
+          <div class="dom-visualizer-container">
+            <!-- Levý sloupec: HTML zdroj -->
+            <div>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.4rem;">
+                Textový HTML zdrojový kód:
+              </div>
+              <div class="dom-html-source">
+                <span class="dom-line-highlight active" data-dom-key="doc">&lt;!DOCTYPE html&gt;</span>
+                <span class="dom-line-highlight" data-dom-key="html">&lt;html lang="cs"&gt;</span>
+                <span class="dom-line-highlight" style="margin-left: 1rem;" data-dom-key="head">&lt;head&gt;</span>
+                <span class="dom-line-highlight" style="margin-left: 2rem;" data-dom-key="title">&lt;title&gt;Můj první web&lt;/title&gt;</span>
+                <span class="dom-line-highlight" style="margin-left: 1rem;" data-dom-key="head">&lt;/head&gt;</span>
+                <span class="dom-line-highlight" style="margin-left: 1rem;" data-dom-key="body">&lt;body&gt;</span>
+                <span class="dom-line-highlight" style="margin-left: 2rem;" data-dom-key="h1">&lt;h1&gt;Vítejte na SPŠ&lt;/h1&gt;</span>
+                <span class="dom-line-highlight" style="margin-left: 2rem;" data-dom-key="p">&lt;p class="perex"&gt;Text odstavce...&lt;/p&gt;</span>
+                <span class="dom-line-highlight" style="margin-left: 1rem;" data-dom-key="body">&lt;/body&gt;</span>
+                <span class="dom-line-highlight" data-dom-key="html">&lt;/html&gt;</span>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Strom DOM -->
+            <div>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.4rem;">
+                Reprezentace v paměti: Document Object Model (DOM):
+              </div>
+              <div class="dom-tree-panel">
+                <!-- Přesný stromový vektorový graf DOM s naprosto přesně lícujícími hranami -->
+                <svg class="dom-tree-svg" viewBox="0 0 560 260" aria-label="Stromový diagram DOM reprezentace">
+                  <!-- Hrany / Spojnice (Edges) -->
+                  <!-- #document -> html -->
+                  <path class="tree-edge" d="M 280,46 L 280,74"></path>
+
+                  <!-- html -> head a body -->
+                  <path class="tree-edge" d="M 280,106 L 280,125 L 145,125 L 145,144"></path>
+                  <path class="tree-edge" d="M 280,106 L 280,125 L 415,125 L 415,144"></path>
+                  <circle cx="280" cy="125" r="3.5" fill="#f97316"></circle>
+
+                  <!-- head -> title -->
+                  <path class="tree-edge" d="M 145,176 L 145,214"></path>
+
+                  <!-- body -> h1 a p -->
+                  <path class="tree-edge" d="M 415,176 L 415,195 L 345,195 L 345,214"></path>
+                  <path class="tree-edge" d="M 415,176 L 415,195 L 480,195 L 480,214"></path>
+                  <circle cx="415" cy="195" r="3.5" fill="#f97316"></circle>
+
+                  <!-- Uzly (Nodes) -->
+                  <!-- 1. #document -->
+                  <g class="tree-node tree-node-doc active" data-dom-key="doc" tabindex="0" role="button" aria-label="Uzel #document">
+                    <rect class="node-rect" x="205" y="14" width="150" height="32" rx="6"></rect>
+                    <rect class="node-badge-rect" x="211" y="20" width="46" height="20" rx="4"></rect>
+                    <text class="node-badge-text" x="234" y="30">DOC</text>
+                    <text class="node-label" x="265" y="30">#document</text>
+                  </g>
+
+                  <!-- 2. html -->
+                  <g class="tree-node tree-node-html" data-dom-key="html" tabindex="0" role="button" aria-label="Uzel html">
+                    <rect class="node-rect" x="195" y="74" width="170" height="32" rx="6"></rect>
+                    <rect class="node-badge-rect" x="201" y="80" width="48" height="20" rx="4"></rect>
+                    <text class="node-badge-text" x="225" y="90">ROOT</text>
+                    <text class="node-label" x="257" y="90">&lt;html lang="cs"&gt;</text>
+                  </g>
+
+                  <!-- 3. head -->
+                  <g class="tree-node tree-node-head" data-dom-key="head" tabindex="0" role="button" aria-label="Uzel head">
+                    <rect class="node-rect" x="80" y="144" width="130" height="32" rx="6"></rect>
+                    <rect class="node-badge-rect" x="86" y="150" width="46" height="20" rx="4"></rect>
+                    <text class="node-badge-text" x="109" y="160">META</text>
+                    <text class="node-label" x="140" y="160">&lt;head&gt;</text>
+                  </g>
+
+                  <!-- 4. title -->
+                  <g class="tree-node tree-node-leaf" data-dom-key="title" tabindex="0" role="button" aria-label="Uzel title">
+                    <rect class="node-rect" x="80" y="214" width="130" height="32" rx="6"></rect>
+                    <rect class="node-badge-rect" x="86" y="220" width="46" height="20" rx="4"></rect>
+                    <text class="node-badge-text" x="109" y="230">TAG</text>
+                    <text class="node-label" x="140" y="230">&lt;title&gt;</text>
+                  </g>
+
+                  <!-- 5. body -->
+                  <g class="tree-node tree-node-body" data-dom-key="body" tabindex="0" role="button" aria-label="Uzel body">
+                    <rect class="node-rect" x="350" y="144" width="130" height="32" rx="6"></rect>
+                    <rect class="node-badge-rect" x="356" y="150" width="46" height="20" rx="4"></rect>
+                    <text class="node-badge-text" x="379" y="160">BODY</text>
+                    <text class="node-label" x="410" y="160">&lt;body&gt;</text>
+                  </g>
+
+                  <!-- 6. h1 -->
+                  <g class="tree-node tree-node-leaf" data-dom-key="h1" tabindex="0" role="button" aria-label="Uzel h1">
+                    <rect class="node-rect" x="290" y="214" width="110" height="32" rx="6"></rect>
+                    <rect class="node-badge-rect" x="296" y="220" width="36" height="20" rx="4"></rect>
+                    <text class="node-badge-text" x="314" y="230">H1</text>
+                    <text class="node-label" x="340" y="230">&lt;h1&gt;</text>
+                  </g>
+
+                  <!-- 7. p -->
+                  <g class="tree-node tree-node-leaf" data-dom-key="p" tabindex="0" role="button" aria-label="Uzel p">
+                    <rect class="node-rect" x="418" y="214" width="124" height="32" rx="6"></rect>
+                    <rect class="node-badge-rect" x="424" y="220" width="34" height="20" rx="4"></rect>
+                    <text class="node-badge-text" x="441" y="230">P</text>
+                    <text class="node-label" x="466" y="230">&lt;p.perex&gt;</text>
+                  </g>
+                </svg>
+
+                <!-- Detail uzlu -->
+                <div class="dom-node-details" style="width: 100%; margin-top: 1rem;">
+                  <strong id="domNodeTitle" style="color: #fb923c;">#document — DOCUMENT_NODE (Node.DOCUMENT_NODE = 9)</strong>
+                  <p id="domNodeDesc" style="margin: 0.3rem 0; color: var(--text-secondary); font-size: 0.82rem;">
+                    Kořenový bod celého DOM stromu. Reprezentuje samotnou načtenou webovou stránku.
+                  </p>
+                  <div id="domNodeProps" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">
+                    Rodič: null | Potomci: &lt;!DOCTYPE&gt;, &lt;html&gt;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a otázky">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Shrnutí tématu &bull; Základy jazyka HTML</h2>
+            <p class="slide-subtitle">
+              Zopakujte si zásadní pravidla a otestujte své znalosti před přechodem na sémantický standard HTML5.
+            </p>
+          </header>
+
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">1</span>
+                <p class="question-text">Proč se neujal standard XHTML 2.0 a jaký byl hlavní důvod vzniku iniciativy WHATWG?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong>XHTML 2.0</strong> vyžadovalo drakonické parsování XML – jakákoliv drobná syntaktická chyba vedla k „pádu“ stránky na žlutou chybovou obrazovku (Yellow Screen of Death). Navíc nebylo zpětně kompatibilní se starým webem. Vývojáři prohlížečů (Apple, Mozilla, Opera) proto v roce 2004 založili <strong>WHATWG</strong>, aby vytvořili živý standard odolný vůči chybám se zpětnou kompatibilitou.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">2</span>
+                <p class="question-text">Jaký je rozdíl mezi párovým elementem a nepárovým (void elementem)? Uveďte 3 příklady void tagů.</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong>Párový element</strong> ohraničuje text nebo další potomky pomocí otevírací a uzavírací značky (např. <code>&lt;p&gt;text&lt;/p&gt;</code>). <strong>Void element</strong> nemůže mít žádný vnitřní obsah ani koncovou značku. Příklady: <code>&lt;img&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;meta&gt;</code>, <code>&lt;link&gt;</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">3</span>
+                <p class="question-text">Proč je nutné u odkazů s <code>target="_blank"</code> uvádět atribut <code>rel="noopener noreferrer"</code>?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Chrání před útokem zvaným <strong>reverse tabnabbing</strong>. Bez <code>noopener</code> má nově otevřená cizí stránka přístup k objektu <code>window.opener</code> vašeho okna a může na pozadí podstrčit falešnou přihlašovací stránku (phishing). <code>noreferrer</code> navíc zamezuje odeslání HTTP hlavičky Referer s původní URL.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">4</span>
+                <p class="question-text">K čemu slouží řádek <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Přikazuje mobilnímu prohlížeči, aby nastavil šířku zobrazovací plochy (viewport) přesně podle <strong>fyzické šířky displeje zařízení v CSS pixelech</strong> s měřítkem 1:1. Bez tohoto metatagu by mobilní telefon předstíral rozlišení monitoru (cca 980 px) a celou stránku nečitelně zmenšil.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../011-Webova-komunikace/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: Webová komunikace a pipeline (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../021-HTML5/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: Moderní HTML5 a sémantika (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Základy jazyka HTML
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 020 -->
+  <script src="html-engine.js"></script>
+</body>
+
+</html>

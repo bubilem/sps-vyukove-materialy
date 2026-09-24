@@ -1,0 +1,630 @@
+/* ==========================================================================
+   SPŠ Webové technologie - Téma 020: Základy jazyka HTML
+   Lokální dedikované styly pro předmět WEB (Webové technologie SPŠ)
+   ========================================================================== */
+
+:root {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.28);
+  --web-accent-light: #fb923c;
+  --tag-color: #f43f5e;
+  --attr-color: #38bdf8;
+  --val-color: #10b981;
+  --comm-color: #94a3b8;
+}
+
+.badge-accent {
+  background: rgba(249, 115, 22, 0.15);
+  border-color: rgba(249, 115, 22, 0.45);
+  color: #fb923c;
+}
+
+[data-theme="light"] .badge-accent {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.5);
+  color: #ea580c;
+}
+
+/* ==========================================================================
+   1. Záhlaví snímků: Nadpis a podnadpis pod sebou
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   2. Hlavičky karet s inline ikonami
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px !important;
+  height: 20px !important;
+  display: block !important;
+}
+
+.card-icon.orange {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
+  border: 1px solid rgba(249, 115, 22, 0.35) !important;
+}
+
+.card-icon.blue {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+}
+
+.card-icon.purple {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(168, 85, 247, 0.35) !important;
+}
+
+.card-icon.green {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+.card-icon.rose {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.35) !important;
+}
+
+.card-icon.amber {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+.card-title {
+  margin: 0 !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.3 !important;
+}
+
+/* ==========================================================================
+   3. Anatomie tagu a interaktivní rozklad
+   ========================================================================== */
+.anatomy-box {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  margin-bottom: 1.25rem;
+}
+
+[data-theme="light"] .anatomy-box {
+  background: #ffffff;
+  border-color: rgba(249, 115, 22, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.tag-anatomy-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .tag-anatomy-display {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.anatomy-part {
+  cursor: pointer;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.anatomy-part:hover,
+.anatomy-part.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.part-open-tag { background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #fb7185; }
+.part-open-tag.active { background: rgba(244, 63, 94, 0.3); box-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
+
+.part-attr-name { background: rgba(56, 189, 248, 0.15); border: 1px solid #38bdf8; color: #38bdf8; }
+.part-attr-name.active { background: rgba(56, 189, 248, 0.3); box-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
+
+.part-attr-val { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; }
+.part-attr-val.active { background: rgba(16, 185, 129, 0.3); box-shadow: 0 0 12px rgba(16, 185, 129, 0.4); }
+
+.part-content { background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; }
+.part-content.active { background: rgba(245, 158, 11, 0.3); box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); }
+
+.part-close-tag { background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; color: #c084fc; }
+.part-close-tag.active { background: rgba(168, 85, 247, 0.3); box-shadow: 0 0 12px rgba(168, 85, 247, 0.4); }
+
+.anatomy-info-panel {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+[data-theme="light"] .anatomy-info-panel {
+  background: #f1f5f9;
+}
+
+.anatomy-info-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.anatomy-info-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   4. Code bloky, živé výstupy v prohlížeči a vizuální syntaxe
+   ========================================================================== */
+.code-window {
+  background: #0b1120;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+[data-theme="light"] .code-window {
+  background: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.code-window-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.5rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.code-window-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dot-red { background: #ef4444; }
+.dot-yellow { background: #f59e0b; }
+.dot-green { background: #10b981; }
+
+.code-window-title {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.code-window-body {
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  color: #e2e8f0;
+  margin: 0;
+  white-space: pre;
+}
+
+/* Živý náhled vykreslení v prohlížeči přímo pod zdrojovým kódem */
+.code-live-output {
+  margin-top: 0.65rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px dashed rgba(249, 115, 22, 0.4);
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+[data-theme="light"] .code-live-output {
+  background: #f8fafc;
+  border-color: rgba(249, 115, 22, 0.45);
+}
+
+.live-output-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: #fb923c;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+  user-select: none;
+}
+
+.live-output-label svg {
+  width: 13px;
+  height: 13px;
+  color: #fb923c;
+}
+
+/* Highlighting tokeny v kódu */
+.tag-bracket { color: #94a3b8; }
+.tag-name { color: #f43f5e; font-weight: 600; }
+.attr-name { color: #38bdf8; }
+.attr-val { color: #34d399; }
+.code-comment { color: #64748b; font-style: italic; }
+.code-doctype { color: #fbbf24; font-weight: 700; }
+.code-content { color: #f8fafc; }
+
+/* ==========================================================================
+   5. Interaktivní vizualizátor DOM stromu jako graf (Slide 11)
+   ========================================================================== */
+.dom-visualizer-container {
+  display: grid;
+  grid-template-columns: 0.95fr 1.35fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.dom-html-source {
+  background: #0b1120;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: #94a3b8;
+}
+
+.dom-line-highlight {
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  display: block;
+  transition: all 0.2s ease;
+}
+
+.dom-line-highlight:hover,
+.dom-line-highlight.active {
+  background: rgba(249, 115, 22, 0.25);
+  color: #ffffff;
+}
+
+/* Vizuální stromový graf DOM (SVG s přesnými hranami) */
+.dom-tree-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dom-tree-svg {
+  width: 100%;
+  max-width: 580px;
+  height: auto;
+  display: block;
+}
+
+.tree-edge {
+  fill: none;
+  stroke: rgba(249, 115, 22, 0.45);
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.tree-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.tree-node .node-rect {
+  fill: #0b1120;
+  stroke: var(--border-color);
+  stroke-width: 1.5px;
+  transition: all 0.2s ease;
+}
+
+[data-theme="light"] .tree-node .node-rect {
+  fill: #ffffff;
+  stroke: #cbd5e1;
+}
+
+.tree-node .node-badge-rect {
+  fill: rgba(255, 255, 255, 0.08);
+  transition: fill 0.2s ease;
+}
+
+[data-theme="light"] .tree-node .node-badge-rect {
+  fill: rgba(0, 0, 0, 0.06);
+}
+
+.tree-node .node-badge-text {
+  fill: #94a3b8;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+[data-theme="light"] .tree-node .node-badge-text {
+  fill: #475569;
+}
+
+.tree-node .node-label {
+  fill: var(--text-primary);
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  dominant-baseline: central;
+}
+
+[data-theme="light"] .tree-node .node-label {
+  fill: #0f172a;
+}
+
+/* Barevné rozlišení typů uzlů */
+.tree-node-doc .node-rect  { stroke: rgba(251, 191, 36, 0.6); }
+.tree-node-doc .node-label { fill: #fbbf24; }
+.tree-node-html .node-rect { stroke: rgba(249, 115, 22, 0.6); }
+.tree-node-html .node-label { fill: #fb923c; }
+.tree-node-head .node-rect { stroke: rgba(168, 85, 247, 0.6); }
+.tree-node-head .node-label { fill: #c084fc; }
+.tree-node-body .node-rect { stroke: rgba(56, 189, 248, 0.6); }
+.tree-node-body .node-label { fill: #38bdf8; }
+.tree-node-leaf .node-rect { stroke: rgba(16, 185, 129, 0.6); }
+.tree-node-leaf .node-label { fill: #34d399; }
+
+/* Aktivní a hover stav uzlu */
+.tree-node:hover .node-rect,
+.tree-node.active .node-rect {
+  stroke: #f97316 !important;
+  stroke-width: 2.5px;
+  fill: rgba(249, 115, 22, 0.18) !important;
+  filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.45));
+}
+
+.tree-node.active .node-badge-rect {
+  fill: rgba(249, 115, 22, 0.4);
+}
+
+.tree-node.active .node-badge-text {
+  fill: #ffffff;
+}
+
+.tree-indent-1 { margin-left: 1.5rem; position: relative; }
+.tree-indent-2 { margin-left: 3rem; position: relative; }
+.tree-indent-3 { margin-left: 4.5rem; position: relative; }
+.tree-indent-4 { margin-left: 6rem; position: relative; }
+
+.dom-node-details {
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.85rem;
+}
+
+[data-theme="light"] .dom-node-details {
+  background: #f8fafc;
+}
+
+/* ==========================================================================
+   6. Srovnání XML vs HTML a Chyby vs Správné řešení
+   ========================================================================== */
+.compare-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.bad-practice-card {
+  border: 1px solid rgba(244, 63, 94, 0.35);
+  background: rgba(244, 63, 94, 0.04);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.good-practice-card {
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.04);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+/* ==========================================================================
+   7. Kontrolní otázky (Slide 12)
+   ========================================================================== */
+.questions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .question-card {
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.question-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.question-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.4);
+  color: #fb923c;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.question-text {
+  margin: 0;
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.question-answer-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.question-answer-btn:hover {
+  background: rgba(249, 115, 22, 0.15);
+  border-color: #f97316;
+  color: #fb923c;
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(249, 115, 22, 0.08);
+  border-left: 3px solid #f97316;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.question-hint.visible {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .dom-visualizer-container,
+  .compare-columns,
+  .questions-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

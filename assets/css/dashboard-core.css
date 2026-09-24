@@ -433,6 +433,7 @@ a.brand-icon:hover {
   border: 1px solid rgba(16, 185, 129, 0.25);
   padding: 0.2rem 0.6rem;
   border-radius: 9999px;
+  white-space: nowrap;
 }
 
 .badge-applet {

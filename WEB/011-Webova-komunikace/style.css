@@ -4,6 +4,8 @@
    ========================================================================== */
 
 :root {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.25);
   --web-accent: #f97316;
   --web-accent-glow: rgba(249, 115, 22, 0.28);
   --web-accent-light: #fb923c;
@@ -12,6 +14,18 @@
   --dns-color: #06b6d4;
   --ssl-color: #a855f7;
   --wait-color: #94a3b8;
+}
+
+.badge-accent {
+  background: rgba(249, 115, 22, 0.15);
+  border-color: rgba(249, 115, 22, 0.45);
+  color: #fb923c;
+}
+
+[data-theme="light"] .badge-accent {
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(249, 115, 22, 0.5);
+  color: #ea580c;
 }
 
 /* ==========================================================================

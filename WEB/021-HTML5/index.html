@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 021: Moderní HTML5 a sémantika | WEB • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Webové technologie (WEB) SPŠ: sémantické značky HTML5, header, nav, main, article, section, aside, footer, figure, time, výhody pro a11y a SEO, srovnání s div soup a základy ARIA.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 021 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">021 HTML5</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">HTML5 &bull; Sémantika &bull; a11y</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Moderní HTML5 a sémantika">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 021</span>
+            <span class="badge">Sémantický web</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Přístupnost &amp; SEO</span>
+          </div>
+          <h1 class="hero-title">Moderní HTML5 a sémantika</h1>
+          <p class="hero-subtitle">
+            Konec beztvaré „polévky divů“ &bull; Jak sémantické značky dávají webu smysl, usnadňují život nevidomým uživatelům se čtečkami obrazovky a otevírají dveře vyhledávačům i moderním aplikacím.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Proč sémantika?
+              </h4>
+              <p>Rozdíl mezi prezentačním div/span a významovými značkami. 4 pilíře přínosů pro web.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Globální kostra
+              </h4>
+              <p>Struktura header, nav, main, footer. Pravidlo jediného main a orientace čteček.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Členění obsahu
+              </h4>
+              <p>Kdy použít article vs section, boční panely aside, figure, figcaption, time a mark.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Div Soup vs HTML5
+              </h4>
+              <p>Interaktivní srovnávač starého a moderního kódu, základy ARIA a implicitní role.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Revoluce HTML5 a Living Standard
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Revoluce HTML5">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Revoluce HTML5 a filozofie „Living Standard“</h2>
+            <p class="slide-subtitle">
+              Jak HTML5 zachránilo otevřený web před proprietárními pluginy a nastolilo éru živého standardu.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h3 class="card-title">Konec éry doplňků (Flash, Silverlight, Java)</h3>
+              </div>
+              <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary);">
+                Před příchodem HTML5 neuměl web přehrát video ani zvuk bez instalace externích pluginů (Adobe Flash Player, Microsoft Silverlight). Pluginy měly obrovské bezpečnostní díry, vybíjely baterie notebooků a nefungovaly na mobilních zařízeních.
+              </p>
+              <div style="margin-top: 0.75rem; padding: 0.75rem; border-radius: var(--radius-sm); background: rgba(244, 63, 94, 0.08); border-left: 3px solid #f43f5e; font-size: 0.82rem;">
+                <strong>Mise HTML5:</strong> Přinést multimédia (<code>&lt;video&gt;</code>, <code>&lt;audio&gt;</code>), interaktivní 2D grafiku (<code>&lt;canvas&gt;</code>) a sémantiku přímo jako nativní součást prohlížeče.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                </div>
+                <h3 class="card-title">Co znamená „Living Standard“?</h3>
+              </div>
+              <p style="font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary);">
+                Dnes už neexistuje verze HTML6. Konsorcium <strong>WHATWG</strong> udržuje HTML jako <strong>Living Standard</strong> (živý dokument). Změny, novinky a upřesnění se zapracovávají kontinuálně.
+              </p>
+              <ul style="font-size: 0.82rem; line-height: 1.65; color: var(--text-secondary); padding-left: 1.1rem; margin-top: 0.5rem;">
+                <li><strong style="color: #34d399;">Zpětná kompatibilita:</strong> Webová stránka napsaná v roce 1993 funguje v nejnovějším prohlížeči roku 2026.</li>
+                <li><strong style="color: #38bdf8;">Implementační realita:</strong> Do standardu se dostávají pouze věci, na kterých se shodnou tvůrci prohlížečů a které mají reálné využití v praxi.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Co je sémantika a proč na ní záleží
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Co je sémantika">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Co je to sémantika a proč na ní záleží?</h2>
+            <p class="slide-subtitle">
+              Sémantika je nauka o významu. Rozdíl mezi beztvarým obalem a prvkem, který nese informaci.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Nesémantické tagy -->
+            <div class="bad-practice-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <h3 class="card-title" style="color: #fb7185;">Nesémantické elementy: &lt;div&gt; a &lt;span&gt;</h3>
+              </div>
+              <p style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary);">
+                Nemají absolutně žádný význam pro prohlížeč, čtečku obrazovky ani vyhledávač. Jsou to pouhé <strong>prázdné kontejnery</strong> určené výhradně pro obalení prvků kvůli stylování v CSS nebo manipulaci v JS.
+              </p>
+              <div class="code-window" style="margin-top: 0.6rem;">
+                <pre class="code-window-body" style="padding: 0.6rem 0.8rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">div</span> <span class="attr-name">class</span>=<span class="attr-val">"header"</span><span class="tag-bracket">&gt;</span> <span class="code-comment">&lt;!-- Prohlížeč netuší, co to je! --&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">span</span> <span class="attr-name">class</span>=<span class="attr-val">"title"</span><span class="tag-bracket">&gt;</span><span class="code-content">Můj web</span><span class="tag-bracket">&lt;/</span><span class="tag-name">span</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">div</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+            </div>
+
+            <!-- Sémantické tagy -->
+            <div class="good-practice-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 class="card-title" style="color: #34d399;">Sémantické elementy HTML5</h3>
+              </div>
+              <p style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary);">
+                Jejich název přesně vyjadřuje <strong>význam a účel obsahu</strong>, který obsahují. Nezávisle na tom, jaké CSS styly jsou aplikovány.
+              </p>
+              <div class="code-window" style="margin-top: 0.6rem;">
+                <pre class="code-window-body" style="padding: 0.6rem 0.8rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">header</span><span class="tag-bracket">&gt;</span> <span class="code-comment">&lt;!-- Každý software ví: toto je záhlaví! --&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span><span class="code-content">Můj web</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">header</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Čtyři pilíře přínosů sémantiky
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Čtyři pilíře sémantiky">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Čtyři pilíře: Proč psát sémantický kód?</h2>
+            <p class="slide-subtitle">
+              Sémantika není akademický rozmar. Přináší měřitelné obchodní, technické i sociální výhody.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <!-- Pilíř 1: a11y -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path><circle cx="12" cy="12" r="4"></circle></svg>
+                </div>
+                <h3 class="card-title">1. Digitální přístupnost (a11y)</h3>
+              </div>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Odečítače obrazovky (NVDA, JAWS, VoiceOver) nevidí pixely. Podle sémantických značek vytvářejí <strong>orientační body (Landmarks)</strong>. Uživatel může klávesou D přeskočit menu a skočit rovnou do <code>&lt;main&gt;</code>.
+              </p>
+            </div>
+
+            <!-- Pilíř 2: SEO -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <h3 class="card-title">2. Vyhledávače a SEO</h3>
+              </div>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Roboti Google a Bing dávají textu v <code>&lt;article&gt;</code> a <code>&lt;h1&gt;</code> mnohem vyšší relevanci než textu v <code>&lt;footer&gt;</code> nebo postranním <code>&lt;aside&gt;</code>. Sémantika zlepšuje pozici ve vyhledávání.
+              </p>
+            </div>
+
+            <!-- Pilíř 3: Týmový kód -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <h3 class="card-title">3. Čitelnost &amp; Údržba kódu</h3>
+              </div>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Když otevřete cizí projekt s 50 vnořenými divy, trvá minuty zjistit, kde končí menu. V sémantickém kódu okamžitě vidíte hranice komponent <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code> a <code>&lt;section&gt;</code>.
+              </p>
+            </div>
+
+            <!-- Pilíř 4: Strojová čitelnost -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
+                <h3 class="card-title">4. Čtecí režimy &amp; Nová zařízení</h3>
+              </div>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Funkce jako <strong>Safari Reader Mode</strong> nebo čtení článků na chytrých hodinkách (Apple Watch) fungují tak, že zahodí celou stránku a vytáhnou jen obsah ze značky <code>&lt;article&gt;</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Globální kostra webu: header, nav, main, footer
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Globální kostra webu">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Globální kostra webu: &lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;footer&gt;</h2>
+            <p class="slide-subtitle">
+              Čtyři základní stavební bloky, které definují základní rozvržení každé moderní webové stránky.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Výčet značek -->
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div class="content-card" style="border-left: 3px solid #38bdf8;">
+                <h4 style="color: #38bdf8; margin: 0 0 0.3rem 0;">&lt;header&gt; — Úvodní záhlaví</h4>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                  Obsahuje logo webu, název firmy, vyhledávací pole nebo úvodní navigaci. Může být globální pro celý web, ale smí se nacházet i uvnitř <code>&lt;article&gt;</code> jako hlavička článku.
+                </p>
+              </div>
+
+              <div class="content-card" style="border-left: 3px solid #a855f7;">
+                <h4 style="color: #c084fc; margin: 0 0 0.3rem 0;">&lt;nav&gt; — Hlavní navigační blok</h4>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                  Vyhrazeno pro primární soubor odkazů (hlavní menu, drobečková navigace, stránkování). Ne každý odkaz na webu patří do <code>&lt;nav&gt;</code>!
+                </p>
+              </div>
+
+              <div class="content-card" style="border-left: 3px solid #10b981;">
+                <h4 style="color: #34d399; margin: 0 0 0.3rem 0;">&lt;main&gt; — Hlavní dominantní obsah</h4>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                  Reprezentuje unikátní jádro stránky. <strong style="color: #f43f5e;">Přísné pravidlo:</strong> Na každé HTML stránce smí být pouze jeden jediný element <code>&lt;main&gt;</code>, který se neopakuje na jiných podstránkách.
+                </p>
+              </div>
+
+              <div class="content-card" style="border-left: 3px solid #94a3b8;">
+                <h4 style="color: #cbd5e1; margin: 0 0 0.3rem 0;">&lt;footer&gt; — Zápatí</h4>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                  Obsahuje copyright, odkaz na zásady GDPR, kontaktní informace v elementu <code>&lt;address&gt;</code> nebo doplňkové odkazy.
+                </p>
+              </div>
+            </div>
+
+            <!-- Ukázka kódu -->
+            <div class="code-window">
+              <div class="code-window-header">
+                <div class="code-window-dots">
+                  <div class="code-window-dot dot-red"></div>
+                  <div class="code-window-dot dot-yellow"></div>
+                  <div class="code-window-dot dot-green"></div>
+                </div>
+                <span class="code-window-title">layout.html — Základní sémantická struktura</span>
+              </div>
+              <pre class="code-window-body"><span class="tag-bracket">&lt;</span><span class="tag-name">body</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">header</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"/"</span><span class="tag-bracket">&gt;&lt;</span><span class="tag-name">img</span> <span class="attr-name">src</span>=<span class="attr-val">"logo.svg"</span> <span class="attr-name">alt</span>=<span class="attr-val">"SPŠ"</span><span class="tag-bracket">&gt;&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">nav</span> <span class="attr-name">aria-label</span>=<span class="attr-val">"Hlavní"</span><span class="tag-bracket">&gt;</span>
+      <span class="tag-bracket">&lt;</span><span class="tag-name">ul</span><span class="tag-bracket">&gt;</span>
+        <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"/obory"</span><span class="tag-bracket">&gt;</span><span class="code-content">Obory</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+        <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"/kontakt"</span><span class="tag-bracket">&gt;</span><span class="code-content">Kontakt</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+      <span class="tag-bracket">&lt;/</span><span class="tag-name">ul</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;/</span><span class="tag-name">nav</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;/</span><span class="tag-name">header</span><span class="tag-bracket">&gt;</span>
+
+  <span class="tag-bracket">&lt;</span><span class="tag-name">main</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span><span class="code-content">Výuka webových technologií</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span>
+    <span class="code-comment">&lt;!-- Články a sekce --&gt;</span>
+  <span class="tag-bracket">&lt;/</span><span class="tag-name">main</span><span class="tag-bracket">&gt;</span>
+
+  <span class="tag-bracket">&lt;</span><span class="tag-name">footer</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span><span class="code-content">&copy; 2026 SPŠ Varnsdorf</span><span class="tag-bracket">&lt;/</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;/</span><span class="tag-name">footer</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">body</span><span class="tag-bracket">&gt;</span></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Členění obsahu: section, article a aside
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="section, article, aside">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Členění obsahu: &lt;section&gt;, &lt;article&gt; a &lt;aside&gt;</h2>
+            <p class="slide-subtitle">
+              Zásadní didaktický rozdíl: Kdy použít article a kdy section? Zlaté pravidlo samostatnosti obsahu.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <!-- Article -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                </div>
+                <h3 class="card-title">&lt;article&gt;</h3>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Samostatná, nezávislá a znovupoužitelná jednotka obsahu.
+              </p>
+              <div style="padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(245, 158, 11, 0.08); border-left: 2px solid #f59e0b; font-size: 0.8rem; margin: 0.5rem 0;">
+                <strong>Lakmusový papírek:</strong> Dává obsah smysl, kdybychom ho vzali a publikovali samostatně v RSS čtečce nebo na cizím webu? Pokud ano, je to <code>&lt;article&gt;</code>!
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">
+                Příklady: Příspěvek na blogu, novinová zpráva, komentář uživatele, produktová karta v e-shopu.
+              </div>
+            </div>
+
+            <!-- Section -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line></svg>
+                </div>
+                <h3 class="card-title">&lt;section&gt;</h3>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Tematická skupina obsahu, která tvoří součást většího celku.
+              </p>
+              <div style="padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(56, 189, 248, 0.08); border-left: 2px solid #38bdf8; font-size: 0.8rem; margin: 0.5rem 0;">
+                <strong>Pravidlo nadpisu:</strong> Každá <code>&lt;section&gt;</code> by měla mít svůj vlastní nadpis (h2–h6), který definuje její téma.
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">
+                Příklady: Kapitola v článku, sekce „O nás“, sekce „Ceník služeb“, sekce „Recenze zákazníků“.
+              </div>
+            </div>
+
+            <!-- Aside -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+                <h3 class="card-title">&lt;aside&gt;</h3>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Doplňkový obsah, který pouze okrajově souvisí s hlavním tématem kolem sebe.
+              </p>
+              <div style="padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(244, 63, 94, 0.08); border-left: 2px solid #f43f5e; font-size: 0.8rem; margin: 0.5rem 0;">
+                <strong>Test vynechání:</strong> Kdybychom aside smazali, hlavní sdělení článku se nezmění a neztratí smysl.
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">
+                Příklady: Postranní panel (sidebar), slovníček pojmů, banner, související články, profil autora.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Média a typografické sémantické tagy
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Média a typografie HTML5">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Média a typografické sémantické tagy</h2>
+            <p class="slide-subtitle">
+              figure, figcaption, time, mark, details a summary pro čistý a strojově srozumitelný obsah.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- figure & figcaption + time -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #38bdf8; margin-bottom: 0.6rem;">&lt;figure&gt;, &lt;figcaption&gt; a &lt;time&gt;</h3>
+              <p style="font-size: 0.86rem; line-height: 1.5; color: var(--text-secondary);">
+                Obrázek s popiskem svázaný do jednoho sémantického bloku a strojově čitelný čas:
+              </p>
+              <div class="code-window" style="margin-top: 0.5rem;">
+                <pre class="code-window-body" style="padding: 0.6rem 0.8rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">figure</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">img</span> <span class="attr-name">src</span>=<span class="attr-val">"schematko.svg"</span> <span class="attr-name">alt</span>=<span class="attr-val">"Blokové schéma CPU"</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">figcaption</span><span class="tag-bracket">&gt;</span><span class="code-content">Obr. 1: Architektura procesoru</span><span class="tag-bracket">&lt;/</span><span class="tag-name">figcaption</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">figure</span><span class="tag-bracket">&gt;</span>
+
+<span class="code-comment">&lt;!-- Strojový formát ISO 8601 v atributu datetime --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span><span class="code-content">Přednáška proběhla </span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">time</span> <span class="attr-name">datetime</span>=<span class="attr-val">"2026-09-24T18:00"</span><span class="tag-bracket">&gt;</span><span class="code-content">24. září v 18:00</span><span class="tag-bracket">&lt;/</span><span class="tag-name">time</span><span class="tag-bracket">&gt;</span>.
+<span class="tag-bracket">&lt;/</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý výstup v prohlížeči -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Vykreslený výstup v prohlížeči (Render):
+                </span>
+                <figure style="margin: 0; padding: 0.4rem; background: rgba(0,0,0,0.25); border-radius: 6px; border: 1px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+                  <div style="font-family: var(--font-mono); font-size: 0.76rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 0.3rem 0.6rem; border-radius: 4px;">[ Obrázek CPU: schematko.svg ]</div>
+                  <figcaption style="font-size: 0.76rem; color: #38bdf8; font-style: italic;">Obr. 1: Architektura procesoru</figcaption>
+                </figure>
+                <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: var(--text-secondary);">
+                  Přednáška proběhla <time datetime="2026-09-24T18:00" style="color: #38bdf8; font-weight: 600;">24. září v 18:00</time> a byla zaznamenána.
+                </p>
+              </div>
+            </div>
+
+            <!-- details & summary + mark -->
+            <div class="content-card">
+              <h3 class="card-title" style="color: #fb923c; margin-bottom: 0.6rem;">&lt;details&gt; a &lt;summary&gt; (Akordeon bez JS!)</h3>
+              <p style="font-size: 0.86rem; line-height: 1.5; color: var(--text-secondary);">
+                Nativní rozbalovací prvek podporovaný všemi prohlížeči bez jediného řádku JavaScriptu:
+              </p>
+              <div class="code-window" style="margin-top: 0.5rem;">
+                <pre class="code-window-body" style="padding: 0.6rem 0.8rem; font-size: 0.8rem;"><span class="tag-bracket">&lt;</span><span class="tag-name">details</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">summary</span><span class="tag-bracket">&gt;</span><span class="code-content">Jaké jsou podmínky přijetí na SPŠ?</span><span class="tag-bracket">&lt;/</span><span class="tag-name">summary</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span><span class="code-content">Úspěšné složení jednotné přijímací zkoušky a prospěch ze ZŠ.</span><span class="tag-bracket">&lt;/</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">details</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <!-- Živý interaktivní výstup -->
+              <div class="code-live-output">
+                <span class="live-output-label">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Živý interaktivní akordeon (vyzkoušejte kliknout):
+                </span>
+                <details style="cursor: pointer; background: rgba(249,115,22,0.08); padding: 0.4rem 0.65rem; border-radius: 6px; border: 1px solid rgba(249,115,22,0.3);">
+                  <summary style="font-weight: 700; color: #fb923c; font-size: 0.82rem; user-select: none;">Jaké jsou podmínky přijetí na SPŠ?</summary>
+                  <p style="margin: 0.35rem 0 0 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;">Úspěšné složení jednotné přijímací zkoušky a prospěch ze ZŠ.</p>
+                </details>
+              </div>
+
+              <div style="margin-top: 0.6rem; font-size: 0.82rem; padding: 0.6rem; border-radius: var(--radius-sm); background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle);">
+                <strong>Zvýraznění &lt;mark&gt;:</strong> Značí text, který je vyzdvižen: <mark style="background: rgba(245,158,11,0.25); color: #fbbf24; padding: 0.1rem 0.35rem; border-radius: 3px; font-weight: 600;">hledaný výraz</mark> v textu.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Interaktivní srovnávač Div Soup vs HTML5
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Div Soup vs HTML5">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Interaktivní srovnávač: „Div Soup (2005)“ vs Sémantika (2026)</h2>
+            <p class="slide-subtitle">
+              Přepínejte mezi starou strukturou divů a moderním sémantickým rozvržením HTML5.
+            </p>
+          </header>
+
+          <!-- Tlačítka přepínače -->
+          <div class="soup-toggle-row">
+            <button class="soup-btn active" data-mode="html5">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Moderní HTML5 sémantika (2026)
+            </button>
+            <button class="soup-btn" data-mode="soup">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+              Zastaralá „Div Soup“ (2005)
+            </button>
+          </div>
+
+          <div class="comparison-viewport">
+            <!-- Vizuální wireframe -->
+            <div>
+              <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                Drátěný model rozvržení (Wireframe):
+              </div>
+              <div class="wireframe-box">
+                <div class="wf-block wf-header" id="wfHeader">
+                  <span>Hlavička webu</span>
+                  <span class="wf-tag-badge">&lt;header&gt;</span>
+                </div>
+                <div class="wf-block wf-nav" id="wfNav">
+                  <span>Menu</span>
+                  <span class="wf-tag-badge">&lt;nav&gt;</span>
+                </div>
+                <div class="wf-content-split">
+                  <div class="wf-block wf-main" id="wfMain" style="flex-direction: column; align-items: stretch;">
+                    <div id="wfMainHeader" style="display: flex; justify-content: space-between; width: 100%;">
+                      <span>Hlavní obsah</span>
+                      <span class="wf-tag-badge">&lt;main&gt;</span>
+                    </div>
+                    <div class="wf-block wf-article" id="wfArticle">
+                      <span>Článek</span>
+                      <span class="wf-tag-badge">&lt;article&gt;</span>
+                    </div>
+                  </div>
+                  <div class="wf-block wf-aside" id="wfAside">
+                    <span>Boční doplňky</span>
+                    <span class="wf-tag-badge">&lt;aside&gt;</span>
+                  </div>
+                </div>
+                <div class="wf-block wf-footer" id="wfFooter">
+                  <span>Patička</span>
+                  <span class="wf-tag-badge">&lt;footer&gt;</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kód a zhodnocení -->
+            <div>
+              <div class="code-window">
+                <div class="code-window-header">
+                  <div class="code-window-dots">
+                    <div class="code-window-dot dot-red"></div>
+                    <div class="code-window-dot dot-yellow"></div>
+                    <div class="code-window-dot dot-green"></div>
+                  </div>
+                  <span class="code-window-title" id="comparisonCodeTitle">layout-2026.html — Sémantický HTML5 standard</span>
+                </div>
+                <pre class="code-window-body" id="comparisonCodeBody" style="max-height: 220px;"><span class="code-comment">&lt;!-- SOUČASNOST: Čistý sémantický HTML5 kód --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">header</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span><span class="code-content">Můj Technologický Blog</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h1</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">header</span><span class="tag-bracket">&gt;</span>
+
+<span class="tag-bracket">&lt;</span><span class="tag-name">nav</span> <span class="attr-name">aria-label</span>=<span class="attr-val">"Hlavní navigace"</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">ul</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"#"</span><span class="tag-bracket">&gt;</span><span class="code-content">Domů</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">li</span><span class="tag-bracket">&gt;&lt;</span><span class="tag-name">a</span> <span class="attr-name">href</span>=<span class="attr-val">"#"</span><span class="tag-bracket">&gt;</span><span class="code-content">Články</span><span class="tag-bracket">&lt;/</span><span class="tag-name">a</span><span class="tag-bracket">&gt;&lt;/</span><span class="tag-name">li</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;/</span><span class="tag-name">ul</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">nav</span><span class="tag-bracket">&gt;</span>
+
+<span class="tag-bracket">&lt;</span><span class="tag-name">main</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">article</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">h2</span><span class="tag-bracket">&gt;</span><span class="code-content">Představení procesorů RISC-V</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h2</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">time</span> <span class="attr-name">datetime</span>=<span class="attr-val">"2026-09-24"</span><span class="tag-bracket">&gt;</span><span class="code-content">24. září 2026</span><span class="tag-bracket">&lt;/</span><span class="tag-name">time</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span><span class="code-content">Text příspěvku...</span><span class="tag-bracket">&lt;/</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;/</span><span class="tag-name">article</span><span class="tag-bracket">&gt;</span>
+
+  <span class="tag-bracket">&lt;</span><span class="tag-name">aside</span><span class="tag-bracket">&gt;</span>
+    <span class="tag-bracket">&lt;</span><span class="tag-name">h3</span><span class="tag-bracket">&gt;</span><span class="code-content">O autorovi</span><span class="tag-bracket">&lt;/</span><span class="tag-name">h3</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;/</span><span class="tag-name">aside</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">main</span><span class="tag-bracket">&gt;</span>
+
+<span class="tag-bracket">&lt;</span><span class="tag-name">footer</span><span class="tag-bracket">&gt;</span>
+  <span class="tag-bracket">&lt;</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span><span class="code-content">&copy; 2026 SPŠ</span><span class="tag-bracket">&lt;/</span><span class="tag-name">p</span><span class="tag-bracket">&gt;</span>
+<span class="tag-bracket">&lt;/</span><span class="tag-name">footer</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+
+              <div id="comparisonNote" style="margin-top: 0.75rem; padding: 0.75rem; border-radius: var(--radius-sm); background: rgba(249,115,22,0.08); border-left: 3px solid #f97316; font-size: 0.82rem; line-height: 1.5;">
+                <strong style="color: #34d399;">Výhody sémantiky HTML5:</strong> Čtečka obrazovky nabízí rychlé klávesové zkratky pro skok na <code>&lt;main&gt;</code> nebo přeskočení <code>&lt;nav&gt;</code>. Vyhledávač okamžitě indexuje <code>&lt;article&gt;</code> jako klíčový obsah.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Přístupnost a základy ARIA
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Přístupnost a základy ARIA">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Přístupnost a základy ARIA (Accessible Rich Internet Applications)</h2>
+            <p class="slide-subtitle">
+              Jak sémantika automaticky propůjčuje roli čtečkám a kdy je ARIA atributy zbytečné psát.
+            </p>
+          </header>
+
+          <div class="summary-grid" style="grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Implicitní role -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h3 class="card-title">Implicitní ARIA role HTML5 prvků</h3>
+              </div>
+              <p style="font-size: 0.86rem; line-height: 1.55; color: var(--text-secondary);">
+                Všechny sémantické značky HTML5 již v sobě nesou vestavěnou přístupnostní roli (Implicit Landmark Role). Není třeba je duplikovat:
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.8rem; margin-top: 0.6rem;">
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px; display: flex; justify-content: space-between;">
+                  <code>&lt;nav&gt;</code> <span>nese automaticky</span> <code style="color: #38bdf8;">role="navigation"</code>
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px; display: flex; justify-content: space-between;">
+                  <code>&lt;main&gt;</code> <span>nese automaticky</span> <code style="color: #38bdf8;">role="main"</code>
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px; display: flex; justify-content: space-between;">
+                  <code>&lt;header&gt;</code> (v těle) <span>nese automaticky</span> <code style="color: #38bdf8;">role="banner"</code>
+                </div>
+                <div style="padding: 0.4rem 0.6rem; background: rgba(255,255,255,0.03); border-radius: 4px; display: flex; justify-content: space-between;">
+                  <code>&lt;footer&gt;</code> (v těle) <span>nese automaticky</span> <code style="color: #38bdf8;">role="contentinfo"</code>
+                </div>
+              </div>
+            </div>
+
+            <!-- První pravidlo ARIA -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3 class="card-title">Zlaté pravidlo: First Rule of ARIA</h3>
+              </div>
+              <div style="padding: 0.75rem; border-radius: var(--radius-sm); background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; font-size: 0.88rem; line-height: 1.5; color: #fbbf24;">
+                <em>„If you can use a native HTML element or attribute with the semantics and behaviour you require, then do so instead of re-purposing an element and adding an ARIA role.“</em>
+              </div>
+              <div class="code-window" style="margin-top: 0.6rem;">
+                <pre class="code-window-body" style="padding: 0.5rem 0.75rem; font-size: 0.78rem;"><span class="code-comment">&lt;!-- ŠPATNĚ (Zbytečně složité a náchylné k chybám): --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">div</span> <span class="attr-name">role</span>=<span class="attr-val">"button"</span> <span class="attr-name">tabindex</span>=<span class="attr-val">"0"</span><span class="tag-bracket">&gt;</span><span class="code-content">Klikni zde</span><span class="tag-bracket">&lt;/</span><span class="tag-name">div</span><span class="tag-bracket">&gt;</span>
+
+<span class="code-comment">&lt;!-- SPRÁVNĚ (100% nativní přístupnost zdarma): --&gt;</span>
+<span class="tag-bracket">&lt;</span><span class="tag-name">button</span><span class="tag-bracket">&gt;</span><span class="code-content">Klikni zde</span><span class="tag-bracket">&lt;/</span><span class="tag-name">button</span><span class="tag-bracket">&gt;</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Referenční katalog značek HTML5
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Referenční katalog">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Referenční přehled klíčových sémantických značek HTML5</h2>
+            <p class="slide-subtitle">
+              Stručný přehled prvků, jejich doporučené nasazení a sémantický význam v moderních webech.
+            </p>
+          </header>
+
+          <div class="semantic-dictionary">
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;header&gt;</span>
+              <span class="sem-role-badge">banner / section header</span>
+              <p class="sem-desc">Záhlaví celé stránky nebo konkrétního článku či sekce.</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;nav&gt;</span>
+              <span class="sem-role-badge">navigation</span>
+              <p class="sem-desc">Primární navigační blok odkazů, menu a drobečková navigace.</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;main&gt;</span>
+              <span class="sem-role-badge">main</span>
+              <p class="sem-desc">Unikátní dominantní obsah stránky (pouze 1× v celém dokumentu!).</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;article&gt;</span>
+              <span class="sem-role-badge">article</span>
+              <p class="sem-desc">Samostatná jednotka obsahu schopná nezávislé distribuce a syndikace.</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;section&gt;</span>
+              <span class="sem-role-badge">region</span>
+              <p class="sem-desc">Tematická kapitola s vlastním nadpisem uvnitř dokumentu či článku.</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;aside&gt;</span>
+              <span class="sem-role-badge">complementary</span>
+              <p class="sem-desc">Doplňkový postranní obsah, související odkazy, profily či glosy.</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;footer&gt;</span>
+              <span class="sem-role-badge">contentinfo</span>
+              <p class="sem-desc">Zápatí s autorskými právy, kontakty a doplňkovými odkazy.</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;figure&gt; + &lt;figcaption&gt;</span>
+              <span class="sem-role-badge">figure</span>
+              <p class="sem-desc">Obrázek, diagram či ukázka kódu svázaná se svým textovým popiskem.</p>
+            </div>
+
+            <div class="sem-card">
+              <span class="sem-tag-name">&lt;details&gt; + &lt;summary&gt;</span>
+              <span class="sem-role-badge">group</span>
+              <p class="sem-desc">Interaktivní rozbalovací akordeon bez nutnosti psát JavaScript.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Shrnutí tématu & Kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Shrnutí a otázky">
+        <div class="slide-content">
+          <header class="slide-header">
+            <h2 class="slide-title">Shrnutí tématu &bull; Moderní HTML5 a sémantika</h2>
+            <p class="slide-subtitle">
+              Ověřte si pochopení sémantických principů a připravte se na pokročilé formuláře a multimédia.
+            </p>
+          </header>
+
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">1</span>
+                <p class="question-text">Jaký je přesný sémantický rozdíl mezi značkami <code>&lt;article&gt;</code> a <code>&lt;section&gt;</code>?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong>&lt;article&gt;</strong> představuje samostatnou, nezávisle distribuovatelnou jednotku obsahu (např. příspěvek na blogu, recenze produktu, zpráva v RSS). Kdybychom ho vyňali ze stránky, dává plný smysl sám o sobě. <strong>&lt;section&gt;</strong> je tematická část většího celku a musí mít svůj vlastní nadpis. Uvnitř článku může být více sekcí, nebo naopak sekce může obsahovat více článků.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">2</span>
+                <p class="question-text">Kolik elementů <code>&lt;main&gt;</code> smí být na jedné HTML stránce a co do něj nepatří?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Na každé stránce smí být <strong>pouze jeden viditelný element &lt;main&gt;</strong>. Reprezentuje unikátní jádro konkrétního dokumentu. Do <code>&lt;main&gt;</code> nepatří prvky opakující se napříč celým webem – tedy globální hlavička (header s logem a menu), globální zápatí (footer s copyrightem) ani vyhledávací formuláře sdílené na všech podstránkách.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">3</span>
+                <p class="question-text">Proč je z pohledu přístupnosti (a11y) zápis <code>&lt;div class="btn"&gt;</code> horší než nativní <code>&lt;button&gt;</code>?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Nativní <code>&lt;button&gt;</code> má automaticky v sobě zabudovaný focus při stisku klávesy Tab, lze ho aktivovat klávesami <strong>Enter i Mezerník</strong> a odečítač obrazovky nevidomému ohlásí „tlačítko“. U elementu <code>&lt;div&gt;</code> musíte ručně doprogramovat <code>tabindex="0"</code>, <code>role="button"</code> a v JavaScriptu odchytávat klávesové události pro Enter i Space, což většina vývojářů opomene.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">4</span>
+                <p class="question-text">Jaký přínos má atribut <code>datetime</code> u elementu <code>&lt;time&gt;</code>?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Lidský text uvnitř tagu může znít „minulé pondělí“ nebo „předevčírem“, čemuž stroj nerozumí. Atribut <code>datetime</code> (např. <code>datetime="2026-09-24T18:00"</code>) poskytuje <strong>strojově přesný údaj dle standardu ISO 8601</strong>. Kalendářní aplikace, vyhledávače a sociální sítě z něj dokážou vytvořit událost v kalendáři nebo správně seřadit novinky podle stáří.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../020-HTML/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: Základy jazyka HTML (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../022-Pokrocile-HTML/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: Pokročilé HTML a multimédia (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 11</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Moderní HTML5 a sémantika
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 021 -->
+  <script src="html5-engine.js"></script>
+</body>
+
+</html>
