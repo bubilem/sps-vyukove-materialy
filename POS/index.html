@@ -66,7 +66,7 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech POS (např. úvod, hardware, média, multiplexing, PDU, TCP/IP, OSI, IP adresace, switch, router)..." autocomplete="off">
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech POS (např. úvod, média, linková vrstva, subnetting, VLSM, kalkulačka podsítí, router, TCP/UDP)..." autocomplete="off">
     </div>
 
     <!-- 4. Mřížka témat (Katalog témat SPŠ POS) -->
@@ -114,36 +114,36 @@
         </div>
       </div>
 
-      <!-- Téma 030: Přepínání v lokální síti (V přípravě) -->
-      <div class="lesson-card" data-keywords="030 prepinani v lan switching switch l2 vlan trunking 802.1q stp spanning tree cam tabulka broadcast storm plan" style="opacity: 0.85;">
+      <!-- Téma 030: Linková vrstva (V přípravě) -->
+      <div class="lesson-card" data-keywords="030 linkova vrstva data link layer ethernet mac l2 frame ramec switching vlan stp arp plan" style="opacity: 0.85;">
         <div>
           <div class="lesson-card-top">
             <span class="lesson-num">TÉMA 030</span>
             <span class="lesson-exam-badge">V přípravě</span>
           </div>
-          <h2>Přepínání v lokální síti (LAN Switching)</h2>
+          <h2>Linková vrstva</h2>
           <p class="lesson-desc">
-            Architektura ethernetového switche, učení MAC adres a plnění CAM tabulky. Segmentace sítě pomocí virtuálních LAN (VLAN), trunkové spoje (IEEE 802.1Q), směrování mezi VLAN (Router-on-a-Stick, L3 switch) a protokol Spanning Tree (STP).
+            Řízení přístupu k médiu (MAC), formát ethernetového rámce (PDU L2), fyzické adresování (MAC adresy), protokol ARP a činnost přepínačů (L2 Switch). Segmentace sítě na virtuální sítě VLAN (IEEE 802.1Q) a zamezení smyčkám pomocí Spanning Tree Protocol (STP).
           </p>
         </div>
         <div class="lesson-footer">
-          <span class="lesson-time">Připravuje se &bull; CCNA:SRWE</span>
+          <span class="lesson-time">Připravuje se &bull; CCNA:ITN / SRWE</span>
           <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
             Připravuje se
           </span>
         </div>
       </div>
 
-      <!-- Téma 040: IP adresace a podsítě (V přípravě) -->
-      <div class="lesson-card" data-keywords="040 ip adresace podsity subnetting ipv4 ipv6 maska vlsm cidr binarni matematika broadcast unicast multicast plan" style="opacity: 0.85;">
+      <!-- Téma 040: Síťová vrstva (V přípravě) -->
+      <div class="lesson-card" data-keywords="040 sitova vrstva network layer ipv4 ipv6 pakety router smerovani l3 ttl icmp mtu plan" style="opacity: 0.85;">
         <div>
           <div class="lesson-card-top">
             <span class="lesson-num">TÉMA 040</span>
             <span class="lesson-exam-badge">V přípravě</span>
           </div>
-          <h2>IP adresace a podsítě (IPv4 &amp; IPv6)</h2>
+          <h2>Síťová vrstva</h2>
           <p class="lesson-desc">
-            Hierarchická logická adresace v síti. Struktura IPv4 adres, masky podsítě, binární výpočty, rozdělování sítí (Subnetting, VLSM a CIDR). Nová generace protokolu IPv6, typy adres (Unicast, Multicast, Anycast) a autokonfigurace SLAAC.
+            Základní principy logického adresování a přeposílání paketů v heterogenních sítích. Struktura a záhlaví IPv4 a IPv6 paketů (TTL, Hop Limit, kontrolní součty), fragmentace MTU, protokol ICMP (ping, traceroute) a funkce směrovačů (L3 Router).
           </p>
         </div>
         <div class="lesson-footer">
@@ -154,20 +154,61 @@
         </div>
       </div>
 
-      <!-- Téma 050: Směrování a směrovače (V přípravě) -->
-      <div class="lesson-card" data-keywords="050 smerovani routing router l3 staticke smerovani dynamicke ospf nat pat preklad adres default gateway plan" style="opacity: 0.85;">
+      <!-- Téma 042: Subnetting a VLSM (AKTIVNÍ PREZENTACE A TRENAŽÉR) -->
+      <div class="lesson-card" data-keywords="042 subnetting vlsm flsm cidr ip adresace podsity maska binarni kalkulacka kolacovy graf kruhovy vypocet hostite broadcast rozsah pos">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.12);">TÉMA 042</span>
+            <span class="lesson-exam-badge" style="color: #60a5fa; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.3);">Výpočty podsítí &bull; CCNA:ITN</span>
+          </div>
+          <h2>Subnetting a VLSM</h2>
+          <p class="lesson-desc">
+            Kompletní průvodce logickou segmentací sítí IPv4: od binární matematiky a bitového součinu (AND) přes masky podsítě až po pokročilé techniky VLSM. Obsahuje dynamický kruhový koláč dělení adresního prostoru, interaktivní kalkulačku podsítí s binárním rozpadem, hierarchický strom dělení a praktická cvičení pro střední školy.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 13 snímků &bull; Porcování &amp; Kalkulačka</span>
+          <a href="042-Subnetting-VLSM/index.html" class="btn-launch-lesson" style="color: #60a5fa;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 050: Transportní vrstva (V přípravě) -->
+      <div class="lesson-card" data-keywords="050 transportni vrstva l4 tcp udp porty segmenty three-way handshake rizeni toku spolehlivost plan" style="opacity: 0.85;">
         <div>
           <div class="lesson-card-top">
             <span class="lesson-num">TÉMA 050</span>
             <span class="lesson-exam-badge">V přípravě</span>
           </div>
-          <h2>Směrování a směrovače (Routing)</h2>
+          <h2>Transportní vrstva</h2>
           <p class="lesson-desc">
-            Principy činnosti L3 směrovače, vyhodnocování směrovací tabulky a výběr nejlepší cesty (Longest Prefix Match). Statické směrování, výchozí brána (Default Gateway), dynamické směrovací protokoly (OSPFv2/v3) a překlad síťových adres (NAT / PAT).
+            End-to-end komunikace mezi aplikacemi. Spolehlivý spojovaný protokol TCP (Three-way handshake, potvrzování ACK, posuvné okénko Flow Control) vs. rychlý nespojovaný protokol UDP. Čísla portů (Well-known, Registered, Dynamic) a multiplexace soketů.
           </p>
         </div>
         <div class="lesson-footer">
-          <span class="lesson-time">Připravuje se &bull; CCNA:SRWE</span>
+          <span class="lesson-time">Připravuje se &bull; CCNA:ITN</span>
+          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
+            Připravuje se
+          </span>
+        </div>
+      </div>
+
+      <!-- Téma 060: Aplikační vrstva (V přípravě) -->
+      <div class="lesson-card" data-keywords="060 aplikacni vrstva l7 dns dhcp http https ssh ftp snmp email smtp imap web sluzby plan" style="opacity: 0.85;">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num">TÉMA 060</span>
+            <span class="lesson-exam-badge">V přípravě</span>
+          </div>
+          <h2>Aplikační vrstva</h2>
+          <p class="lesson-desc">
+            Služby a protokoly orientované na uživatele a systémové funkce: překlad jmen DNS, dynamická konfigurace klientů DHCP (proces DORA), webové protokoly HTTP/HTTPS s TLS šifrováním, zabezpečená vzdálená správa SSH, elektronická pošta (SMTP, IMAP) a monitorování sítě SNMP.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Připravuje se &bull; CCNA:ITN / SRWE</span>
           <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
             Připravuje se
           </span>

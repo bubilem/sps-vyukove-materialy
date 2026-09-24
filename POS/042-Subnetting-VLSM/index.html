@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 042: Subnetting a VLSM | POS • SPŠ</title>
+  <meta name="description" content="Komplexní výuková prezentace a interaktivní kalkulačka podsítí pro studenty SPŠ: IPv4 adresace, masky podsítě, binární matematika bitového součinu (AND), FLSM dělení koláčem, hierarchické VLSM a praktické úlohy Cisco CCNA.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 042 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">042 Subnetting a VLSM</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; IP adresace &amp; Podsítě</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Subnetting a VLSM">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 042</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Layer 3</span>
+          </div>
+          <h1 class="hero-title">Subnetting a VLSM</h1>
+          <p class="hero-subtitle">
+            Logická segmentace IPv4 sítí &bull; Od binární matematiky a bitového součinu přes dělení adresního prostoru kruhovým koláčem až po hierarchické sítě s proměnnou délkou masky.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                Anatomie &amp; Maska
+              </h4>
+              <p>Struktura 32 bitů, 4 oktety, hranice mezi Network ID a Host ID. Matematika bitového součinu (AND).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                FLSM &amp; Koláč
+              </h4>
+              <p>Stejnoměrné půlení sítě. Vizuální model krájení koláče na 2, 4, 8 nebo 16 stejných výsečí podle prefixu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                VLSM &amp; Zlaté pravidlo
+              </h4>
+              <p>Hierarchické podsítě na míru. Proč musíme požadavky řadit sestupně a jak ušetřit až 90 % adres.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><circle cx="12" cy="12" r="10"></circle><path d="m10 15 5-3-5-3v6z"></path></svg>
+                Kalkulačka &amp; Trenažér
+              </h4>
+              <p>Interaktivní kalkulačka podsítí, binární rozpad sítě a tréninkové otázky z reálných zkoušek.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Anatomie IPv4 a Maska podsítě
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Anatomie IPv4 adresy a maska podsítě">
+        <div class="slide-header">
+          <h2 class="slide-title">Anatomie IPv4 adresy &amp; Význam masky podsítě</h2>
+          <p class="slide-subtitle">IP adresa bez masky nemá žádný význam! Maska podsítě definuje pomyslný nůž, který dělí 32 bitů na adresu sítě a adresu konkrétního hostitele.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Teorie a význam masky -->
+          <div class="content-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #06b6d4;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              Dvě části každé IP adresy
+            </h3>
+            <ul class="clean-list" style="font-size: 0.9rem; line-height: 1.6; margin-top: 0.75rem;">
+              <li><strong>Síťová část (Network ID):</strong> Určuje, do které sítě zařízení patří. Všechna zařízení v téže lokální síti LAN musí mít síťovou část <em>naprosto shodnou</em>.</li>
+              <li><strong>Hostitelská část (Host ID):</strong> Jedinečné číslo konkrétního zařízení (PC, tiskárna, server, router) v rámci dané podsítě.</li>
+              <li><strong>Maska podsítě (Subnet Mask):</strong> Souvislá řada jedniček zleva (síťová část) následovaná souvislou řadou nul zprava (hostitelská část). Nikdy nesmí obsahovat střídavé bity!</li>
+              <li><strong>Operace Bitwise AND:</strong> Síťová karta i směrovač zjistí adresu sítě tak, že provede logický součin bit po bitu mezi IP adresou a maskou:
+                <br><code>1 AND 1 = 1</code>, ve všech ostatních případech vychází <code>0</code>.
+              </li>
+            </ul>
+
+            <div style="margin-top: 1rem; padding: 0.85rem; border-radius: 10px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); font-size: 0.82rem;">
+              <strong>Metafora pro žáky:</strong> IP adresa je jako telefonní číslo. Maska určuje, kde končí mezinárodní / krajská předvolba (síť) a kde začíná vaše osobní číslo linky (hostitel).
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Živý demonstrátor bitového součinu -->
+          <div class="content-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              Interaktivní demonstrátor operace AND
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Změňte IP adresu nebo zvolte prefix masky a sledujte, jak operace AND oddělí síťové bity od hostitelských:
+            </p>
+
+            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+              <input type="text" id="andIpInput" value="192.168.10.130" class="calc-input" style="flex: 2;" placeholder="Zadejte IP">
+              <select id="andCidrSelect" class="calc-select" style="flex: 1;">
+                <option value="24">/24 (255.255.255.0)</option>
+                <option value="25">/25 (255.255.255.128)</option>
+                <option value="26" selected>/26 (255.255.255.192)</option>
+                <option value="27">/27 (255.255.255.224)</option>
+                <option value="28">/28 (255.255.255.240)</option>
+                <option value="30">/30 (255.255.255.252)</option>
+              </select>
+            </div>
+
+            <div class="and-operation-box">
+              <div class="and-row">
+                <span class="and-label">IP adresa:</span>
+                <span class="and-binary" id="andIpBin">Načítání...</span>
+              </div>
+              <div class="and-row">
+                <span class="and-label">Maska podsítě:</span>
+                <span class="and-binary" id="andMaskBin">Načítání...</span>
+              </div>
+              <div class="and-divider"></div>
+              <div class="and-row">
+                <span class="and-label" style="color: #60a5fa;">Adresa sítě:</span>
+                <span class="and-binary" id="andNetBin">Načítání...</span>
+              </div>
+              <div class="and-row" style="margin-top: 0.4rem;">
+                <span class="and-label">Výsledek v DEC:</span>
+                <span class="and-decimal" id="andNetDec" style="color: #38bdf8; font-size: 1.1rem; text-align: left; width: auto;"></span>
+              </div>
+            </div>
+
+            <div id="andBoundaryInfo" style="margin-top: 0.85rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Zápisy masky a mocniny dvou
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Zápisy masky a kouzelné mocniny 2">
+        <div class="slide-header">
+          <h2 class="slide-title">Zápisy masky &amp; Kouzelné mocniny 2</h2>
+          <p class="slide-subtitle">V networkingové praxi se používají dva tvary masky: desítkový tvar (Dotted-Decimal) a moderní prefixový zápis CIDR. V pozadí stojí váhy 8 bitů v oktetu.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Interaktivní přepínač bitů oktetu -->
+          <div class="content-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              Klikací oktet: Poslední bajt masky
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+              Kliknutím na jednotlivé bity přepínejte 0/1 a sledujte okamžitý součet vah a odpovídající CIDR prefix:
+            </p>
+
+            <div class="octet-switch-container" id="octetSwitchContainer">
+              <!-- Generováno dynamicky JS -->
+            </div>
+
+            <div class="slice-prop-grid" style="margin-top: 1.25rem;">
+              <div class="slice-prop-item">
+                <div class="slice-prop-label">Desítková hodnota oktetu</div>
+                <div class="slice-prop-value" id="switchDecValue" style="color: #60a5fa; font-size: 1.3rem;">192</div>
+              </div>
+              <div class="slice-prop-item">
+                <div class="slice-prop-label">CIDR prefix (z bloku /24)</div>
+                <div class="slice-prop-value" id="switchCidr" style="color: #34d399; font-size: 1.3rem;">/26</div>
+              </div>
+              <div class="slice-prop-item">
+                <div class="slice-prop-label">Zbývající bity na hosty ($h$)</div>
+                <div class="slice-prop-value" id="switchHostBits">6 bitů</div>
+              </div>
+              <div class="slice-prop-item">
+                <div class="slice-prop-label">Max. počet použitelných hostů ($2^h - 2$)</div>
+                <div class="slice-prop-value" id="switchMaxHosts" style="color: #fb923c;">62 hostů</div>
+              </div>
+              <div class="slice-prop-item">
+                <div class="slice-prop-label">Počet vzniklých podsítí ($2^s$)</div>
+                <div class="slice-prop-value" id="switchSubnets">4 podsítě</div>
+              </div>
+              <div class="slice-prop-item">
+                <div class="slice-prop-label">Krok sítě (Magic Block Size)</div>
+                <div class="slice-prop-value" id="switchBlockSize" style="color: #a855f7;">64</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Přehledová didaktická tabulka -->
+          <div class="content-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              Matematický tahák 4. oktetu
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Každý síťový inženýr si tyto hodnoty pamatuje zpaměti:
+            </p>
+
+            <div class="vlsm-table-container" style="margin-top: 0;">
+              <table class="vlsm-table">
+                <thead>
+                  <tr>
+                    <th>CIDR</th>
+                    <th>Desítková maska</th>
+                    <th>Host bity ($h$)</th>
+                    <th>Celkem IP ($2^h$)</th>
+                    <th>Hostitelé ($2^h - 2$)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>/24</strong></td><td>255.255.255.0</td><td>8 bitů</td><td>256</td><td><strong>254</strong></td></tr>
+                  <tr><td><strong>/25</strong></td><td>255.255.255.128</td><td>7 bitů</td><td>128</td><td><strong>126</strong></td></tr>
+                  <tr><td><strong>/26</strong></td><td>255.255.255.192</td><td>6 bitů</td><td>64</td><td><strong>62</strong></td></tr>
+                  <tr><td><strong>/27</strong></td><td>255.255.255.224</td><td>5 bitů</td><td>32</td><td><strong>30</strong></td></tr>
+                  <tr><td><strong>/28</strong></td><td>255.255.255.240</td><td>4 bity</td><td>16</td><td><strong>14</strong></td></tr>
+                  <tr><td><strong>/29</strong></td><td>255.255.255.248</td><td>3 bity</td><td>8</td><td><strong>6</strong></td></tr>
+                  <tr><td><strong>/30</strong></td><td>255.255.255.252</td><td>2 bity</td><td>4</td><td><strong>2 (P2P WAN)</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-top: 0.85rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              <strong>Klíčový trik pro zkoušky:</strong> Krok podsítě (Block Size) vždy spočítáte bleskově jako <code>256 - desítková hodnota masky</code>! Např. pro <code>.192</code> je krok <code>256 - 192 = 64</code>. Podsítě tedy začínají na <code>.0</code>, <code>.64</code>, <code>.128</code>, <code>.192</code>!
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Pravidlo 2^n a 2^h - 2
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Pravidlo 2^n podsítí a 2^h - 2 hostů">
+        <div class="slide-header">
+          <h2 class="slide-title">Pravidlo $2^n$ podsítí a $2^h - 2$ hostů</h2>
+          <p class="slide-subtitle">Proč musíme vždy odečíst 2 adresy z každé podsítě? Jak funguje zapůjčování bitů a vyhodnocování použitelného rozsahu pro zařízení.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Karta 1: Proč odečítáme 2 adresy -->
+          <div class="content-card">
+            <h3 style="color: #f43f5e;">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              Dvě vyhrazené adresy v každé podsíti
+            </h3>
+            <p style="font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+              V každé podsíti na světě existují 2 adresy, které <strong>nikdy nesmíte přiřadit žádnému počítači, tiskárně ani rozhraní routeru</strong>:
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+              <div style="background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 10px; padding: 0.85rem;">
+                <div style="font-weight: 800; color: #fb7185; font-size: 0.92rem; margin-bottom: 0.2rem;">
+                  1. Adresa sítě (Network Address)
+                </div>
+                <div style="font-size: 0.82rem; color: var(--text-secondary);">
+                  Všechny hostitelské bity jsou nastaveny na samé <strong>0</strong>. Slouží směrovačům k identifikaci celé sítě ve směrovací tabulce (např. <code>192.168.1.0</code>).
+                </div>
+              </div>
+
+              <div style="background: rgba(244, 63, 94, 0.08); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 10px; padding: 0.85rem;">
+                <div style="font-weight: 800; color: #fb7185; font-size: 0.92rem; margin-bottom: 0.2rem;">
+                  2. Všesměrové vysílání (Broadcast Address)
+                </div>
+                <div style="font-size: 0.82rem; color: var(--text-secondary);">
+                  Všechny hostitelské bity jsou nastaveny na samé <strong>1</strong>. Paket odeslaný na tuto adresu dorazí všem zařízením v dané podsíti (např. dotaz ARP, DHCP Discover).
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem; font-size: 0.88rem; font-weight: 700; color: #34d399; text-align: center; padding: 0.65rem; background: rgba(16, 185, 129, 0.1); border-radius: 8px;">
+              Rozsah použitelných hostů = První použitelná IP (Síť + 1) až Poslední použitelná IP (Broadcast - 1)
+            </div>
+          </div>
+
+          <!-- Karta 2: Matematika zapůjčování bitů -->
+          <div class="content-card">
+            <h3 style="color: #38bdf8;">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><polyline points="16 11 18 13 22 9"></polyline></svg>
+              Mechanismus půjčování bitů (Borrowing)
+            </h3>
+            <p style="font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+              Když chceme rozdělit síť (např. <code>/24</code>) na menší podsítě, musíme <strong>zapůjčit bity z hostitelské části</strong> a přidat je k síťové části:
+            </p>
+
+            <ul class="clean-list" style="font-size: 0.88rem; line-height: 1.6; margin-top: 0.75rem;">
+              <li><strong>Zapůjčením 1 bitu:</strong> Získáme $2^1 = 2$ podsítě. Původní prostor 256 adres se rozpůlí na dvě části po 128 adresách (126 použitelných). Maska se změní z <code>/24</code> na <code>/25</code>.</li>
+              <li><strong>Zapůjčením 2 bitů:</strong> Získáme $2^2 = 4$ podsítě po 64 adresách (62 použitelných). Maska je <code>/26</code>.</li>
+              <li><strong>Zapůjčením 3 bitů:</strong> Získáme $2^3 = 8$ podsítí po 32 adresách (30 použitelných). Maska je <code>/27</code>.</li>
+              <li><strong>Zapůjčením 6 bitů:</strong> Získáme $2^6 = 64$ podsítí po 4 adresách (2 použitelné). Maska je <code>/30</code>.</li>
+            </ul>
+
+            <div style="margin-top: 1.25rem; padding: 0.9rem; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: 12px; font-family: var(--font-mono); font-size: 0.85rem;">
+              <div style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; margin-bottom: 0.35rem;">Příklad: Adresa 192.168.1.100 s maskou /26</div>
+              <div>&bull; Adresa sítě: <strong style="color: #60a5fa;">192.168.1.64</strong></div>
+              <div>&bull; První host: <span style="color: #34d399;">192.168.1.65</span> (obvykle výchozí brána routeru)</div>
+              <div>&bull; Poslední host: <span style="color: #34d399;">192.168.1.126</span></div>
+              <div>&bull; Broadcast: <strong style="color: #fb7185;">192.168.1.127</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: FLSM & Kruhový graf (Koláč)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="FLSM a vizualizace dělení koláčem">
+        <div class="slide-header">
+          <h2 class="slide-title">FLSM: Stejnoměrné rozdělování sítě &amp; Kruhový graf</h2>
+          <p class="slide-subtitle">Představte si síťový rozsah jako celou pizzu nebo koláč. U metody FLSM (Fixed Length Subnet Masking) krájíme koláč vždy na stejně velké díly.</p>
+        </div>
+
+        <div class="pie-playground-wrapper">
+          <!-- Levá část: SVG koláč a ovládací lišta -->
+          <div class="pie-canvas-col">
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; width: 100%; justify-content: center;">
+              <label for="flsmBaseIp" style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Základní síť:</label>
+              <input type="text" id="flsmBaseIp" value="192.168.1.0" class="calc-input" style="width: 140px; padding: 0.35rem 0.65rem; font-size: 0.88rem;" title="Zadejte výchozí síť /24">
+            </div>
+
+            <div class="pie-svg-container">
+              <svg id="flsmPieSvg" class="pie-svg" viewBox="0 0 400 400"></svg>
+            </div>
+
+            <div class="pie-controls-bar" id="flsmCidrPills">
+              <!-- Dynamicky generováno JS: /24, /25, /26, /27, /28, /29, /30 -->
+            </div>
+          </div>
+
+          <!-- Pravá část: Karta detailní inspekce kliknuté výseče -->
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="slice-detail-card">
+              <div class="slice-detail-header" id="flsmDetailTitle">
+                <span class="slice-tag" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Podsíť #1</span>
+                <span style="font-weight: 800; font-family: var(--font-mono);">192.168.1.0 /26</span>
+              </div>
+
+              <div class="slice-prop-grid">
+                <div class="slice-prop-item">
+                  <div class="slice-prop-label">Síťová adresa</div>
+                  <div class="slice-prop-value" id="flsmDetailNet" style="color: #60a5fa;">192.168.1.0</div>
+                </div>
+                <div class="slice-prop-item">
+                  <div class="slice-prop-label">Broadcast adresa</div>
+                  <div class="slice-prop-value" id="flsmDetailBcast" style="color: #fb7185;">192.168.1.63</div>
+                </div>
+                <div class="slice-prop-item" style="grid-column: span 2;">
+                  <div class="slice-prop-label">Rozsah použitelných hostů</div>
+                  <div class="slice-prop-value" id="flsmDetailRange" style="color: #34d399;">192.168.1.1 – 192.168.1.62</div>
+                </div>
+                <div class="slice-prop-item">
+                  <div class="slice-prop-label">Kapacita hostů</div>
+                  <div class="slice-prop-value" id="flsmDetailHosts">62 hostů</div>
+                </div>
+                <div class="slice-prop-item">
+                  <div class="slice-prop-label">Podíl z celkového koláče</div>
+                  <div class="slice-prop-value" id="flsmDetailPct">25.0 %</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 0.85rem 1rem; border-radius: 12px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); font-size: 0.8rem; line-height: 1.5; color: var(--text-secondary);">
+              <strong>Jak číst kruhový graf:</strong>
+              Klikněte na libovolnou barevnou výseč koláče pro zobrazení jejích přesných síťových parametrů. Každý krok zvýšení masky o 1 bit (např. z <code>/25</code> na <code>/26</code>) rozkrojí každou dosavadní výseč přesně na polovinu.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Problém FLSM a příchod VLSM
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Limitace FLSM a příchod VLSM">
+        <div class="slide-header">
+          <h2 class="slide-title">Problém FLSM: Masivní plýtvání adresami v praxi</h2>
+          <p class="slide-subtitle">V reálných sítích nemají všechny pobočky a oddělení stejný počet počítačů. Pevná délka masky (FLSM) nutí správce plýtvat až 95 % cenných adres.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Reálný případ ze školy -->
+          <div class="content-card">
+            <h3 style="color: #f43f5e;">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              Scénář: Návrh sítě střední školy
+            </h3>
+            <p style="font-size: 0.85rem; line-height: 1.5; margin-top: 0.5rem;">
+              Máme přidělen blok <code>192.168.10.0/24</code> (256 adres) a potřebujeme zapojit:
+            </p>
+
+            <ul class="clean-list" style="font-size: 0.85rem; line-height: 1.6; margin-top: 0.5rem;">
+              <li>&bull; <strong>Učebny PC:</strong> 55 počítačů</li>
+              <li>&bull; <strong>Kanceláře učitelů:</strong> 25 počítačů</li>
+              <li>&bull; <strong>Serverovna školy:</strong> 10 serverů</li>
+              <li>&bull; <strong>Spojení mezi 2 routery (WAN):</strong> Pouze 2 IP adresy!</li>
+            </ul>
+
+            <div style="margin-top: 1rem; padding: 0.85rem; border-radius: 10px; background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.3); font-size: 0.82rem; line-height: 1.45;">
+              <strong>Co se stane při použití FLSM?</strong>
+              Největší síť (Učebny) potřebuje 55 hostů, takže musíme zvolit masku <code>/26</code> (kapacita 62 hostů).
+              U FLSM ale <em>musí mít všechny podsítě stejnou masku</em>!
+              Pro spojení 2 routerů tak spálíme celou podsíť s 64 adresami. <strong>Ztráta 60 IP adres (97 %) na jediném kabelu!</strong>
+            </div>
+          </div>
+
+          <!-- Řešení: VLSM -->
+          <div class="content-card">
+            <h3 style="color: #10b981;">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Řešení: VLSM (Variable Length Subnet Masking)
+            </h3>
+            <p style="font-size: 0.85rem; line-height: 1.5; margin-top: 0.5rem;">
+              VLSM umožňuje <strong>použít různou délku masky pro každou podsíť zvlášť</strong>. Každé oddělení dostane přesně tak velký balíček adres, jaký skutečně potřebuje:
+            </p>
+
+            <div class="vlsm-table-container" style="margin-top: 0.75rem;">
+              <table class="vlsm-table">
+                <thead>
+                  <tr>
+                    <th>Oddělení</th>
+                    <th>Požadavek</th>
+                    <th>Maska VLSM</th>
+                    <th>Alokováno</th>
+                    <th>Efektivita</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Učebny</td>
+                    <td>55 PC</td>
+                    <td><strong style="color: #60a5fa;">/26</strong></td>
+                    <td>64 IP</td>
+                    <td><span style="color: #34d399;">86 %</span></td>
+                  </tr>
+                  <tr>
+                    <td>Kanceláře</td>
+                    <td>25 PC</td>
+                    <td><strong style="color: #06b6d4;">/27</strong></td>
+                    <td>32 IP</td>
+                    <td><span style="color: #34d399;">78 %</span></td>
+                  </tr>
+                  <tr>
+                    <td>Serverovna</td>
+                    <td>10 PC</td>
+                    <td><strong style="color: #f59e0b;">/28</strong></td>
+                    <td>16 IP</td>
+                    <td><span style="color: #34d399;">63 %</span></td>
+                  </tr>
+                  <tr>
+                    <td>WAN spoj</td>
+                    <td>2 IP</td>
+                    <td><strong style="color: #ec4899;">/30</strong></td>
+                    <td>4 IP</td>
+                    <td><span style="color: #34d399;">100 %!</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="margin-top: 0.85rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              <strong>Výsledek VLSM:</strong> Celkem jsme spotřebovali jen 116 adres z 256. Zůstává nám <strong>140 volných IP adres</strong> pro budoucí rozvoj školy!
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Zlaté pravidlo VLSM a prevence kolizí
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Zlaté pravidlo VLSM a prevence kolizí">
+        <div class="slide-header">
+          <h2 class="slide-title">Zlaté pravidlo VLSM: Proč musíme řadit sestupně?</h2>
+          <p class="slide-subtitle">Při návrhu podsítí proměnné délky (VLSM) existuje jedno zásadní pravidlo: vždy alokovat od největší podsítě k nejmenší. Porušení vede k binární kolizi.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Levý sloupec: Zlaté pravidlo -->
+          <div class="content-card">
+            <h3 style="color: #f59e0b;">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              Zlaté pravidlo: VŽDY řadit od největšího k nejmenšímu!
+            </h3>
+            <p style="font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+              Nejčastější chyba studentů u zkoušek CCNA: začnou přidělovat adresy v náhodném pořadí ze zadání (např. nejprve WAN spoj pro 2 routery a teprve potom velkou síť pro 100 PC).
+            </p>
+
+            <div style="margin-top: 0.85rem; padding: 0.95rem; border-radius: 12px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.85rem; line-height: 1.5;">
+              <strong>Proč to nefunguje naopak?</strong>
+              Sítě se v binární matematice musí zarovnávat na <strong>přirozené binární hranice</strong> (násobky své velikosti $2^h$).
+              Když dáte malou síť <code>/30</code> na začátek (např. <code>192.168.10.0/30</code>, rozsah <code>.0</code> až <code>.3</code>), další volná adresa je <code>192.168.10.4</code>.
+              Na adresu <code>.4</code> ale <strong>nemůžete umístit síť pro 100 hostů</strong> (vyžadující blok 128 adres), protože číslo 4 není násobkem 128! Vznikne fragmentace a adresní kolize.
+            </div>
+
+            <div style="margin-top: 1rem; font-weight: 800; font-size: 0.92rem; color: #34d399; text-align: center;">
+              Pravidlo: 1. Seřadit požadavky sestupně &bull; 2. Zjistit $2^h - 2 \ge \text{hosté}$ &bull; 3. Přiřazovat souvisle
+            </div>
+          </div>
+
+          <!-- Pravý sloupec: Analýza chyby v Cisco IOS -->
+          <div class="content-card">
+            <h3 style="color: #f43f5e;">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              Co se stane při kolizi? (Chyba Cisco IOS)
+            </h3>
+            <p style="font-size: 0.85rem; line-height: 1.5; margin-top: 0.5rem;">
+              Pokud byste se pokusili nakonfigurovat překrývající se podsítě na rozhraní směrovače Cisco, operační systém IOS příkaz okamžitě zamítne:
+            </p>
+
+            <div style="margin-top: 0.75rem; background: #030712; border: 1px solid #1f2937; border-radius: 10px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; color: #e2e8f0;">
+              <div style="color: #94a3b8;">Router(config)# interface GigabitEthernet0/0/0</div>
+              <div style="color: #94a3b8;">Router(config-if)# ip address 192.168.10.1 255.255.255.128</div>
+              <div style="color: #94a3b8;">Router(config)# interface GigabitEthernet0/0/1</div>
+              <div style="color: #94a3b8;">Router(config-if)# ip address 192.168.10.65 255.255.255.192</div>
+              <div style="color: #fb7185; font-weight: bold; margin-top: 0.35rem;">
+                % 192.168.10.64 overlaps with GigabitEthernet0/0/0
+              </div>
+            </div>
+
+            <div style="margin-top: 0.85rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              <strong>Proč router hlásí overlap?</strong>
+              Protože adresa <code>192.168.10.64/26</code> leží uvnitř již dříve použitého bloku <code>192.168.10.0/25</code> (který zabírá adresy <code>.0</code> až <code>.127</code>). Router by nevěděl, kam pakety doručovat!
+            </div>
+
+            <div style="margin-top: 0.85rem; padding: 0.75rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; font-size: 0.82rem; color: #60a5fa;">
+              Na následujícím snímku si vyzkoušíte <strong>dynamické porcování rozsahu</strong> v interaktivním obdélníkovém modelu!
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Dynamické porcování rozsahu (Interaktivní mřížka)
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Dynamické porcování rozsahu (Interaktivní mřížka)">
+        <div class="slide-header">
+          <h2 class="slide-title">Dynamické porcování rozsahu &amp; Hierarchický strom podsítí</h2>
+          <p class="slide-subtitle">Kliknutím na libovolný blok alokujete podsíť dané velikosti. Systém ji obarví, zobrazí její parametry a okamžitě zatmaví nadřazené i podřízené bloky, které jsou tímto výběrem zablokovány.</p>
+        </div>
+
+        <div class="portion-wrapper">
+          <!-- Horní ovládací lišta porcovacího nástroje -->
+          <div class="portion-top-bar">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <label for="portionBaseIp" style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Základní síť:</label>
+              <input type="text" id="portionBaseIp" value="192.168.10.0" class="calc-input" style="width: 140px; padding: 0.35rem 0.65rem; font-size: 0.88rem;" title="Výchozí síť pro porcování">
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <button type="button" id="portionResetBtn" class="btn-tool btn-tool-danger">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Resetovat výběr
+              </button>
+              <button type="button" id="portionPresetSchool" class="btn-tool">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Příklad: Školní síť (/25, /26, 2x /28)
+              </button>
+              <button type="button" id="portionPresetQuarters" class="btn-tool">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Příklad: 4x /26
+              </button>
+            </div>
+
+            <span id="portionSummaryBadge" class="slice-tag" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">
+              Alokováno: 0 / 256 IP (0 %)
+            </span>
+          </div>
+
+          <!-- Velký interaktivní obdélník s hierarchickými úrovněmi dělení -->
+          <div class="portion-grid-canvas" id="portionGridCanvas">
+            <!-- Dynamicky generováno JS (řádky /24, /25, /26, /27, /28) -->
+          </div>
+
+          <!-- Tabulka alokovaných podsítí s adresou a CIDR -->
+          <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 0.4rem;">
+              <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Seznam vašich alokovaných podsítí (Adresa, Maska CIDR a Použitelný rozsah):
+            </div>
+
+            <div class="portion-allocated-table-box">
+              <table class="vlsm-table">
+                <thead>
+                  <tr>
+                    <th>Podsíť &amp; Barva</th>
+                    <th>Vybraný rozsah (CIDR)</th>
+                    <th>Rozsah použitelných hostů</th>
+                    <th>Broadcast</th>
+                    <th>Maska</th>
+                    <th>Akce</th>
+                  </tr>
+                </thead>
+                <tbody id="portionTableBody">
+                  <!-- Generováno dynamicky JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Asymetrický VLSM koláč & Scénáře
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Interaktivní VLSM vizualizér (Asymetrický koláč)">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní VLSM vizualizér &amp; Asymetrický koláč</h2>
+          <p class="slide-subtitle">Sledujte, jak se v kruhovém grafu střídají velké výseče pro velká oddělení s tenkými linkami pro WAN spoje a jak zbývá volný prostor.</p>
+        </div>
+
+        <div class="pie-playground-wrapper">
+          <!-- Levá část: Asymetrický SVG koláč -->
+          <div class="pie-canvas-col">
+            <div class="vlsm-scenario-tabs">
+              <button class="vlsm-tab-btn active" data-scenario="school">Scénář 1: Školní síť SPŠ</button>
+              <button class="vlsm-tab-btn" data-scenario="company">Scénář 2: Firemní kampus</button>
+            </div>
+
+            <div class="pie-svg-container">
+              <svg id="vlsmPieSvg" class="pie-svg" viewBox="0 0 400 400"></svg>
+            </div>
+
+            <div style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">
+              Šrafovaná šedá výseč = Nealokovaný volný adresní prostor (rezerva)
+            </div>
+          </div>
+
+          <!-- Pravá část: Kompletní tabulka podsítí daného scénáře -->
+          <div style="display: flex; flex-direction: column; overflow: hidden;">
+            <h3 style="font-size: 1.05rem; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              Vygenerovaná tabulka podsítí (VLSM Plan)
+            </h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+              Podsítě automaticky seřazené od největší po nejmenší bez kolizí:
+            </p>
+
+            <div class="vlsm-table-container">
+              <table class="vlsm-table">
+                <thead>
+                  <tr>
+                    <th>Oddělení</th>
+                    <th>Požadavek</th>
+                    <th>Síť</th>
+                    <th>Maska</th>
+                    <th>Použitelný rozsah</th>
+                    <th>Broadcast</th>
+                    <th>Kapacita</th>
+                  </tr>
+                </thead>
+                <tbody id="vlsmTableBody">
+                  <!-- Generováno dynamicky JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Univerzální kalkulačka podsítí SPŠ
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Univerzální kalkulačka podsítí SPŠ">
+        <div class="slide-header">
+          <h2 class="slide-title">Univerzální kalkulačka podsítí SPŠ (Subnet Calculator)</h2>
+          <p class="slide-subtitle">Laboratorní nástroj pro žáky střední školy: zadejte libovolnou IP adresu a masku pro okamžitý výpočet všech síťových parametrů a binární rozpad.</p>
+        </div>
+
+        <div class="calc-wrapper">
+          <!-- Vstupní formulář kalkulačky -->
+          <div class="calc-inputs-bar">
+            <div class="calc-field-group">
+              <label for="calcIpInput" class="calc-label">IPv4 Adresa hostitele nebo sítě:</label>
+              <input type="text" id="calcIpInput" value="192.168.10.150" class="calc-input" placeholder="např. 172.16.45.100">
+            </div>
+
+            <div class="calc-field-group">
+              <label for="calcCidrSelect" class="calc-label">Maska podsítě (CIDR):</label>
+              <select id="calcCidrSelect" class="calc-select"></select>
+            </div>
+
+            <button type="button" id="calcSubmitBtn" class="calc-btn-calc">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Vypočítat
+            </button>
+          </div>
+
+          <!-- Mřížka výsledků -->
+          <div class="calc-results-grid">
+            <div class="calc-res-card">
+              <div class="calc-res-label">Adresa sítě (Network ID)</div>
+              <div class="calc-res-val" id="calcResNet" style="color: #60a5fa;">--</div>
+            </div>
+
+            <div class="calc-res-card">
+              <div class="calc-res-label">Broadcast adresa</div>
+              <div class="calc-res-val" id="calcResBcast" style="color: #fb7185;">--</div>
+            </div>
+
+            <div class="calc-res-card">
+              <div class="calc-res-label">Rozsah použitelných hostů</div>
+              <div class="calc-res-val" id="calcResRange" style="color: #34d399; font-size: 0.95rem;">--</div>
+            </div>
+
+            <div class="calc-res-card">
+              <div class="calc-res-label">Desítková maska podsítě</div>
+              <div class="calc-res-val" id="calcResMask">--</div>
+            </div>
+
+            <div class="calc-res-card">
+              <div class="calc-res-label">Inverzní maska (Wildcard)</div>
+              <div class="calc-res-val" id="calcResWildcard" style="color: #a855f7;">--</div>
+            </div>
+
+            <div class="calc-res-card">
+              <div class="calc-res-label">Použitelní hostitelé ($2^h - 2$)</div>
+              <div class="calc-res-val" id="calcResHosts" style="color: #f59e0b;">--</div>
+            </div>
+
+            <div class="calc-res-card">
+              <div class="calc-res-label">Třída adresy (RFC 791)</div>
+              <div class="calc-res-val" id="calcResClass" style="font-size: 0.95rem;">--</div>
+            </div>
+
+            <div class="calc-res-card" style="grid-column: span 2;">
+              <div class="calc-res-label">Typ adresního prostoru (RFC 1918)</div>
+              <div class="calc-res-val" id="calcResScope" style="font-size: 0.95rem; color: #06b6d4;">--</div>
+            </div>
+          </div>
+
+          <!-- Binární rozklad s barevnou hranicí -->
+          <div class="calc-binary-breakdown" id="calcResBinary"></div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Řešený příklad krok za krokem (CCNA)
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Krok za krokem: Řešený příklad VLSM">
+        <div class="slide-header">
+          <h2 class="slide-title">Krok za krokem: Řešený příklad VLSM ze zkoušky</h2>
+          <p class="slide-subtitle">Zadání: Z bloku 192.168.10.0/24 navrhněte optimální adresaci pro 4 pobočky a 2 propojovací linky. Projděte si řešení krok za krokem.</p>
+        </div>
+
+        <div class="content-card" style="margin-top: 1rem;">
+          <div class="stepper-nav">
+            <button class="step-btn active" data-step="1">Krok 1: Seřazení požadavků</button>
+            <button class="step-btn" data-step="2">Krok 2: Výpočet bitů a masek</button>
+            <button class="step-btn" data-step="3">Krok 3: Dělení na číselné ose</button>
+            <button class="step-btn" data-step="4">Krok 4: Konfigurace rozhraní</button>
+          </div>
+
+          <!-- Krok 1 -->
+          <div class="step-content-pane" id="stepPane-1" style="display: block;">
+            <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">Krok 1: Zlaté pravidlo – Seřaďte sítě sestupně</h4>
+            <p style="font-size: 0.88rem; line-height: 1.6;">
+              Původní textové zadání obsahovalo: LAN 3 (12 PC), WAN 1 (2 routery), LAN 1 (58 PC), WAN 2 (2 routery), LAN 2 (28 PC).<br>
+              <strong>Nejprve musíme vše seřadit od největšího k nejmenšímu:</strong>
+            </p>
+            <ol style="margin-left: 1.5rem; margin-top: 0.5rem; font-size: 0.88rem; line-height: 1.6;">
+              <li><strong>1. LAN 1:</strong> 58 hostů (největší síť)</li>
+              <li><strong>2. LAN 2:</strong> 28 hostů</li>
+              <li><strong>3. LAN 3:</strong> 12 hostů</li>
+              <li><strong>4. WAN 1:</strong> 2 hosté (linka mezi routery R1 a R2)</li>
+              <li><strong>5. WAN 2:</strong> 2 hosté (linka mezi routery R2 a R3)</li>
+            </ol>
+          </div>
+
+          <!-- Krok 2 -->
+          <div class="step-content-pane" id="stepPane-2" style="display: none;">
+            <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">Krok 2: Výpočet potřebných bitů podle vzorce $2^h - 2 \ge \text{hosté}$</h4>
+            <div class="vlsm-table-container">
+              <table class="vlsm-table">
+                <thead>
+                  <tr>
+                    <th>Síť</th>
+                    <th>Potřeba</th>
+                    <th>Výpočet vzorce</th>
+                    <th>Počet bitů ($h$)</th>
+                    <th>Maska (32 - h)</th>
+                    <th>Celkem IP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>LAN 1</strong></td>
+                    <td>58 hostů</td>
+                    <td>$2^6 - 2 = 62 \ge 58$</td>
+                    <td>$h = 6$</td>
+                    <td><strong style="color: #60a5fa;">/26</strong> (.192)</td>
+                    <td>64 IP</td>
+                  </tr>
+                  <tr>
+                    <td><strong>LAN 2</strong></td>
+                    <td>28 hostů</td>
+                    <td>$2^5 - 2 = 30 \ge 28$</td>
+                    <td>$h = 5$</td>
+                    <td><strong style="color: #06b6d4;">/27</strong> (.224)</td>
+                    <td>32 IP</td>
+                  </tr>
+                  <tr>
+                    <td><strong>LAN 3</strong></td>
+                    <td>12 hostů</td>
+                    <td>$2^4 - 2 = 14 \ge 12$</td>
+                    <td>$h = 4$</td>
+                    <td><strong style="color: #f59e0b;">/28</strong> (.240)</td>
+                    <td>16 IP</td>
+                  </tr>
+                  <tr>
+                    <td><strong>WAN 1</strong></td>
+                    <td>2 hosté</td>
+                    <td>$2^2 - 2 = 2 \ge 2$</td>
+                    <td>$h = 2$</td>
+                    <td><strong style="color: #ec4899;">/30</strong> (.252)</td>
+                    <td>4 IP</td>
+                  </tr>
+                  <tr>
+                    <td><strong>WAN 2</strong></td>
+                    <td>2 hosté</td>
+                    <td>$2^2 - 2 = 2 \ge 2$</td>
+                    <td>$h = 2$</td>
+                    <td><strong style="color: #a855f7;">/30</strong> (.252)</td>
+                    <td>4 IP</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Krok 3 -->
+          <div class="step-content-pane" id="stepPane-3" style="display: none;">
+            <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">Krok 3: Postupné přiřazování adres bez překryvu</h4>
+            <p style="font-size: 0.88rem; line-height: 1.6;">
+              Začínáme na adrese <code>192.168.10.0</code> a postupně přičítáme velikost bloku (Block Size):
+            </p>
+            <ul class="clean-list" style="font-size: 0.85rem; line-height: 1.8; font-family: var(--font-mono); margin-top: 0.5rem;">
+              <li>&bull; <strong>LAN 1 (/26, blok 64):</strong> Síť <code>192.168.10.0/26</code> &bull; Rozsah <code>.1 – .62</code> &bull; Bcast <code>.63</code>. Další volná: <code>.64</code></li>
+              <li>&bull; <strong>LAN 2 (/27, blok 32):</strong> Síť <code>192.168.10.64/27</code> &bull; Rozsah <code>.65 – .94</code> &bull; Bcast <code>.95</code>. Další volná: <code>.96</code></li>
+              <li>&bull; <strong>LAN 3 (/28, blok 16):</strong> Síť <code>192.168.10.96/28</code> &bull; Rozsah <code>.97 – .110</code> &bull; Bcast <code>.111</code>. Další volná: <code>.112</code></li>
+              <li>&bull; <strong>WAN 1 (/30, blok 4):</strong> Síť <code>192.168.10.112/30</code> &bull; Rozsah <code>.113 – .114</code> &bull; Bcast <code>.115</code>. Další volná: <code>.116</code></li>
+              <li>&bull; <strong>WAN 2 (/30, blok 4):</strong> Síť <code>192.168.10.116/30</code> &bull; Rozsah <code>.117 – .118</code> &bull; Bcast <code>.119</code>. Další volná: <code>.120</code></li>
+            </ul>
+          </div>
+
+          <!-- Krok 4 -->
+          <div class="step-content-pane" id="stepPane-4" style="display: none;">
+            <h4 style="color: #60a5fa; margin-bottom: 0.5rem;">Krok 4: Tabulka adresace pro konfiguraci směrovačů Cisco</h4>
+            <div class="vlsm-table-container">
+              <table class="vlsm-table">
+                <thead>
+                  <tr>
+                    <th>Zařízení</th>
+                    <th>Rozhraní</th>
+                    <th>IP adresa</th>
+                    <th>Maska podsítě</th>
+                    <th>Výchozí brána</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Router R1</td><td>G0/0/0 (LAN 1)</td><td>192.168.10.1</td><td>255.255.255.192</td><td>N/A</td></tr>
+                  <tr><td>Router R1</td><td>S0/1/0 (WAN 1)</td><td>192.168.10.113</td><td>255.255.255.252</td><td>N/A</td></tr>
+                  <tr><td>Router R2</td><td>S0/1/0 (WAN 1)</td><td>192.168.10.114</td><td>255.255.255.252</td><td>N/A</td></tr>
+                  <tr><td>Router R2</td><td>G0/0/0 (LAN 2)</td><td>192.168.10.65</td><td>255.255.255.224</td><td>N/A</td></tr>
+                  <tr><td>PC 1 (LAN 1)</td><td>NIC</td><td>192.168.10.10</td><td>255.255.255.192</td><td>192.168.10.1</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Interaktivní tréninkový kvíz
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Procvičování a tréninkový kvíz">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní trenažér &amp; Testovací kvíz</h2>
+          <p class="slide-subtitle">Ověřte si své dovednosti na typických testových otázkách ze síťových maturit a certifikací Cisco CCNA.</p>
+        </div>
+
+        <div class="quiz-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span class="slice-tag" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Otázka k procvičení</span>
+            <span id="quizScore" style="font-weight: 700; font-size: 0.88rem; color: var(--text-secondary);">Úspěšnost: 0 z 0</span>
+          </div>
+
+          <div class="quiz-question" id="quizQuestion">Načítání otázky...</div>
+
+          <div class="quiz-options-grid" id="quizOptions"></div>
+
+          <div class="quiz-explanation-box" id="quizExplanation"></div>
+
+          <div style="display: flex; justify-content: flex-end; margin-top: 1.25rem;">
+            <button type="button" id="quizNextBtn" class="calc-btn-calc" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-primary);">
+              Další otázka
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Shrnutí a tahák (Cheat-Sheet)
+           ========================================== -->
+      <section class="slide slide--summary" id="slide-13" data-title="Shrnutí a tahák pro studenty">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Tahák do kapsy</h2>
+          <p class="slide-subtitle">Strukturovaný přehled pro rychlé zopakování před písemkou nebo laboratorním cvičením.</p>
+        </div>
+
+        <div class="grid-2">
+          <!-- 5 Zlatých pravidel -->
+          <div class="content-card">
+            <h3 style="color: #38bdf8;">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              5 Zlatých pravidel subnettingu
+            </h3>
+            <ol style="margin-left: 1.25rem; font-size: 0.85rem; line-height: 1.7; margin-top: 0.5rem;">
+              <li><strong>Operace AND:</strong> Adresa sítě je vždy výsledkem <code>IP AND Maska</code>. Hostitelské bity se vynulují.</li>
+              <li><strong>Odečítáme 2 adresy:</strong> V každé síti je první adresa Síťová (samé 0) a poslední Broadcast (samé 1). Hostitelů je $2^h - 2$.</li>
+              <li><strong>Magické číslo (Krok):</strong> Velikost bloku zjistíte jako <code>256 - desítková hodnota masky</code> nebo $2^h$.</li>
+              <li><strong>VLSM řazení:</strong> Vždy řaďte podsítě <strong>sestupně</strong> od největší po nejmenší, jinak dojde k překryvu!</li>
+              <li><strong>Směrovače (P2P WAN linky):</strong> Pro propojení 2 routerů používejte výhradně masku <code>/30</code> (4 adresy celkem).</li>
+            </ol>
+          </div>
+
+          <!-- Kontrolní otázky -->
+          <div class="content-card">
+            <h3 style="color: #f59e0b;">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              Kontrolní otázky k samostudiu
+            </h3>
+            <ul class="clean-list" style="font-size: 0.85rem; line-height: 1.7; margin-top: 0.5rem;">
+              <li>1. Do které podsítě spadá počítač s IP <code>172.16.50.77/27</code> a jaká je jeho broadcast adresa?</li>
+              <li>2. Proč je v moderních sítích neefektivní používat staré třídní adresování (Classful A, B, C)?</li>
+              <li>3. Jakou masku podsítě musíte zvolit, pokud potřebujete připojit 100 počítačů?</li>
+              <li>4. Mohou dvě zařízení se stejnou maskou <code>/26</code> komunikovat napřímo bez routeru, pokud jedno má IP <code>192.168.1.60</code> a druhé <code>192.168.1.70</code>? <em>(Nápověda: Spočítejte síťové adresy!)</em></li>
+            </ul>
+
+            <div style="margin-top: 1rem; padding: 0.75rem; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.8rem; color: #34d399;">
+              Správná odpověď na otázku 4: <strong>Nemohou!</strong> IP .60 má síť .0/26, zatímco IP .70 má síť .64/26. Jsou v různých podsítích a potřebují směrovač (L3 Router)!
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Spodní ovládací panel (Standard SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../020-Fyzicka-vrstva/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 020 Fyzická vrstva (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (Zatím v přípravě)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 13</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Subnetting &amp; VLSM
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný výpočetní a vizualizační engine pro téma 042 -->
+  <script src="subnet-engine.js"></script>
+</body>
+
+</html>

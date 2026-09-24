@@ -1,0 +1,1035 @@
+/* ==========================================================================
+   Téma 042: Subnetting a VLSM (Dedikované styly tématu POS SPŠ)
+   ========================================================================== */
+
+/* Lokální barevné proměnné a akcenty */
+:root {
+  --sn-blue: #3b82f6;
+  --sn-cyan: #06b6d4;
+  --sn-indigo: #6366f1;
+  --sn-amber: #f59e0b;
+  --sn-emerald: #10b981;
+  --sn-rose: #f43f5e;
+  --sn-purple: #a855f7;
+  --sn-net-bit: #38bdf8;
+  --sn-host-bit: #fb923c;
+  --sn-bg-subtle: rgba(59, 130, 246, 0.08);
+  --sn-border-subtle: rgba(59, 130, 246, 0.25);
+}
+
+[data-theme="light"] {
+  --sn-net-bit: #0284c7;
+  --sn-host-bit: #ea580c;
+  --sn-bg-subtle: rgba(59, 130, 246, 0.06);
+  --sn-border-subtle: rgba(59, 130, 246, 0.2);
+}
+
+/* ==========================================================================
+   Záhlaví snímků: Nadpis a podnadpis pod sebou dle standardu POS (010, 020)
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.1rem !important;
+  padding-bottom: 0.65rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.8rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.94rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   1. Interaktivní binární vizualizér a bity
+   ========================================================================== */
+.bit-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.octet-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.octet-label {
+  width: 90px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.octet-bits-group {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.octet-dot {
+  font-weight: 800;
+  color: var(--text-muted);
+  padding: 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.bit-box {
+  width: 26px;
+  height: 32px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.bit-box.net-bit {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+[data-theme="light"] .bit-box.net-bit {
+  background: rgba(2, 132, 199, 0.12);
+  border-color: rgba(2, 132, 199, 0.35);
+  color: #0284c7;
+}
+
+.bit-box.host-bit {
+  background: rgba(251, 146, 60, 0.15);
+  border-color: rgba(251, 146, 60, 0.4);
+  color: #fb923c;
+}
+
+[data-theme="light"] .bit-box.host-bit {
+  background: rgba(234, 88, 12, 0.12);
+  border-color: rgba(234, 88, 12, 0.35);
+  color: #ea580c;
+}
+
+.bit-box.boundary {
+  box-shadow: 3px 0 0 0 var(--sn-purple);
+}
+
+.bit-weight-label {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  line-height: 1;
+  margin-top: 1px;
+}
+
+/* Interaktivní přepínač bitů oktetu (Slide 3) */
+.octet-switch-container {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  flex-wrap: wrap;
+}
+
+.octet-switch-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 80px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.4rem;
+}
+
+.octet-switch-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--sn-blue);
+  color: var(--text-primary);
+}
+
+.octet-switch-btn.active {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: var(--sn-blue);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.25);
+  color: #ffffff;
+}
+
+[data-theme="light"] .octet-switch-btn.active {
+  background: rgba(59, 130, 246, 0.15);
+  color: #1e3a8a;
+}
+
+.octet-switch-bit {
+  font-size: 1.6rem;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  line-height: 1;
+}
+
+.octet-switch-weight {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-top: 0.35rem;
+  color: var(--text-secondary);
+}
+
+.octet-switch-btn.active .octet-switch-weight {
+  color: #93c5fd;
+}
+
+/* ==========================================================================
+   2. Bitwise AND demonstrátor (Slide 2)
+   ========================================================================== */
+.and-operation-box {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-mono, monospace);
+}
+
+.and-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.and-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  width: 140px;
+  color: var(--text-secondary);
+}
+
+.and-binary {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.and-decimal {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  width: 130px;
+  text-align: right;
+  font-weight: 700;
+}
+
+.and-divider {
+  height: 2px;
+  background: var(--border-color);
+  margin: 0.25rem 0;
+  position: relative;
+}
+
+.and-divider::after {
+  content: "AND (Logický součin bit po bitu)";
+  position: absolute;
+  right: 1.5rem;
+  top: -10px;
+  background: var(--bg-card);
+  padding: 0 0.5rem;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  border-radius: 4px;
+  font-family: var(--font-sans, sans-serif);
+}
+
+/* ==========================================================================
+   3. Kruhový graf (Subnet Pie Chart) – FLSM & VLSM
+   ========================================================================== */
+.pie-playground-wrapper {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.75rem;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.5rem 1.75rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .pie-playground-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pie-canvas-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.pie-svg-container {
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 1 / 1;
+  position: relative;
+}
+
+.pie-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.25));
+}
+
+.pie-slice {
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s, stroke-width 0.2s;
+  stroke: var(--bg-card);
+  stroke-width: 2.5px;
+}
+
+.pie-slice:hover {
+  transform: scale(1.035);
+  transform-origin: 200px 200px;
+  stroke: #ffffff;
+  stroke-width: 3.5px;
+  filter: brightness(1.2);
+}
+
+.pie-slice.active-slice {
+  stroke: #ffffff;
+  stroke-width: 4px;
+  filter: brightness(1.25);
+  transform: scale(1.045);
+  transform-origin: 200px 200px;
+}
+
+.pie-center-circle {
+  fill: var(--bg-card);
+  stroke: var(--border-color);
+  stroke-width: 2px;
+  pointer-events: none;
+}
+
+.pie-center-title {
+  fill: var(--text-primary);
+  font-size: 14px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.pie-center-sub {
+  fill: var(--text-muted);
+  font-size: 11px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Ovládací lišta koláče */
+.pie-controls-bar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.pie-cidr-pill {
+  padding: 0.35rem 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pie-cidr-pill:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--text-primary);
+  border-color: var(--sn-blue);
+}
+
+.pie-cidr-pill.active {
+  background: var(--sn-blue);
+  color: #ffffff;
+  border-color: var(--sn-blue);
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+}
+
+/* Detailní inspekce vybrané výseče */
+.slice-detail-card {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+[data-theme="light"] .slice-detail-card {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.slice-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.slice-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.slice-prop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.slice-prop-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+}
+
+.slice-prop-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+}
+
+.slice-prop-value {
+  font-size: 0.92rem;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   4. Kalkulačka podsítí (Subnet Calculator SPŠ)
+   ========================================================================== */
+.calc-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.5rem 1.75rem;
+  margin-top: 0.75rem;
+}
+
+.calc-inputs-bar {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .calc-inputs-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.calc-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.calc-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s;
+}
+
+[data-theme="light"] .calc-input {
+  background: #ffffff;
+}
+
+.calc-input:focus {
+  border-color: var(--sn-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.calc-select {
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+[data-theme="light"] .calc-select {
+  background: #ffffff;
+}
+
+.calc-btn-calc {
+  padding: 0.75rem 1.4rem;
+  background: linear-gradient(135deg, var(--sn-blue), #2563eb);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.calc-btn-calc:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+.calc-results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .calc-results-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .calc-results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc-res-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.85rem 1.1rem;
+}
+
+.calc-res-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.calc-res-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.calc-binary-breakdown {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  font-family: var(--font-mono, monospace);
+}
+
+[data-theme="light"] .calc-binary-breakdown {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* ==========================================================================
+   5. VLSM Plánovač a strom dělení (Slide 7 & 8)
+   ========================================================================== */
+.vlsm-scenario-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.vlsm-tab-btn {
+  padding: 0.45rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.vlsm-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.vlsm-tab-btn.active {
+  background: rgba(59, 130, 246, 0.18);
+  border-color: var(--sn-blue);
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+.vlsm-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.vlsm-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.vlsm-table th {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.vlsm-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+}
+
+.vlsm-table tr:last-child td {
+  border-bottom: none;
+}
+
+.vlsm-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Vizuální hierarchický binární strom půlení */
+.tree-node-box {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-card);
+  text-align: center;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.tree-node-box:hover {
+  border-color: var(--sn-blue);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   6. Interaktivní krokovač a kvíz (Slide 10 & 11)
+   ========================================================================== */
+.stepper-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.step-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.step-btn.active {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--sn-blue);
+  color: #60a5fa;
+}
+
+.quiz-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.75rem;
+  margin-top: 1rem;
+}
+
+.quiz-question {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  line-height: 1.45;
+}
+
+.quiz-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 680px) {
+  .quiz-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quiz-opt-btn {
+  padding: 0.85rem 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quiz-opt-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--sn-blue);
+}
+
+.quiz-opt-btn.correct {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+.quiz-opt-btn.wrong {
+  background: rgba(244, 63, 94, 0.2);
+  border-color: #f43f5e;
+  color: #fb7185;
+}
+
+.quiz-explanation-box {
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  display: none;
+}
+
+.quiz-explanation-box.show {
+  display: block;
+}
+
+/* ==========================================================================
+   7. Interaktivní dynamické porcování rozsahu (Subnet Slicing Grid)
+   ========================================================================== */
+.portion-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.portion-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+/* Nástrojová tlačítka porcování */
+.btn-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.95rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .btn-tool {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-secondary);
+}
+
+.btn-tool:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--text-primary);
+  border-color: var(--sn-blue);
+  transform: translateY(-1px);
+}
+
+.btn-tool:active {
+  transform: translateY(0);
+}
+
+.btn-tool.btn-tool-danger {
+  background: rgba(244, 63, 94, 0.1);
+  border-color: rgba(244, 63, 94, 0.3);
+  color: #fb7185;
+}
+
+.btn-tool.btn-tool-danger:hover {
+  background: rgba(244, 63, 94, 0.2);
+  border-color: #f43f5e;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(244, 63, 94, 0.3);
+}
+
+.btn-tool-sm {
+  padding: 0.22rem 0.65rem;
+  font-size: 0.75rem;
+  border-radius: 6px;
+}
+
+.portion-grid-canvas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+[data-theme="light"] .portion-grid-canvas {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.portion-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.portion-level-tag {
+  width: 48px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.portion-blocks-container {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  width: 100%;
+}
+
+.portion-block {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+  padding: 2px;
+  overflow: hidden;
+  user-select: none;
+}
+
+[data-theme="light"] .portion-block {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.portion-block:hover:not(.blocked):not(.allocated) {
+  border-color: var(--sn-blue);
+  background: rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.portion-block-net {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.portion-block-info {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  line-height: 1;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Stav: Alokovaný blok */
+.portion-block.allocated {
+  border-width: 2px;
+  border-color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  z-index: 5;
+}
+
+.portion-block.allocated .portion-block-net {
+  color: #ffffff !important;
+  font-weight: 800;
+}
+
+.portion-block.allocated .portion-block-info {
+  color: #ffffff !important;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+/* Stav: Zablokovaný blok (čistá šedá barva) */
+.portion-block.blocked {
+  background: rgba(71, 85, 105, 0.3) !important;
+  border-color: rgba(71, 85, 105, 0.45) !important;
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+[data-theme="light"] .portion-block.blocked {
+  background: rgba(148, 163, 184, 0.3) !important;
+  border-color: rgba(148, 163, 184, 0.45) !important;
+  opacity: 0.55;
+}
+
+.portion-block.blocked .portion-block-net,
+.portion-block.blocked .portion-block-info {
+  color: var(--text-muted) !important;
+}
+
+/* Seznam alokovaných podsítí pod blokem */
+.portion-allocated-table-box {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow-x: auto;
+  max-height: 220px;
+}
+
