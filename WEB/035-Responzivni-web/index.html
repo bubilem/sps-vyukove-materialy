@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 035: Responzivní web a Media queries | WEB • SPŠ</title>
+  <meta name="description" content="Responzivní webdesign pro SPŠ: viewport meta tag, Mobile-First přístup, Media queries, breakpointy, Dark mode a Container Queries.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 035 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">035 Responzivní web</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">RWD &bull; Media Queries</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Responzivní web a Media queries">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 035</span>
+            <span class="badge">Responzivní webdesign</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">RWD &bull; Media Queries</span>
+          </div>
+          <h1 class="hero-title">Responzivní web a Media queries</h1>
+          <p class="hero-subtitle">
+            Jeden univerzální kód pro všechna moderní zařízení &bull; Od viewport meta tagu a filozofie Mobile-First přes syntaxi @media dotazů, standardní zlomové body (breakpointy), detekci Dark mode přes prefers-color-scheme až po moderní Container queries.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                Viewport Meta Tag
+              </h4>
+              <p>Správné měřítko 1:1 na mobilních displejích bez simulace miniaturního desktopu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Mobile-First přístup
+              </h4>
+              <p>Stavba od nejmenších displejů s min-width pravidly pro čistší a rychlejší kód.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Breakpointy &amp; Media
+              </h4>
+              <p>Zlomové body 640px, 768px, 1024px a 1280px dle přirozených potřeb obsahu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                Dark Mode &amp; @container
+              </h4>
+              <p>Detekce preferencí uživatele a zlomové body řízené velikostí komponenty.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Viewport meta tag
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Viewport meta tag">
+        <div class="slide-header">
+          <h2 class="slide-title">Klíčový základ: <code>&lt;meta name="viewport"&gt;</code></h2>
+          <p class="slide-subtitle">Proč je tento jediný řádek v hlavičce <code>&lt;head&gt;</code> naprosto nezbytný pro každý moderní web.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Povinný kód v každém HTML5 dokumentu</span>
+              <div class="code-block" style="font-size: 0.84rem; margin: 0.75rem 0;"><pre><code><span class="html-tag">&lt;meta</span> <span class="html-attr">name</span>=<span class="html-str">"viewport"</span> 
+      <span class="html-attr">content</span>=<span class="html-str">"width=device-width, initial-scale=1.0"</span><span class="html-tag">&gt;</span></code></pre></div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong><code>width=device-width</code>:</strong> Nastaví šířku průzoru stránky přesně na fyzickou logickou šířku displeje mobilu (např. 390px místo 980px).</li>
+                <li><strong><code>initial-scale=1.0</code>:</strong> Nastaví výchozí měřítko přiblížení na 1:1 bez umělého oddálení.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3>Co se stane, když tag chybí?</h3>
+              </div>
+              <p style="font-size: 0.88rem;">
+                Mobilní prohlížeče (Safari, Chrome) předpokládají, že web vznikl v 90. letech. Zobrazí stránku na <strong>virtuální šířce 980 pixelů</strong> a celou ji zmenší tak, aby se vešla na displej.
+              </p>
+              <div style="background: rgba(244, 63, 94, 0.1); border-left: 3px solid #f43f5e; padding: 0.6rem 0.85rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-top: 0.6rem;">
+                <strong>Důsledek:</strong> Písmo je mikroskopické, tlačítka nelze trefit prstem a veškeré vaše Media queries v CSS jsou na mobilu zcela ignorovány!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Mobile-First filozofie
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Filozofie Mobile-First">
+        <div class="slide-header">
+          <h2 class="slide-title">Filozofie Mobile-First vs. Desktop-First</h2>
+          <p class="slide-subtitle">Proč profesionální vývojáři píší kód nejdříve pro nejmenší displeje a postupně přidávají vlastnosti.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- Mobile-First -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
+                <h3>1. Mobile-First (Moderní standard)</h3>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li>Výchozí CSS kód (bez @media) je psán pro <strong>mobilní telefony</strong> (jednoduchý tok, 1 sloupec).</li>
+                <li>Pomocí <strong><code>@media (min-width: ...)</code></strong> postupně <em>přidáváme</em> další sloupce a efekty pro větší obrazovky.</li>
+                <li><strong>Výhody:</strong> Mobil stahuje minimum CSS a nic nemusí přepisovat. Kód je čistší a web načítá bleskově.</li>
+              </ul>
+              <div class="code-block" style="font-size: 0.78rem;"><pre><code><span class="css-sel">.grid</span> { <span class="css-prop">grid-template-columns</span>: <span class="css-val">1fr</span>; } <span class="html-comm">/* Mobil */</span>
+<span class="css-sel">@media (min-width: 768px)</span> {
+  <span class="css-sel">.grid</span> { <span class="css-prop">grid-template-columns</span>: <span class="css-val">repeat(2, 1fr)</span>; } <span class="html-comm">/* Tablet */</span>
+}</code></pre></div>
+            </div>
+
+            <!-- Desktop-First -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <h3>2. Desktop-First (Zastaralý přístup)</h3>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li>Začíná se složitým 4sloupcovým layoutem pro velký monitor.</li>
+                <li>Následně pomocí <code>@media (max-width: ...)</code> kodér pracně vypíná, maže a přepisuje vlastnosti, aby se obsah vešel na mobil.</li>
+                <li><strong>Nevýhody:</strong> Zbytečně bobtnající CSS, časté chyby v kaskádě a pomalejší mobilní výkon.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Syntaxe pravidel @media
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Syntaxe @media pravidel">
+        <div class="slide-header">
+          <h2 class="slide-title">Syntaxe pravidel <code>@media</code>: Klasika vs. Moderní rozsah</h2>
+          <p class="slide-subtitle">Jak psát podmínky pro rozlišení displeje a jaká je nová, mnohem čitelnější syntaxe.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Tradiční zápis (Media Queries Level 3)</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">Využívá klíčová slova <code>min-width</code> a <code>max-width</code> spojená operátorem <code>and</code>:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Od šířky 768px a více: */</span>
+<span class="css-sel">@media screen and (min-width: 768px)</span> {
+  <span class="css-sel">body</span> { <span class="css-prop">font-size</span>: <span class="css-val">18px</span>; }
+}
+
+<span class="html-comm">/* V rozmezí mezi 600px a 1024px: */</span>
+<span class="css-sel">@media (min-width: 600px) and (max-width: 1024px)</span> { ... }</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Moderní zápis rozsahů (Media Queries Level 4)</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">Podporováno ve všech moderních prohlížečích. Využívá přirozené matematické operátory <code>&gt;=</code>, <code>&lt;=</code>:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Mnohem čitelnější zápis: */</span>
+<span class="css-sel">@media (width >= 768px)</span> {
+  <span class="css-sel">body</span> { <span class="css-prop">font-size</span>: <span class="css-val">18px</span>; }
+}
+
+<span class="html-comm">/* Rozsah jako v matematice: */</span>
+<span class="css-sel">@media (600px <= width <= 1024px)</span> { ... }</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Typické breakpointy
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Typické breakpointy">
+        <div class="slide-header">
+          <h2 class="slide-title">Strategie zlomových bodů (Breakpointů)</h2>
+          <p class="slide-subtitle">Nestavte breakpointy pro konkrétní modely iPhonů, ale pro přirozený zlom vašeho obsahu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Průmyslový standard zlomů</span>
+              <div style="display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.6rem;">
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                  <span><strong>&lt; 640 px</strong>: Mobilní telefony</span>
+                  <span style="color: #f43f5e; font-family: var(--font-mono, monospace);">1 sloupec</span>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                  <span><strong>640 px – 767 px</strong>: Velké mobily / Phablety</span>
+                  <span style="color: #f59e0b; font-family: var(--font-mono, monospace);">1–2 sloupce</span>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                  <span><strong>768 px – 1023 px</strong>: Tablety na výšku</span>
+                  <span style="color: #38bdf8; font-family: var(--font-mono, monospace);">2–3 sloupce</span>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                  <span><strong>1024 px – 1279 px</strong>: Notebooky / Tablety na šířku</span>
+                  <span style="color: #10b981; font-family: var(--font-mono, monospace);">3–4 sloupce</span>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                  <span><strong>&gt;= 1280 px</strong>: Stolní monitory</span>
+                  <span style="color: #a855f7; font-family: var(--font-mono, monospace);">Plný layout + max-width</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #f97316; color: #fb923c;">Zlaté pravidlo obsahu</span>
+              <h3 style="margin-top: 0.5rem;">Breakpoint určuje obsah, ne zařízení</h3>
+              <p style="font-size: 0.86rem;">
+                Každý rok přibývají desítky nových displejů s různým rozlišením. Kdy tedy přidat nový breakpoint?
+              </p>
+              <div style="background: rgba(249, 115, 22, 0.1); border-left: 3px solid #f97316; padding: 0.6rem 0.85rem; border-radius: 0 6px 6px 0; font-size: 0.84rem; margin: 0.6rem 0;">
+                <strong>Test tažením okna:</strong> Zmenšujte okno prohlížeče v DevTools. Přesně v momentě, kdy se text nepěkně zlomí, tlačítka se dotknou nebo menu začne přetékat, přidejte breakpoint!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Responzivní multimédia a layout
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Responzivní média">
+        <div class="slide-header">
+          <h2 class="slide-title">Pružná multimédia: Obrázky a videa, která nepřetečou</h2>
+          <p class="slide-subtitle">Jak zajistit, aby fotografie a vložená YouTube videa nerozbily mobilní layout.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- Obrázky -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </div>
+                <h3>Pružné obrázky (Fluid Images)</h3>
+              </div>
+              <p style="font-size: 0.86rem;">Do globálního CSS resetu vždy patří:</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">img, picture, video</span> {
+  <span class="css-prop">max-width</span>: <span class="css-val">100%</span>;
+  <span class="css-prop">height</span>: <span class="css-val">auto</span>;
+  <span class="css-prop">display</span>: <span class="css-val">block</span>;
+}</code></pre></div>
+              <ul class="styled-list" style="font-size: 0.82rem;">
+                <li><code>max-width: 100%</code> zajistí, že se obrázek zmenší, pokud je rodič užší než jeho rozlišení.</li>
+                <li><code>height: auto</code> zachová správný poměr stran a zabrání deformaci (zploštění).</li>
+              </ul>
+            </div>
+
+            <!-- Videa a aspect-ratio -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                </div>
+                <h3>Videa a moderní <code>aspect-ratio</code></h3>
+              </div>
+              <p style="font-size: 0.86rem;">Dříve bylo nutné pro responzivní <code>&lt;iframe&gt;</code> s videem používat složité padding triky. Dnes máme nativní vlastnost:</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">iframe.youtube-video</span> {
+  <span class="css-prop">width</span>: <span class="css-val">100%</span>;
+  <span class="css-prop">aspect-ratio</span>: <span class="css-val">16 / 9</span>;
+  <span class="css-prop">border</span>: <span class="css-val">none</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Prohlížeč automaticky dopočítává výšku videa podle aktuální šířky tak, aby poměr stran zůstal přesně 16:9.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: prefers-color-scheme (Dark mode)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Dark mode bez JavaScriptu">
+        <div class="slide-header">
+          <h2 class="slide-title">Uživatelské preference: <code>prefers-color-scheme</code> (Dark Mode)</h2>
+          <p class="slide-subtitle">Respektujte nastavení operačního systému uživatele a nabídněte tmavý motiv bez jediného řádku JavaScriptu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Nativní reakce na systémový motiv</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Pokud má uživatel v systému Windows, macOS, Androidu či iOS zapnutý tmavý režim, prohlížeč tuto hodnotu předá do CSS:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Výchozí světlý motiv: */</span>
+<span class="css-sel">:root</span> {
+  <span class="css-prop">--bg-color</span>: <span class="css-val">#ffffff</span>;
+  <span class="css-prop">--text-color</span>: <span class="css-val">#0f172a</span>;
+}
+
+<span class="html-comm">/* Automatické přepnutí na tmavý motiv: */</span>
+<span class="css-sel">@media (prefers-color-scheme: dark)</span> {
+  <span class="css-sel">:root</span> {
+    <span class="css-prop">--bg-color</span>: <span class="css-val">#0f172a</span>;
+    <span class="css-prop">--text-color</span>: <span class="css-val">#f8fafc</span>;
+  }
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Kombinace s CSS proměnnými</span>
+              <h3 style="margin-top: 0.5rem;">Proč je to tak geniální?</h3>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li>Nemusíte psát duplicitní kód pro desítky různých tlačítek, karet a odkazů.</li>
+                <li>V media query <strong>změníte pouze hodnoty CSS proměnných</strong> na <code>:root</code> a celý web se okamžitě přebarví!</li>
+                <li>Šetří zrak uživatelů v noci a snižuje spotřebu baterie na OLED displejích mobilních telefonů.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: prefers-reduced-motion a data
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Přístupnost a šetření dat">
+        <div class="slide-header">
+          <h2 class="slide-title">Přístupnost v Media Queries: <code>prefers-reduced-motion</code></h2>
+          <p class="slide-subtitle">Ochrana zdraví uživatelů s kinetózou, vestibulárními poruchami nebo pomalým internetem.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- reduced motion -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">Ochrana zdraví uživatelů</span>
+              <h3 style="margin-top: 0.5rem;"><code>prefers-reduced-motion</code></h3>
+              <p style="font-size: 0.85rem;">
+                Rychlé posuny, rotace a paralaxní efekty mohou u některých lidí vyvolat závratě nebo nevolnost. Pokud v systému zvolili omezení pohybu:
+              </p>
+              <div class="code-block" style="font-size: 0.78rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">@media (prefers-reduced-motion: reduce)</span> {
+  <span class="css-sel">*, *::before, *::after</span> {
+    <span class="css-prop">animation-duration</span>: <span class="css-val">0.01ms !important</span>;
+    <span class="css-prop">transition-duration</span>: <span class="css-val">0.01ms !important</span>;
+    <span class="css-prop">scroll-behavior</span>: <span class="css-val">auto !important</span>;
+  }
+}</code></pre></div>
+            </div>
+
+            <!-- reduced data & print -->
+            <div class="content-card">
+              <span class="badge badge-accent">Šetření dat a tisk</span>
+              <h3 style="margin-top: 0.5rem;"><code>prefers-reduced-data</code> a <code>@media print</code></h3>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li><strong><code>@media (prefers-reduced-data: reduce)</code>:</strong> Uživatel má aktivovaný režim šetření dat. Můžete vypnout velké obrázky na pozadí a omezit stahování webfontů.</li>
+                <li><strong><code>@media print</code>:</strong> Styl pro tisk dokumentu (skryje menu a reklamy, nastaví bílé pozadí a černý text).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Budoucnost: Container Queries
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Kontejnerové dotazy (@container)">
+        <div class="slide-header">
+          <h2 class="slide-title">Budoucnost responzivity: Kontejnerové dotazy (<code>@container</code>)</h2>
+          <p class="slide-subtitle">Konec závislosti na šířce celého okna: komponenta se přizpůsobuje prostoru, ve kterém se nachází.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Problém klasických Media Queries</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Pravidlo <code>@media</code> se vždy ptá na velikost <strong>celého okna prohlížeče</strong>. Co když ale tutéž kartu produktu vložíte jednou do širokého hlavního sloupce a podruhé do úzkého sidebaru?
+              </p>
+              <div style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; padding: 0.55rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-top: 0.5rem;">
+                Na velkém displeji by karta v úzkém sidebaru přetekla, protože okno je sice široké, ale její rodič má jen 200px!
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Řešení: @container queries</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* 1. Označíme rodiče jako sledovaný kontejner: */</span>
+<span class="css-sel">.card-wrapper</span> {
+  <span class="css-prop">container-type</span>: <span class="css-val">inline-size</span>;
+}
+
+<span class="html-comm">/* 2. Karta reaguje na šířku svého obalu: */</span>
+<span class="css-sel">@container (min-width: 450px)</span> {
+  <span class="css-sel">.card</span> {
+    <span class="css-prop">display</span>: <span class="css-val">flex</span>;
+    <span class="css-prop">flex-direction</span>: <span class="css-val">row</span>; <span class="html-comm">/* Foto vedle textu */</span>
+  }
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní Device Resizer
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Device Resizer simulátor">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor: Testování responzivity</h2>
+          <p class="slide-subtitle">Vyzkoušejte si chování responzivní komponenty při plynulé změně šířky okna nebo přepínání zařízení.</p>
+        </div>
+        <div class="slide-content">
+          <div class="rwd-simulator-container">
+            <!-- Ovládací lišta -->
+            <div class="rwd-toolbar">
+              <div class="rwd-presets">
+                <button class="rwd-btn" id="rwdBtnMobile">
+                  <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                  Mobil (375px)
+                </button>
+                <button class="rwd-btn active" id="rwdBtnTablet">
+                  <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                  Tablet (720px)
+                </button>
+                <button class="rwd-btn" id="rwdBtnDesktop">
+                  <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Desktop (1024px)
+                </button>
+              </div>
+
+              <div class="rwd-slider-wrapper">
+                <span>Šířka:</span>
+                <input type="range" id="rwdWidthSlider" min="320" max="1100" value="720" style="width: 140px;">
+                <span class="rwd-width-indicator" id="rwdWidthLabel">720 px</span>
+              </div>
+
+              <span class="badge" id="rwdBreakpointBadge" style="border-color: #f59e0b; color: #f59e0b;">Tablet (600px - 899px)</span>
+            </div>
+
+            <!-- Plocha zařízení -->
+            <div class="rwd-viewport-frame">
+              <div class="rwd-mock-device" id="rwdMockDevice" style="width: 720px;">
+                <div class="rwd-mock-header">
+                  <span>Ukázková responzivní komponenta</span>
+                  <span style="font-family: var(--font-mono, monospace); font-size: 0.75rem; color: var(--text-muted);">SPŠ DevTools</span>
+                </div>
+                <div class="rwd-mock-body">
+                  <div class="rwd-demo-grid tablet" id="rwdDemoGrid">
+                    <div class="rwd-demo-card">
+                      <strong style="color: #38bdf8;">Karta 1</strong>
+                      <p style="font-size: 0.8rem; margin: 0; color: var(--text-secondary);">Na mobilu 1 sloupec, na tabletu 2, na desktopu 3 sloupce vedle sebe.</p>
+                    </div>
+                    <div class="rwd-demo-card">
+                      <strong style="color: #10b981;">Karta 2</strong>
+                      <p style="font-size: 0.8rem; margin: 0; color: var(--text-secondary);">Obsah se plynule přizpůsobuje bez horizontálního přetékání.</p>
+                    </div>
+                    <div class="rwd-demo-card">
+                      <strong style="color: #fb923c;">Karta 3</strong>
+                      <p style="font-size: 0.8rem; margin: 0; color: var(--text-secondary);">Media query reaguje na aktuální zlomový bod.</p>
+                    </div>
+                  </div>
+
+                  <div style="background: var(--bg-elevated); border-radius: 6px; padding: 0.6rem; font-family: var(--font-mono, monospace); font-size: 0.75rem;">
+                    <div style="color: var(--text-muted); margin-bottom: 0.2rem;">// Právě aplikovaný CSS blok:</div>
+                    <pre style="margin: 0;"><code id="rwdActiveCssCode">@media (min-width: 600px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}</code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: 3 nejčastější chyby v responsivitě
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Nejčastější chyby v responsivitě">
+        <div class="slide-header">
+          <h2 class="slide-title">3 nejčastější hříchy začátečníků v responzivním designu</h2>
+          <p class="slide-subtitle">Na co si dát pozor při testování a odevzdávání studentských projektů.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3-col">
+            <!-- 1. Fixní šířky -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <h3>1. Pevné šířky v pixelech</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Zápis <code>width: 500px;</code> způsobí na mobilu o šířce 390px okamžitou katastrofu.</p>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.5rem; font-size: 0.8rem; margin-top: 0.4rem;">
+                <strong>Správné řešení:</strong> Vždy použijte <code>max-width: 500px; width: 100%;</code>. Na velkém monitoru má box 500px, na mobilu se bezpečně smrští.
+              </div>
+            </div>
+
+            <!-- 2. Nechtěný horizontální scrollbar -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+                </div>
+                <h3>2. Horizontální scrollbar</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Pokud se na mobilu stránka „kýve“ do stran, nějaký prvek (obrázek, tabulka nebo nepřirozený margin) přetekl ven.</p>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.5rem; font-size: 0.8rem; margin-top: 0.4rem;">
+                <strong>Správné řešení:</strong> Zkontrolujte, zda mají všechny obrázky <code>max-width: 100%</code> a zda nemáte pevnou šířku na vnějším kontejneru.
+              </div>
+            </div>
+
+            <!-- 3. Miniaturní klikací plochy -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </div>
+                <h3>3. Malé dotykové plochy</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Na desktopu má myš přesnost 1 pixelu. Na mobilu má lidský palec průměr cca 10 mm (44×44 pixelů).</p>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.5rem; font-size: 0.8rem; margin-top: 0.4rem;">
+                <strong>Správné řešení:</strong> Tlačítka a odkazy na mobilu musejí mít dostatečný <code>padding</code> (min. velikost dotykového terče 44×44 px).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky</h2>
+          <p class="slide-subtitle">Ověřte si své znalosti Media Queries, Mobile-First principu a responzivních multimédií.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč je v HTML nezbytný meta tag <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Bez tohoto tagu mobilní prohlížeč předpokládá starý desktopový web, vykreslí stránku na virtuální šířce 980 pixelů a celou ji zmenší na nečitelné měřítko. Teprve s tímto tagem prohlížeč přizpůsobí šířku skutečnému displeji a začne správně vyhodnocovat Media queries.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>V čem spočívá hlavní výhoda přístupu Mobile-First oproti Desktop-First?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Při Mobile-First píšeme základní CSS pro nejslabší zařízení bez jakéhokoliv @media pravidla. Větší obrazovky pak pouze doplňují nové sloupce pomocí <code>min-width</code>. Mobilní telefon tak nemusí stahovat a přepisovat složité desktopové layouty, což dramaticky urychluje načítání webu.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jak funguje pravidlo <code>@media (prefers-color-scheme: dark)</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Dotazuje se na systémové nastavení uživatele (zda má v operačním systému aktivní tmavý motiv). Pokud ano, prohlížeč automaticky aplikuje pravidla uvnitř tohoto bloku – typicky stačí předefinovat hodnoty CSS proměnných pro pozadí a text na <code>:root</code>. Funguje zcela bez JavaScriptu.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Jaký je zásadní rozdíl mezi Media Queries a novými Container Queries?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong>Media Queries</strong> testují šířku celého okna prohlížeče (viewportu). <strong>Container Queries</strong> (<code>@container</code>) umožňují komponentě reagovat na šířku <em>jejího konkrétního rodičovského obalu</em>. Komponenta tak může změnit svůj vzhled i tehdy, když je vložena do úzkého postranního panelu na širokém monitoru.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ (Controls Bar) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../034-CSS-Grid/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 034 CSS Grid (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../036-Moderni-CSS/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 036 Moderní CSS (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Responzivní web
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 035 -->
+  <script src="rwd-playground.js"></script>
+</body>
+
+</html>

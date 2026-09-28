@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 030: Úvod do CSS a Box model | WEB • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Webové technologie (WEB) SPŠ: historie kaskádových stylů, způsoby připojení CSS, základní syntaxe, formáty barev, absolutní a relativní jednotky a interaktivní Box model.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 030 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">030 Úvod do CSS</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Kaskádové styly &bull; Box model</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do CSS a Box model">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 030</span>
+            <span class="badge">Vizuální prezentace &amp; Styly</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Základy CSS &bull; Box model</span>
+          </div>
+          <h1 class="hero-title">Úvod do CSS a Box model</h1>
+          <p class="hero-subtitle">
+            Oddělení obsahu od vizuální formy &bull; K čemu kaskádové styly slouží, historický vývoj od 90. let, způsoby připojení k HTML, základní syntaxe pravidla, datové typy (barvy a jednotky) a hloubkové pochopení CSS Box modelu.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Smysl a historie
+              </h4>
+              <p>Proč vzniklo CSS, konec tabulkového layoutu v 90. letech a oddělení struktury od vzhledu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Způsoby připojení
+              </h4>
+              <p>Externí soubor .css, interní blok &lt;style&gt; a inline atributy style. Výhody a best practices.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+                Barvy a jednotky
+              </h4>
+              <p>HEX, RGB, HSL a moderní OKLCH. Absolutní pixely vs. škálovatelné relativní rem, em, % a viewporty.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="7" y="7" width="10" height="10" rx="1"></rect></svg>
+                CSS Box Model
+              </h4>
+              <p>Anatomie obdélníku: Content, Padding, Border a Margin. Zásadní rozdíl mezi content-box a border-box.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Proč vzniklo CSS a jeho historie
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Historie a poslání CSS">
+        <div class="slide-header">
+          <h2 class="slide-title">Proč vzniklo CSS a jeho historické poslání</h2>
+          <p class="slide-subtitle">Zásada Separation of Concerns (oddělení zájmů): HTML nese sémantický význam a data, CSS definuje veškerou vizuální podobu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3>Temné období webu v 90. letech</h3>
+              </div>
+              <p>V raných verzích HTML neexistoval způsob, jak vizuálně stylovat stránky odděleně. Vývojáři byli nuceni míchat obsah se vzhledem přímo v HTML kódu:</p>
+              <ul class="styled-list">
+                <li><strong>Prezentační značky a atributy:</strong> Značky jako <code>&lt;font color="red" face="Arial" size="4"&gt;</code>, <code>&lt;center&gt;</code>, <code>&lt;big&gt;</code> a <code>&lt;marquee&gt;</code>.</li>
+                <li><strong>Tabulkové layouty:</strong> Celé weby byly tvořeny obřími zanořenými tabulkami <code>&lt;table&gt;</code> s neviditelnými transparentními 1px obrázky (spacer GIFy) pro odstup.</li>
+                <li><strong>Neudržitelnost:</strong> Změna barvy odkazů nebo fontu v projektu znamenala ruční úpravu stovek HTML souborů napříč celým webem.</li>
+                <li><strong>Datová neefektivita:</strong> Každá stránka stahovala tytéž vizuální instrukce znovu a znovu.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                </div>
+                <h3>Zrod standardu CSS a milníky</h3>
+              </div>
+              <p>V říjnu 1994 navrhl <strong>Håkon Wium Lie</strong> (ve spolupráci s Timem Berners-Leem v CERNu) koncept <em>Cascading Style Sheets</em> (kaskádových stylů):</p>
+              <div class="timeline-compact" style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.5rem;">
+                <div style="background: var(--bg-elevated); padding: 0.6rem 0.85rem; border-radius: 8px; border-left: 3px solid #f97316;">
+                  <strong>1996 – CSS1:</strong> První doporučení W3C. Zavedení vlastností pro fonty, barvy, základní zarovnání a okraje.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.6rem 0.85rem; border-radius: 8px; border-left: 3px solid #38bdf8;">
+                  <strong>1998–2011 – CSS2 a CSS2.1:</strong> Přidáno absolutní a relativní pozicování, podpora médií pro tisk a sjednocení chování prohlížečů.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.6rem 0.85rem; border-radius: 8px; border-left: 3px solid #10b981;">
+                  <strong>2012+ – CSS3 (Modulární architektura):</strong> Rozdělení do samostatných modulů (Flexbox, Grid, Animace, Barvy, Média). Specifikace se již neposouvá jako celek, ale vyvíjí se jako živý standard (Living Standard).
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Tři způsoby vložení CSS do stránky
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Způsoby připojení CSS">
+        <div class="slide-header">
+          <h2 class="slide-title">Tři způsoby připojení CSS stylů k HTML</h2>
+          <p class="slide-subtitle">Kam se CSS kód zapisuje a proč je externí soubor jednoznačným standardem moderního vývoje.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3-col">
+            <!-- 1. Externí CSS -->
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                </div>
+                <div>
+                  <h3 style="margin: 0; font-size: 1.05rem;">1. Externí soubor</h3>
+                  <span class="badge" style="color: #34d399; font-size: 0.72rem; padding: 2px 6px;">Doporučený standard</span>
+                </div>
+              </div>
+              <p>Styly jsou uloženy v samostatném souboru <code>.css</code> a připojeny v hlavičce <code>&lt;head&gt;</code> značkou <code>&lt;link&gt;</code>.</p>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">&lt;!-- v &lt;head&gt; v HTML --&gt;</span>
+<span class="html-tag">&lt;link</span> <span class="html-attr">rel</span>=<span class="html-val">"stylesheet"</span>
+      <span class="html-attr">href</span>=<span class="html-val">"css/style.css"</span><span class="html-tag">&gt;</span></code></pre>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>Cachování v prohlížeči:</strong> Stáhne se pouze jednou a platí pro celý web.</li>
+                <li><strong>Snadná údržba:</strong> Změna jednoho řádku změní vzhled na všech stránkách.</li>
+                <li><strong>Čistota:</strong> HTML obsahuje pouze obsah a sémantiku.</li>
+              </ul>
+            </div>
+
+            <!-- 2. Interní CSS -->
+            <div class="content-card" style="border-top: 3px solid #38bdf8;">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <div>
+                  <h3 style="margin: 0; font-size: 1.05rem;">2. Interní blok stylů</h3>
+                  <span class="badge" style="color: #38bdf8; font-size: 0.72rem; padding: 2px 6px;">Jednostránkové weby</span>
+                </div>
+              </div>
+              <p>Styly jsou zapsány přímo uvnitř značky <code>&lt;style&gt;</code> umístěné v hlavičce <code>&lt;head&gt;</code> daného HTML dokumentu.</p>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code><span class="html-tag">&lt;head&gt;</span>
+  <span class="html-tag">&lt;style&gt;</span>
+    <span class="css-sel">h1</span> { <span class="css-prop">color</span>: <span class="css-val">#f97316</span>; }
+  <span class="html-tag">&lt;/style&gt;</span>
+<span class="html-tag">&lt;/head&gt;</span></code></pre>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li>Vhodné pouze pro jednoúčelové samostatné stránky nebo e-mailové šablony (newslettery).</li>
+                <li><strong>Nevýhoda:</strong> Nelze sdílet napříč více HTML stránkami, zvětšuje velikost každého HTML dokumentu.</li>
+              </ul>
+            </div>
+
+            <!-- 3. Inline styly -->
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <div>
+                  <h3 style="margin: 0; font-size: 1.05rem;">3. Inline styl (v tagu)</h3>
+                  <span class="badge" style="color: #f43f5e; font-size: 0.72rem; padding: 2px 6px;">Antivzor / Výjimky</span>
+                </div>
+              </div>
+              <p>Styly zapsané přímo do atributu <code>style="..."</code> konkrétního HTML elementu.</p>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code><span class="html-tag">&lt;p</span> <span class="html-attr">style</span>=<span class="html-val">"color: red; font-size: 18px;"</span><span class="html-tag">&gt;</span>
+  Text odstavce
+<span class="html-tag">&lt;/p&gt;</span></code></pre>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>Proč se vyvarovat:</strong> Porušuje oddělení obsahu a formy, nepřehledný kód, má extrémně vysokou specificitu (těžko se přepisuje).</li>
+                <li><strong>Výjimky:</strong> Dynamické pozice generované JavaScriptem (např. pozice myši nebo slideru).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Základní syntaxe a pravidla CSS
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Základní syntaxe CSS">
+        <div class="slide-header">
+          <h2 class="slide-title">Anatomie pravidla CSS a základní syntaxe</h2>
+          <p class="slide-subtitle">Jak je tvořeno každé pravidlo: Selektor vybere cíl v DOMu, složené závorky ohraničí blok a dvojice vlastnost: hodnota určí vzhled.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                </div>
+                <h3>Struktura pravidla (Rule set)</h3>
+              </div>
+              <div class="code-block" style="font-size: 1rem; padding: 1.25rem;">
+                <pre><code><span class="css-sel">h1</span> <span style="color: #cbd5e1;">{</span>
+  <span class="css-prop">color</span>: <span class="css-val">#f97316</span>;
+  <span class="css-prop">font-size</span>: <span class="css-val">2</span><span class="css-unit">rem</span>;
+  <span class="css-prop">line-height</span>: <span class="css-val">1.3</span>;
+<span style="color: #cbd5e1;">}</span></code></pre>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem;">
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px;">
+                  <strong class="css-sel">Selektor (h1):</strong> Určuje, které prvky na stránce budou pravidlem formátovány.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px;">
+                  <strong style="color: #cbd5e1;">Složené závorky { }:</strong> Obalují blok všech deklarací pro daný selektor.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px;">
+                  <strong class="css-prop">Vlastnost (Property):</strong> Identifikátor stylu, který chceme měnit (např. <code>color</code>, <code>font-size</code>).
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px;">
+                  <strong class="css-val">Hodnota (Value):</strong> Nastavená hodnota (číslo, barva, klíčové slovo, řetězec).
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </div>
+                <h3>Pravidla psaní a komentáře v CSS</h3>
+              </div>
+              <ul class="styled-list">
+                <li><strong>Oddělovač dvojtečka (:)</strong> – odděluje název vlastnosti od její přiřazené hodnoty.</li>
+                <li><strong>Ukončovací středník (;)</strong> – ukončuje každou jednotlivou deklaraci. Pokud středník vynecháte, prohlížeč celé následující pravidlo zahodí jako neplatné!</li>
+                <li><strong>Nezáleží na bílých znacích:</strong> Mezery, tabulátory a konce řádků slouží pouze pro čitelnost vývojářem.</li>
+                <li><strong>Syntaxe komentářů:</strong> V CSS se používá <em>pouze</em> blokový víceřádkový komentář <code>/* ... */</code>. Znaky <code>//</code> známé z JS nebo C++ nejsou v čistém CSS platné!</li>
+              </ul>
+              <div class="code-block" style="margin-top: 0.75rem;">
+                <pre><code><span class="html-comm">/* Toto je platný komentář v CSS */</span>
+<span class="css-sel">.karta</span> {
+  <span class="css-prop">padding</span>: <span class="css-val">16</span><span class="css-unit">px</span>; <span class="html-comm">/* vnitřní odstup */</span>
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Datové typy a hodnoty: Barvy
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Hodnoty: Formáty barev">
+        <div class="slide-header">
+          <h2 class="slide-title">Datové typy a hodnoty: Formáty barev v CSS</h2>
+          <p class="slide-subtitle">Od klasických HEX kódů přes RGB a HSL až po moderní barevné prostory s vysokým gamutem OKLCH.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- 1. HEX -->
+            <div class="content-card">
+              <span class="badge badge-accent">HEX kód</span>
+              <h4 style="margin: 0.5rem 0;">#RRGGBB a #RRGGBBAA</h4>
+              <p style="font-size: 0.85rem;">Šestnáctková (hexadecimální) soustava od <code>00</code> do <code>FF</code> (0–255) pro složky Red, Green, Blue a volitelnou Alpha průhlednost.</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="css-prop">color</span>: <span class="css-val">#f97316</span>; <span class="html-comm">/* plná barva (6 znaků) */</span>
+<span class="css-prop">background</span>: <span class="css-val">#0f172a80</span>; <span class="html-comm">/* 8 znaků: 80 hex = 50% alfa */</span>
+<span class="css-prop">border</span>: <span class="css-val">#fff</span>; <span class="html-comm">/* zkrácený 3znakový zápis pro #ffffff */</span></code></pre>
+              </div>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Tradiční, nejrozšířenější zápis pro statické barvy.</span>
+            </div>
+
+            <!-- 2. RGB / RGBA -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">RGB &amp; RGBA model</span>
+              <h4 style="margin: 0.5rem 0;">rgb() a rgba(r, g, b, a)</h4>
+              <p style="font-size: 0.85rem;">Kanály Red, Green, Blue (0–255 nebo 0–100%) a <strong>Alpha kanál</strong> pro průhlednost (0.0 = zcela průhledný, 1.0 = plně neprůhledný).</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Klasický zápis s průhledností RGBA: */</span>
+<span class="css-prop">color</span>: <span class="css-val">rgba(249, 115, 22, 0.75)</span>; <span class="html-comm">/* 75% krytí */</span>
+
+<span class="html-comm">/* Moderní sjednocený zápis (lomítko pro alfu): */</span>
+<span class="css-prop">color</span>: <span class="css-val">rgb(249 115 22 / 75%)</span>;</code></pre>
+              </div>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Funkce <code>rgba()</code> a <code>rgb()</code> jsou v moderním CSS plně synonymní.</span>
+            </div>
+
+            <!-- 3. HSL / HSLA -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">HSL &amp; HSLA model</span>
+              <h4 style="margin: 0.5rem 0;">hsl() a hsla(h, s%, l%, a)</h4>
+              <p style="font-size: 0.85rem;"><strong>H</strong>ue (odstín 0–360° na barevném kruhu), <strong>S</strong>aturation (sytost 0–100%), <strong>L</strong>ightness (světlost 0–100%) a volitelná Alpha.</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Klasický zápis s alfou HSLA: */</span>
+<span class="css-prop">background</span>: <span class="css-val">hsla(24, 95%, 53%, 0.3)</span>;
+
+<span class="html-comm">/* Moderní zápis: */</span>
+<span class="css-prop">color</span>: <span class="css-val">hsl(24deg 95% 53% / 30%)</span>;</code></pre>
+              </div>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Velmi intuitivní pro vytváření světlejších/tmavších variant odstínu.</span>
+            </div>
+
+            <!-- 4. OKLCH & Named -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #a855f7; color: #c084fc;">Moderní OKLCH &amp; Klíčová slova</span>
+              <h4 style="margin: 0.5rem 0;">oklch(l c h [/ a])</h4>
+              <p style="font-size: 0.85rem;">Percepčně rovnoměrný prostor. Umožňuje využít plný gamut displejů Display-P3 (živější a zářivější barvy než staré sRGB).</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="css-prop">color</span>: <span class="css-val">oklch(0.68 0.2 41)</span>;
+<span class="html-comm">/* Klíčová slova: */</span>
+<span class="css-prop">color</span>: <span class="css-val">currentColor</span>; <span class="html-comm">/* barva děděná z textu */</span>
+<span class="css-prop">background</span>: <span class="css-val">transparent</span>; <span class="html-comm">/* zcela průhledné */</span></code></pre>
+              </div>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Standard pro moderní barevné palety a design systémy.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Datové typy a hodnoty: Velikosti a jednotky
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Hodnoty: Jednotky velikostí">
+        <div class="slide-header">
+          <h2 class="slide-title">Datové typy a hodnoty: Jednotky velikostí v CSS</h2>
+          <p class="slide-subtitle">Absolutní jednotky pro přesné fixní rozměry vs. relativní jednotky pro responzivní a přístupný design.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- 1. Absolutní jednotky -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="2" y2="17"></line><line x1="22" y1="7" x2="22" y2="17"></line></svg>
+                </div>
+                <div>
+                  <h3 style="margin: 0; font-size: 1.15rem;">1. Absolutní jednotky (Fixní měřítka)</h3>
+                  <span class="badge" style="color: #38bdf8; font-size: 0.72rem; padding: 2px 6px;">px &bull; pt &bull; cm &bull; mm &bull; in</span>
+                </div>
+              </div>
+              <p style="font-size: 0.88rem; margin-bottom: 0.65rem;">
+                Mají <strong>pevně definovanou fyzickou velikost</strong>. Neodvíjejí se od okolních prvků ani nastavení uživatele:
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #38bdf8; font-size: 0.84rem;">
+                  <strong style="color: #38bdf8;"><code>px</code> (CSS pixel):</strong> Základní vizuální pixel obrazovky (1px = 1/96 palce).<br>
+                  <em>Pozor:</em> Na HiDPI/Retina displejích odpovídá 1 CSS pixel matici 2×2 (4) nebo 3×3 (9) fyzických hardware subpixelů. Vhodný pro tenké rámečky (<code>border: 1px solid #ccc</code>), stíny a fixní ikony.
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #fbbf24; font-size: 0.84rem;">
+                  <strong style="color: #fbbf24;"><code>pt</code> (Typografický bod – Point):</strong> Tiskařská jednotka (1pt = 1/72 palce &approx; 1.333px).<br>
+                  Používá se v knižní sazbě a pro tiskové styly (<code>@media print</code>). Na obrazovkách se běžně nepoužívá.
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #34d399; font-size: 0.84rem;">
+                  <strong style="color: #34d399;"><code>cm</code> &amp; <code>mm</code> &amp; <code>in</code> (Metrické a imperiální míry):</strong><br>
+                  1 in (palec) = 2.54 cm = 96 px &bull; 1 cm = ~37.8 px &bull; 1 mm = ~3.78 px.<br>
+                  <em>K čemu slouží na webu?</em> Pro tiskové šablony (tisk faktur na formát A4: <code>width: 210mm; min-height: 297mm;</code>), štítky na balíky a laboratorní měření. Na monitorech se nepoužívají (každý monitor má jiné rozměry a hustotu DPI).
+                </div>
+              </div>
+
+              <div style="margin-top: 0.65rem; background: rgba(244, 63, 94, 0.08); border-left: 3px solid #f43f5e; padding: 0.5rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.8rem;">
+                <strong>Proč nepoužívat <code>px</code> pro písmo?</strong> Pokud si slabozraký uživatel zvětší výchozí písmo v systému či prohlížeči, text zadaný v <code>px</code> se nezvětší (bariéra v přístupnosti a11y).
+              </div>
+            </div>
+
+            <!-- 2. Relativní jednotky -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
+                <div>
+                  <h3 style="margin: 0; font-size: 1.15rem;">2. Relativní jednotky (Responzivní měřítka)</h3>
+                  <span class="badge" style="color: #34d399; font-size: 0.72rem; padding: 2px 6px;">% &bull; rem &bull; em &bull; vw &bull; vh &bull; dvh &bull; ch</span>
+                </div>
+              </div>
+              <p style="font-size: 0.88rem; margin-bottom: 0.65rem;">
+                Dynamicky se <strong>přizpůsobují nadřazenému kontextu</strong>, kořenovému písmu nebo oknu prohlížeče:
+              </p>
+
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #f97316; font-size: 0.84rem;">
+                  <strong style="color: #fb923c;"><code>%</code> (Procenta – Vztah k rodiči):</strong><br>
+                  Počítá se vždy z velikosti <em>rodičovského elementu</em>. U <code>width: 50%</code> zabere polovinu šířky rodiče. Klíčové pro responzivní sloupce a fluidní obrázky (<code>max-width: 100%</code>).
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #34d399; font-size: 0.84rem;">
+                  <strong style="color: #34d399;"><code>rem</code> (Root EM – Zlatý standard textu):</strong><br>
+                  Relativní k písmu kořene <code>&lt;html&gt;</code> (výchozí 16px). <br>
+                  <em>1rem = 16px &bull; 1.5rem = 24px &bull; 2rem = 32px &bull; 0.875rem = 14px.</em><br>
+                  Při zvětšení písma uživatelem se celý web proporcionálně přizpůsobí.
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #38bdf8; font-size: 0.84rem;">
+                  <strong style="color: #38bdf8;"><code>em</code> (Element EM):</strong> Relativní k písmu <em>aktuálního elementu</em> či rodiče.<br>
+                  Skvělé pro vnitřní okraje tlačítek (<code>padding: 0.6em 1.2em</code> se zvětší spolu s písmem tlačítka). <em>Pozor na násobení u zanořených seznamů!</em>
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #c084fc; font-size: 0.84rem;">
+                  <strong style="color: #c084fc;"><code>vw / vh</code> &amp; moderní <code>dvh</code> (Viewport):</strong><br>
+                  1vw = 1 % šířky okna &bull; 1vh = 1 % výšky okna.<br>
+                  <strong><code>dvh</code> (Dynamic Viewport Height):</strong> Řeší problém na mobilních telefonech – výška se dynamicky přizpůsobuje vysouvání a skrývání adresního řádku prohlížeče.
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.8rem; border-radius: 6px; border-left: 3px solid #94a3b8; font-size: 0.84rem;">
+                  <strong style="color: #cbd5e1;"><code>ch</code> (Character width):</strong> Šířka číslice 0 v daném fontu.<br>
+                  Ideální pro optimální délku řádku textu pro lidské oko: <code>max-width: 65ch;</code>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: CSS Box Model – Principy a anatomie
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="CSS Box Model: Anatomie">
+        <div class="slide-header">
+          <h2 class="slide-title">CSS Box Model – Principy a anatomie 4 vrstev</h2>
+          <p class="slide-subtitle">Každý element vykreslený prohlížečem je obdélníková krabička tvořená čtyřmi soustřednými vrstvami.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col" style="align-items: center;">
+            <!-- Box model diagram -->
+            <div class="boxmodel-diagram">
+              <div class="bm-lbl-margin">MARGIN (Vnější okraj)</div>
+              <div class="bm-border-layer">
+                <div class="bm-lbl-border">BORDER (Rámeček)</div>
+                <div class="bm-padding-layer">
+                  <div class="bm-lbl-padding">PADDING (Vnitřní odstup)</div>
+                  <div class="bm-content-layer">
+                    CONTENT (Obsah: Text, Obrázek, Dětské prvky)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Popis vrstev -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="7" y="7" width="10" height="10" rx="1"></rect></svg>
+                </div>
+                <h3>4 vrstvy od středu ven</h3>
+              </div>
+              <ul class="styled-list">
+                <li><strong style="color: #38bdf8;">1. Content (Obsah):</strong> Skutečný obsah elementu (text, video, obrázek). Definují ho vlastnosti <code>width</code> a <code>height</code>.</li>
+                <li><strong style="color: #22c55e;">2. Padding (Vnitřní okraj):</strong> Prostor mezi obsahem a rámečkem. Prosvítá jím pozadí elementu (background).</li>
+                <li><strong style="color: #eab308;">3. Border (Rámeček):</strong> Hrana obepínající obsah a padding. Lze nastavit tloušťku, styl (solid, dashed...) a barvu.</li>
+                <li><strong style="color: #f97316;">4. Margin (Vnější okraj):</strong> Prázdný odstup oddělující tento prvek od okolních prvků v layoutu. Je zcela průhledný.</li>
+                <li><strong>Margin collapsing:</strong> Pokud se nad sebou potkají dva vertikální okraje (např. spodní margin 20px a horní margin 30px), nesčítají se na 50px, ale splynou do většího z nich (výsledek bude 30px).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Box-sizing: content-box vs border-box
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="box-sizing: content-box vs border-box">
+        <div class="slide-header">
+          <h2 class="slide-title">Klíčová vlastnost: <code>box-sizing</code></h2>
+          <p class="slide-subtitle">Zásadní rozdíl mezi historickým výchozím výpočtem a moderním standardem, který používá každý webový vývojář.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- content-box -->
+            <div class="content-card" style="border-top: 3px solid #f97316;">
+              <span class="badge" style="color: #f97316; border-color: rgba(249, 115, 22, 0.4);">Výchozí chování (historické)</span>
+              <h3 style="margin-top: 0.5rem;"><code>box-sizing: content-box;</code></h3>
+              <p>Zadaná hodnota <code>width</code> a <code>height</code> určuje <strong>pouze samotný obsah (content)</strong>. Padding a border se k zadané šířce <em>přičítají</em>!</p>
+              
+              <div class="code-block" style="font-size: 0.85rem; margin: 0.75rem 0;">
+                <pre><code><span class="css-sel">.box</span> {
+  <span class="css-prop">box-sizing</span>: <span class="css-val">content-box</span>;
+  <span class="css-prop">width</span>: <span class="css-val">200</span><span class="css-unit">px</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">20</span><span class="css-unit">px</span>;
+  <span class="css-prop">border</span>: <span class="css-val">5</span><span class="css-unit">px</span> <span class="css-val">solid red</span>;
+}
+<span class="html-comm">/* Skutečná šířka v prohlížeči:
+   200 + (2 × 20) + (2 × 5) = 250px ! */</span></code></pre>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">
+                <strong>Důsledek:</strong> Pokud nastavíte dvěma sloupcům <code>width: 50%</code> a přidáte jim padding, nevejdou se vedle sebe a zalomí se pod sebe.
+              </p>
+            </div>
+
+            <!-- border-box -->
+            <div class="content-card" style="border-top: 3px solid #38bdf8;">
+              <span class="badge badge-accent">Moderní doporučený standard</span>
+              <h3 style="margin-top: 0.5rem;"><code>box-sizing: border-box;</code></h3>
+              <p>Zadaná hodnota <code>width</code> a <code>height</code> je <strong>konečná celková velikost</strong>. Padding a border se odečítají zevnitř, obsah se přizpůsobí!</p>
+
+              <div class="code-block" style="font-size: 0.85rem; margin: 0.75rem 0;">
+                <pre><code><span class="css-sel">.box</span> {
+  <span class="css-prop">box-sizing</span>: <span class="css-val">border-box</span>;
+  <span class="css-prop">width</span>: <span class="css-val">200</span><span class="css-unit">px</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">20</span><span class="css-unit">px</span>;
+  <span class="css-prop">border</span>: <span class="css-val">5</span><span class="css-unit">px</span> <span class="css-val">solid red</span>;
+}
+<span class="html-comm">/* Skutečná šířka v prohlížeči:
+   Přesně 200px (šířka obsahu se zúží na 150px) */</span></code></pre>
+              </div>
+              <div style="background: rgba(56, 189, 248, 0.1); border-left: 3px solid #38bdf8; padding: 0.6rem 0.85rem; border-radius: 0 8px 8px 0; font-size: 0.82rem;">
+                <strong>Zlaté pravidlo moderního CSS (globální reset):</strong><br>
+                <code>*, *::before, *::after { box-sizing: border-box; }</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Interaktivní laboratoř Box modelu
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Interaktivní Box Model Lab">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní laboratoř: Prozkoumej Box model živě</h2>
+          <p class="slide-subtitle">Posouvej táhla, přepínej box-sizing a sleduj, jak se v reálném čase mění celková geometrie prvku a generovaný kód.</p>
+        </div>
+        <div class="slide-content">
+          <div class="bm-playground-grid">
+            <!-- Ovládací panel -->
+            <div class="bm-controls-panel">
+              <div class="bm-control-group">
+                <span class="bm-control-label">Box-Sizing režim</span>
+                <div class="bm-toggle-group">
+                  <button type="button" class="bm-toggle-btn active" id="btnContentBox">content-box</button>
+                  <button type="button" class="bm-toggle-btn" id="btnBorderBox">border-box</button>
+                </div>
+              </div>
+
+              <div class="bm-control-group">
+                <div class="bm-control-label">
+                  <span>Šířka (width):</span>
+                  <span class="bm-control-val" id="bmWidthVal">180px</span>
+                </div>
+                <input type="range" class="bm-slider" id="bmWidthSlider" min="100" max="300" value="180">
+              </div>
+
+              <div class="bm-control-group">
+                <div class="bm-control-label">
+                  <span>Výška (height):</span>
+                  <span class="bm-control-val" id="bmHeightVal">120px</span>
+                </div>
+                <input type="range" class="bm-slider" id="bmHeightSlider" min="60" max="200" value="120">
+              </div>
+
+              <div class="bm-control-group">
+                <div class="bm-control-label">
+                  <span style="color: #22c55e;">Vnitřní okraj (padding):</span>
+                  <span class="bm-control-val" id="bmPaddingVal">20px</span>
+                </div>
+                <input type="range" class="bm-slider" id="bmPaddingSlider" min="0" max="40" value="20">
+              </div>
+
+              <div class="bm-control-group">
+                <div class="bm-control-label">
+                  <span style="color: #eab308;">Rámeček (border):</span>
+                  <span class="bm-control-val" id="bmBorderVal">4px</span>
+                </div>
+                <input type="range" class="bm-slider" id="bmBorderSlider" min="0" max="20" value="4">
+              </div>
+
+              <div class="bm-control-group">
+                <div class="bm-control-label">
+                  <span style="color: #f97316;">Vnější okraj (margin):</span>
+                  <span class="bm-control-val" id="bmMarginVal">15px</span>
+                </div>
+                <input type="range" class="bm-slider" id="bmMarginSlider" min="0" max="40" value="15">
+              </div>
+            </div>
+
+            <!-- Živá plocha a statistiky -->
+            <div class="bm-live-viewport">
+              <div class="bm-stats-bar">
+                <div class="bm-stat-box">
+                  <span class="bm-stat-title">Režim výpočtu</span>
+                  <span class="bm-stat-val" id="bmBoxSizingStat">content-box</span>
+                </div>
+                <div class="bm-stat-box">
+                  <span class="bm-stat-title">Celková šířka v DOM</span>
+                  <span class="bm-stat-val" id="bmTotalWidthStat">228px</span>
+                </div>
+                <div class="bm-stat-box">
+                  <span class="bm-stat-title">Celková výška v DOM</span>
+                  <span class="bm-stat-val" id="bmTotalHeightStat">168px</span>
+                </div>
+              </div>
+
+              <div class="bm-stage">
+                <!-- Živý element -->
+                <div id="bmLiveBox" class="bm-interactive-box bm-color-content" style="background: rgba(56, 189, 248, 0.25); color: #38bdf8;">
+                  <span>CONTENT AREA</span>
+                </div>
+              </div>
+
+              <div class="code-block" style="margin: 0; font-size: 0.82rem;">
+                <pre><code id="bmCssOutput">/* Generovaný kód se zobrazí zde */</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní srovnávač barev a jednotek
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Interaktivní barvy a jednotky">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní srovnávač barev a škálování jednotek</h2>
+          <p class="slide-subtitle">Vyzkoušej živý převodník barevných kódů a sleduj, jak se jednotka <code>rem</code> automaticky přizpůsobuje kořenovému písmu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="color-playground-grid">
+            <!-- Barevný převodník -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path></svg>
+                </div>
+                <h3>1. Živý převodník barev (HEX &bull; RGB &bull; HSL)</h3>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                <label for="demoColorPicker" style="font-size: 0.85rem; font-weight: 600;">Vyber barvu:</label>
+                <input type="color" id="demoColorPicker" value="#f97316" style="width: 50px; height: 38px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border-subtle); background: transparent;">
+              </div>
+
+              <div class="color-preview-box" id="demoColorPreview" style="background-color: #f97316;">
+                #F97316
+              </div>
+
+              <div class="color-codes-list">
+                <div class="color-code-item">
+                  <span class="color-code-lbl">HEX kód:</span>
+                  <span id="demoHexOut" style="color: #fb923c;">#F97316</span>
+                </div>
+                <div class="color-code-item">
+                  <span class="color-code-lbl">RGB model:</span>
+                  <span id="demoRgbOut" style="color: #38bdf8;">rgb(249, 115, 22)</span>
+                </div>
+                <div class="color-code-item">
+                  <span class="color-code-lbl">HSL model:</span>
+                  <span id="demoHslOut" style="color: #34d399;">hsl(24deg, 95%, 53%)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Škálování REM -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                </div>
+                <h3>2. Škálování jednotky <code>rem</code> podle &lt;html&gt;</h3>
+              </div>
+
+              <div class="bm-control-group" style="margin-bottom: 1rem;">
+                <div class="bm-control-label">
+                  <span>Velikost kořenového písma (root font-size):</span>
+                  <span class="bm-control-val" id="unitRootVal">16px</span>
+                </div>
+                <input type="range" class="bm-slider" id="unitRootSlider" min="12" max="26" value="16">
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="background: var(--bg-elevated); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #38bdf8;">
+                  <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Prvek s font-size: 1.5rem</span>
+                  <div id="unitRemBox" style="font-size: 24px; font-weight: 700; color: #38bdf8; margin-top: 4px; transition: font-size 0.15s ease;">
+                    Ukázkový nadpis 1.5rem
+                  </div>
+                  <span id="unitRemCalc" style="font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-mono, monospace);">
+                    1.5rem = 1.5 × 16px = 24.0px
+                  </span>
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #94a3b8;">
+                  <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Fixní prvek s font-size: 20px (nereaguje na root)</span>
+                  <div id="unitPxBox" style="font-size: 20px; font-weight: 700; color: var(--text-muted); margin-top: 4px;">
+                    Fixní nadpis 20px
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Souhrn a klíčové poznatky
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Souhrn a doporučené postupy">
+        <div class="slide-header">
+          <h2 class="slide-title">Souhrn a osvědčené postupy pro žáky SPŠ</h2>
+          <p class="slide-subtitle">Stručný přehled fundamentálních principů pro efektivní a bezchybnou práci s kaskádovými styly.</p>
+        </div>
+        <div class="slide-content">
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3>1. Architektura souborů</h3>
+              </div>
+              <ul class="styled-list">
+                <li>Vždy používejte <strong>externí soubory .css</strong> připojené v <code>&lt;head&gt;</code>.</li>
+                <li>Vyhněte se inline stylům (<code>style="..."</code>) v HTML.</li>
+                <li>Oddělujte obsah (HTML) od prezentace (CSS).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="7" y="7" width="10" height="10" rx="1"></rect></svg>
+                </div>
+                <h3>2. Zlaté pravidlo Box modelu</h3>
+              </div>
+              <ul class="styled-list">
+                <li>Vždy na začátek každého CSS souboru vložte reset:<br>
+                  <code>*, *::before, *::after { box-sizing: border-box; }</code>
+                </li>
+                <li>Šířka a výška prvků pak zůstane předvídatelná a layout se nerozsype při přidání paddingu.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <h3>3. Volba správných jednotek</h3>
+              </div>
+              <ul class="styled-list">
+                <li><strong><code>rem</code>:</strong> Pro písmo (font-size) a typografické rozestupy.</li>
+                <li><strong><code>px</code>:</strong> Pro drobné rámečky (border) a jemné stíny.</li>
+                <li><strong><code>% / vw / vh</code>:</strong> Pro responzivní šířky sloupců a layoutové mřížky.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Ověření znalostí a kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Ověření znalostí: Kontrolní otázky</h2>
+          <p class="slide-subtitle">Otestujte si pochopení základů CSS a Box modelu. Kliknutím na tlačítko si ověříte správnou odpověď.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">1</span>
+                <p class="question-text">Element má nastaveno <code>width: 300px; padding: 20px; border: 5px solid red;</code> bez uvedení box-sizing. Jaká bude jeho skutečná šířka na obrazovce a proč?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Jeho skutečná šířka bude <strong>350px</strong>. Ve výchozím nastavení platí <code>box-sizing: content-box</code>, kde zadaná šířka 300px platí pouze pro obsah. K němu se přičte levý a pravý padding (2 × 20px = 40px) a levý a pravý border (2 × 5px = 10px). Výsledek: 300 + 40 + 10 = 350px.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">2</span>
+                <p class="question-text">Proč se v moderním webdesignu pro velikost písma upřednostňuje jednotka <code>rem</code> před absolutními pixely <code>px</code>?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Z důvodu <strong>přístupnosti (accessibility / a11y)</strong>. Jednotka <code>rem</code> vychází z kořenového písma elementu <code>&lt;html&gt;</code>. Pokud si uživatel se zrakovým postižením zvětší výchozí písmo v nastavení svého prohlížeče (např. z 16px na 24px), veškeré texty v jednotkách <code>rem</code> se plynule a proporčně zvětší. Fixní <code>px</code> toto nastavení ignorují.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">3</span>
+                <p class="question-text">Co přesně znamená jev „margin collapsing“ (slučování vnějších okrajů) a kdy k němu dochází?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                K margin collapsing dochází, když se ve svislém toku dokumentu potkají dva vertikální vnější okraje (např. <code>margin-bottom</code> horního odstavce a <code>margin-top</code> spodního odstavce). Tyto dva okraje se nesčítají, ale <strong>splynou v jeden jediný okraj</strong>, jehož velikost odpovídá té větší z obou hodnot. U vodorovných okrajů k tomuto jevu nikdy nedochází.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">4</span>
+                <p class="question-text">Jaký je rozdíl mezi interním zápisem stylů v <code>&lt;style&gt;</code> a externím souborem <code>.css</code> z hlediska výkonu prohlížeče?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Externí soubor <code>.css</code> prohlížeč stáhne ze sítě pouze jednou a následně jej uloží do <strong>diskové vyrovnávací paměti (HTTP cache)</strong>. Při přechodu na další podstránky webu se styly již nestahují. Naproti tomu interní <code>&lt;style&gt;</code> blok je pevnou součástí HTML kódu, takže se zbytečně přenáší po síti a parsuje s každou jednotlivou navštívenou stránkou.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../022-Pokrocile-HTML/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 022 Pokročilé HTML a multimédia (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../031-CSS-selektory/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 031 CSS selektory (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Úvod do CSS
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 030 -->
+  <script src="intro-css.js"></script>
+</body>
+
+</html>

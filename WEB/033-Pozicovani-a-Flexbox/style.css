@@ -1,0 +1,583 @@
+/* ==========================================================================
+   SPŠ Webové technologie - Téma 033: Pozicování a Flexbox (1D layout)
+   Lokální dedikované styly pro předmět WEB (Webové technologie SPŠ)
+   ========================================================================== */
+
+:root {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.28);
+  --web-accent-light: #fb923c;
+  --flex-blue: #38bdf8;
+  --flex-emerald: #10b981;
+  --flex-purple: #a855f7;
+  --flex-amber: #f59e0b;
+  --flex-rose: #f43f5e;
+}
+
+/* Mřížky pro rozvržení karet */
+.grid-2, .grid-2-col, .content-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.grid-3, .grid-3-col, .content-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.grid-4, .grid-4-col, .content-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .grid-2, .grid-2-col, .content-grid-2,
+  .grid-3, .grid-3-col, .content-grid-3,
+  .grid-4, .grid-4-col, .content-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   1. Záhlaví snímků: Nadpis a podnadpis pod sebou
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   2. Hlavičky karet s inline SVG ikonami
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px !important;
+  height: 20px !important;
+  stroke-width: 2 !important;
+}
+
+.card-icon.orange {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}
+
+.card-icon.blue {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+.card-icon.emerald {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.card-icon.purple {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(168, 85, 247, 0.3) !important;
+}
+
+.card-icon.rose {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.3) !important;
+}
+
+.card-icon.amber {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+/* ==========================================================================
+   3. Vizuální demonstrátory pro pozicování (Snímky 2, 3, 4, 5)
+   ========================================================================== */
+.pos-box-stage {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  background: var(--bg-elevated);
+  border: 1px dashed var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0.75rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pos-ghost-box {
+  width: 110px;
+  height: 70px;
+  border: 2px dashed rgba(148, 163, 184, 0.4);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.pos-active-box {
+  position: absolute;
+  width: 110px;
+  height: 70px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.pos-active-box.relative-box {
+  background: rgba(56, 189, 248, 0.2);
+  border: 2px solid #38bdf8;
+  color: #38bdf8;
+  transform: translate(25px, 20px);
+}
+
+.pos-active-box.absolute-box {
+  top: 15px;
+  right: 15px;
+  background: rgba(244, 63, 94, 0.2);
+  border: 2px solid #f43f5e;
+  color: #f43f5e;
+}
+
+.pos-active-box.fixed-box {
+  bottom: 12px;
+  right: 12px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 2px solid #10b981;
+  color: #34d399;
+}
+
+/* Stacking context 3D vizualizace (Snímek 5) */
+.stacking-3d-wrapper {
+  perspective: 700px;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.75rem 0;
+}
+
+.stacking-3d-scene {
+  position: relative;
+  width: 240px;
+  height: 140px;
+  transform: rotateX(45deg) rotateZ(-30deg);
+  transform-style: preserve-3d;
+}
+
+.stack-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: transform 0.4s ease;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.stack-layer-1 {
+  background: rgba(148, 163, 184, 0.25);
+  border: 2px solid #94a3b8;
+  color: #cbd5e1;
+  transform: translateZ(0px);
+}
+
+.stack-layer-2 {
+  background: rgba(56, 189, 248, 0.3);
+  border: 2px solid #38bdf8;
+  color: #38bdf8;
+  transform: translateZ(40px) translate(20px, 15px);
+}
+
+.stack-layer-3 {
+  background: rgba(249, 115, 22, 0.35);
+  border: 2px solid #f97316;
+  color: #fb923c;
+  transform: translateZ(80px) translate(40px, 30px);
+}
+
+/* ==========================================================================
+   4. Diagramy Flexbox os (Snímek 7)
+   ========================================================================== */
+.flex-axis-diagram {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 1rem;
+  position: relative;
+  margin: 0.5rem 0;
+}
+
+.flex-axis-arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.flex-axis-main {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.flex-axis-cross {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* ==========================================================================
+   5. Interaktivní Flexbox Playground (Snímek 10)
+   ========================================================================== */
+.fb-playground-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.25rem;
+  min-height: 480px;
+}
+
+@media (max-width: 1024px) {
+  .fb-playground-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fb-controls-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.fb-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.fb-control-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fb-select {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.85rem;
+  font-family: var(--font-mono, monospace);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.fb-select:focus {
+  border-color: #f97316;
+}
+
+.fb-preview-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fb-stage-wrapper {
+  background: var(--bg-surface);
+  border: 2px dashed rgba(249, 115, 22, 0.35);
+  border-radius: 12px;
+  padding: 1.25rem;
+  flex: 1;
+  min-height: 320px;
+  position: relative;
+  overflow: auto;
+}
+
+.fb-stage-badge {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 0.72rem;
+  color: #fb923c;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.fb-container-target {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.fb-item {
+  width: 80px;
+  height: 80px;
+  min-width: 60px;
+  min-height: 60px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.fb-item:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.fb-item.active {
+  outline: 3px solid #fff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+}
+
+.fb-item-sub {
+  font-size: 0.68rem;
+  font-weight: 500;
+  opacity: 0.85;
+  font-family: var(--font-mono, monospace);
+}
+
+.fb-item-1 { background: linear-gradient(135deg, #f97316, #ea580c); }
+.fb-item-2 { background: linear-gradient(135deg, #38bdf8, #0284c7); }
+.fb-item-3 { background: linear-gradient(135deg, #10b981, #059669); }
+.fb-item-4 { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+.fb-item-5 { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+
+.fb-code-output {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: auto;
+}
+
+/* ==========================================================================
+   6. Praktické šablony (Snímek 11)
+   ========================================================================== */
+.template-box {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.template-nav-demo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.template-card-demo {
+  display: flex;
+  flex-direction: column;
+  height: 130px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.template-card-demo .card-body {
+  flex: 1;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.template-card-demo .card-footer {
+  margin-top: auto;
+  border-top: 1px dashed var(--border-subtle);
+  padding-top: 0.4rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+
+/* ==========================================================================
+   7. Opakovací otázky (Snímek 12)
+   ========================================================================== */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+}
+
+@media (max-width: 900px) {
+  .questions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.question-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 1.1rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.question-card:hover {
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+.question-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.question-num {
+  color: #fb923c;
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+}
+
+.question-btn {
+  background: rgba(249, 115, 22, 0.1);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.question-btn:hover {
+  background: rgba(249, 115, 22, 0.2);
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  border-left: 3px solid #fb923c;
+}
+
+.question-hint.visible {
+  display: block;
+}

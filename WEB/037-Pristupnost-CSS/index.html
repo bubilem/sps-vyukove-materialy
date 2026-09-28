@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 037: Webová přístupnost (a11y) v CSS | WEB • SPŠ</title>
+  <meta name="description" content="Webová přístupnost v CSS pro studenty SPŠ: WCAG kontrast, focus-visible, screen readery (.sr-only), prefers-reduced-motion a dotykové terče.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 037 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">037 Přístupnost v CSS</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Přístupnost &bull; WCAG</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Webová přístupnost (a11y) v CSS">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 037</span>
+            <span class="badge">Inkluzivní webdesign &amp; UX</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Webová přístupnost &bull; WCAG</span>
+          </div>
+          <h1 class="hero-title">Webová přístupnost (a11y) v CSS</h1>
+          <p class="hero-subtitle">
+            Web bez překážek pro každého uživatele &bull; Principy mezinárodní normy WCAG 2.1, matematický kontrast barev, viditelné zaměření klávesnicí přes :focus-visible, techniky .sr-only pro odečítače obrazovky a šetření zraku s prefers-reduced-motion.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                WCAG &amp; Standardy
+              </h4>
+              <p>Úrovně A, AA a AAA: legislativní požadavky na přístupnost webů veřejné správy i firem.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 0 20Z"></path></svg>
+                Kontrast a Barvocit
+              </h4>
+              <p>Minimální poměr 4.5:1, zákaz spoléhání pouze na barvu a podpora uživatelů s daltonismem.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m9 10 2 2 4-4"></path></svg>
+                Focus &amp; Klávesnice
+              </h4>
+              <p>Nikdy nemazat outline: none, moderní selektor :focus-visible a dostatečné dotykové terče.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                .sr-only &amp; Pohyb
+              </h4>
+              <p>Skrývání textu pro odečítače a vypínání divokých animací pro lidi s vestibulární poruchou.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Význam přístupnosti a standard WCAG
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Význam a11y a WCAG">
+        <div class="slide-header">
+          <h2 class="slide-title">Proč je přístupnost (a11y) klíčová pro každého vývojáře?</h2>
+          <p class="slide-subtitle">Přístupnost není laskavost pro malou skupinu lidí, ale základní kámen kvalitního webu a zákonný požadavek.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Zkratka a11y &amp; Kdo ji potřebuje?</span>
+              <p style="font-size: 0.88rem; margin-top: 0.5rem;">
+                Slovo <strong>accessibility</strong> má mezi písmeny 'a' a 'y' přesně 11 písmen &rarr; odtud zkratka <strong>a11y</strong>.
+              </p>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>Trvalá znevýhodnění:</strong> Nevidomí, slabozrací, neslyšící, lidé s motorickým třesem či ochrnutím.</li>
+                <li><strong>Dočasná omezení:</strong> Zlomená dominantní ruka (ovládání pouze klávesnicí), rozbitá myš.</li>
+                <li><strong>Situační vlivy:</strong> Ostré slunce svítící na displej mobilu, únava očí, hlučné prostředí.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Standard WCAG &amp; Legislativa</span>
+              <h3 style="margin-top: 0.5rem;">Čtyři pilíře standardu POUR</h3>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li><strong>Perceivable (Vnímatelný):</strong> Obsah musí být zřetelný (dostatečný kontrast, čtečka jej umí přečíst).</li>
+                <li><strong>Operable (Ovladatelný):</strong> Veškeré ovládání musí fungovat z klávesnice bez myši.</li>
+                <li><strong>Understandable (Srozumitelný):</strong> Jasné rozhraní a čitelná typografie.</li>
+                <li><strong>Robust (Robustní):</strong> Kompatibilita s asistivními technologiemi.</li>
+              </ul>
+              <div style="background: rgba(20, 184, 166, 0.1); border-left: 3px solid #14b8a6; padding: 0.5rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.8rem; margin-top: 0.5rem;">
+                Evropský zákon o přístupnosti (EAA) vyžaduje úroveň <strong>WCAG AA</strong> i pro komerční e-shopy a bankovnictví.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Kontrastní poměry barev
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Kontrast barev podle WCAG">
+        <div class="slide-header">
+          <h2 class="slide-title">Kontrastní poměry barev: Pravidlo 4.5:1 a 3:1</h2>
+          <p class="slide-subtitle">Světle šedý text na bílém pozadí možná vypadá v grafickém editoru minimalisticky, ale v reálu je nečitelný.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Metrika kontrastního poměru</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Kontrastní poměr vyjadřuje rozdíl v jasu mezi barvou popředí (textu) a barvou pozadí. Rozsah je od <strong>1:1</strong> (bílá na bílé) až po <strong>21:1</strong> (černá na bílé).
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.6rem;">
+                <div style="background: var(--bg-elevated); padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.84rem;">
+                  <strong style="color: #10b981;">Běžný text (&lt; 18pt / 24px):</strong><br>
+                  Minimální požadovaný poměr je <strong>4.5 : 1</strong> pro úroveň AA (7:1 pro AAA).
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.84rem;">
+                  <strong style="color: #38bdf8;">Velký text (&ge; 18pt nebo tučný &ge; 14pt):</strong><br>
+                  Minimální požadovaný poměr je <strong>3.0 : 1</strong> pro úroveň AA.
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">Vizuální srovnání v praxi</span>
+              
+              <div style="background: #ffffff; color: #94a3b8; padding: 0.75rem; border-radius: 6px; margin-top: 0.6rem; font-size: 0.85rem;">
+                Šedá #94a3b8 na bílé &rarr; <strong>Kontrast 2.5:1 (NEVYHOVUJE!)</strong><br>
+                <span style="font-size: 0.75rem;">Na slunci či pro seniora zcela neviditelné.</span>
+              </div>
+
+              <div style="background: #ffffff; color: #334155; padding: 0.75rem; border-radius: 6px; margin-top: 0.6rem; font-size: 0.85rem;">
+                Tmavá #334155 na bílé &rarr; <strong style="color: #059669;">Kontrast 9.6:1 (VYNIKAJÍCÍ!)</strong><br>
+                <span style="font-size: 0.75rem; color: #64748b;">Krásně čitelné za všech podmínek.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Hřích jménem outline: none
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Hřích jménem outline: none">
+        <div class="slide-header">
+          <h2 class="slide-title">Hřích webdesignéra: Proč NIKDY nepsat <code>outline: none</code>?</h2>
+          <p class="slide-subtitle">Smazání rámečku focusu je jako odebrat řidiči volant: nevidí, kde se na stránce právě nachází.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3>Proč to kodéři dělali?</h3>
+              </div>
+              <p style="font-size: 0.86rem;">
+                Grafikům se nelíbil výchozí modrý rámeček, který se v prohlížeči objevil po kliknutí myší na tlačítko. Kodéři proto často do CSS napsali:
+              </p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* ZÁKAZ! Nejhorší řádek v historii CSS: */</span>
+<span class="css-sel">*:focus</span> {
+  <span class="css-prop">outline</span>: <span class="css-val">none</span>; <span class="html-comm">/* Zničí navigaci z klávesnice! */</span>
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Jakmile uživatel odloží myš a začne stránku procházet klávesou <strong>Tab</strong>, netuší, na kterém tlačítku stojí. Web se stane zcela nepoužitelným.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3>Pravidlo: Pokud vypnout, vždy nahradit!</h3>
+              </div>
+              <p style="font-size: 0.86rem;">
+                Nikdy neodstraňujte rámeček bez toho, abyste definovali <strong>vlastní, ještě hezčí a zřetelnější indikátor zaměření</strong>:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.btn:focus</span> {
+  <span class="css-prop">outline</span>: <span class="css-val">3px solid #2dd4bf</span>;
+  <span class="css-prop">outline-offset</span>: <span class="css-val">3px</span>; <span class="html-comm">/* Odsazení od hrany */</span>
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Pseudotřída :focus-visible
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Moderní :focus-visible">
+        <div class="slide-header">
+          <h2 class="slide-title">Kouzelné řešení: Pseudotřída <code>:focus-visible</code></h2>
+          <p class="slide-subtitle">Vlídný kompromis: rámeček se zobrazí pouze při navigaci klávesnicí, při kliknutí myší zůstane skrytý.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Chytrá heuristika prohlížeče</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Moderní prohlížeče vědí, zda prvek získal focus kliknutím myši, nebo stiskem klávesy Tab na klávesnici:
+              </p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.6rem 0;"><pre><code><span class="html-comm">/* Zobrazí se POUZE při ovládání klávesnicí: */</span>
+<span class="css-sel">button:focus-visible</span>,
+<span class="css-sel">a:focus-visible</span> {
+  <span class="css-prop">outline</span>: <span class="css-val">3px solid #2dd4bf</span>;
+  <span class="css-prop">outline-offset</span>: <span class="css-val">2px</span>;
+  <span class="css-prop">border-radius</span>: <span class="css-val">4px</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Spokojený grafik i handicapovaný uživatel</span>
+              <ul class="styled-list" style="font-size: 0.86rem; margin-top: 0.5rem;">
+                <li><strong>Uživatel myši:</strong> Klikne na tlačítko a nevidí žádný rušivý rámeček.</li>
+                <li><strong>Uživatel klávesnice:</strong> Mačká klávesu Tab a okamžitě vidí výrazný kontrastní obrys aktivního prvku.</li>
+                <li><strong>Dotykový displej:</strong> Ani při ťuknutí prstem se rámeček zbytečně neaktivuje.</li>
+              </ul>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.5rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-top: 0.6rem;">
+                V moderním CSS proto vždy stylovat <strong><code>:focus-visible</code></strong> místo holého <code>:focus</code>!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Čtečky obrazovek a .sr-only
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Čtečky obrazovek a .sr-only">
+        <div class="slide-header">
+          <h2 class="slide-title">Čtečky obrazovek (Screen Readery) a třída <code>.sr-only</code></h2>
+          <p class="slide-subtitle">Rozdíl mezi skutečným skrytím z DOMu a profesionálním skrytím pouze pro lidské oko.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">display: none vs. a11y</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                Pokud prvku nastavíte <code>display: none;</code> nebo <code>visibility: hidden;</code>, prohlížeč jej <strong>zcela vymaže z asistenčního stromu</strong>.
+              </p>
+              <div style="background: rgba(244, 63, 94, 0.1); border-left: 3px solid #f43f5e; padding: 0.5rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.8rem; margin: 0.5rem 0;">
+                Čtečka obrazovky prvek vůbec nepřečte! Nelze to tedy použít pro skrytí doplňkového popisku pro nevidomé.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge badge-accent">Standardní třída .sr-only (Visually Hidden)</span>
+              <p style="font-size: 0.82rem;">Prvek zabírá 1×1 pixel a je oříznut, takže není na obrazovce vidět, ale čtečka jej bez problémů přečte:</p>
+              <div class="code-block" style="font-size: 0.75rem;"><pre><code><span class="css-sel">.sr-only</span> {
+  <span class="css-prop">position</span>: <span class="css-val">absolute</span>;
+  <span class="css-prop">width</span>: <span class="css-val">1px</span>;
+  <span class="css-prop">height</span>: <span class="css-val">1px</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">0</span>;
+  <span class="css-prop">margin</span>: <span class="css-val">-1px</span>;
+  <span class="css-prop">overflow</span>: <span class="css-val">hidden</span>;
+  <span class="css-prop">clip</span>: <span class="css-val">rect(0, 0, 0, 0)</span>;
+  <span class="css-prop">white-space</span>: <span class="css-val">nowrap</span>;
+  <span class="css-prop">border-width</span>: <span class="css-val">0</span>;
+}</code></pre></div>
+              <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.3rem;">
+                Využití: Ikona lupy na tlačítku vyhledávání &rarr; <code>&lt;button&gt;&lt;svg&gt;...&lt;/svg&gt;&lt;span class="sr-only"&gt;Vyhledat&lt;/span&gt;&lt;/button&gt;</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Relativní jednotky a zvětšování textu
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Zvětšování textu a jednotky rem">
+        <div class="slide-header">
+          <h2 class="slide-title">Zvětšování textu a respekt k nastavení: Proč psát v <code>rem</code>?</h2>
+          <p class="slide-subtitle">Slabozrací uživatelé si často v nastavení prohlížeče změní výchozí velikost písma z 16 px na 24 px.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">Problém pevného pixelu (px)</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Pokud nastavíte <code>font-size: 16px;</code> natvrdo v pixelech, prohlížeč přebije volbu uživatele. Senior se slabším zrakem bude mít text stále miniaturní.
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Špatně pro a11y: */</span>
+<span class="css-sel">body</span> { <span class="css-prop">font-size</span>: <span class="css-val">16px</span>; }</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge badge-accent">Síla relativní jednotky rem</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Jednotka <code>1rem</code> vychází z velikosti nastavené uživatelem v kořeni dokumentu:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Správně: respektuje volbu v prohlížeči */</span>
+<span class="css-sel">body</span> { <span class="css-prop">font-size</span>: <span class="css-val">1rem</span>; }
+<span class="css-sel">h1</span>   { <span class="css-prop">font-size</span>: <span class="css-val">2rem</span>; }</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Když si uživatel zvětší výchozí písmo, celá stránka se proporcionálně a čitelně zvětší.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Daltonismus a význam barev
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Daltonismus a nespoléhání na barvu">
+        <div class="slide-header">
+          <h2 class="slide-title">Barvoslepost (Daltonismus): Nepřenášejte význam pouze barvou</h2>
+          <p class="slide-subtitle">Přibližně 8 % mužů a 0,5 % žen má vadu barvocitu. Zelená a červená jim často splývají v jeden odstín hnědé.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">Špatný přístup: Pouze červený rámeček</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                Pokud při chybě ve formuláři pouze obarvíte rámeček na červeno, člověk s protanopií nebo deuteranopií nepozná, co je špatně.
+              </p>
+              <div style="background: rgba(0, 0, 0, 0.2); border: 2px solid #ef4444; border-radius: 6px; padding: 0.6rem 0.8rem; margin-top: 0.5rem; font-size: 0.85rem;">
+                E-mail: [ neplatný_mail ]
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge badge-accent">Správný přístup: Barva + Ikona + Text</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                Ke změně barvy <strong>vždy přidejte zřetelnou ikonu (např. vykřičník)</strong> a textové vysvětlení chyby:
+              </p>
+              <div style="background: rgba(0, 0, 0, 0.2); border: 2px solid #ef4444; border-radius: 6px; padding: 0.6rem 0.8rem; margin-top: 0.5rem; font-size: 0.85rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span>E-mail: [ neplatný_mail ]</span>
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444; width:18px;height:18px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <div style="color: #f87171; font-size: 0.78rem; margin-top: 0.3rem;">Zadejte prosím platnou e-mailovou adresu.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Touch targets a prefers-reduced-motion
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Dotykové terče a reduced-motion">
+        <div class="slide-header">
+          <h2 class="slide-title">Dotykové cíle (Touch Targets) a šetření pohybu</h2>
+          <p class="slide-subtitle">Respekt k motorickým schopnostem prstů na dotykových displejích a ochrana před kinetózou.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- Touch targets -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon teal">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><circle cx="12" cy="14" r="3"></circle></svg>
+                </div>
+                <h3>Minimální plocha: 44 × 44 px</h3>
+              </div>
+              <p style="font-size: 0.85rem;">
+                Podle specifikace WCAG musí mít každý interaktivní prvek (tlačítko, odkaz v menu) rozměr dotykové plochy minimálně <strong>44×44 pixelů</strong>.
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">.nav-link</span> {
+  <span class="css-prop">display</span>: <span class="css-val">inline-flex</span>;
+  <span class="css-prop">align-items</span>: <span class="css-val">center</span>;
+  <span class="css-prop">min-height</span>: <span class="css-val">44px</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">0.5rem 1rem</span>;
+}</code></pre></div>
+            </div>
+
+            <!-- reduced motion -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+                </div>
+                <h3>Ztlumení animací (prefers-reduced-motion)</h3>
+              </div>
+              <p style="font-size: 0.85rem;">
+                Divoké zoomování a rotace mohou vyvolat nevolnost. Respektujte systémové nastavení uživatele:
+              </p>
+              <div class="code-block" style="font-size: 0.78rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">@media (prefers-reduced-motion: reduce)</span> {
+  <span class="css-sel">*, *::before, *::after</span> {
+    <span class="css-prop">animation-duration</span>: <span class="css-val">0.01ms !important</span>;
+    <span class="css-prop">transition-duration</span>: <span class="css-val">0.01ms !important</span>;
+  }
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní a11y audit & Focus Simulator
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Interaktivní a11y audit">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor: Zrakové vady a test kontrastu</h2>
+          <p class="slide-subtitle">Podívejte se na svůj design očima člověka s daltonismem nebo slabozrakostí a ověřte WCAG kontrast.</p>
+        </div>
+        <div class="slide-content">
+          <div class="a11y-studio-grid">
+            <!-- Ovládání -->
+            <div class="a11y-controls">
+              <span class="badge badge-accent">Nastavení simulátoru</span>
+
+              <div class="studio-group">
+                <label class="studio-label" for="a11yVisionFilter">Simulace zrakové vady:</label>
+                <select id="a11yVisionFilter" class="gb-select">
+                  <option value="normal" selected>Normální zrak (plné RGB)</option>
+                  <option value="protanopia">Protanopie (deficit červené – ztmavnutí)</option>
+                  <option value="deuteranopia">Deuteranopie (deficit zelené – slití s červenou)</option>
+                  <option value="tritanopia">Tritanopie (deficit modré – modrá/žlutá vada)</option>
+                  <option value="monochrome">Achromatopsie (úplná barvoslepost)</option>
+                  <option value="blur">Slabozrakost (rozostřené vidění)</option>
+                </select>
+              </div>
+
+              <!-- Didaktický popisek vybrané zrakové vady -->
+              <div id="a11yVisionDesc" style="font-size: 0.78rem; line-height: 1.45; color: var(--text-secondary); background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8; padding: 0.5rem 0.65rem; border-radius: 4px;">
+                Běžné vnímání celého barevného spektra RGB.
+              </div>
+
+              <div class="studio-group">
+                <label class="studio-label" for="a11yFocusMode">Stav focusu:</label>
+                <select id="a11yFocusMode" class="gb-select">
+                  <option value="accessible" selected>Přístupný :focus-visible</option>
+                  <option value="default">Výchozí prohlížeč</option>
+                  <option value="none">outline: none (Špatně!)</option>
+                </select>
+              </div>
+
+              <div style="border-top: 1px dashed var(--border-subtle); padding-top: 0.6rem;">
+                <span class="badge" style="border-color: #14b8a6; color: #2dd4bf;">Test kontrastu textu</span>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.4rem;">
+                  <div style="flex:1;">
+                    <label style="font-size:0.75rem;">Text:</label>
+                    <input type="color" id="a11yTextColor" value="#0f172a" class="color-picker" style="width:100%;">
+                  </div>
+                  <div style="flex:1;">
+                    <label style="font-size:0.75rem;">Pozadí:</label>
+                    <input type="color" id="a11yBgColor" value="#f8fafc" class="color-picker" style="width:100%;">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Plocha náhledu -->
+            <div class="a11y-preview-panel">
+              <div class="a11y-demo-viewport" id="a11yDemoViewport">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <h3 style="margin: 0; font-size: 1.05rem;">Ukázkové rozhraní</h3>
+                  <span class="badge" id="a11yContrastBadge" style="font-family: var(--font-mono, monospace);">-- : 1</span>
+                </div>
+
+                <!-- Barevné vzorky pro okamžité porovnání vad -->
+                <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                  <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Srovnání barev:</span>
+                  <span class="a11y-swatch" style="background: #ef4444; color: #fff;">Červená #ef4444</span>
+                  <span class="a11y-swatch" style="background: #10b981; color: #fff;">Zelená #10b981</span>
+                  <span class="a11y-swatch" style="background: #3b82f6; color: #fff;">Modrá #3b82f6</span>
+                  <span class="a11y-swatch" style="background: #f59e0b; color: #fff;">Žlutá #f59e0b</span>
+                </div>
+
+                <!-- Didaktická ukázka stavových hlášek (WCAG 1.4.1 Nepoužívejte pouze barvu) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                  <div style="padding: 0.5rem 0.7rem; border-radius: 6px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;">
+                    <span>✓ Úspěch:</span>
+                    <span style="color: var(--text-primary); font-weight: normal;">Uloženo</span>
+                  </div>
+                  <div style="padding: 0.5rem 0.7rem; border-radius: 6px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;">
+                    <span>✕ Chyba:</span>
+                    <span style="color: var(--text-primary); font-weight: normal;">Chybí e-mail</span>
+                  </div>
+                </div>
+
+                <div id="a11yDemoText" style="padding: 0.85rem; border-radius: 8px; font-size: 0.9rem; border: 1px solid var(--border-subtle);">
+                  Tento text testuje čitelnost v reálném čase. Poměr jasu je automaticky dopočítáván.
+                  <div id="a11yContrastVerdict" style="margin-top: 0.35rem; font-size: 0.78rem;"></div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                  <button type="button" class="btn btn-primary accessible-focus" id="a11yDemoButton" style="padding: 0.55rem 1.15rem; font-size: 0.85rem;">
+                    Testovací tlačítko (Tab)
+                  </button>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">Zkuste stisknout klávesu Tab pro focus!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Checklist přístupného CSS
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Kontrolní checklist a11y">
+        <div class="slide-header">
+          <h2 class="slide-title">Kontrolní checklist přístupného CSS před nasazením</h2>
+          <p class="slide-subtitle">Rychlá kontrola, kterou by měl projít každý web před odevzdáním nebo publikací.</p>
+        </div>
+        <div class="slide-content">
+          <div class="content-card" style="width: 100%;">
+            <ul class="styled-list" style="font-size: 0.9rem; line-height: 1.7;">
+              <li><strong>Focus viditelný:</strong> Web lze plnohodnotně projít pouze pomocí klávesy Tab, focus je vždy zřetelný (<code>:focus-visible</code>).</li>
+              <li><strong>Kontrast textu:</strong> Běžný text má kontrast alespoň 4.5:1 vůči pozadí (ověřeno v Lighthouse nebo Colour Contrast Analyser).</li>
+              <li><strong>Relativní jednotky:</strong> Velikost písma a klíčové rozestupy jsou v <code>rem</code>, ne v pevných <code>px</code>.</li>
+              <li><strong>Dotykové plochy:</strong> Tlačítka a odkazy na mobilu mají rozměr alespoň 44×44 pixelů.</li>
+              <li><strong>Čtečky obrazovek:</strong> Doplňkové popisky pro ikony používají třídu <code>.sr-only</code>, nikoliv <code>display: none</code>.</li>
+              <li><strong>Prezenční animace:</strong> Kód obsahuje <code>@media (prefers-reduced-motion)</code> pro potlačení agresivních efektů.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky</h2>
+          <p class="slide-subtitle">Ověřte si své porozumění webové přístupnosti, kontrastu, stavům focusu a čtečkám obrazovek.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč je zápis <code>outline: none</code> bez náhrady považován za zásadní chybu?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Odstraní vizuální indikátor focusu. Uživatelé, kteří ovládají web pomocí klávesnice (klávesa Tab), nevidí, který prvek je právě aktivní, a web se pro ně stane zcela neovladatelným. Místo toho máme stylovat pseudotřídu <code>:focus-visible</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Jaký je minimální kontrastní poměr pro běžný text podle standardu WCAG AA?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Pro běžný text je minimální poměr <strong>4.5 : 1</strong>. Pro velký text (&ge; 24 px nebo tučný &ge; 18.5 px) je požadováno minimum <strong>3.0 : 1</strong>.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Proč pro skrytí textu pro čtečky obrazovek nesmíme použít <code>display: none</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Vlastnost <code>display: none</code> odstraní element nejen z vizuálního zobrazení, ale i z asistenčního stromu (Accessibility Tree). Čtečka obrazovky jej proto úplně přeskočí. Pro skrytí výhradně zraku používáme techniku <code>.sr-only</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>K čemu slouží pravidlo <code>@media (prefers-reduced-motion: reduce)</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Detekuje, zda má uživatel v operačním systému zapnuté omezení animací. Slouží k ochraně lidí trpících vestibulárními poruchami, kinetózou nebo epilepsií tím, že okamžitě vypne nebo ztlumí rotace, posuny a blikající efekty.
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- SVG Filtry pro realistickou simulaci zrakových vad (Machado 2009 / WCAG) -->
+      <svg style="position: absolute; width: 0; height: 0; pointer-events: none; overflow: hidden;" aria-hidden="true">
+        <defs>
+          <!-- Protanopie: deficit L-čípku (výrazné ztmavnutí a posun červené do tmavě šedohnědé, zelená je světlejší) -->
+          <filter id="a11y-filter-protanopia" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="
+              0.152286  1.052583 -0.204868  0  0
+              0.114503  0.786281  0.099216  0  0
+             -0.003882 -0.048116  1.051998  0  0
+              0         0         0         1  0" />
+          </filter>
+
+          <!-- Deuteranopie: deficit M-čípku (zelená chybí, červená si zachovává světlost, obě splývají do stejné okrové barvy) -->
+          <filter id="a11y-filter-deuteranopia" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="
+              0.367322  0.860646 -0.227968  0  0
+              0.280085  0.672501  0.047413  0  0
+             -0.011820  0.042940  0.968881  0  0
+              0         0         0         1  0" />
+          </filter>
+
+          <!-- Tritanopie: deficit S-čípku (modrá/žlutá vada – modrá se mění na tyrkysovou, žlutá na růžovofialovou) -->
+          <filter id="a11y-filter-tritanopia" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="
+              1.255528 -0.076749 -0.178779  0  0
+             -0.078411  0.930809  0.147602  0  0
+              0.004733  0.691367  0.303900  0  0
+              0         0         0         1  0" />
+          </filter>
+
+          <!-- Achromatopsie: úplná barvoslepost -->
+          <filter id="a11y-filter-monochrome" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="
+              0.299 0.587 0.114 0 0
+              0.299 0.587 0.114 0 0
+              0.299 0.587 0.114 0 0
+              0     0     0     1 0" />
+          </filter>
+        </defs>
+      </svg>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ (Controls Bar) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../036-Moderni-CSS/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 036 Moderní CSS (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../038-CSS-Preprocesory-a-Frameworky/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 038 Preprocesory a Frameworky (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Přístupnost v CSS
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 037 -->
+  <script src="a11y-playground.js"></script>
+</body>
+
+</html>

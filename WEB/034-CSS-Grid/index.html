@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 034: CSS Grid a 2D rozvržení | WEB • SPŠ</title>
+  <meta name="description" content="Kompletní průvodce CSS Gridem pro střední školy: dvourozměrná mřížka, jednotka fr, repeat, minmax, grid-template-areas a auto-fit.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 034 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">034 CSS Grid</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">CSS Grid &bull; 2D Layout</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="CSS Grid a 2D rozvržení">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 034</span>
+            <span class="badge">CSS Rozvržení &amp; Mřížka</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">2D Layout &bull; CSS Grid</span>
+          </div>
+          <h1 class="hero-title">CSS Grid a 2D rozvržení</h1>
+          <p class="hero-subtitle">
+            Ovládněte celostránkový layout v obou rozměrech současně &bull; Od definice řádků a sloupců přes zlomkovou jednotku fr, funkci repeat() a minmax() až po vizuální šablonové oblasti grid-template-areas a responzivní automatické plnění auto-fit.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                Základní 2D mřížka
+              </h4>
+              <p>display: grid, řádky, sloupce, mezery gap a zásadní rozdíl oproti 1D Flexboxu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Jednotka fr &amp; repeat()
+              </h4>
+              <p>Pružné dělení zbývajícího prostoru poměrovým zlomkem bez počítání procent.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Template Areas
+              </h4>
+              <p>Vizuální ASCII mapování rozvržení stránky: header, nav, main, sidebar, footer.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Auto-fit &amp; Minmax()
+              </h4>
+              <p>Svatý grál responzivity: automaticky se přizpůsobující mřížka bez jediné media query.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Základní mřížka: display: grid
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Základní 2D mřížka">
+        <div class="slide-header">
+          <h2 class="slide-title">Od tabulek k nativní 2D mřížce: <code>display: grid</code></h2>
+          <p class="slide-subtitle">Zatímco Flexbox řeší jednu osu, CSS Grid vytváří skutečnou dvourozměrnou matici řádků a sloupců.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon cyan">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                </div>
+                <h3>Aktivace a definice mřížky</h3>
+              </div>
+              <p style="font-size: 0.88rem;">
+                Mřížku aktivujeme nastavením <code>display: grid;</code> na rodičovském kontejneru. Následně definujeme strukturu sloupců a řádků:
+              </p>
+              <div class="code-block" style="font-size: 0.82rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">.container</span> {
+  <span class="css-prop">display</span>: <span class="css-val">grid</span>;
+  <span class="css-prop">grid-template-columns</span>: <span class="css-val">200px 300px 200px</span>;
+  <span class="css-prop">grid-template-rows</span>: <span class="css-val">100px 200px</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;">
+                Tento zápis vytvoří mřížku o 3 sloupcích a 2 řádcích. Všechny přímé děti se automaticky zařadí do jednotlivých buněk (cells).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge badge-accent">Základní terminologie Gridu</span>
+              <ul class="styled-list" style="font-size: 0.86rem; margin-top: 0.5rem;">
+                <li><strong>Grid Container (Kontejner):</strong> Rodičovský element s <code>display: grid</code>.</li>
+                <li><strong>Grid Item (Položka):</strong> Každé přímé dítě kontejneru.</li>
+                <li><strong>Grid Lines (Linky / Osy):</strong> Číslované dělící čáry ohraničující řádky a sloupce (začínají od 1).</li>
+                <li><strong>Grid Track (Stopa):</strong> Prostor mezi dvěma sousedními linkami (jeden řádek nebo jeden sloupec).</li>
+                <li><strong>Grid Cell (Buňka):</strong> Jedno políčko na průsečíku řádku a sloupce.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Jednotka fr a funkce repeat()
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Jednotka fr a repeat()">
+        <div class="slide-header">
+          <h2 class="slide-title">Pružná zlomková jednotka <code>fr</code> a funkce <code>repeat()</code></h2>
+          <p class="slide-subtitle">Revoluční jednotka vytvořená speciálně pro CSS Grid: konec ručního přepočítávání procent a zaokrouhlovacích chyb.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- fr jednotka -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #06b6d4; color: #22d3ee;">Fractional Unit (fr)</span>
+              <h3 style="margin-top: 0.5rem;">Co je to jednotka <code>fr</code>?</h3>
+              <p style="font-size: 0.86rem;">
+                Představuje <strong>podíl na zbývajícím volném prostoru</strong> (fraction). Prohlížeč nejdříve odečte pevné pixely a zbytek rozdělí podle součtu zlomků.
+              </p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Levý panel pevný, zbytek se dělí v poměru 2:1 */</span>
+<span class="css-prop">grid-template-columns</span>: <span class="css-val">250px 2fr 1fr</span>;</code></pre></div>
+              <ul class="styled-list" style="font-size: 0.82rem;">
+                <li>Pokud mají sloupce <code>1fr 1fr 1fr</code>, má každý přesně třetinu dostupného místa.</li>
+                <li>Zabrání horizontálnímu přetečení, které často způsobují neopatrná procenta s marginy.</li>
+              </ul>
+            </div>
+
+            <!-- repeat() -->
+            <div class="content-card">
+              <span class="badge badge-accent">Zkrácení zápisu</span>
+              <h3 style="margin-top: 0.5rem;">Funkce <code>repeat(počet, rozměr)</code></h3>
+              <p style="font-size: 0.86rem;">Místo opakování stejných hodnot použijeme elegantní funkci:</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* 12sloupcový responzivní grid jako v Bootstrapu: */</span>
+<span class="css-prop">grid-template-columns</span>: <span class="css-val">repeat(12, 1fr)</span>;
+
+<span class="html-comm">/* Střídavý vzor sloupců: */</span>
+<span class="css-prop">grid-template-columns</span>: <span class="css-val">repeat(3, 100px 1fr)</span>;</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Zápis <code>repeat(4, 1fr)</code> je přesně totožný jako <code>1fr 1fr 1fr 1fr</code>, ale mnohonásobně čitelnější.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Mezery v mřížce a zarovnávání
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Mezery gap a zarovnání">
+        <div class="slide-header">
+          <h2 class="slide-title">Mezery v mřížce (<code>gap</code>) a zarovnávání buněk</h2>
+          <p class="slide-subtitle">Čisté oddělení položek a kontrola nad zarovnáním obsahu uvnitř buněk.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </div>
+                <h3>Mezery mezi řádky a sloupci</h3>
+              </div>
+              <p style="font-size: 0.86rem;">Grid má špičkovou nativní podporu pro mezery:</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="css-prop">row-gap</span>: <span class="css-val">20px</span>;     <span class="html-comm">/* Mezera mezi řádky */</span>
+<span class="css-prop">column-gap</span>: <span class="css-val">30px</span>;  <span class="html-comm">/* Mezera mezi sloupci */</span>
+<span class="html-comm">/* Nebo souhrnná zkratka: gap: [row] [column]; */</span>
+<span class="css-prop">gap</span>: <span class="css-val">20px 30px</span>;
+<span class="css-prop">gap</span>: <span class="css-val">1.5rem</span>;       <span class="html-comm">/* Shodná mezera v obou směrech */</span></code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Mezera vzniká <em>výhradně mezi stopami</em>. Vnější okraje mřížky zůstávají čisté a neovlivněné.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg>
+                </div>
+                <h3>Zarovnávání: items vs. content</h3>
+              </div>
+              <ul class="styled-list" style="font-size: 0.82rem;">
+                <li><strong><code>justify-items</code> (vodorovně uvnitř buňky):</strong> <code>stretch</code> (výchozí), <code>start</code>, <code>center</code>, <code>end</code>.</li>
+                <li><strong><code>align-items</code> (svisle uvnitř buňky):</strong> <code>stretch</code>, <code>start</code>, <code>center</code>, <code>end</code>.</li>
+                <li><strong><code>place-items: center;</code>:</strong> Okamžitě vycentruje obsah všech buněk na vodorovný i svislý střed!</li>
+              </ul>
+              <div style="background: rgba(168, 85, 247, 0.1); border-left: 3px solid #a855f7; padding: 0.5rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.8rem; margin-top: 0.5rem;">
+                Jednotlivé prvky mohou výchozí zarovnání přebít pomocí <code>justify-self</code> a <code>align-self</code>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Umisťování po liniích (grid-column/row)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Umisťování po liniích">
+        <div class="slide-header">
+          <h2 class="slide-title">Umisťování prvků po liniích: <code>grid-column</code> a <code>grid-row</code></h2>
+          <p class="slide-subtitle">Roztahování prvků přes více sloupců či řádků pomocí čísel dělících linek nebo klíčového slova <code>span</code>.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Číslování linek (1, 2, 3...)</span>
+              <h3 style="margin-top: 0.5rem;">Syntaktický zápis: odkud / kam</h3>
+              <p style="font-size: 0.86rem;">
+                Pokud máme 3 sloupce, vzniknou celkem <strong>4 vertikální linky</strong>. Prvek může začínat na libovolné lince a končit na jiné:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.banner</span> {
+  <span class="html-comm">/* Od linky 1 po linku 4 (přes všechny 3 sloupce): */</span>
+  <span class="css-prop">grid-column</span>: <span class="css-val">1 / 4</span>;
+}
+
+<span class="css-sel">.sidebar</span> {
+  <span class="html-comm">/* Přes dva řádky shora dolů: */</span>
+  <span class="css-prop">grid-row</span>: <span class="css-val">1 / 3</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #f59e0b; color: #fbbf24;">Pokročilé triky: span a záporné indexy</span>
+              <h3 style="margin-top: 0.5rem;">Klíčové slovo <code>span</code> a index <code>-1</code></h3>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong><code>grid-column: span 2;</code>:</strong> Roztáhne prvek přes 2 sloupce od jeho aktuální pozice, aniž byste museli znát konkrétní čísla linek.</li>
+                <li><strong>Záporný index <code>-1</code>:</strong> Označuje <strong>úplně poslední linku mřížky</strong>.</li>
+              </ul>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="html-comm">/* Roztažení přes celou šířku od kraje ke kraji: */</span>
+<span class="css-sel">.header-full</span> {
+  <span class="css-prop">grid-column</span>: <span class="css-val">1 / -1</span>;
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Šablonové oblasti grid-template-areas
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Šablonové oblasti: grid-template-areas">
+        <div class="slide-header">
+          <h2 class="slide-title">Vizuální skládání layoutu: <code>grid-template-areas</code></h2>
+          <p class="slide-subtitle">Pojmenujte části stránky a složte celou kostru webu jako ASCII obrázek přímo v CSS.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Definice na kontejneru</span>
+              <h3 style="margin-top: 0.5rem;">Pojmenovaná mřížka v uvozovkách</h3>
+              <div class="code-block" style="font-size: 0.82rem;"><pre><code><span class="css-sel">.layout</span> {
+  <span class="css-prop">display</span>: <span class="css-val">grid</span>;
+  <span class="css-prop">grid-template-columns</span>: <span class="css-val">220px 1fr 200px</span>;
+  <span class="css-prop">grid-template-areas</span>:
+    <span class="css-val">"header  header  header"</span>
+    <span class="css-val">"nav     main    aside"</span>
+    <span class="css-val">"footer  footer  footer"</span>;
+  <span class="css-prop">gap</span>: <span class="css-val">1rem</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;">
+                Pokud chcete nechat některou buňku prázdnou, napíšete místo názvu tečku (<code>"."</code>).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Přiřazení prvkům: grid-area</span>
+              <h3 style="margin-top: 0.5rem;">Napojení HTML elementů na oblasti</h3>
+              <p style="font-size: 0.85rem;">Každému HTML elementu pouze přiřadíte jeho název z mřížky:</p>
+              <div class="code-block" style="font-size: 0.82rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">header</span> { <span class="css-prop">grid-area</span>: <span class="css-val">header</span>; }
+<span class="css-sel">nav</span>    { <span class="css-prop">grid-area</span>: <span class="css-val">nav</span>; }
+<span class="css-sel">main</span>   { <span class="css-prop">grid-area</span>: <span class="css-val">main</span>; }
+<span class="css-sel">aside</span>  { <span class="css-prop">grid-area</span>: <span class="css-val">aside</span>; }
+<span class="css-sel">footer</span> { <span class="css-prop">grid-area</span>: <span class="css-val">footer</span>; }</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;">
+                <em>Kouzlo pro responsivitu:</em> V media query pro mobil stačí změnit pouze jedinou vlastnost <code>grid-template-areas: "header" "nav" "main" "aside" "footer";</code> a rozvržení se samo přestaví pod sebe!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: auto-fit, auto-fill a minmax()
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="auto-fit a minmax()">
+        <div class="slide-header">
+          <h2 class="slide-title">Magická responzivní mřížka: <code>auto-fit</code> a <code>minmax()</code></h2>
+          <p class="slide-subtitle">Svatý grál moderního webdesignu: mřížka karet, která se dokonale přizpůsobuje bez jediného Media Query.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Řádek kódu za milion dolarů</span>
+              <div class="code-block" style="font-size: 0.86rem; margin: 0.75rem 0;"><pre><code><span class="css-sel">.cards-grid</span> {
+  <span class="css-prop">display</span>: <span class="css-val">grid</span>;
+  <span class="css-prop">grid-template-columns</span>: 
+    <span class="css-val">repeat(auto-fit, minmax(260px, 1fr))</span>;
+  <span class="css-prop">gap</span>: <span class="css-val">1.5rem</span>;
+}</code></pre></div>
+              <h4 style="margin: 0.5rem 0;">Jak to funguje krok za krokem:</h4>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li><code>minmax(260px, 1fr)</code>: Karta nesmí mít méně než 260px, ale pokud je místa dostatek, roztáhne se na 1fr.</li>
+                <li><code>auto-fit</code>: Prohlížeč spočítá, kolik sloupců o šířce min. 260px se do okna vejde. Zbytek roztáhne.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #f59e0b; color: #fbbf24;">Rozdíl: auto-fit vs. auto-fill</span>
+              <h3 style="margin-top: 0.5rem;">Kdy použít který režim?</h3>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong><code>auto-fit</code> (doporučeno):</strong> Vyprázdněné sloupce složí (zkolabuje) na šířku 0px a existující karty se roztáhnou přes celou šířku kontejneru.</li>
+                <li><strong><code>auto-fill</code>:</strong> Rezervuje prázdné sloupce v mřížce, i když pro ně v HTML nemáte žádný obsah (karty se neroztáhnou).</li>
+              </ul>
+              <div style="background: rgba(6, 182, 212, 0.1); border-left: 3px solid #06b6d4; padding: 0.55rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-top: 0.6rem;">
+                <strong>Závěr:</strong> Pro e-shopy, galerie a portfolia karet téměř vždy volíme <code>auto-fit</code>!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Implicitní mřížka a grid-auto-flow
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Implicitní mřížka a dense">
+        <div class="slide-header">
+          <h2 class="slide-title">Implicitní mřížka a automatické doplňování (<code>dense</code>)</h2>
+          <p class="slide-subtitle">Co se stane, když do mřížky dorazí více prvků, než kolik jste předem nadefinovali.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Explicitní vs. Implicitní</span>
+              <h3 style="margin-top: 0.5rem;">Co když prvky přetečou?</h3>
+              <p style="font-size: 0.86rem;">
+                <strong>Explicitní mřížka:</strong> Řádky a sloupce zadané ručně v <code>grid-template-*</code>.<br>
+                <strong>Implicitní mřížka:</strong> Řádky, které prohlížeč automaticky vytvoří, když počet prvků přesáhne kapacitu explicitní mřížky.
+              </p>
+              <div class="code-block" style="font-size: 0.82rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">.container</span> {
+  <span class="css-prop">display</span>: <span class="css-val">grid</span>;
+  <span class="css-prop">grid-template-columns</span>: <span class="css-val">repeat(3, 1fr)</span>;
+  <span class="html-comm">/* Velikost automaticky přibývajících řádků: */</span>
+  <span class="css-prop">grid-auto-rows</span>: <span class="css-val">minmax(120px, auto)</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #a855f7; color: #c084fc;">Kouzlo Tetrisu: dense flow</span>
+              <h3 style="margin-top: 0.5rem;"><code>grid-auto-flow: dense;</code></h3>
+              <p style="font-size: 0.85rem;">
+                Pokud některé položky v mřížce zabírají 2 sloupce a jiné 1, mohou v mřížce vznikat prázdné díry.
+              </p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.bento-grid</span> {
+  <span class="css-prop">grid-auto-flow</span>: <span class="css-val">dense</span>; <span class="html-comm">/* Zaplní prázdné díry menšími prvky! */</span>
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Prohlížeč prochází prvky a pokud narazí na malý prvek, který se vejde do předchozí díry, vloží ho tam. Skvělé pro fotogalerie a Bento mřížky.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Srovnání Flexbox vs. CSS Grid
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Flexbox vs. CSS Grid">
+        <div class="slide-header">
+          <h2 class="slide-title">Kdy použít Flexbox a kdy CSS Grid?</h2>
+          <p class="slide-subtitle">Rozhodovací matice a pravidla, jak obě technologie kombinovat v harmonický celek.</p>
+        </div>
+        <div class="slide-content">
+          <div class="content-card" style="width: 100%;">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Vlastnost</th>
+                  <th style="width: 37.5%; color: #38bdf8;">Flexbox (1D)</th>
+                  <th style="width: 37.5%; color: #22d3ee;">CSS Grid (2D)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Dimenzionalita</strong></td>
+                  <td>Jednorozměrný (buď řádek, NEBO sloupec).</td>
+                  <td>Dvourozměrný (řádky I sloupce současně).</td>
+                </tr>
+                <tr>
+                  <td><strong>Filozofie návrhu</strong></td>
+                  <td><strong>Content-first:</strong> Velikost a polohu určuje obsah prvků.</td>
+                  <td><strong>Layout-first:</strong> Prvky se podřizují předem definované mřížce.</td>
+                </tr>
+                <tr>
+                  <td><strong>Ideální využití</strong></td>
+                  <td>Navigační lišty, tlačítka s ikonou, formulářové řádky, centrování.</td>
+                  <td>Celostránková kostra webu, galerie, dashboardy, složité karty.</td>
+                </tr>
+                <tr>
+                  <td><strong>Překrývání prvků</strong></td>
+                  <td>Obtížné (vyžaduje <code>position: absolute</code>).</td>
+                  <td>Nativní – dva prvky lze umístit na stejné souřadnice buňky!</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="background: rgba(249, 115, 22, 0.1); border-left: 3px solid #f97316; padding: 0.6rem 0.85rem; border-radius: 0 6px 6px 0; font-size: 0.84rem; margin-top: 0.85rem;">
+              <strong style="color: #fb923c;">Zlaté pravidlo profesionála:</strong><br>
+              Použijte <strong>CSS Grid pro celkový layout stránky</strong> (header, sidebar, content) a uvnitř jednotlivých komponent použijte <strong>Flexbox pro zarovnání detailů</strong> (logo + menu, avatar + jméno).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní Grid Builder
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Grid Builder">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor: CSS Grid Builder</h2>
+          <p class="slide-subtitle">Vyzkoušejte si rozvržení šablon, zlomkové jednotky a automatické zarovnávání v živém editoru.</p>
+        </div>
+        <div class="slide-content">
+          <div class="gb-grid-layout">
+            <!-- Ovládací panel -->
+            <div class="gb-controls">
+              <span class="badge badge-accent">Nastavení mřížky</span>
+
+              <div class="gb-group">
+                <label class="gb-label" for="gbPreset">Předvolená šablona:</label>
+                <select id="gbPreset" class="gb-select">
+                  <option value="holy-grail" selected>Holy Grail (Web portál)</option>
+                  <option value="autofit-cards">Auto-fit karty (Responzivní)</option>
+                  <option value="bento-grid">Bento Grid (Moderní dashboard)</option>
+                  <option value="simple-3col">Klasické 3 sloupce</option>
+                </select>
+              </div>
+
+              <div class="gb-group">
+                <label class="gb-label" for="gbColumns">grid-template-columns:</label>
+                <input type="text" id="gbColumns" class="gb-input" value="180px 1fr 180px">
+              </div>
+
+              <div class="gb-group">
+                <label class="gb-label" for="gbRows">grid-template-rows:</label>
+                <input type="text" id="gbRows" class="gb-input" value="60px 1fr 60px">
+              </div>
+
+              <div class="gb-group">
+                <label class="gb-label" for="gbGap">gap:</label>
+                <select id="gbGap" class="gb-select">
+                  <option value="0px">0px (bez mezer)</option>
+                  <option value="8px">8px</option>
+                  <option value="12px" selected>12px</option>
+                  <option value="16px">16px</option>
+                  <option value="24px">24px</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Náhled mřížky -->
+            <div class="gb-preview">
+              <div class="gb-stage-box">
+                <div class="gb-stage-badge">display: grid preview</div>
+                <div class="gb-target-grid" id="gbTargetGrid"></div>
+              </div>
+
+              <div class="gb-code">
+                <pre style="margin: 0;"><code id="gbGeneratedCss">.container {
+  display: grid;
+  grid-template-columns: 180px 1fr 180px;
+  grid-template-rows: 60px 1fr 60px;
+  gap: 12px;
+}</code></pre>
+                <button type="button" class="btn-copy" id="gbCopyCodeBtn">
+                  <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  Kopírovat CSS
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Holy Grail Layout v praxi
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Holy Grail Layout v praxi">
+        <div class="slide-header">
+          <h2 class="slide-title">Klasický „Svatý grál“ (Holy Grail Layout) v moderním pojetí</h2>
+          <p class="slide-subtitle">Jak postavit plnohodnotnou webovou aplikaci na pouhých 15 řádcích čistého CSS bez JavaScriptu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">HTML struktura</span>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-str">"app-layout"</span><span class="html-tag">&gt;</span>
+  <span class="html-tag">&lt;header&gt;</span>Hlavička s logem<span class="html-tag">&lt;/header&gt;</span>
+  <span class="html-tag">&lt;nav&gt;</span>Levá navigace<span class="html-tag">&lt;/nav&gt;</span>
+  <span class="html-tag">&lt;main&gt;</span>Hlavní obsah stránky<span class="html-tag">&lt;/main&gt;</span>
+  <span class="html-tag">&lt;aside&gt;</span>Pravý panel akcí<span class="html-tag">&lt;/aside&gt;</span>
+  <span class="html-tag">&lt;footer&gt;</span>Patička webu<span class="html-tag">&lt;/footer&gt;</span>
+<span class="html-tag">&lt;/div&gt;</span></code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #06b6d4; color: #22d3ee;">Kompletní CSS kód</span>
+              <div class="code-block" style="font-size: 0.78rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">.app-layout</span> {
+  <span class="css-prop">display</span>: <span class="css-val">grid</span>;
+  <span class="css-prop">min-height</span>: <span class="css-val">100vh</span>;
+  <span class="css-prop">grid-template-columns</span>: <span class="css-val">220px 1fr 200px</span>;
+  <span class="css-prop">grid-template-rows</span>: <span class="css-val">auto 1fr auto</span>;
+  <span class="css-prop">grid-template-areas</span>:
+    <span class="css-val">"header header header"</span>
+    <span class="css-val">"nav    main   aside"</span>
+    <span class="css-val">"footer footer footer"</span>;
+}
+<span class="css-sel">header</span> { <span class="css-prop">grid-area</span>: <span class="css-val">header</span>; }
+<span class="css-sel">nav</span>    { <span class="css-prop">grid-area</span>: <span class="css-val">nav</span>; }
+<span class="css-sel">main</span>   { <span class="css-prop">grid-area</span>: <span class="css-val">main</span>; }
+<span class="css-sel">aside</span>  { <span class="css-prop">grid-area</span>: <span class="css-val">aside</span>; }
+<span class="css-sel">footer</span> { <span class="css-prop">grid-area</span>: <span class="css-val">footer</span>; }</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky</h2>
+          <p class="slide-subtitle">Ověřte si své porozumění CSS Gridu, jednotce fr, auto-fitu a šablonovým oblastem.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>V čem se liší jednotka <code>1fr</code> od zápisu <code>100%</code> nebo <code>33.33%</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Jednotka <code>fr</code> představuje podíl ze <strong>zbývajícího volného místa</strong> po odečtení pevných pixelů a mezer (<code>gap</code>). Nemusíte počítat zaokrouhlovací chyby ani řešit přetečení jako u procent, kde by <code>gap</code> mohl způsobit nechtěný scrollbar.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Co přesně znamená zápis <code>grid-column: 1 / -1;</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Číslo <code>1</code> znamená první vertikální linku mřížky (levý okraj). Záporný index <code>-1</code> označuje <strong>úplně poslední linku mřížky</strong> (pravý okraj). Prvek se tedy roztáhne přes celou dostupnou šířku mřížky bez ohledu na to, kolik má sloupců.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Proč je kombinace <code>repeat(auto-fit, minmax(250px, 1fr))</code> tak populární?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Vytváří plně responzivní mřížku karet <strong>zcela bez použití @media pravidel</strong>. Karty automaticky přeskakují do 1, 2, 3 nebo 4 sloupců podle aktuální šířky obrazovky a současně se přirozeně roztahují tak, aby nezůstávalo žádné prázdné místo.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Kdy je vhodnější sáhnout po Flexboxu a kdy po CSS Gridu?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong>CSS Grid</strong> volíme pro dvourozměrný celostránkový layout (kostra webu: header, navigace, main, patička, fotogalerie). <strong>Flexbox</strong> volíme pro jednorozměrné komponenty a zarovnání obsahu uvnitř prvků (navigační lišta, centrování tlačítka, ikona s textem, patička karty).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ (Controls Bar) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../033-Pozicovani-a-Flexbox/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 033 Pozicování a Flexbox (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../035-Responzivni-web/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 035 Responzivní web (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: CSS Grid
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 034 -->
+  <script src="grid-playground.js"></script>
+</body>
+
+</html>

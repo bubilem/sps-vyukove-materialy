@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 031: CSS selektory a pseudotřídy | WEB • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Webové technologie (WEB) SPŠ: typové selektory, třídy, ID, kombinátory potomků a sourozenců, atributové selektory, pseudotřídy, pseudoelementy a výpočet specificity.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 031 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">031 CSS selektory</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Selektory &bull; DOM &bull; Specificita</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="CSS selektory a pseudotřídy">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 031</span>
+            <span class="badge">DOM Targeting &amp; Kaskáda</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Selektory &bull; Pseudotřídy &bull; Specificita</span>
+          </div>
+          <h1 class="hero-title">CSS selektory a pseudotřídy</h1>
+          <p class="hero-subtitle">
+            Cílení na elementy DOM stromu s chirurgickou přesností &bull; Od základních značek a tříd přes kombinátory potomků a sourozenců, atributové filtry, dynamické a strukturální pseudotřídy, virtuální pseudoelementy (rozdíl : vs ::) až po matematický výpočet specificity.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                Základní selektory
+              </h4>
+              <p>Univerzální *, typový tag, třída .class, unikátní ID #id a seskupování čárkou.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+                Kombinátory v DOM
+              </h4>
+              <p>Potomek (mezera), přímé dítě (&gt;), sousední sourozenec (+) a obecný bratr (~).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Pseudotřídy a prvky
+              </h4>
+              <p>Stavy :hover, :focus, :nth-child(), logické :not() a virtuální prvky ::before / ::after.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+                Specificita &amp; Kaskáda
+              </h4>
+              <p>4složkový vektor vah, řešení konfliktů a bezpečné techniky bez nutnosti !important.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Role selektoru a základní selektory
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Základní selektory">
+        <div class="slide-header">
+          <h2 class="slide-title">Role selektoru a základní stavební kameny</h2>
+          <p class="slide-subtitle">Selektor říká prohlížeči, které uzly v DOM stromu mají převzít daná stylová pravidla.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <h3>Čtyři elementární typy výběru</h3>
+              </div>
+              <ul class="styled-list">
+                <li>
+                  <strong style="color: #cbd5e1;">1. Univerzální selektor (<code>*</code>):</strong> Cílí na naprosto všechny elementy v dokumentu. Typicky se používá pro globální reset box-modelu.
+                  <div class="code-block" style="margin: 0.35rem 0;"><pre><code><span class="css-sel">*</span> { <span class="css-prop">margin</span>: <span class="css-val">0</span>; <span class="css-prop">box-sizing</span>: <span class="css-val">border-box</span>; }</code></pre></div>
+                </li>
+                <li>
+                  <strong style="color: #f43f5e;">2. Typový selektor (Tag):</strong> Cílí na všechny prvky daného HTML tagu (např. <code>p</code>, <code>h1</code>, <code>button</code>).
+                  <div class="code-block" style="margin: 0.35rem 0;"><pre><code><span class="css-sel">p</span> { <span class="css-prop">line-height</span>: <span class="css-val">1.6</span>; }</code></pre></div>
+                </li>
+                <li>
+                  <strong style="color: #38bdf8;">3. Třída (Class <code>.nazev</code>):</strong> Základní stavební kámen znovupoužitelného designu. Může být přiřazena libovolnému množství elementů.
+                  <div class="code-block" style="margin: 0.35rem 0;"><pre><code><span class="css-sel">.btn-primary</span> { <span class="css-prop">background</span>: <span class="css-val">#f97316</span>; }</code></pre></div>
+                </li>
+                <li>
+                  <strong style="color: #f59e0b;">4. Identifikátor (ID <code>#id</code>):</strong> Cílí na jeden unikátní element s daným HTML atributem <code>id="..."</code> na stránce. Má velmi vysokou specificitu, proto se v moderním CSS doporučuje upřednostňovat znovupoužitelné třídy.
+                  <div class="code-block" style="margin: 0.35rem 0;"><pre><code><span class="css-sel">#hlavni-navigace</span> { <span class="css-prop">background</span>: <span class="css-val">#0f172a</span>; }</code></pre></div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3>Seskupování selektorů a vyhodnocování</h3>
+              </div>
+              <p>Pokud mají různé elementy sdílet stejná pravidla, seskupujeme je čárkou (<code>,</code>):</p>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Seskupení: pravidlo platí pro h1, h2 i h3 */</span>
+<span class="css-sel">h1, h2, h3</span> {
+  <span class="css-prop">font-family</span>: <span class="css-val">'Inter', sans-serif</span>;
+  <span class="css-prop">color</span>: <span class="css-val">#f8fafc</span>;
+}</code></pre>
+              </div>
+              <div style="background: rgba(249, 115, 22, 0.08); border-left: 3px solid #f97316; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin-top: 0.75rem;">
+                <strong style="color: #fb923c;">Jak prohlížeč čte selektory (Zprava doleva):</strong><br>
+                U komplexních selektorů (např. <code>header nav a.active</code>) prohlížeč nejdříve najde všechny <code>a.active</code> na stránce (Key selector) a teprve poté ověřuje jejich předky směrem nahoru ve stromu.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Kombinátory – Vztahy mezi elementy v DOM
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Kombinátory v DOM">
+        <div class="slide-header">
+          <h2 class="slide-title">Kombinátory: Vztahy mezi elementy v DOM stromu</h2>
+          <p class="slide-subtitle">Jak přesně cílit podle rodinných vazeb v DOM: potomci, bezprostřední děti a sousední sourozenci.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- 1. Potomci a přímé děti -->
+            <div class="content-card">
+              <span class="badge badge-accent">Vertikální hierarchie (Rodič &bull; Potomek)</span>
+              
+              <div style="margin-top: 0.85rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">Potomek (Mezera: <code>A B</code>)</h4>
+                <p style="font-size: 0.85rem;">Cílí na <strong>jakýkoliv element B</strong>, který se nachází uvnitř A, bez ohledu na hloubku zanoření.</p>
+                <div class="code-block" style="font-size: 0.82rem;"><pre><code><span class="css-sel">.card p</span> { <span class="css-prop">color</span>: <span class="css-val">#94a3b8</span>; }
+<span class="html-comm">/* Zacílí odstavec přímo v .card i odstavec uvnitř dalšího divu */</span></code></pre></div>
+              </div>
+
+              <div style="margin-top: 1rem; border-top: 1px dashed var(--border-subtle); padding-top: 0.85rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">Přímý potomek / Dítě (Zobáček: <code>A &gt; B</code>)</h4>
+                <p style="font-size: 0.85rem;">Cílí <strong>výhradně na přímé dítě</strong> na 1. úrovni zanoření. Ignoruje hlouběji vnořené potomky.</p>
+                <div class="code-block" style="font-size: 0.82rem;"><pre><code><span class="css-sel">ul &gt; li</span> { <span class="css-prop">list-style</span>: <span class="css-val">none</span>; }
+<span class="html-comm">/* Zacílí pouze li patřící přímo danému ul, ne li ve vnořeném ul */</span></code></pre></div>
+              </div>
+            </div>
+
+            <!-- 2. Sourozenci -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Horizontální hierarchie (Sourozenci)</span>
+
+              <div style="margin-top: 0.85rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">Sousední sourozenec (Plus: <code>A + B</code>)</h4>
+                <p style="font-size: 0.85rem;">Cílí na element B, který <strong>bezprostředně následuje</strong> za elementem A a má stejného rodiče.</p>
+                <div class="code-block" style="font-size: 0.82rem;"><pre><code><span class="css-sel">h2 + p</span> { <span class="css-prop">font-size</span>: <span class="css-val">1.2rem</span>; <span class="css-prop">font-weight</span>: <span class="css-val">600</span>; }
+<span class="html-comm">/* Zacílí pouze první perexový odstavec hned za nadpisem h2 */</span></code></pre></div>
+              </div>
+
+              <div style="margin-top: 1rem; border-top: 1px dashed var(--border-subtle); padding-top: 0.85rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">Obecný sourozenec (Tilda: <code>A ~ B</code>)</h4>
+                <p style="font-size: 0.85rem;">Cílí na <strong>všechny elementy B</strong>, které následují kdekoliv za elementem A se stejným rodičem.</p>
+                <div class="code-block" style="font-size: 0.82rem;"><pre><code><span class="css-sel">h2 ~ p</span> { <span class="css-prop">line-height</span>: <span class="css-val">1.6</span>; }
+<span class="html-comm">/* Zacílí všechny následující odstavce za h2 v dané sekci */</span></code></pre></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Pokročilé atributové selektory
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Atributové selektory">
+        <div class="slide-header">
+          <h2 class="slide-title">Pokročilé atributové selektory: <code>[atribut]</code></h2>
+          <p class="slide-subtitle">Filtrování prvků na základě přítomnosti konkrétního HTML atributu nebo jeho textové hodnoty.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3-col">
+            <!-- 1. Přítomnost a přesná hodnota -->
+            <div class="content-card">
+              <span class="badge badge-accent">Základní shoda</span>
+              <h4 style="margin: 0.5rem 0;"><code>[attr]</code> a <code>[attr="val"]</code></h4>
+              <p style="font-size: 0.85rem;">Cílí na existenci atributu bez ohledu na hodnotu, nebo vyžaduje přesnou absolutní shodu.</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Všechna deaktivovaná tlačítka: */</span>
+<span class="css-sel">button[disabled]</span> {
+  <span class="css-prop">opacity</span>: <span class="css-val">0.5</span>;
+  <span class="css-prop">cursor</span>: <span class="css-val">not-allowed</span>;
+}
+
+<span class="html-comm">/* Pouze textová pole: */</span>
+<span class="css-sel">input[type="text"]</span> {
+  <span class="css-prop">border</span>: <span class="css-val">1px solid #ccc</span>;
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- 2. Začátek a konec hodnoty -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Prefix a Suffix</span>
+              <h4 style="margin: 0.5rem 0;"><code>[attr^="val"]</code> a <code>[attr$="val"]</code></h4>
+              <p style="font-size: 0.85rem;">Prefixová stříška <code>^=</code> (začíná na) a suffixový dolar <code>$=</code> (končí na) – ideální pro odkazy a soubory.</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Všechny zabezpečené externí HTTPS odkazy: */</span>
+<span class="css-sel">a[href^="https://"]</span> {
+  <span class="css-prop">color</span>: <span class="css-val">#10b981</span>;
+}
+
+<span class="html-comm">/* Odkazy stahující dokumenty PDF: */</span>
+<span class="css-sel">a[href$=".pdf"]</span> {
+  <span class="css-prop">font-weight</span>: <span class="css-val">700</span>;
+}</code></pre>
+              </div>
+            </div>
+
+            <!-- 3. Podřetězec a seznam slov -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #a855f7; color: #c084fc;">Hledání řetězce</span>
+              <h4 style="margin: 0.5rem 0;"><code>[attr*="val"]</code> a <code>[attr~="val"]</code></h4>
+              <p style="font-size: 0.85rem;">Hvězdička <code>*=</code> matchuje libovolný výskyt podřetězce, tilda <code>~=</code> celé samostatné slovo.</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Elementy obsahující v data atributu "admin": */</span>
+<span class="css-sel">[data-role*="admin"]</span> {
+  <span class="css-prop">border-color</span>: <span class="css-val">#f43f5e</span>;
+}
+
+<span class="html-comm">/* Case-insensitive hledání (příznak i): */</span>
+<span class="css-sel">a[href$=".pdf" i]</span> {
+  <span class="css-prop">text-decoration</span>: <span class="css-val">underline</span>;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Dynamické a interaktivní pseudotřídy
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Dynamické pseudotřídy">
+        <div class="slide-header">
+          <h2 class="slide-title">Dynamické a stavové pseudotřídy</h2>
+          <p class="slide-subtitle">Pseudotřída začíná <strong>jednou dvojtečkou (:)</strong> a cílí na dočasný stav elementu vyvolaný akcí uživatele.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                </div>
+                <h3>Stavy uživatelské interakce</h3>
+              </div>
+              <ul class="styled-list">
+                <li><strong><code>:hover</code>:</strong> Kurzor myši se nachází nad elementem. Zásadní pro mikrointerakce a tlačítka.</li>
+                <li><strong><code>:active</code>:</strong> Moment stisknutí tlačítka myši nebo klepnutí na displej (stav kliknutí).</li>
+                <li><strong><code>:focus</code>:</strong> Prvek je aktivní pro vstup (např. fokus v textovém políčku nebo odkaz aktivovaný tabulátorem).</li>
+                <li><strong><code>:focus-visible</code> (Moderní standard a11y):</strong> Zobrazí obrys fokusu pouze při navigaci z klávesnice (klávesa Tab), ale skryje ho při kliknutí myší!</li>
+              </ul>
+              <div class="code-block" style="margin-top: 0.5rem;">
+                <pre><code><span class="css-sel">.btn:hover</span> { <span class="css-prop">background</span>: <span class="css-val">#ea580c</span>; }
+<span class="css-sel">.btn:active</span> { <span class="css-prop">transform</span>: <span class="css-val">scale(0.98)</span>; }
+<span class="css-sel">.btn:focus-visible</span> { <span class="css-prop">outline</span>: <span class="css-val">2px solid #38bdf8</span>; }</code></pre>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><link x1="10" y1="13" x2="8" y2="13"></link><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                </div>
+                <h3>Stavy odkazů a pravidlo pořadí LVHA</h3>
+              </div>
+              <p>Při stylování hypertextových odkazů <code>&lt;a&gt;</code> záleží na pořadí v kódu, protože pozdější pravidla přepisují předchozí:</p>
+              <div style="background: var(--bg-elevated); padding: 0.75rem 1rem; border-radius: 8px; border-left: 3px solid #38bdf8;">
+                <strong style="color: #38bdf8; font-size: 1.05rem;">Zlatá mnemotechnická pomůcka: L–V–H–A</strong>
+                <ol style="margin: 0.5rem 0 0 1.2rem; font-size: 0.88rem; line-height: 1.6;">
+                  <li><code>:link</code> – dosud nenavštívený odkaz</li>
+                  <li><code>:visited</code> – dříve navštívený odkaz (historie prohlížeče)</li>
+                  <li><code>:hover</code> – přejetí kurzorem myši</li>
+                  <li><code>:active</code> – stisknutí tlačítka myši v okamžiku kliku</li>
+                </ol>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;">
+                Pokud napíšete <code>:hover</code> před <code>:visited</code>, navštívený odkaz by po přejetí myší nezměnil barvu!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Strukturální a stromové pseudotřídy
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Strukturální pseudotřídy">
+        <div class="slide-header">
+          <h2 class="slide-title">Strukturální a stromové pseudotřídy</h2>
+          <p class="slide-subtitle">Cílení na elementy podle jejich přesné pozice a pořadí uvnitř společného rodičovského uzlu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Pozice v DOM: Kraje a jedinci</span>
+              <ul class="styled-list" style="margin-top: 0.75rem;">
+                <li><strong><code>:first-child</code>:</strong> Element, který je úplně prvním potomkem svého rodiče.</li>
+                <li><strong><code>:last-child</code>:</strong> Element, který je posledním potomkem svého rodiče.</li>
+                <li><strong><code>:only-child</code>:</strong> Element, který je jedináčkem (rodič nemá žádné další děti).</li>
+                <li>
+                  <strong style="color: #38bdf8;">Rozdíl child vs of-type:</strong><br>
+                  <code>p:first-child</code> funguje pouze tehdy, je-li <code>&lt;p&gt;</code> skutečně 1. prvkem v rodiči. Pokud je před ním <code>&lt;h1&gt;</code>, nevybere se nic! Naproti tomu <code>p:first-of-type</code> vybere první odstavec bez ohledu na to, zda před ním stojí nadpis.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Magický vzorec <code>:nth-child(An+B)</code></span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">Umožňuje pruhovat tabulky, vybírat sudé/liché řádky nebo periodicky opakovat styly:</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
+                  <code>:nth-child(odd)</code> nebo <code>(2n+1)</code> &rarr; všechny liché prvky (1, 3, 5, 7...)
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
+                  <code>:nth-child(even)</code> nebo <code>(2n)</code> &rarr; všechny sudé prvky (zebra tabulky)
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
+                  <code>:nth-child(3n)</code> &rarr; každý třetí element (3, 6, 9...)
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
+                  <code>:nth-child(-n+3)</code> &rarr; pouze první 3 elementy (1, 2, 3)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Logické a funkcionální pseudotřídy
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Logické pseudotřídy a :has()">
+        <div class="slide-header">
+          <h2 class="slide-title">Logické pseudotřídy a revoluční selektor <code>:has()</code></h2>
+          <p class="slide-subtitle">Moderní selektory pro zkrácení kódu, negaci a výběr rodiče podle stavu potomka.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- :not(), :is(), :where() a specificita -->
+            <div class="content-card">
+              <span class="badge badge-accent">Logické funkce v CSS</span>
+              <h3 style="margin-top: 0.5rem; font-size: 1.15rem;">Sdružování a negace: <code>:not</code>, <code>:is</code> a <code>:where</code></h3>
+              
+              <!-- Didaktické vysvětlení specificity pro žáky -->
+              <div style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8; padding: 0.6rem 0.85rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-bottom: 0.75rem;">
+                <strong style="color: #38bdf8;">Co je to specificita (váha selektoru)?</strong><br>
+                Pokud na tentýž prvek míří více různých stylů (např. jeden říká modrá a druhý červená), prohlížeč rozsoudí spor podle <em>specificity</em> – bodové váhy selektoru. Silnější pravidlo vyhraje a slabší přebije.
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                <!-- 1. :not() -->
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.75rem; border-radius: 6px; font-size: 0.84rem;">
+                  <strong style="color: #f43f5e;">1. <code>:not(selektor)</code> – Negace:</strong><br>
+                  Vybere všechny elementy, které <em>nesplňují</em> podmínku v závorce.
+                  <div class="code-block" style="font-size: 0.8rem; margin: 0.25rem 0;"><pre><code><span class="html-comm">/* Všechna tlačítka kromě hlavního: */</span>
+<span class="css-sel">button:not(.btn-primary)</span> { <span class="css-prop">opacity</span>: <span class="css-val">0.7</span>; }</code></pre></div>
+                </div>
+
+                <!-- 2. :is() -->
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.75rem; border-radius: 6px; font-size: 0.84rem;">
+                  <strong style="color: #38bdf8;">2. <code>:is(A, B, C)</code> – Zkrácení s nejvyšší vahou:</strong><br>
+                  Místo <code>header a, nav a, footer a</code> napíšeme jednoduše <code>:is(header, nav, footer) a</code>.<br>
+                  <em style="color: #fbbf24;">Pravidlo váhy:</em> Celý selektor získá specificitu podle <strong>nejtěžšího prvku v závorce</strong>. Pokud je uvnitř alespoň jedno ID (např. <code>:is(section, #banner) a</code>), má celé pravidlo sílu ID selektoru.
+                  <div class="code-block" style="font-size: 0.78rem; margin: 0.25rem 0 0 0;"><pre><code><span class="css-sel">:is(h1, h2, h3)</span> { <span class="css-prop">line-height</span>: <span class="css-val">1.2</span>; } <span class="html-comm">/* Zkrátí zápis pro nadpisy */</span></code></pre></div>
+                </div>
+
+                <!-- 3. :where() -->
+                <div style="background: var(--bg-elevated); padding: 0.55rem 0.75rem; border-radius: 6px; font-size: 0.84rem;">
+                  <strong style="color: #34d399;">3. <code>:where(A, B, C)</code> – Sdružení s NULOVOU vahou (0):</strong><br>
+                  Funguje přesně stejně jako <code>:is()</code>, ale jeho specificita je <strong>vždy přesně 0</strong>.<br>
+                  <em style="color: #34d399;">K čemu je to dobré?</em> Pro výchozí komponenty a CSS resety. Styl můžete kdekoliv v kódu přepsat jakoukoliv běžnou třídou i samotným tagem bez boje s kaskádou a bez nutnosti používat nebezpečné <code>!important</code>.
+                  <div class="code-block" style="font-size: 0.78rem; margin: 0.25rem 0 0 0;"><pre><code><span class="css-sel">:where(.card, .box)</span> { <span class="css-prop">padding</span>: <span class="css-val">1rem</span>; } <span class="html-comm">/* Váha 0 &rarr; kdokoliv snadno přepíše */</span></code></pre></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- :has() rodičovský selektor -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Svatý grál CSS</span>
+              <h3 style="margin-top: 0.5rem;"><code>:has()</code> – Rodičovský selektor</h3>
+              <p>Dlouhá léta nebylo v CSS možné stylovat rodiče podle toho, co obsahuje. S příchodem <code>:has()</code> se to stalo realitou ve všech moderních prohlížečích:</p>
+              
+              <div class="code-block" style="font-size: 0.85rem; margin: 0.75rem 0;">
+                <pre><code><span class="html-comm">/* Zvýrazni kartu, POKUD obsahuje odznak s chybou: */</span>
+<span class="css-sel">.card:has(.badge-error)</span> {
+  <span class="css-prop">border-color</span>: <span class="css-val">#f43f5e</span>;
+  <span class="css-prop">box-shadow</span>: <span class="css-val">0 0 12px rgba(244,63,94,0.3)</span>;
+}
+
+<span class="html-comm">/* Zformátuj popisek formuláře, pokud je políčko neplatné: */</span>
+<span class="css-sel">label:has(+ input:invalid)</span> {
+  <span class="css-prop">color</span>: <span class="css-val">red</span>;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Pseudoelementy a rozdíl : vs ::
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Pseudoelementy: : vs ::">
+        <div class="slide-header">
+          <h2 class="slide-title">Pseudoelementy a zásadní rozdíl mezi <code>:</code> a <code>::</code></h2>
+          <p class="slide-subtitle">Pseudotřída cílí na stav reálného prvku, pseudoelement vytváří <strong>virtuální prvek v DOMu</strong>.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <h3>Proč se píší dvě dvojtečky (::)?</h3>
+              </div>
+              <ul class="styled-list">
+                <li><strong>Historie v CSS1 a CSS2:</strong> Původně se vše psalo s jednou dvojtečkou (např. <code>:hover</code> i <code>:before</code>).</li>
+                <li><strong>Oddělení v CSS3:</strong> Specifikace CSS3 zavedla <strong>dvě dvojtečky (<code>::</code>)</strong> výhradně pro pseudoelementy, aby se na první pohled odlišily od stavových pseudotříd.</li>
+                <li><em>Zpětná kompatibilita:</em> Prohlížeče pro <code>::before</code> i <code>::after</code> akceptují i starou jednu dvojtečku, ale správný a moderní zápis je vždy <code>::</code>!</li>
+              </ul>
+              <div style="background: var(--bg-elevated); padding: 0.65rem 0.85rem; border-radius: 8px; margin-top: 0.5rem; font-size: 0.85rem;">
+                <strong>Rozlišení jedním pohledem:</strong><br>
+                <code>:focus</code> &rarr; stav prvku (pseudotřída)<br>
+                <code>::before</code> &rarr; fiktivní element (pseudoelement)
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                </div>
+                <h3>Klíčové pseudoelementy v praxi</h3>
+              </div>
+              <ul class="styled-list">
+                <li>
+                  <strong style="color: #38bdf8;"><code>::before</code> a <code>::after</code>:</strong> Vloží virtuální obsah před nebo za obsah elementu. <strong>Povinnost:</strong> Musí obsahovat vlastnost <code>content: ""</code>, jinak se nevykreslí!
+                </li>
+                <li>
+                  <strong style="color: #10b981;"><code>::placeholder</code>:</strong> Formátuje šedý nápovědný text uvnitř neobsazeného políčka <code>&lt;input&gt;</code>.
+                </li>
+                <li>
+                  <strong style="color: #f97316;"><code>::selection</code>:</strong> Vzhled textu, který uživatel označil myší (barva výběru a pozadí).
+                </li>
+                <li>
+                  <strong style="color: #c084fc;"><code>::marker</code>:</strong> Formátuje odrážku nebo číslování u seznamů <code>&lt;li&gt;</code>.
+                </li>
+              </ul>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;">
+                <pre><code><span class="css-sel">.tag::before</span> {
+  <span class="css-prop">content</span>: <span class="css-val">"#"</span>; <span class="html-comm">/* povinné! */</span>
+  <span class="css-prop">color</span>: <span class="css-val">#f97316</span>;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Specificita selektorů a kaskáda
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Specificita a kaskáda">
+        <div class="slide-header">
+          <h2 class="slide-title">Kaskáda, specificita a váhy selektorů</h2>
+          <p class="slide-subtitle">Jak prohlížeč matematicky rozhodne, které pravidlo zvítězí při konfliktu dvou různých stylů.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">4úrovňový vektor váhy: (A, B, C, D)</span>
+              <p style="font-size: 0.88rem; margin-top: 0.5rem;">Při kolizi stylů prohlížeč porovnává váhy zleva doprava (vyšší úroveň vždy přebije nižší):</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.5rem;">
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between;">
+                  <span><strong>A: Inline styl</strong> v HTML (<code>style="..."</code>)</span>
+                  <span style="font-family: var(--font-mono, monospace); color: #f43f5e; font-weight: 700;">1, 0, 0, 0</span>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between;">
+                  <span><strong>B: ID selektory</strong> (<code>#header</code>)</span>
+                  <span style="font-family: var(--font-mono, monospace); color: #f59e0b; font-weight: 700;">0, 1, 0, 0</span>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between;">
+                  <span><strong>C: Třídy, atributy, pseudotřídy</strong> (<code>.btn</code>, <code>[type]</code>, <code>:hover</code>)</span>
+                  <span style="font-family: var(--font-mono, monospace); color: #38bdf8; font-weight: 700;">0, 0, 1, 0</span>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; display: flex; justify-content: space-between;">
+                  <span><strong>D: Značky elementů a pseudoelementy</strong> (<code>p</code>, <code>::before</code>)</span>
+                  <span style="font-family: var(--font-mono, monospace); color: #10b981; font-weight: 700;">0, 0, 0, 1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #f43f5e;">Dvě pravidla pro řešení konfliktů</span>
+              
+              <div style="margin-top: 0.75rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">1. Vyšší specificita vítězí</h4>
+                <p style="font-size: 0.85rem;">Selektor <code>#menu a</code> (váha 0,1,0,1) bezpečně přebije selektor <code>nav.main-nav ul li a</code> (váha 0,0,1,4), ačkoliv je ten druhý delší!</p>
+              </div>
+
+              <div style="margin-top: 0.85rem; border-top: 1px dashed var(--border-subtle); padding-top: 0.75rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">2. Shodná specificita &rarr; Kaskáda (Pozice v kódu)</h4>
+                <p style="font-size: 0.85rem;">Mají-li dvě pravidla stejnou váhu, zvítězí to, které je v CSS souboru <strong>uvedeno níže</strong>.</p>
+              </div>
+
+              <div style="background: rgba(244, 63, 94, 0.1); border-left: 3px solid #f43f5e; padding: 0.6rem 0.85rem; border-radius: 0 8px 8px 0; margin-top: 0.75rem; font-size: 0.82rem;">
+                <strong>Varování před <code>!important</code>:</strong><br>
+                Zvyšuje váhu mimo standardní systém. Začátečníci jej často používají k „opravě“ nefungujícího stylu, což vede k neudržitelné spirále chyb.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní DOM Selector Playground
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="DOM Selector Playground">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní laboratoř: DOM Selector Playground</h2>
+          <p class="slide-subtitle">Zadávej vlastní CSS selektory nebo klikni na předvolby. Sleduj okamžité zvýraznění prvků a výpočet specificity.</p>
+        </div>
+        <div class="slide-content">
+          <div class="selector-lab-grid">
+            <!-- Levý ovládací panel -->
+            <div class="selector-controls-box">
+              <div class="selector-input-wrap">
+                <label for="selectorInput" style="font-size: 0.85rem; font-weight: 700;">Zadej CSS selektor:</label>
+                <input type="text" id="selectorInput" class="selector-input" value=".karta" placeholder="např. .karta p, h3 + p, [disabled]...">
+                <span id="selectorError" style="font-size: 0.75rem; color: #f43f5e; min-height: 1rem;"></span>
+              </div>
+
+              <div class="quick-presets-group">
+                <h4>Rychlé ukázky (klikni):</h4>
+                <div class="preset-btn-list">
+                  <button type="button" class="preset-btn" data-selector="h3">h3 (tag)</button>
+                  <button type="button" class="preset-btn active" data-selector=".karta">.karta (class)</button>
+                  <button type="button" class="preset-btn" data-selector="#promo-karta">#promo-karta (ID)</button>
+                  <button type="button" class="preset-btn" data-selector=".karta p">.karta p (potomek)</button>
+                  <button type="button" class="preset-btn" data-selector=".karta > p">.karta > p (přímé dítě)</button>
+                  <button type="button" class="preset-btn" data-selector="h3 + p">h3 + p (soused)</button>
+                  <button type="button" class="preset-btn" data-selector="[data-role='admin']">[data-role='admin']</button>
+                  <button type="button" class="preset-btn" data-selector="button[disabled]">button[disabled]</button>
+                  <button type="button" class="preset-btn" data-selector="li:first-child">li:first-child</button>
+                  <button type="button" class="preset-btn" data-selector="li:nth-child(2)">li:nth-child(2)</button>
+                  <button type="button" class="preset-btn" data-selector=".btn:not(.btn-primary)">.btn:not(.btn-primary)</button>
+                </div>
+              </div>
+
+              <!-- Box specificity -->
+              <div class="specificity-box">
+                <span class="specificity-title">Vypočítaná specificita:</span>
+                <div class="spec-score-row">
+                  <div class="spec-col">
+                    <div class="spec-col-num" id="specInline">0</div>
+                    <div class="spec-col-lbl">Inline</div>
+                  </div>
+                  <div class="spec-col">
+                    <div class="spec-col-num" id="specId" style="color: #f59e0b;">0</div>
+                    <div class="spec-col-lbl">ID</div>
+                  </div>
+                  <div class="spec-col">
+                    <div class="spec-col-num" id="specClass" style="color: #38bdf8;">1</div>
+                    <div class="spec-col-lbl">Class / Attr</div>
+                  </div>
+                  <div class="spec-col">
+                    <div class="spec-col-num" id="specElement" style="color: #10b981;">0</div>
+                    <div class="spec-col-lbl">Element</div>
+                  </div>
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem; display: flex; justify-content: space-between;">
+                  <span>Odpovídá v DOM:</span>
+                  <strong id="matchCount" style="color: #fb923c;">2 prvky</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pravá plocha se simulovaným DOM stromem -->
+            <div class="dom-sandbox">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+                  Živý HTML Sandbox (DOM)
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">
+                  Zvýrazněné prvky mají rámeček MATCH
+                </span>
+              </div>
+
+              <div class="sandbox-container" id="domSandbox">
+                <!-- Karta 1 -->
+                <article class="karta" id="promo-karta" data-role="admin" style="background: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                  <h3 style="margin: 0 0 0.35rem 0; font-size: 1.05rem; color: var(--text-primary);">Prémiový balíček (ID: #promo-karta)</h3>
+                  <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: var(--text-secondary);">Přímý perexový odstavec pod nadpisem h3.</p>
+                  
+                  <div style="background: var(--bg-elevated); padding: 0.5rem; border-radius: 6px; margin-bottom: 0.5rem;">
+                    <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">Hlouběji vnořený odstavec uvnitř divu.</p>
+                  </div>
+
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button type="button" class="btn btn-primary" style="padding: 4px 10px; background: #f97316; color: #fff; border: none; border-radius: 4px; font-size: 0.78rem; font-weight: 600;">Koupit</button>
+                    <button type="button" class="btn btn-secondary" disabled style="padding: 4px 10px; background: #334155; color: #94a3b8; border: none; border-radius: 4px; font-size: 0.78rem;">Vyprodáno</button>
+                  </div>
+                </article>
+
+                <!-- Karta 2 -->
+                <article class="karta" data-role="user" style="background: var(--bg-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                  <h3 style="margin: 0 0 0.35rem 0; font-size: 1.05rem; color: var(--text-primary);">Standardní účet</h3>
+                  <p style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: var(--text-secondary);">Základní odstavec pro běžné uživatele.</p>
+                  
+                  <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.82rem; color: var(--text-secondary);">
+                    <li>První položka seznamu (li:first-child)</li>
+                    <li>Druhá položka (li:nth-child(2))</li>
+                    <li>Třetí položka (li:last-child)</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Souhrn a osvědčené postupy pro SPŠ
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Souhrn a doporučené postupy">
+        <div class="slide-header">
+          <h2 class="slide-title">Souhrn a osvědčené postupy pro psaní selektorů</h2>
+          <p class="slide-subtitle">Zásady profesionálního webdesignu pro čistý, rychlý a udržitelný kód.</p>
+        </div>
+        <div class="slide-content">
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3>1. Preferujte třídy</h3>
+              </div>
+              <ul class="styled-list">
+                <li>Styly pište pomocí <strong>tříd (<code>.class</code>)</strong>.</li>
+                <li>Vyhněte se stylům navázaným na ID (<code>#header</code>), protože znemožňují snadné znovupoužití a komplikují kaskádu.</li>
+                <li>Používejte rozumná pojmenování (např. metodiku BEM: <code>.card__title</code>).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+                </div>
+                <h3>2. Mělká specificita</h3>
+              </div>
+              <ul class="styled-list">
+                <li>Vyvarujte se dlouhých řetězců jako <code>body div.wrapper section.content article p span</code>.</li>
+                <li>Hluboké selektory zpomalují vykreslování a téměř nelze je přepsat jiným stylem.</li>
+                <li>Využívejte moderní <code>:is()</code> a <code>:where()</code>.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                </div>
+                <h3>3. Zákaz !important</h3>
+              </div>
+              <ul class="styled-list">
+                <li>Nikdy nepoužívejte <code>!important</code> jako záplatu pro špatně navrženou specificitu.</li>
+                <li>Pokud styl nefunguje, spočítejte si váhu selektorů a upravte strukturu pravidel, místo rozbíjení kaskády.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Ověření znalostí a kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Ověření znalostí: Kontrolní otázky</h2>
+          <p class="slide-subtitle">Otestujte si pochopení selektorů, pseudotříd a specificity. Kliknutím si zobrazíte správné řešení.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">1</span>
+                <p class="question-text">Jaký je přesný rozdíl mezi selektory <code>div p</code> a <code>div &gt; p</code> v DOM stromu?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Selektor <code>div p</code> používá kombinátor <strong>potomka (mezera)</strong> a vybere naprosto všechny odstavce nacházející se kdekoliv uvnitř <code>&lt;div&gt;</code>, i když jsou zanořené v dalších elementech (např. <code>div &gt; section &gt; p</code>). Naproti tomu <code>div &gt; p</code> je <strong>přímý potomek (dítě)</strong> a vybere pouze odstavce, které leží bezprostředně na první úrovni přímo pod tímto <code>&lt;div&gt;</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">2</span>
+                <p class="question-text">Které pravidlo zvítězí: <code>#menu a</code> (barva modrá) nebo <code>nav.primary-nav ul li a.link</code> (barva červená)? Zdůvodněte výpočtem specificity.</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Zvítězí <strong>modrá barva (#menu a)</strong>. Vypočítáme vektor specificity: <br>
+                1. <code>#menu a</code> má 1 ID a 1 element &rarr; váha <strong>(0, 1, 0, 1)</strong>.<br>
+                2. <code>nav.primary-nav ul li a.link</code> má 2 třídy a 4 elementy &rarr; váha <strong>(0, 0, 2, 4)</strong>.<br>
+                Jelikož hodnota na pozici ID (druhé číslo zleva) je u prvního selektoru 1 a u druhého 0, první selektor jednoznačně vyhrává, i když je mnohem kratší.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">3</span>
+                <p class="question-text">Proč se u pseudoelementu <code>::before</code> nic nevykreslí, pokud v CSS zapomenete uvést vlastnost <code>content</code>?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Dle specifikace W3C slouží pseudoelementy <code>::before</code> a <code>::after</code> ke generování virtuálního obsahu v render stromu prohlížeče. Výchozí hodnota vlastnosti <code>content</code> je <code>normal</code> (odpovídající <code>none</code>). Pokud vlastnost <code>content</code> explicitně nezadáte (postačí i prázdný řetězec <code>content: "";</code>), prohlížeč pseudoelement vůbec nevytvoří ani nevykreslí.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">4</span>
+                <p class="question-text">K čemu slouží revoluční pseudotřída <code>:has()</code> a proč se jí říká „rodičovský selektor“?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Pseudotřída <code>:has()</code> umožňuje naformátovat nadřazený element (nebo předchozího sourozence) na základě toho, jaké prvky obsahuje uvnitř sebe nebo v jakém stavu se nacházejí. Například <code>form:has(:invalid) button[type="submit"]</code> umožní vizuálně zakázat odesílací tlačítko, pokud libovolné pole formuláře není validní, aniž by k tomu byl potřeba JavaScript.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../030-Uvod-do-CSS/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 030 Úvod do CSS a Box model (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../032-Zakladni-vlastnosti/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 032 Základní vlastnosti CSS (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: CSS selektory
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 031 -->
+  <script src="css-selectors.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,386 @@
+/* ==========================================================================
+   SPŠ Webové technologie - Téma 039: CSS Animace a Transformace
+   Lokální dedikované styly pro předmět WEB (Webové technologie SPŠ)
+   ========================================================================== */
+
+:root {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.28);
+  --web-accent-light: #fb923c;
+  --anim-violet: #8b5cf6;
+  --anim-pink: #ec4899;
+  --anim-cyan: #06b6d4;
+  --anim-amber: #f59e0b;
+}
+
+/* Mřížky pro rozvržení karet */
+.grid-2, .grid-2-col, .content-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.grid-3, .grid-3-col, .content-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.grid-4, .grid-4-col, .content-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .grid-2, .grid-2-col, .content-grid-2,
+  .grid-3, .grid-3-col, .content-grid-3,
+  .grid-4, .grid-4-col, .content-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   1. Záhlaví snímků: Nadpis a podnadpis pod sebou
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   2. Hlavičky karet s inline SVG ikonami
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px !important;
+  height: 20px !important;
+  stroke-width: 2 !important;
+}
+
+.card-icon.violet {
+  background: rgba(139, 92, 246, 0.15) !important;
+  color: #a78bfa !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+}
+
+.card-icon.pink {
+  background: rgba(236, 72, 153, 0.15) !important;
+  color: #f472b6 !important;
+  border: 1px solid rgba(236, 72, 153, 0.3) !important;
+}
+
+.card-icon.cyan {
+  background: rgba(6, 182, 212, 0.15) !important;
+  color: #22d3ee !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+}
+
+.card-icon.amber {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+.card-icon.emerald {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+/* ==========================================================================
+   3. Interaktivní Keyframe Animator (Snímek 10)
+   ========================================================================== */
+.anim-studio-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.25rem;
+  min-height: 480px;
+}
+
+@media (max-width: 1024px) {
+  .anim-studio-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.anim-controls {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.anim-stage-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.anim-viewport {
+  background: var(--bg-surface);
+  border: 2px dashed rgba(139, 92, 246, 0.4);
+  border-radius: 12px;
+  padding: 1.5rem;
+  flex: 1;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.anim-target-box {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+  user-select: none;
+}
+
+/* Galerie mikrointerakcí (Snímek 11) */
+.micro-demo-box {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 140px;
+}
+
+/* Pulzující tlačítko */
+@keyframes pulseGlow {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.6); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 14px rgba(249, 115, 22, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+}
+
+.btn-pulsing {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Spinner */
+@keyframes spinRound {
+  to { transform: rotate(360deg); }
+}
+
+.spinner-demo {
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: spinRound 0.9s linear infinite;
+}
+
+/* Skeleton loader */
+@keyframes shimmerWave {
+  100% { transform: translateX(100%); }
+}
+
+.skeleton-bar {
+  position: relative;
+  width: 80%;
+  height: 14px;
+  border-radius: 6px;
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+
+.skeleton-bar::after {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  animation: shimmerWave 1.5s infinite;
+  content: '';
+}
+
+/* 3D Flip Card Demo (Snímek 4) */
+.flip-card-wrapper {
+  perspective: 800px;
+  width: 140px;
+  height: 90px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.flip-card-wrapper:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.flip-card-front {
+  background: rgba(139, 92, 246, 0.25);
+  border: 1px solid #8b5cf6;
+  color: #a78bfa;
+}
+
+.flip-card-back {
+  background: rgba(236, 72, 153, 0.25);
+  border: 1px solid #ec4899;
+  color: #f472b6;
+  transform: rotateY(180deg);
+}
+
+/* ==========================================================================
+   4. Opakovací otázky (Snímek 12)
+   ========================================================================== */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+}
+
+@media (max-width: 900px) {
+  .questions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.question-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 1.1rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.question-card:hover {
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.question-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.question-num {
+  color: #a78bfa;
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+}
+
+.question-btn {
+  background: rgba(139, 92, 246, 0.1);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.question-btn:hover {
+  background: rgba(139, 92, 246, 0.2);
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  border-left: 3px solid #8b5cf6;
+}
+
+.question-hint.visible {
+  display: block;
+}

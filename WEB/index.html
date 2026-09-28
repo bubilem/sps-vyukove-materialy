@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WEB: Webové technologie | Výukové materiály SPŠ</title>
-  <meta name="description" content="Katalog výukových materiálů a prezentací předmětu Webové technologie (WEB) pro studenty SPŠ: architektura webu, protokoly HTTP, vykreslovací pipeline, HTML5, CSS3 a moderní optimalizace.">
+  <meta name="description" content="Katalog výukových materiálů a prezentací předmětu Webové technologie (WEB) pro studenty SPŠ: architektura webu, protokoly HTTP, sémantický HTML5, ucelený 10tématický kurz moderního CSS3 (Flexbox, Grid, RWD, proměnné, a11y, animace, preprocesory) a optimalizace.">
 
   <!-- Společné styly pro katalogy a rozcestníky SPŠ -->
   <link rel="stylesheet" href="../assets/css/dashboard-core.css">
@@ -48,7 +48,7 @@
         </div>
         <div class="brand-info">
           <h1>Předmět WEB: Webové technologie</h1>
-          <p>Střední průmyslová škola &bull; Architektura webu, síťová HTTP pipeline, vykreslování v prohlížeči, moderní standardy a optimalizace</p>
+          <p>Střední průmyslová škola &bull; Architektura webu, síťová HTTP pipeline, sémantický HTML5, ucelený kurz moderního CSS3 a přístupnost a11y</p>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech WEB (např. klient server, HTTP, pipeline, CRP, DOM, CSSOM, async, defer, DNS, hosting, DevTools)..." autocomplete="off">
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech WEB (např. Flexbox, Grid, Box model, selektory, RWD, proměnné, a11y, animace, HTTP pipeline, HTML5, SCSS, BEM)..." autocomplete="off">
     </div>
 
     <!-- 4. Mřížka témat (Katalog témat SPŠ WEB) -->
@@ -176,23 +176,213 @@
         </div>
       </div>
 
-      <!-- Téma 030: Moderní CSS3 a layouty (V přípravě) -->
-      <div class="lesson-card" data-keywords="030 moderni css3 kaskada flexbox css grid responzivita media queries promenne custom properties animace plan" style="opacity: 0.85;">
+      <!-- Téma 030: Úvod do CSS a Box model (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="030 uvod do css box model historie hakon lie syntaxe selektor vlastnost hodnota barvy hex rgb hsl oklch jednotky px rem em vw vh content-box border-box margin padding border web">
         <div>
           <div class="lesson-card-top">
-            <span class="lesson-num">TÉMA 030</span>
-            <span class="lesson-exam-badge">V přípravě</span>
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 030</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Základy &bull; Box model</span>
           </div>
-          <h2>Moderní CSS3 a layouty</h2>
+          <h2>Úvod do CSS a Box model</h2>
           <p class="lesson-desc">
-            Kaskádové styly do hloubky: specificita selektorů, box-model, moderní rozvržení stránek pomocí Flexboxu a dvoudimenzionálního CSS Gridu. Responzivní design pomocí media queries a kontejnerových dotazů (container queries), CSS proměnné a plynulé animace.
+            Vznik a poslání kaskádových stylů, oddělení struktury od vzhledu a historie od 90. let. Způsoby připojení CSS k HTML (externí, interní, inline), základní syntaxe pravidla (selektor, vlastnost, hodnota), formáty barev (HEX, RGB, HSL, moderní OKLCH) a jednotek (px vs. rem, em, %, vw/vh). Hloubkový rozbor čtyř vrstev CSS Box modelu (margin, border, padding, content) a zásadní rozdíl mezi content-box a border-box.
           </p>
         </div>
         <div class="lesson-footer">
-          <span class="lesson-time">Připravuje se &bull; CSS3 &bull; Flex &amp; Grid</span>
-          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
-            Připravuje se
-          </span>
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Box Model Explorer</span>
+          <a href="030-Uvod-do-CSS/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 031: CSS selektory a pseudotřídy (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="031 css selektory pseudotridy kombinatory potomci deti sourozenci atributove selektory hover focus active nth-child not is where has pseudoelementy before after specificita kaskada web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 031</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">DOM selektory &bull; Specificita</span>
+          </div>
+          <h2>CSS selektory a pseudotřídy</h2>
+          <p class="lesson-desc">
+            Výběr obsahu z DOM stromu pro aplikaci stylů. Základní selektory (tag, class, id, seskupování), kombinátory vztahů (potomek, přímé dítě, sousední a obecný sourozenec), pokročilé atributové filtry ([attr^=], [attr$=], [attr*=]), dynamické pseudotřídy (:hover, :active, :focus-visible), strukturální indexování (:nth-child), moderní rodičovský selektor :has(), virtuální pseudoelementy (rozdíl mezi : a ::) a matematický výpočet specificity.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Selector Playground</span>
+          <a href="031-CSS-selektory/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 032: Základní vlastnosti CSS (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="032 zakladni vlastnosti css typografie font-family line-height color background gradient linear-gradient border border-radius outline box-shadow display block inline inline-block none visibility hidden opacity overflow web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 032</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Vlastnosti &bull; Typografie &bull; Vzhled</span>
+          </div>
+          <h2>Základní vlastnosti CSS</h2>
+          <p class="lesson-desc">
+            Praktický arzenál klíčových vlastností pro tvorbu každého webu. Typografie a čitelnost (font-family, fallback font stack, bezrozměrný line-height 1.5, text-align, text-decoration), barvy, obrázky a moderní CSS gradienty na pozadí, rámečky border a zaoblení border-radius, outline pro přístupný focus, prostorové stíny box-shadow, režimy toku zobrazení display (block, inline, inline-block, none), viditelnost a ořezávání přetékajícího obsahu (overflow).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Live CSS Studio</span>
+          <a href="032-Zakladni-vlastnosti/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 033: Pozicování a Flexbox (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="033 pozicovani flexbox position static relative absolute fixed sticky z-index stacking context display flex flex-direction row column justify-content align-items gap flex-grow flex-shrink flex-basis web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 033</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Pozicování &bull; 1D Layout</span>
+          </div>
+          <h2>Pozicování a Flexbox</h2>
+          <p class="lesson-desc">
+            Běžný tok dokumentu (Normal Flow) a vytržení prvků z toku: relativní, absolutní, fixní a lepivé pozicování (relative, absolute, fixed, sticky) se souřadnicemi. Třetí rozměr v CSS: vrstvení z-index a nástrahy nového Stacking Contextu. Pružné jednorozměrné rozvržení Flexbox: kontejner (display: flex), hlavní a příčná osa (flex-direction), zalamování (flex-wrap), zarovnávání (justify-content, align-items, gap) a pružnost položek (grow, shrink, basis).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Flexbox Playground</span>
+          <a href="033-Pozicovani-a-Flexbox/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 034: CSS Grid a 2D rozvržení (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="034 css grid 2d layout mrizka display grid grid-template-columns grid-template-rows fr repeat gap minmax grid-template-areas auto-fit auto-fill dense bento grid holy grail web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 034</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">CSS Grid &bull; 2D Rozvržení</span>
+          </div>
+          <h2>CSS Grid a 2D rozvržení</h2>
+          <p class="lesson-desc">
+            Dvourozměrný nativní systém rozvržení celého webu v řádcích i sloupcích současně (display: grid). Zlomková jednotka fr a funkce repeat(), mezery gap a zarovnávání. Umisťování prvků po liniích (grid-column/row) a šablonové oblasti grid-template-areas (ASCII art v CSS). Magická responzivní mřížka bez media queries s repeat(auto-fit, minmax()), automatické doplňování dense a rozhodovací matice Flexbox vs. CSS Grid.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Grid Builder</span>
+          <a href="034-CSS-Grid/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 035: Responzivní web a Media queries (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="035 responzivni web rwd media queries viewport mobile first desktop first breakpointy fluidni obrazky aspect ratio prefers-color-scheme dark mode prefers-reduced-motion container queries web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 035</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">RWD &bull; Media Queries</span>
+          </div>
+          <h2>Responzivní web a Media queries</h2>
+          <p class="lesson-desc">
+            Vytváření webů přizpůsobených všem zařízením. Nezbytný viewport meta tag, Mobile-First filozofie a čistá architektura bez přepisování desktopu. Pravidla @media (klasická vs. moderní syntaxe rozsahů), standardní breakpointy pro mobily, tablety a monitory. Pružné obrázky a aspect-ratio u videí, uživatelské preference (@media prefers-color-scheme pro Dark mode, prefers-reduced-motion pro přístupnost) a revoluční Container Queries.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Device Resizer</span>
+          <a href="035-Responzivni-web/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 036: Moderní CSS: Proměnné, Nesting a funkce (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="036 moderni css promenne custom properties var root nesting zanorovani calc min max clamp fluidni typografie kaskadove vrstvy layer color-mix oklch web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 036</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Moderní CSS &bull; Proměnné</span>
+          </div>
+          <h2>Moderní CSS: Proměnné, Nesting a funkce</h2>
+          <p class="lesson-desc">
+            Nativní technologie v čistém CSS: proměnné (Custom Properties --var, var() a dědičnost v DOM), přepínání barevných témat (Dark/Light mode). Nativní CSS Nesting se znakem &amp; bez nutnosti Sassu. Matematické funkce calc(), omezovací funkce min(), max() a revoluční clamp() pro fluidní písmo. Kaskádové vrstvy @layer proti konfliktům specificity a moderní barevné funkce (color-mix(), OKLCH).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Theme Studio &amp; Clamp</span>
+          <a href="036-Moderni-CSS/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 037: Webová přístupnost (a11y) v CSS (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="037 pristupnost a11y wcag kontrast focus-visible outline sr-only screen readery ctezky zvetseni textu rem daltonismus touch targets prefers-reduced-motion web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 037</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">a11y &bull; Přístupnost</span>
+          </div>
+          <h2>Webová přístupnost (a11y) v CSS</h2>
+          <p class="lesson-desc">
+            Standardy bezbariérového webu (WCAG 2.1) a principy POUR. Kontrastní poměry barev (4.5:1 pro běžný text, 3:1 pro velký text). Nebezpečí outline: none a moderní řešení pomocí :focus-visible pro ovládání klávesnicí. Čtečky obrazovek a technika .sr-only vs. display: none. Jednotky rem pro respekt ke zvětšování písma, daltonismus a doplňování barev o ikony, dotykové terče 44x44 px a ochrana před kinetózou (prefers-reduced-motion).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; a11y Simulátor</span>
+          <a href="037-Pristupnost-CSS/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 038: CSS Preprocesory, Architektura a Frameworky (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="038 css preprocesory sass scss less bem metodika blok element modifikator bootstrap tailwind utility first postcss autoprefixer minifikace web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 038</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Ekosystém &bull; Nástroje</span>
+          </div>
+          <h2>CSS Preprocesory, Architektura a Frameworky</h2>
+          <p class="lesson-desc">
+            Profesionální vývojový ekosystém. Princip kompilace Sass/SCSS (proměnné, nesting, mixiny, modulární systém @use/@forward). Metodika BEM pro pojmenovávání tříd bez kolizí ve velkém týmu. Porovnání tradičních komponentových frameworků (Bootstrap 5) a utility-first přístupu (Tailwind CSS). Produkční optimalizace: PostCSS, automatické doplňování vendor prefixů Autoprefixerem a minifikace stylů.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; SCSS Sandbox</span>
+          <a href="038-CSS-Preprocesory-a-Frameworky/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 039: CSS Animace a Transformace (AKTIVNÍ) -->
+      <div class="lesson-card" data-keywords="039 css animace transformace transition transform translate rotate scale skew 3d perspective keyframes gpu akcelerace composite reflow will change scroll driven mikrointerakce web">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 039</span>
+            <span class="lesson-exam-badge" style="color: #fb923c; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">Animace &bull; 60 FPS GPU</span>
+          </div>
+          <h2>CSS Animace a Transformace</h2>
+          <p class="lesson-desc">
+            Plynulé stavy a mikrointerakce. Přechody transition (časování cubic-bezier), 2D a 3D transformace (translate, rotate, scale, skew, prostorová perspektiva a otočné karty). Časová osa @keyframes a parametry animation (infinite, alternate, fill-mode forwards). Zásady 60/120 FPS vykreslování: proč animovat výhradně transform a opacity na GPU (Composite vrstva) a optimalizace s will-change.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Keyframe Animator</span>
+          <a href="039-CSS-Animace-a-Transformace/index.html" class="btn-launch-lesson" style="color: #fb923c;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
         </div>
       </div>
 

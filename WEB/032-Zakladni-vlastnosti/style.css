@@ -1,0 +1,375 @@
+/* ==========================================================================
+   SPŠ Webové technologie - Téma 032: Základní vlastnosti CSS
+   Lokální dedikované styly pro předmět WEB (Webové technologie SPŠ)
+   ========================================================================== */
+
+:root {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.28);
+  --web-accent-light: #fb923c;
+}
+
+/* Globální mřížky pro karty a rozvržení */
+.grid-2, .grid-2-col, .content-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.grid-3, .grid-3-col, .content-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.grid-4, .grid-4-col, .content-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .grid-2, .grid-2-col, .content-grid-2,
+  .grid-3, .grid-3-col, .content-grid-3,
+  .grid-4, .grid-4-col, .content-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   1. Záhlaví snímků: Nadpis a podnadpis pod sebou
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   2. Hlavičky karet s inline ikonami
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px !important;
+  height: 20px !important;
+  display: block !important;
+}
+
+.card-icon.orange {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
+  border: 1px solid rgba(249, 115, 22, 0.35) !important;
+}
+
+.card-icon.blue {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+}
+
+.card-icon.green {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+.card-icon.purple {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(168, 85, 247, 0.35) !important;
+}
+
+.card-icon.amber {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+/* ==========================================================================
+   3. Interaktivní CSS Property Live Styler
+   ========================================================================== */
+.styler-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1024px) {
+  .styler-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.styler-controls {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.styler-control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.styler-label-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.styler-val-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--web-accent-light);
+}
+
+.styler-input-select {
+  width: 100%;
+  padding: 6px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.styler-input-select:focus {
+  border-color: var(--web-accent);
+}
+
+.styler-slider {
+  width: 100%;
+  accent-color: var(--web-accent);
+  cursor: pointer;
+}
+
+/* Živý náhled vpravo */
+.styler-preview-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.styler-stage {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 16px 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.styler-card-target {
+  width: 280px;
+  transition: all 0.15s ease-out;
+  text-align: left;
+}
+
+.code-output-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.code-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-output-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.btn-copy-css {
+  padding: 4px 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-css:hover {
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--web-accent-light);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+/* ==========================================================================
+   4. Otázky a interaktivní akordeony
+   ========================================================================== */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: all 0.25s ease;
+}
+
+.question-card:hover {
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+.question-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.question-number {
+  width: 28px;
+  height: 28px;
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--web-accent-light);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.question-text {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.question-answer-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.question-answer-btn:hover {
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--web-accent-light);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.question-answer-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s ease;
+}
+
+.question-answer-btn.open svg {
+  transform: rotate(180deg);
+}
+
+.question-hint {
+  display: none;
+  padding: 0.85rem 1rem;
+  background: rgba(249, 115, 22, 0.08);
+  border-left: 3px solid var(--web-accent);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  animation: fadeInHint 0.25s ease forwards;
+}
+
+.question-hint.visible {
+  display: block;
+}
+
+@keyframes fadeInHint {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

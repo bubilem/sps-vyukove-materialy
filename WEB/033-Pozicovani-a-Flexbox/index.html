@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 033: Pozicování a Flexbox | WEB • SPŠ</title>
+  <meta name="description" content="Pozicování v CSS (relative, absolute, fixed, sticky, z-index) a moderní jednorozměrný layout Flexbox pro studenty SPŠ.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 033 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">033 Pozicování a Flexbox</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Pozicování &bull; Flexbox</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Pozicování a Flexbox v CSS">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 033</span>
+            <span class="badge">CSS Rozvržení &amp; Layout</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Pozicování &bull; Flexbox</span>
+          </div>
+          <h1 class="hero-title">Pozicování a Flexbox v CSS</h1>
+          <p class="hero-subtitle">
+            Ovládněte prostor a rozvržení prvků na webové stránce &bull; Od běžného toku dokumentu (Normal Flow) přes relativní, absolutní, fixní a sticky pozicování, vrstvení s indexem z-index až po moderní pružný jednorozměrný layout CSS Flexbox.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                Běžný tok a Static
+              </h4>
+              <p>Výchozí řazení prvků shora dolů a zleva doprava bez vlivu posunovacích souřadnic.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Relative &amp; Absolute
+              </h4>
+              <p>Posun vůči původnímu místu a absolutní usazení k nejbližšímu pozicovanému rodiči.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                Fixed, Sticky a Z-index
+              </h4>
+              <p>Přilepení k viewportu při skrolování a 3D vrstvení do hloubky se stacking contextem.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                Flexbox Container &amp; Items
+              </h4>
+              <p>Jednorozměrný pružný model: hlavní a příčná osa, zarovnání, flex-grow a shrink.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Normální tok dokumentu a static
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Běžný tok dokumentu a position: static">
+        <div class="slide-header">
+          <h2 class="slide-title">Běžný tok dokumentu (Normal Flow) a <code>position: static</code></h2>
+          <p class="slide-subtitle">Jak prohlížeč přirozeně řadí prvky a proč na <code>static</code> nefungují souřadnice.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon orange">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                </div>
+                <h3>Výchozí chování prohlížeče</h3>
+              </div>
+              <ul class="styled-list">
+                <li><strong>Výchozí hodnota pro všechno:</strong> Každý HTML element má automaticky <code>position: static;</code>, pokud nestanovíte jinak.</li>
+                <li><strong>Pořadí podle DOM stromu:</strong> Blokové elementy (<code>div</code>, <code>p</code>, <code>h1</code>) se řadí shora dolů pod sebe. Řádkové (<code>span</code>, <code>a</code>) plynou vedle sebe zleva doprava jako slova ve větě.</li>
+                <li><strong>Rezervované místo:</strong> Každý prvek si v toku stránky nárokuje přesný prostor daný svým box modelem.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                </div>
+                <h3>Častá chyba začátečníků: Souřadnice</h3>
+              </div>
+              <p>Pokud má prvek <code>position: static</code>, prohlížeč <strong>zcela ignoruje</strong> vlastnosti:</p>
+              <div class="code-block"><pre><code><span class="css-prop">top</span>: <span class="css-val">50px</span>;     <span class="html-comm">/* Ignorováno! */</span>
+<span class="css-prop">right</span>: <span class="css-val">20px</span>;   <span class="html-comm">/* Ignorováno! */</span>
+<span class="css-prop">bottom</span>: <span class="css-val">0</span>;     <span class="html-comm">/* Ignorováno! */</span>
+<span class="css-prop">left</span>: <span class="css-val">10px</span>;    <span class="html-comm">/* Ignorováno! */</span>
+<span class="css-prop">z-index</span>: <span class="css-val">100</span>;  <span class="html-comm">/* Ignorováno! */</span></code></pre></div>
+              <p style="font-size: 0.86rem; color: var(--text-muted); margin-top: 0.5rem;">
+                Chceme-li prvek někam posunout pomocí souřadnic nebo vrstvit pomocí <code>z-index</code>, <strong>musíme změnit typ pozicování</strong> na <code>relative</code>, <code>absolute</code>, <code>fixed</code> nebo <code>sticky</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Relativní a absolutní pozicování
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="position: relative a absolute">
+        <div class="slide-header">
+          <h2 class="slide-title">Relativní (<code>relative</code>) vs. Absolutní (<code>absolute</code>) pozicování</h2>
+          <p class="slide-subtitle">Rozdíl mezi posunem vůči původnímu místu a vytržením prvku do nového vztažného rámce.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- Relative -->
+            <div class="content-card">
+              <span class="badge badge-accent">position: relative</span>
+              <h3 style="margin-top: 0.5rem;">Relativní posun vůči sobě samému</h3>
+              <ul class="styled-list" style="font-size: 0.88rem;">
+                <li>Prvek se posune o <code>top</code>, <code>left</code> apod. <strong>ze své původní pozice</strong>.</li>
+                <li><strong>Místo v toku zůstává rezervované!</strong> Ostatní prvky na stránce se neposunou, jako by prvek stále stál na svém místě.</li>
+                <li>Slouží jako <strong>kotevní bod</strong> pro své absolutně pozicované potomky.</li>
+              </ul>
+              <div class="code-block" style="font-size: 0.8rem;"><pre><code><span class="css-sel">.posunuty-box</span> {
+  <span class="css-prop">position</span>: <span class="css-val">relative</span>;
+  <span class="css-prop">top</span>: <span class="css-val">20px</span>;
+  <span class="css-prop">left</span>: <span class="css-val">25px</span>;
+}</code></pre></div>
+            </div>
+
+            <!-- Absolute -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">position: absolute</span>
+              <h3 style="margin-top: 0.5rem;">Vytržení z toku &amp; Hledání kotevního rodiče</h3>
+              <ul class="styled-list" style="font-size: 0.88rem;">
+                <li><strong>Prvek je vytržen z toku:</strong> Nezanechává za sebou žádné prázdné místo, okolní prvky se semknou.</li>
+                <li>Vůči komu se počítají souřadnice? Vůči <strong>nejbližšímu předkovi</strong>, který má pozici jinou než <code>static</code> (typicky <code>relative</code>).</li>
+                <li>Nenajde-li žádného takového předka, ukotví se vůči kořenu stránky (oknu prohlížeče).</li>
+              </ul>
+              <div class="code-block" style="font-size: 0.8rem;"><pre><code><span class="css-sel">.rodic</span> { <span class="css-prop">position</span>: <span class="css-val">relative</span>; }
+<span class="css-sel">.odznak-v-rohu</span> {
+  <span class="css-prop">position</span>: <span class="css-val">absolute</span>;
+  <span class="css-prop">top</span>: <span class="css-val">10px</span>;
+  <span class="css-prop">right</span>: <span class="css-val">10px</span>;
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Fixní a lepivé pozicování
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="position: fixed a sticky">
+        <div class="slide-header">
+          <h2 class="slide-title">Fixní (<code>fixed</code>) a Lepivé (<code>sticky</code>) pozicování</h2>
+          <p class="slide-subtitle">Vytváření plovoucích prvků, stálých hlaviček a interaktivních postranních panelů.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- Fixed -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 0-4 4v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-2V6a4 4 0 0 0-4-4z"></path></svg>
+                </div>
+                <h3><code>position: fixed</code> (Přišpendleno k oknu)</h3>
+              </div>
+              <ul class="styled-list">
+                <li>Prvek je vytržen z toku a <strong>ukotven přímo k průzoru prohlížeče (viewportu)</strong>.</li>
+                <li>Při scrollování stránky zůstává <strong>stále na stejném místě na obrazovce</strong>.</li>
+                <li><em>Typické využití:</em> Vždy viditelná horní navigační lišta, tlačítko „Zpět nahoru“ v pravém dolním rohu, lišta pro cookies.</li>
+              </ul>
+              <div class="code-block" style="font-size: 0.82rem;"><pre><code><span class="css-sel">.top-navbar</span> {
+  <span class="css-prop">position</span>: <span class="css-val">fixed</span>;
+  <span class="css-prop">top</span>: <span class="css-val">0</span>;
+  <span class="css-prop">left</span>: <span class="css-val">0</span>;
+  <span class="css-prop">width</span>: <span class="css-val">100%</span>;
+  <span class="css-prop">z-index</span>: <span class="css-val">1000</span>;
+}</code></pre></div>
+            </div>
+
+            <!-- Sticky -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                </div>
+                <h3><code>position: sticky</code> (Chytré přilepení)</h3>
+              </div>
+              <ul class="styled-list">
+                <li>Hybrid mezi <code>relative</code> a <code>fixed</code>.</li>
+                <li>Zpočátku se chová jako <strong>běžný prvek v toku</strong>. Jakmile však uživatel doscrolluje k zadané hranici (např. <code>top: 0</code>), prvek se <strong>přilepí k obrazovce</strong>.</li>
+                <li><strong>Pozor na rodiče:</strong> Lepí se pouze v rámci hranic svého přímého rodiče. Pokud rodič odroluje z obrazovky, odroluje s ním i sticky prvek!</li>
+              </ul>
+              <div class="code-block" style="font-size: 0.82rem;"><pre><code><span class="css-sel">.table-header</span> {
+  <span class="css-prop">position</span>: <span class="css-val">sticky</span>;
+  <span class="css-prop">top</span>: <span class="css-val">0</span>; <span class="html-comm">/* Povinná souřadnice pro přilepení! */</span>
+  <span class="css-prop">background</span>: <span class="css-val">#1e293b</span>;
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Třetí rozměr a Stacking Context
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="z-index a Stacking Context">
+        <div class="slide-header">
+          <h2 class="slide-title">Třetí rozměr v CSS: <code>z-index</code> a Stacking Context</h2>
+          <p class="slide-subtitle">Jak funguje vrstvení prvků nad sebou a proč samotné zvětšování čísla z-indexu na 999 999 často vůbec nepomáhá.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col" style="align-items: start; gap: 1.25rem;">
+            
+            <!-- Levý sloupec: Pravidla a princip kapitol -->
+            <div class="content-card">
+              <span class="badge badge-accent">Teorie &amp; Pravidla</span>
+              <h3 style="margin-top: 0.5rem; font-size: 1.1rem;">Hierarchie vrstvení a analogie kapitol</h3>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 0.6rem;">
+                Vlastnost <code>z-index</code> určuje pozici prvku na ose Z (kolmo k monitoru). Funguje však <strong>pouze na pozicovaných prvcích</strong> (ne na <code>static</code>).
+              </p>
+
+              <div style="background: rgba(99, 102, 241, 0.08); border-left: 3px solid #6366f1; padding: 0.65rem 0.85rem; border-radius: 0 6px 6px 0; font-size: 0.84rem; margin-bottom: 0.75rem;">
+                <strong>Princip kapitol (Krabice v krabici):</strong><br>
+                Prvky uvnitř kontextu vrstvení soupeří <em>pouze mezi sebou</em>. Rodič s <code>z-index: 1</code> vytvoří úroveň <code>1.x</code>. Rodič s <code>z-index: 2</code> úroveň <code>2.x</code>.
+                <div style="font-family: var(--font-mono, monospace); font-weight: 700; color: #818cf8; margin-top: 0.35rem;">
+                  Potomek A = 1.999999 &nbsp;&lt;&nbsp; Potomek B = 2.000001
+                </div>
+              </div>
+
+              <h4 style="font-size: 0.92rem; margin-bottom: 0.35rem; color: var(--text-primary);">Co zakládá nový Stacking Context?</h4>
+              <ul class="styled-list" style="font-size: 0.82rem; line-height: 1.45;">
+                <li><code>position: relative / absolute</code> s číselným <code>z-index</code> (ne <code>auto</code>)</li>
+                <li><code>position: fixed</code> nebo <code>sticky</code></li>
+                <li><code>opacity &lt; 1</code> <span style="color: #f59e0b;">(častá záludnost při animacích!)</span></li>
+                <li><code>transform</code>, <code>filter</code>, <code>backdrop-filter</code> jiné než <code>none</code></li>
+                <li><code>isolation: isolate</code> <span style="color: #10b981;">(bezpečné uzavření kontextu komponenty)</span></li>
+              </ul>
+            </div>
+
+            <!-- Pravý sloupec: Živá interaktivní simulace -->
+            <div class="content-card" style="display: flex; flex-direction: column;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span class="badge" style="border-color: #f59e0b; color: #fbbf24;">Živý experiment</span>
+                <span id="stackStatusBadge" style="font-size: 0.78rem; font-weight: 700; color: #f43f5e; background: rgba(244, 63, 94, 0.15); border: 1px solid rgba(244, 63, 94, 0.4); padding: 0.25rem 0.65rem; border-radius: 4px; transition: all 0.3s ease;">Rodič B je navrchu (2 &gt; 1)</span>
+              </div>
+              <h3 style="font-size: 1.1rem; margin-bottom: 0.4rem;">Proč z-index 999 999 prohrává?</h3>
+
+              <!-- Scéna s překrývajícími se boxy (centrovaná, pevná šířka pro jistý překryv na jakémkoliv monitoru) -->
+              <div style="position: relative; width: 100%; max-width: 500px; height: 230px; margin: 0.5rem auto; background: #090d16; border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
+                
+                <!-- Rodič A -->
+                <div id="stackParentA" style="position: absolute; top: 15px; left: 20px; width: 240px; height: 180px; background: #0c1e33; border: 2px solid #38bdf8; border-radius: 10px; padding: 10px; z-index: 1; box-shadow: 0 8px 20px rgba(0,0,0,0.6); transition: all 0.35s ease;">
+                  <div style="font-size: 0.78rem; font-weight: 700; color: #38bdf8; display: flex; justify-content: space-between; align-items: center;">
+                    <span>📁 Rodič A (Kontext 1)</span>
+                    <span id="stackParentALabel" style="background: rgba(56, 189, 248, 0.25); color: #7dd3fc; padding: 2px 7px; border-radius: 4px; font-family: var(--font-mono, monospace);">z-index: 1</span>
+                  </div>
+                  <!-- Potomek A s obřím z-indexem -->
+                  <div style="position: absolute; top: 50px; left: 40px; width: 220px; height: 105px; background: #064e3b; color: #ecfdf5; border-radius: 8px; padding: 8px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 2px solid #10b981;">
+                    <div style="font-size: 0.85rem; font-weight: 700;">📄 Potomek A</div>
+                    <div style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-mono, monospace); background: rgba(0,0,0,0.45); color: #34d399; padding: 2px 8px; border-radius: 4px; margin-top: 4px; border: 1px solid rgba(52, 211, 153, 0.4);">z-index: 999 999</div>
+                    <div style="font-size: 0.7rem; color: #a7f3d0; margin-top: 4px;">Uvězněn v Rodiči A (úroveň 1.x)</div>
+                  </div>
+                </div>
+
+                <!-- Rodič B -->
+                <div id="stackParentB" style="position: absolute; top: 35px; left: 190px; width: 240px; height: 180px; background: #26123d; border: 2px solid #a855f7; border-radius: 10px; padding: 10px; z-index: 2; box-shadow: 0 8px 20px rgba(0,0,0,0.6); transition: all 0.35s ease;">
+                  <div style="font-size: 0.78rem; font-weight: 700; color: #c084fc; display: flex; justify-content: space-between; align-items: center;">
+                    <span>📁 Rodič B (Kontext 2)</span>
+                    <span style="background: rgba(168, 85, 247, 0.25); color: #e9d5ff; padding: 2px 7px; border-radius: 4px; font-family: var(--font-mono, monospace);">z-index: 2</span>
+                  </div>
+                  <!-- Potomek B s malým z-indexem -->
+                  <div style="position: absolute; top: 50px; left: 20px; width: 200px; height: 105px; background: #7c2d12; color: #fff7ed; border-radius: 8px; padding: 8px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); z-index: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border: 2px solid #f97316;">
+                    <div style="font-size: 0.85rem; font-weight: 700;">📄 Potomek B</div>
+                    <div style="font-size: 0.95rem; font-weight: 800; font-family: var(--font-mono, monospace); background: rgba(0,0,0,0.45); color: #fb923c; padding: 2px 8px; border-radius: 4px; margin-top: 4px; border: 1px solid rgba(251, 146, 60, 0.4);">z-index: 1</div>
+                    <div style="font-size: 0.7rem; color: #fed7aa; margin-top: 4px;">Překrývá Potomka A! (úroveň 2.x)</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Interaktivní ovládání tlačítek se zřetelnými stavy -->
+              <div style="display: flex; gap: 0.6rem; margin-top: 0.4rem;">
+                <button type="button" id="btnRaiseParentA" style="flex: 1; height: 38px; font-size: 0.82rem; font-weight: 700; border-radius: 6px; background: #38bdf8; border: 1px solid #38bdf8; color: #0b1329; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);">
+                  Zvýšit Rodiče A (z-index: 3) &rarr;
+                </button>
+                <button type="button" id="btnResetParentA" style="flex: 1; height: 38px; font-size: 0.82rem; font-weight: 600; border-radius: 6px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.35); cursor: not-allowed; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;" disabled>
+                  Resetovat Rodiče A (z-index: 1)
+                </button>
+              </div>
+
+              <p id="stackExplainText" style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.45; background: rgba(255,255,255,0.03); padding: 0.6rem 0.8rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
+                <strong>Výchozí stav:</strong> Potomek B (oranžový) leží <strong>NAD</strong> Potomkem A (zeleným), i když má z-index jen 1 oproti 999 999! Rodič B má totiž <code>z-index: 2</code>, který poráží Rodiče A s <code>z-index: 1</code>.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Úvod do Flexboxu
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Revoluce jménem Flexbox">
+        <div class="slide-header">
+          <h2 class="slide-title">Revoluce jménem Flexbox: Konec trápení s layoutem</h2>
+          <p class="slide-subtitle">Flexible Box Layout – nativní standard pro moderní jednorozměrné rozvržení obsahu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                </div>
+                <h3>Proč Flexbox změnil webový vývoj?</h3>
+              </div>
+              <p style="font-size: 0.9rem;">
+                V minulosti se weby stavěly pomocí tabulek a později obtékání (<code>float</code> a <code>clearfix</code>). Vycentrovat prvek svisle byla noční můra každého kodéra.
+              </p>
+              <ul class="styled-list" style="font-size: 0.88rem; margin-top: 0.5rem;">
+                <li><strong>Jednorozměrný (1D):</strong> Řeší rozvržení buď v řádku, nebo ve sloupci (na rozdíl od 2D Gridu).</li>
+                <li><strong>Přirozená pružnost:</strong> Prvky se automaticky roztahují nebo smršťují podle volného místa na displeji.</li>
+                <li><strong>Hračka pro centrování:</strong> Vycentrování na střed obou os zabere pouhé 3 řádky kódu!</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h3>Koncept: Rodič (Container) a Potomci (Items)</h3>
+              </div>
+              <p style="font-size: 0.88rem;">Flexbox dělí pravidla striktně do dvou kategorií:</p>
+              <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem;">
+                <div style="background: var(--bg-elevated); padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.84rem;">
+                  <strong style="color: #38bdf8;">1. Flex Container (Obal / Rodič):</strong><br>
+                  Aktivuje se pomocí <code>display: flex;</code>. Nastavuje směr toku, zalamování a celkové zarovnání potomků.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.6rem 0.8rem; border-radius: 6px; font-size: 0.84rem;">
+                  <strong style="color: #34d399;">2. Flex Items (Položky / Přímé děti):</strong><br>
+                  Všechny přímé elementy uvnitř kontejneru se stanou flexibilními. Určují svou pružnost, schopnost růst, smršťovat se a vlastní individuální zarovnání.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Osy a zalamování ve Flexboxu
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Osy a zalamování flex-wrap">
+        <div class="slide-header">
+          <h2 class="slide-title">Hlavní osa, příčná osa a zalamování (<code>flex-wrap</code>)</h2>
+          <p class="slide-subtitle">Základní geometrie: pochopení, která osa je hlavní, určuje fungování všech ostatních vlastností.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- flex-direction -->
+            <div class="content-card">
+              <span class="badge badge-accent">flex-direction</span>
+              <h3 style="margin-top: 0.5rem;">Směr toku: Která osa je hlavní?</h3>
+              <p style="font-size: 0.86rem;">Výchozí směr je <code>row</code> (vodorovný řádek zleva doprava).</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.6rem;">
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.84rem;">
+                  <code>flex-direction: row;</code> &rarr; Hlavní osa je vodorovná (X), příčná osa svislá (Y).
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.84rem;">
+                  <code>flex-direction: column;</code> &rarr; <strong>Prohození os!</strong> Hlavní osa je svislá (shora dolů), příčná vodorovná.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.84rem;">
+                  <code>row-reverse</code> / <code>column-reverse</code> &rarr; Otočí pořadí prvků v opačném směru.
+                </div>
+              </div>
+            </div>
+
+            <!-- flex-wrap -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #a855f7; color: #c084fc;">flex-wrap</span>
+              <h3 style="margin-top: 0.5rem;">Zalamování do více řádků</h3>
+              <p style="font-size: 0.86rem;">Ve výchozím stavu se Flexbox zuby nehty snaží nacpat všechny prvky do <strong>jednoho jediného řádku</strong> (<code>flex-wrap: nowrap;</code>), i kdyby se měly deformovat a smrštit.</p>
+              
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.6rem 0;"><pre><code><span class="css-sel">.container</span> {
+  <span class="css-prop">display</span>: <span class="css-val">flex</span>;
+  <span class="css-prop">flex-wrap</span>: <span class="css-val">wrap</span>; <span class="html-comm">/* Pokud prvek nevejde, přeteče na nový řádek! */</span>
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Zkratka <strong><code>flex-flow</code></strong>: spojuje <code>direction</code> a <code>wrap</code> dohromady (např. <code>flex-flow: row wrap;</code>).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Zarovnávání: justify-content a align-items
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Zarovnávání prvků na osách">
+        <div class="slide-header">
+          <h2 class="slide-title">Zarovnávání na osách a moderní mezery (<code>gap</code>)</h2>
+          <p class="slide-subtitle">Dokonalá kontrola nad rozestupy a zarovnáním prvků bez nutnosti počítat záporné marginy.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- Hlavní osa -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+                <h3>1. <code>justify-content</code> (Hlavní osa)</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Určuje rozprostření volného místa podél <strong>hlavní osy</strong>:</p>
+              <ul class="styled-list" style="font-size: 0.82rem;">
+                <li><code>flex-start</code>: Natlačí položky na začátek (výchozí).</li>
+                <li><code>center</code>: Umístí všechny položky doprostřed.</li>
+                <li><code>flex-end</code>: Natlačí položky na konec.</li>
+                <li><code>space-between</code>: První prvek na začátku, poslední na konci, rovnoměrné mezery mezi nimi (skvělé pro navigace!).</li>
+                <li><code>space-around</code> / <code>space-evenly</code>: Rovnoměrné mezery i kolem krajních prvků.</li>
+              </ul>
+            </div>
+
+            <!-- Příčná osa a gap -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="5 12 12 19 19 12"></polyline></svg>
+                </div>
+                <h3>2. <code>align-items</code> (Příčná osa) &amp; <code>gap</code></h3>
+              </div>
+              <p style="font-size: 0.84rem;">Určuje zarovnání napříč podél <strong>příčné osy</strong>:</p>
+              <ul class="styled-list" style="font-size: 0.82rem;">
+                <li><code>stretch</code>: Roztáhne položky na celou výšku (výchozí).</li>
+                <li><code>center</code>: Vycentruje svisle na střed (vertikální centrování!).</li>
+                <li><code>flex-start</code> / <code>flex-end</code>: Zarovná k hornímu/dolnímu okraji.</li>
+              </ul>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.5rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-top: 0.5rem;">
+                <strong style="color: #34d399;">Vlastnost <code>gap</code>: Konec margin trikům!</strong><br>
+                Zápis <code>gap: 1.5rem;</code> vytvoří mezeru <em>výhradně mezi</em> flex položkami. Nikdy nepřidá nechtěný okraj na vnější hrany kontejneru.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Pružnost položek (grow, shrink, basis)
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Pružnost: grow, shrink, basis">
+        <div class="slide-header">
+          <h2 class="slide-title">Pružnost položek: <code>flex-grow</code>, <code>flex-shrink</code> a <code>flex-basis</code></h2>
+          <p class="slide-subtitle">Jak potomci reagují na přebytek či nedostatek místa v kontejneru.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3-col">
+            <!-- flex-grow -->
+            <div class="content-card">
+              <span class="badge badge-accent">Schopnost růst</span>
+              <h3 style="margin-top: 0.5rem;"><code>flex-grow</code></h3>
+              <p style="font-size: 0.84rem;">Koeficient rozdělení <strong>zbývajícího volného místa</strong>.</p>
+              <ul class="styled-list" style="font-size: 0.8rem;">
+                <li>Výchozí hodnota je <strong><code>0</code></strong> (prvek neroste, zachovává svou velikost).</li>
+                <li>Hodnota <code>1</code> znamená: „Rozdělte si zbývající volné místo rovným dílem“.</li>
+                <li>Má-li jeden prvek <code>flex-grow: 2</code> a druhý <code>1</code>, první získá dvojnásobek přebývajícího prostoru.</li>
+              </ul>
+            </div>
+
+            <!-- flex-shrink -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">Schopnost smrštit se</span>
+              <h3 style="margin-top: 0.5rem;"><code>flex-shrink</code></h3>
+              <p style="font-size: 0.84rem;">Ochota prvku <strong>zmenšit se</strong>, pokud je místa málo.</p>
+              <ul class="styled-list" style="font-size: 0.8rem;">
+                <li>Výchozí hodnota je <strong><code>1</code></strong> (prvek se smrští, aby nepřetekl).</li>
+                <li>Hodnota <strong><code>0</code></strong> je extrémně důležitá v praxi: <em>znamená přísný zákaz zmenšování</em> (např. pro ikony či avatary, které se nesmí zploštit).</li>
+              </ul>
+            </div>
+
+            <!-- flex-basis & zkratka -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Výchozí rozměr &amp; Shorthand</span>
+              <h3 style="margin-top: 0.5rem;"><code>flex-basis</code> a zkratka</h3>
+              <p style="font-size: 0.84rem;">Výchozí šířka před aplikací grow/shrink (např. <code>200px</code> nebo <code>auto</code>).</p>
+              <div class="code-block" style="font-size: 0.76rem; margin-top: 0.4rem;"><pre><code><span class="html-comm">/* Zkratka: grow shrink basis */</span>
+<span class="css-prop">flex</span>: <span class="css-val">1 1 auto</span>;   <span class="html-comm">/* Plně pružný */</span>
+<span class="css-prop">flex</span>: <span class="css-val">0 0 60px</span>;  <span class="html-comm">/* Pevný nerozbitný box */</span>
+<span class="css-prop">flex</span>: <span class="css-val">1</span>;         <span class="html-comm">/* flex: 1 1 0% */</span></code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní Flexbox Playground
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Flexbox Playground">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor: Flexbox Playground</h2>
+          <p class="slide-subtitle">Vyzkoušejte si chování všech vlastností kontejneru i jednotlivých položek v reálném čase.</p>
+        </div>
+        <div class="slide-content">
+          <div class="fb-playground-grid">
+            <!-- Ovládací panel -->
+            <div class="fb-controls-panel">
+              <span class="badge badge-accent">Vlastnosti kontejneru</span>
+
+              <div class="fb-control-group">
+                <label class="fb-control-label" for="fbDirection">
+                  <span>flex-direction:</span>
+                </label>
+                <select id="fbDirection" class="fb-select">
+                  <option value="row" selected>row (vodorovně)</option>
+                  <option value="row-reverse">row-reverse</option>
+                  <option value="column">column (svisle)</option>
+                  <option value="column-reverse">column-reverse</option>
+                </select>
+              </div>
+
+              <div class="fb-control-group">
+                <label class="fb-control-label" for="fbJustify">
+                  <span>justify-content:</span>
+                </label>
+                <select id="fbJustify" class="fb-select">
+                  <option value="flex-start" selected>flex-start</option>
+                  <option value="center">center</option>
+                  <option value="flex-end">flex-end</option>
+                  <option value="space-between">space-between</option>
+                  <option value="space-around">space-around</option>
+                  <option value="space-evenly">space-evenly</option>
+                </select>
+              </div>
+
+              <div class="fb-control-group">
+                <label class="fb-control-label" for="fbAlign">
+                  <span>align-items:</span>
+                </label>
+                <select id="fbAlign" class="fb-select">
+                  <option value="stretch" selected>stretch</option>
+                  <option value="flex-start">flex-start</option>
+                  <option value="center">center</option>
+                  <option value="flex-end">flex-end</option>
+                  <option value="baseline">baseline</option>
+                </select>
+              </div>
+
+              <div class="fb-control-group">
+                <label class="fb-control-label" for="fbWrap">
+                  <span>flex-wrap:</span>
+                </label>
+                <select id="fbWrap" class="fb-select">
+                  <option value="nowrap" selected>nowrap (jeden řádek)</option>
+                  <option value="wrap">wrap (zalamovat)</option>
+                  <option value="wrap-reverse">wrap-reverse</option>
+                </select>
+              </div>
+
+              <div class="fb-control-group">
+                <label class="fb-control-label" for="fbGap">
+                  <span>gap:</span>
+                </label>
+                <select id="fbGap" class="fb-select">
+                  <option value="0px">0px</option>
+                  <option value="8px">8px</option>
+                  <option value="16px" selected>16px</option>
+                  <option value="24px">24px</option>
+                  <option value="32px">32px</option>
+                </select>
+              </div>
+
+              <div style="border-top: 1px dashed var(--border-subtle); padding-top: 0.6rem; margin-top: 0.2rem;">
+                <span class="badge" style="border-color: #38bdf8; color: #38bdf8;" id="fbSelectedItemLabel">Položka č. 1</span>
+                
+                <div class="fb-control-group" style="margin-top: 0.4rem;">
+                  <label class="fb-control-label" for="fbItemAlign">align-self:</label>
+                  <select id="fbItemAlign" class="fb-select">
+                    <option value="auto" selected>auto (dědí)</option>
+                    <option value="flex-start">flex-start</option>
+                    <option value="center">center</option>
+                    <option value="flex-end">flex-end</option>
+                    <option value="stretch">stretch</option>
+                  </select>
+                </div>
+
+                <div class="fb-control-group" style="margin-top: 0.4rem;">
+                  <label class="fb-control-label" for="fbItemGrow">flex-grow:</label>
+                  <select id="fbItemGrow" class="fb-select">
+                    <option value="0" selected>0 (výchozí)</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.4rem; margin-top: 0.4rem;">
+                <button type="button" class="btn btn-secondary" id="fbAddItemBtn" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" title="Přidat položku">+ Přidat</button>
+                <button type="button" class="btn btn-secondary" id="fbRemoveItemBtn" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" title="Odebrat položku">- Odebrat</button>
+                <button type="button" class="btn btn-secondary" id="fbResetBtn" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;" title="Resetovat nastavení">Reset</button>
+              </div>
+            </div>
+
+            <!-- Živá plocha a výstup kódu -->
+            <div class="fb-preview-panel">
+              <div class="fb-stage-wrapper">
+                <div class="fb-stage-badge">.container { display: flex; }</div>
+                <div class="fb-container-target" id="fbTargetContainer"></div>
+              </div>
+
+              <div class="fb-code-output">
+                <pre style="margin: 0;"><code id="fbGeneratedCss">.container {
+  display: flex;
+  gap: 16px;
+}</code></pre>
+                <button type="button" class="btn-copy" id="fbCopyCodeBtn">
+                  <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  Kopírovat CSS
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Praktické šablony z reálného světa
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Praktické šablony Flexboxu">
+        <div class="slide-header">
+          <h2 class="slide-title">3 zlaté šablony z reálného světa webdesignu</h2>
+          <p class="slide-subtitle">Běžné scénáře, které v praxi vyřešíte elegantně pomocí několika řádků Flexboxu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3-col">
+            <!-- 1. Dokonalé centrování -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <h3>1. Dokonalý střed</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Vycentrování modálního okna nebo hrdinského nápisu přesně do středu obrazovky:</p>
+              <div class="code-block" style="font-size: 0.76rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.hero-center</span> {
+  <span class="css-prop">display</span>: <span class="css-val">flex</span>;
+  <span class="css-prop">justify-content</span>: <span class="css-val">center</span>;
+  <span class="css-prop">align-items</span>: <span class="css-val">center</span>;
+  <span class="css-prop">min-height</span>: <span class="css-val">100vh</span>;
+}</code></pre></div>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">
+                <em>Super-trik:</em> Uvnitř flex kontejneru stačí jedinému potomku nastavit <code>margin: auto;</code> a vystředí se v obou osách sám!
+              </p>
+            </div>
+
+            <!-- 2. Responzivní navbar -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </div>
+                <h3>2. Navigační lišta</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Logo vlevo a navigační odkazy vpravo se svislým zarovnáním na střed:</p>
+              <div class="code-block" style="font-size: 0.76rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.navbar</span> {
+  <span class="css-prop">display</span>: <span class="css-val">flex</span>;
+  <span class="css-prop">justify-content</span>: <span class="css-val">space-between</span>;
+  <span class="css-prop">align-items</span>: <span class="css-val">center</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">1rem 2rem</span>;
+}</code></pre></div>
+              <div class="template-nav-demo">
+                <span style="font-weight: 700; color: #fb923c;">LOGO</span>
+                <span style="color: var(--text-secondary); font-size: 0.75rem;">Domů &bull; O nás &bull; Kontakt</span>
+              </div>
+            </div>
+
+            <!-- 3. Karta s patičkou dole -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+                </div>
+                <h3>3. Patička karty dole</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Karty v gridu mají různě dlouhý text, ale tlačítka „Koupit“ musejí být v jedné rovině dole:</p>
+              <div class="code-block" style="font-size: 0.76rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.card</span> {
+  <span class="css-prop">display</span>: <span class="css-val">flex</span>;
+  <span class="css-prop">flex-direction</span>: <span class="css-val">column</span>;
+}
+<span class="css-sel">.card-body</span> {
+  <span class="css-prop">flex</span>: <span class="css-val">1</span>; <span class="html-comm">/* Vytlačí patičku ke dnu! */</span>
+}</code></pre></div>
+              <div class="template-card-demo">
+                <div style="font-weight: 700; font-size: 0.85rem;">Produktová karta</div>
+                <div class="card-body">Krátký popis produktu...</div>
+                <div class="card-footer">
+                  <span>990 Kč</span>
+                  <span style="color: #34d399; font-weight: 600;">Koupit &rarr;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky</h2>
+          <p class="slide-subtitle">Ověřte si své znalosti pozicování, kontextu vrstvení a moderního rozvržení Flexbox.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč na prvku nefungují vlastnosti <code>top</code>, <code>left</code> ani <code>z-index</code>, když jsme mu žádnou pozici nenastavili?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Každý prvek má ve výchozím stavu <code>position: static</code>. V tomto režimu se řídí striktně běžným tokem dokumentu (Normal Flow) a prohlížeč jakékoliv souřadnice i vrstvení ignoruje. Pro jejich aktivaci musíte nastavit <code>position</code> na <code>relative</code>, <code>absolute</code>, <code>fixed</code> nebo <code>sticky</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Vůči čemu se počítají souřadnice prvku s <code>position: absolute</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Počítají se vůči <strong>nejbližšímu předkovi (rodiči)</strong>, který má nastavené pozicování jiné než <code>static</code> (nejčastěji <code>position: relative;</code>). Pokud žádný takový předek v DOM stromu neexistuje, ukotví se prvek vůči počátečnímu vztažnému bloku (oknu prohlížeče).
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jaký je klíčový rozdíl mezi <code>justify-content</code> a <code>align-items</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong><code>justify-content</code></strong> zarovnává prvky podél <strong>hlavní osy</strong> (při <code>flex-direction: row</code> vodorovně). <strong><code>align-items</code></strong> zarovnává prvky podél <strong>příčné osy</strong> (při <code>row</code> svisle). Pokud změníte <code>flex-direction: column</code>, role os se prohodí!
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Co přesně způsobí nastavení <code>flex-shrink: 0;</code> na ikoně v seznamu?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Ve výchozím stavu mají flex položky <code>flex-shrink: 1</code> (při nedostatku místa se zmenšují). Nastavením <code>flex-shrink: 0</code> striktně zakážete jakékoliv smršťování – ikona si zachová svou přesnou velikost a nikdy nebude zploštěna dlouhým sousedním textem.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ (Controls Bar) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../032-Zakladni-vlastnosti/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 032 Základní vlastnosti (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../034-CSS-Grid/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 034 CSS Grid (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Pozicování a Flexbox
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 033 -->
+  <script src="flexbox-playground.js"></script>
+</body>
+
+</html>

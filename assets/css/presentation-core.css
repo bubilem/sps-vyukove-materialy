@@ -5,6 +5,7 @@
    ========================================================================== */
 
 :root {
+  color-scheme: dark;
   /* Color Palette - Dark Theme (Default) */
   --bg-primary: #0a0f1d;
   --bg-secondary: #111827;
@@ -55,6 +56,7 @@
 
 /* Light Theme overrides */
 [data-theme="light"] {
+  color-scheme: light;
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
   --bg-card: rgba(255, 255, 255, 0.95);
@@ -96,6 +98,35 @@ body {
   color: var(--text-primary);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   Globální formulářové prvky (Select, Option & Inputs)
+   ========================================================================== */
+select,
+input,
+textarea,
+button {
+  color-scheme: dark;
+}
+
+[data-theme="light"] select,
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] button {
+  color-scheme: light;
+}
+
+select option,
+option {
+  background-color: #111827 !important;
+  color: #f3f4f6 !important;
+}
+
+[data-theme="light"] select option,
+[data-theme="light"] option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .icon {
@@ -520,9 +551,46 @@ body {
 }
 
 .badge-accent {
-  background: var(--accent-glow);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--accent-glow) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+.badge-orange {
+  background: rgba(249, 115, 22, 0.15) !important;
+  border-color: rgba(249, 115, 22, 0.4) !important;
+  color: #fb923c !important;
+}
+
+.badge-blue {
+  background: rgba(56, 189, 248, 0.15) !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  color: #38bdf8 !important;
+}
+
+.badge-green {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #34d399 !important;
+}
+
+.badge-purple {
+  background: rgba(168, 85, 247, 0.15) !important;
+  border-color: rgba(168, 85, 247, 0.4) !important;
+  color: #c084fc !important;
+}
+
+.badge-amber {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
+}
+
+.badge-rose,
+.badge-red {
+  background: rgba(244, 63, 94, 0.15) !important;
+  border-color: rgba(244, 63, 94, 0.4) !important;
+  color: #fb7185 !important;
 }
 
 .hero-badge,
@@ -629,11 +697,20 @@ body {
    ========================================================================== */
 .slide-header {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border-subtle);
+  width: 100%;
+}
+
+.slide-header--row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .slide-titles {
@@ -663,22 +740,22 @@ body {
 
 .slide-title,
 .slide h2 {
-  font-size: 1.95rem;
+  font-size: 1.85rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.25;
   color: var(--text-primary);
+  margin: 0;
 }
 
 .slide-subtitle,
 .slide p.lead,
 .slide-lead {
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   color: var(--text-secondary);
-  margin-top: 0.4rem;
-  margin-bottom: 1.5rem;
-  max-width: 100%;
-  line-height: 1.6;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 1100px;
 }
 
 .slide-tags {
@@ -691,29 +768,46 @@ body {
   flex: 1;
 }
 
-.grid-2 {
+/* Globální mřížky pro karty a rozvržení snímků */
+.grid-2,
+.grid-2-col,
+.content-grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.75rem;
+  gap: 1.5rem;
   width: 100%;
 }
 
-.grid-3 {
+.grid-3,
+.grid-3-col,
+.content-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
   width: 100%;
 }
 
-.grid-4 {
+.grid-4,
+.grid-4-col,
+.content-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  gap: 1.15rem;
+  width: 100%;
+}
+
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
   width: 100%;
 }
 
 @media (max-width: 1024px) {
-  .grid-2, .grid-3, .grid-4 {
+  .grid-2, .grid-2-col, .content-grid-2,
+  .grid-3, .grid-3-col, .content-grid-3,
+  .grid-4, .grid-4-col, .content-grid-4,
+  .questions-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -769,22 +863,69 @@ body {
   gap: 1.25rem;
 }
 
-/* Karty – .card je base, .content-card je alias pro obsah snímků */
+/* ==========================================================================
+   Karty – .card je base, .content-card je alias pro obsah snímků
+   ========================================================================== */
 .card,
 .content-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1.65rem 1.85rem;
+  padding: 1.5rem 1.65rem;
   backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover,
 .content-card:hover {
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .card:hover,
+[data-theme="light"] .content-card:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Pokud jsou karty za sebou mimo mřížku, nelepí se na sebe */
+.card + .card,
+.content-card + .content-card {
+  margin-top: 1.25rem;
+}
+
+/* V mřížkách se vertikální margin ruší – rozestupy řídí gap */
+.grid-2 > .card,
+.grid-2 > .content-card,
+.grid-2-col > .card,
+.grid-2-col > .content-card,
+.content-grid-2 > .card,
+.content-grid-2 > .content-card,
+.grid-3 > .card,
+.grid-3 > .content-card,
+.grid-3-col > .card,
+.grid-3-col > .content-card,
+.content-grid-3 > .card,
+.content-grid-3 > .content-card,
+.grid-4 > .card,
+.grid-4 > .content-card,
+.grid-4-col > .card,
+.grid-4-col > .content-card,
+.content-grid-4 > .card,
+.content-grid-4 > .content-card,
+.summary-grid > .card,
+.summary-grid > .content-card,
+.questions-grid > .question-card {
+  margin-top: 0;
+}
+
+/* Odznak na začátku karty nesmí být přilepen k nadpisu */
+.card > .badge:first-child,
+.content-card > .badge:first-child {
+  align-self: flex-start;
+  margin-bottom: 0.85rem;
 }
 
 /* Svislý oddělovač v controls-bar */
@@ -796,18 +937,75 @@ body {
   margin: 0 0.1rem;
 }
 
-/* SVG ikona v nadpisu karty */
+/* Hlavička karty s ikonou */
+.card-header-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+  width: 100%;
+}
+
 .card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   color: inherit;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.card-icon.orange {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.card-icon.blue {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.card-icon.green {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.card-icon.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.card-icon.amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.card-icon.rose {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.35);
 }
 
 .card-title,
 .card h3,
 .content-card h3 {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -828,6 +1026,125 @@ body {
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
+}
+
+/* Kódový blok obecně */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--code-text);
+  margin: 0.5rem 0;
+}
+
+/* ==========================================================================
+   SPŠ Kontrolní otázky (Review Questions Accordion)
+   ========================================================================== */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.question-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+.question-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.question-number {
+  width: 28px;
+  height: 28px;
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.question-text {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.question-answer-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 6px 12px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.question-answer-btn:hover {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.question-answer-btn svg,
+.question-answer-btn .icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s ease;
+}
+
+.question-answer-btn.open svg,
+.question-answer-btn.open .icon {
+  transform: rotate(180deg);
+}
+
+.question-hint {
+  display: none;
+  padding: 0.85rem 1rem;
+  background: var(--accent-glow);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  animation: fadeInHint 0.25s ease forwards;
+}
+
+.question-hint.visible {
+  display: block;
+}
+
+@keyframes fadeInHint {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Stylizovaný seznam (odrážkový) – používáno ve všech modulech */
@@ -1143,7 +1460,8 @@ tbody tr:hover {
   border-right: 1px solid var(--border-color);
 }
 
-.control-btn {
+.controls-bar .control-btn,
+.presentation-controls .control-btn {
   background: transparent;
   border: none;
   color: var(--text-secondary);
@@ -1160,28 +1478,193 @@ tbody tr:hover {
   flex-shrink: 0;
 }
 
-.control-btn:hover {
+.controls-bar .control-btn:hover,
+.presentation-controls .control-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
   transform: scale(1.05);
 }
 
-.control-btn:active {
+.controls-bar .control-btn:active,
+.presentation-controls .control-btn:active {
   transform: scale(0.95);
 }
 
-.control-btn.disabled,
-.control-btn[aria-disabled="true"] {
+.controls-bar .control-btn.disabled,
+.controls-bar .control-btn[aria-disabled="true"],
+.presentation-controls .control-btn.disabled,
+.presentation-controls .control-btn[aria-disabled="true"] {
   opacity: 0.32;
   pointer-events: none;
   cursor: not-allowed;
   filter: grayscale(1);
 }
 
-.control-btn.btn-nav-primary {
+.controls-bar .control-btn.btn-nav-primary,
+.presentation-controls .control-btn.btn-nav-primary {
   background: var(--grad-primary);
   color: #ffffff;
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+/* Fallback pro .control-btn */
+.control-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 1.05rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* Pojistka: pokud je .control-btn použito v těle snímků namísto plovoucí lišty */
+.slide .control-btn,
+.slide-content .control-btn,
+.content-card .control-btn,
+.studio-demo-box .control-btn,
+.gb-code .control-btn {
+  width: auto !important;
+  height: auto !important;
+  min-height: 32px !important;
+  border-radius: 6px !important;
+  padding: 0.45rem 1rem !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+}
+
+/* ==========================================================================
+   Tlačítka v obsahu prezentace a ukázkách (.btn, .btn-primary, .btn-copy)
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: inherit;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  line-height: 1.4;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary,
+.btn-nav-primary:not(.controls-bar *):not(.presentation-controls *) {
+  background: var(--grad-primary);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4) !important;
+  border-radius: 8px !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 38px !important;
+  padding: 0.55rem 1.25rem !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+}
+
+.btn-primary:hover,
+.btn-nav-primary:not(.controls-bar *):not(.presentation-controls *):hover {
+  box-shadow: 0 6px 22px rgba(56, 189, 248, 0.55) !important;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--text-secondary);
+}
+
+/* Tlačítka pro kopírování kódu (.btn-copy, .copy-btn a všechna Copy tlačítka v ukázkách) */
+.btn-copy,
+.copy-btn,
+button[id*="CopyBtn"],
+button[id*="copyBtn"],
+button[id*="CopyCodeBtn"],
+.gb-code button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  padding: 0.4rem 0.85rem !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  font-family: var(--font-mono, monospace) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: var(--text-primary, #f3f4f6) !important;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.18)) !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 30px !important;
+  transition: all 0.2s ease !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-copy:hover,
+.copy-btn:hover,
+button[id*="CopyBtn"]:hover,
+button[id*="copyBtn"]:hover,
+button[id*="CopyCodeBtn"]:hover,
+.gb-code button:hover {
+  background: rgba(56, 189, 248, 0.18) !important;
+  border-color: #38bdf8 !important;
+  color: #38bdf8 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3) !important;
+}
+
+[data-theme="light"] .btn-copy,
+[data-theme="light"] .copy-btn,
+[data-theme="light"] button[id*="CopyBtn"],
+[data-theme="light"] button[id*="copyBtn"],
+[data-theme="light"] button[id*="CopyCodeBtn"],
+[data-theme="light"] .gb-code button {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .btn-copy:hover,
+[data-theme="light"] .copy-btn:hover,
+[data-theme="light"] button[id*="CopyBtn"]:hover,
+[data-theme="light"] button[id*="copyBtn"]:hover,
+[data-theme="light"] button[id*="CopyCodeBtn"]:hover,
+[data-theme="light"] .gb-code button:hover {
+  background: #f0fdf4 !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+  box-shadow: 0 3px 8px rgba(2, 132, 199, 0.25) !important;
 }
 
 .slide-counter {

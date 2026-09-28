@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 038: CSS Preprocesory, Architektura a Frameworky | WEB • SPŠ</title>
+  <meta name="description" content="Výuková prezentace o ekosystému CSS pro SPŠ: Sass/SCSS, metodika BEM, Bootstrap, Tailwind CSS a PostCSS.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 038 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">038 Preprocesory &amp; Frameworky</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Sass &bull; Tailwind &bull; BEM</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="CSS Preprocesory, Architektura a Frameworky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 038</span>
+            <span class="badge">CSS Architektura &amp; Nástroje</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Preprocesory &bull; Frameworky</span>
+          </div>
+          <h1 class="hero-title">CSS Preprocesory, Architektura a Frameworky</h1>
+          <p class="hero-subtitle">
+            Profesionální vývojový ekosystém ve webových studiích &bull; Kompilace a funkce Sass/SCSS, architektura a metodika tříd BEM, komponentový gigant Bootstrap 5, moderní utility-first framework Tailwind CSS a optimalizační nástroj PostCSS s Autoprefixerem.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Sass &amp; SCSS
+              </h4>
+              <p>Proměnné, mixiny, funkce, importy a transpilace kódu Node.js do standardního CSS.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Metodika BEM
+              </h4>
+              <p>Blok__Element--Modifikátor: přehledné pojmenování bez kolizí ve velkých týmech.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                Bootstrap vs. Tailwind
+              </h4>
+              <p>Hotové UI komponenty vs. atomické třídy přímo v HTML pro maximální rychlost a flexibilitu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                PostCSS &amp; Build
+              </h4>
+              <p>Autoprefixer vendor prefixů, minifikace a integrace do moderních bundlerů Vite a Webpack.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Co je to preprocesor
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Princip CSS preprocesoru">
+        <div class="slide-header">
+          <h2 class="slide-title">Co je to CSS Preprocesor a princip kompilace</h2>
+          <p class="slide-subtitle">Proč čisté CSS v minulosti vývojářům nestačilo a jak funguje překlad do standardního CSS.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Princip kompilace</span>
+              <p style="font-size: 0.88rem; margin-top: 0.5rem;">
+                Webový prohlížeč rozumí <strong>výhradně čistému CSS</strong>. Nerozumí souborům <code>.scss</code> ani <code>.less</code>.
+              </p>
+              <div style="background: var(--bg-elevated); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-subtle); margin: 0.5rem 0; font-family: var(--font-mono, monospace); font-size: 0.85rem; text-align: center;">
+                Zdrojový SCSS kód &rarr; <span style="color: #cf649a; font-weight:700;">Překladač (Sass/Node.js)</span> &rarr; Výsledné standardní CSS
+              </div>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li><strong>Sass (SCSS):</strong> Dnes celosvětový standard mezi preprocesory.</li>
+                <li><strong>Less:</strong> Dříve populární (používal jej starý Bootstrap).</li>
+                <li><strong>Stylus:</strong> Alternativní preprocesor bez závorek a středníků.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon sass">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <h3>Hlavní výhody SCSS</h3>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>Syntaktická nadmnožina:</strong> Každý platný CSS kód je zároveň platným SCSS kódem.</li>
+                <li><strong>Proměnné se znakem dolaru:</strong> <code>$primary: #38bdf8;</code>.</li>
+                <li><strong>Mixiny:</strong> Znovupoužitelné šablony kódu jako funkce s parametry.</li>
+                <li><strong>Matematické operace:</strong> Přirozené počítání rozměrů přímo při kompilaci.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Základní syntaxe SCSS
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Základní syntaxe SCSS">
+        <div class="slide-header">
+          <h2 class="slide-title">Základní syntaxe SCSS: Proměnné a Nesting</h2>
+          <p class="slide-subtitle">Jak SCSS zkracuje zápis a umožňuje logicky strukturovat kód do vnořených bloků.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge" style="border-color: #cf649a; color: #cf649a;">Zdrojový soubor: style.scss</span>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="html-comm">// SCSS proměnné</span>
+<span class="css-sel">$primary</span>: <span class="css-val">#38bdf8</span>;
+<span class="css-sel">$radius</span>: <span class="css-val">8px</span>;
+
+<span class="css-sel">.card</span> {
+  <span class="css-prop">border-radius</span>: <span class="css-val">$radius</span>;
+
+  <span class="css-sel">h3</span> {
+    <span class="css-prop">color</span>: <span class="css-val">$primary</span>;
+  }
+
+  <span class="css-sel">&amp;:hover</span> {
+    <span class="css-prop">box-shadow</span>: <span class="css-val">0 4px 12px rgba($primary, 0.25)</span>;
+  }
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge badge-accent">Zkompilovaný výstup: style.css</span>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">.card</span> {
+  <span class="css-prop">border-radius</span>: <span class="css-val">8px</span>;
+}
+
+<span class="css-sel">.card h3</span> {
+  <span class="css-prop">color</span>: <span class="css-val">#38bdf8</span>;
+}
+
+<span class="css-sel">.card:hover</span> {
+  <span class="css-prop">box-shadow</span>: <span class="css-val">0 4px 12px rgba(56, 189, 248, 0.25)</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;">
+                Překladač automaticky rozbalil selektory a dosadil statické hodnoty barev a rozměrů.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Mixiny a znovupoužitelnost
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Mixiny: @mixin a @include">
+        <div class="slide-header">
+          <h2 class="slide-title">Znovupoužitelné šablony: <code>@mixin</code> a <code>@include</code></h2>
+          <p class="slide-subtitle">Vytvořte si vlastní knihovnu opakujících se vzorů (Flexbox zarovnání, ořezání textu s trojtečkou).</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge" style="border-color: #cf649a; color: #cf649a;">Definice mixinu s parametry</span>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="html-comm">// Mixin pro dokonalé flex centrování</span>
+<span class="css-sel">@mixin</span> <span class="css-prop">center-flex</span>(<span class="css-val">$direction: row</span>) {
+  <span class="css-prop">display</span>: <span class="css-val">flex</span>;
+  <span class="css-prop">flex-direction</span>: <span class="css-val">$direction</span>;
+  <span class="css-prop">justify-content</span>: <span class="css-val">center</span>;
+  <span class="css-prop">align-items</span>: <span class="css-val">center</span>;
+}
+
+<span class="html-comm">// Mixin pro jednořádkový text s trojtečkou (...)</span>
+<span class="css-sel">@mixin</span> <span class="css-prop">truncate-text</span> {
+  <span class="css-prop">overflow</span>: <span class="css-val">hidden</span>;
+  <span class="css-prop">text-overflow</span>: <span class="css-val">ellipsis</span>;
+  <span class="css-prop">white-space</span>: <span class="css-val">nowrap</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge badge-accent">Volání pomocí @include</span>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">.hero-banner</span> {
+  <span class="css-sel">@include</span> <span class="css-prop">center-flex</span>; <span class="html-comm">// Výchozí row</span>
+  <span class="css-prop">min-height</span>: <span class="css-val">400px</span>;
+}
+
+<span class="css-sel">.user-name</span> {
+  <span class="css-sel">@include</span> <span class="css-prop">truncate-text</span>;
+  <span class="css-prop">max-width</span>: <span class="css-val">150px</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.5rem;">
+                Mixiny zásadně snižují duplikaci kódu a udržují jednotný styl napříč projektem.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Metodika BEM
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Metodika BEM">
+        <div class="slide-header">
+          <h2 class="slide-title">Metodika BEM: Block, Element, Modifier</h2>
+          <p class="slide-subtitle">Světoznámý standard pro pojmenovávání tříd, který zabraňuje kolizím a chaosu ve velkých projektech.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Tři pilíře BEM</span>
+              <ul class="styled-list" style="font-size: 0.86rem; margin-top: 0.5rem;">
+                <li><strong>Block (Blok):</strong> Samostatná znovupoužitelná komponenta (např. <code>.card</code>, <code>.navbar</code>, <code>.btn</code>).</li>
+                <li><strong>Element (Prvek):</strong> Část bloku oddělená dvěma podtržítky <code>__</code> (např. <code>.card__title</code>, <code>.card__body</code>, <code>.card__btn</code>).</li>
+                <li><strong>Modifier (Modifikátor):</strong> Varianta či stav oddělený dvěma pomlčkami <code>--</code> (např. <code>.card--featured</code>, <code>.btn--danger</code>).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">BEM + SCSS = Dokonalá souhra</span>
+              <div class="code-block" style="font-size: 0.8rem; margin-top: 0.5rem;"><pre><code><span class="css-sel">.card</span> {
+  <span class="css-prop">background</span>: <span class="css-val">#1e293b</span>;
+
+  <span class="css-sel">&amp;__title</span> { <span class="html-comm">/* Vytvoří .card__title */</span>
+    <span class="css-prop">font-size</span>: <span class="css-val">1.25rem</span>;
+  }
+
+  <span class="css-sel">&amp;--featured</span> { <span class="html-comm">/* Vytvoří .card--featured */</span>
+    <span class="css-prop">border</span>: <span class="css-val">2px solid #f97316</span>;
+  }
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Komponentové frameworky: Bootstrap
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Framework Bootstrap">
+        <div class="slide-header">
+          <h2 class="slide-title">Komponentové frameworky: Fenomén Bootstrap</h2>
+          <p class="slide-subtitle">Předpřipravené knihovny hotových komponent pro bleskurychlý vývoj firemních aplikací.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="4 9 12 15 20 9"></polyline></svg>
+                </div>
+                <h3>Co Bootstrap přináší?</h3>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>Hotové UI komponenty:</strong> Modální okna, rozevírací menu (dropdown), akordeony, navigační lišty, alerty.</li>
+                <li><strong>12sloupcový Grid systém:</strong> Třídy jako <code>.row</code>, <code>.col-md-6</code>, <code>.col-lg-4</code>.</li>
+                <li><strong>Rychlost:</strong> Funkční prototyp webu složíte za desítky minut pouhým kopírováním HTML kousků.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3>Nevýhody komponentových frameworků</h3>
+              </div>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>Generický vzhled:</strong> Všechny weby postavené na Bootstrapu vypadají zpočátku stejně („bootstrapový vzhled“).</li>
+                <li><strong>Obtížné přizpůsobení:</strong> Přepsání výchozích stylů často vede k boji s kaskádou a specifitou.</li>
+                <li><strong>Datová zátěž:</strong> Pokud nepoužijete modulární build, stahujete stovky kilobajtů nepoužitého kódu.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Utility-first: Tailwind CSS
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Tailwind CSS a Utility-first">
+        <div class="slide-header">
+          <h2 class="slide-title">Revoluce jménem Tailwind CSS (Utility-First)</h2>
+          <p class="slide-subtitle">Zcela nová filozofie: místo psaní vlastních CSS selektorů skládáte vzhled z atomických tříd přímo v HTML.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Jak vypadá HTML v Tailwindu?</span>
+              <div class="code-block" style="font-size: 0.78rem; margin-top: 0.5rem;"><pre><code><span class="html-tag">&lt;div</span> <span class="html-attr">class</span>=<span class="html-str">"flex items-center justify-between p-4 bg-slate-900 rounded-lg shadow-lg hover:bg-slate-800 transition"</span><span class="html-tag">&gt;</span>
+  <span class="html-tag">&lt;h3</span> <span class="html-attr">class</span>=<span class="html-str">"text-lg font-bold text-sky-400"</span><span class="html-tag">&gt;</span>
+    Moderní karta
+  <span class="html-tag">&lt;/h3&gt;</span>
+  <span class="html-tag">&lt;button</span> <span class="html-attr">class</span>=<span class="html-str">"px-4 py-2 bg-indigo-600 rounded text-white"</span><span class="html-tag">&gt;</span>
+    Akce
+  <span class="html-tag">&lt;/button&gt;</span>
+<span class="html-tag">&lt;/div&gt;</span></code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge badge-accent">Proč vývojáři Tailwind milují?</span>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>Nepřemýšlíte nad názvy tříd:</strong> Už žádné vymýšlení, zda to nazvat <code>.card-inner-wrap</code> nebo <code>.card-box-holder</code>.</li>
+                <li><strong>Žádný mrtvý kód:</strong> Překladač (JIT) vygeneruje přesně jen ty třídy, které jste v HTML skutečně použili. Výsledný CSS soubor má často méně než 15 kB!</li>
+                <li><strong>Responzivita a stavy přímo v třídě:</strong> Např. <code>md:flex</code> nebo <code>hover:text-white</code>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Srovnávací matice přístupů
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Srovnání přístupů">
+        <div class="slide-header">
+          <h2 class="slide-title">Kdy zvolit který přístup: Čisté CSS vs. SCSS vs. Tailwind</h2>
+          <p class="slide-subtitle">Objektivní porovnání technologií pro různé typy webových zakázek.</p>
+        </div>
+        <div class="slide-content">
+          <div class="content-card" style="width: 100%;">
+            <table class="tools-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Přístup</th>
+                  <th style="width: 25%; color: #38bdf8;">Čisté moderní CSS</th>
+                  <th style="width: 25%; color: #cf649a;">SCSS (Sass)</th>
+                  <th style="width: 25%; color: #34d399;">Tailwind CSS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Nutnost kompilace</strong></td>
+                  <td>Žádná (běží 100% nativně).</td>
+                  <td>Nutný překladač (Node.js/Dart).</td>
+                  <td>Nutný build nástroj (PostCSS/Vite).</td>
+                </tr>
+                <tr>
+                  <td><strong>Filozofie</strong></td>
+                  <td>Sémantické třídy a webové standardy.</td>
+                  <td>Modulární BEM komponenty, mixiny.</td>
+                  <td>Utility-first atomické třídy v HTML.</td>
+                </tr>
+                <tr>
+                  <td><strong>Ideální pro</strong></td>
+                  <td>Menší až střední weby, výuku základů, nulové závislosti.</td>
+                  <td>Velké design systémy, komplexní enterprise portály.</td>
+                  <td>Moderní webové aplikace v Reactu, Vue, Next.js.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: PostCSS a Autoprefixer
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="PostCSS a optimalizace">
+        <div class="slide-header">
+          <h2 class="slide-title">Build nástroje: PostCSS, Autoprefixer a minifikace</h2>
+          <p class="slide-subtitle">Jak moderní nástroje připravují styly pro produkční nasazení na server.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">PostCSS &amp; Autoprefixer</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                <strong>PostCSS:</strong> Nástroj pro transformaci CSS pomocí pluginů v JavaScriptu.<br>
+                <strong>Autoprefixer:</strong> Plugin, který na základě databáze <em>Can I Use</em> automaticky doplňuje vendor prefixy (např. <code>-webkit-</code>) pro starší prohlížeče.
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* V kódu napíšete: */</span>
+<span class="css-prop">user-select</span>: <span class="css-val">none</span>;
+
+<span class="html-comm">/* Autoprefixer sám vygeneruje pro produkci: */</span>
+<span class="css-prop">-webkit-user-select</span>: <span class="css-val">none</span>;
+<span class="css-prop">-moz-user-select</span>: <span class="css-val">none</span>;
+<span class="css-prop">user-select</span>: <span class="css-val">none</span>;</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Minifikace CSS pro produkci</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                Během buildu (např. ve Vite nebo esbuild) se odstraní veškeré komentáře, mezery a odřádkování.
+              </p>
+              <div class="code-block" style="font-size: 0.76rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.card</span>{<span class="css-prop">background</span>:<span class="css-val">#1e293b</span>;<span class="css-prop">border-radius</span>:<span class="css-val">8px</span>;<span class="css-prop">padding</span>:<span class="css-val">1.5rem</span>}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Zmenší objem přenášených dat po síti o 40–70 % a zrychlí načítání pro uživatele na mobilech.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní SCSS & BEM Sandbox
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="SCSS & BEM Sandbox">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor: SCSS kompilátor &amp; BEM</h2>
+          <p class="slide-subtitle">Vyzkoušejte si zápis v SCSS a sledujte, jak překladač kód rozbaluje do čistého CSS.</p>
+        </div>
+        <div class="slide-content">
+          <div class="sandbox-pane" style="margin-bottom: 0.75rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="badge badge-accent">Předvolené ukázky:</span>
+              <select id="scssPreset" class="gb-select" style="min-width: 240px;">
+                <option value="bem-nesting" selected>BEM Nesting (&amp;__element, &amp;--modifier)</option>
+                <option value="mixin-demo">Znovupoužitelný @mixin</option>
+                <option value="variables-math">Proměnné a matematické stupnice</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sandbox-split-grid">
+            <!-- Vstup SCSS -->
+            <div class="sandbox-pane">
+              <div class="sandbox-pane-header">
+                <span style="font-weight: 700; color: #cf649a;">Vstup: style.scss</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Editovatelný kód</span>
+              </div>
+              <textarea id="scssEditor" class="sandbox-editor" spellcheck="false"></textarea>
+            </div>
+
+            <!-- Výstup CSS -->
+            <div class="sandbox-pane">
+              <div class="sandbox-pane-header">
+                <span style="font-weight: 700; color: #34d399;">Výstup: style.css (Kompilát)</span>
+                <button type="button" class="btn-copy" id="scssCopyBtn">
+                  <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  Kopírovat
+                </button>
+              </div>
+              <pre class="sandbox-output" id="scssOutput"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Případová studie: Refaktoring do BEM
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Refaktoring do BEM">
+        <div class="slide-header">
+          <h2 class="slide-title">Případová studie: Od špagetového CSS k čistému BEM</h2>
+          <p class="slide-subtitle">Jak ze starého, neudržitelného kódu vytvořit přehlednou modulární komponentu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">Před refaktoringem (Křehký kód)</span>
+              <div class="code-block" style="font-size: 0.78rem; margin-top: 0.5rem;"><pre><code><span class="html-comm">/* Nebezpečné generické selektory: */</span>
+<span class="css-sel">.box</span> { <span class="css-prop">padding</span>: <span class="css-val">20px</span>; }
+<span class="css-sel">.box div</span> { <span class="css-prop">font-weight</span>: <span class="css-val">bold</span>; }
+<span class="css-sel">.box span</span> { <span class="css-prop">color</span>: <span class="css-val">gray</span>; }
+<span class="css-sel">.box-red</span> { <span class="css-prop">border</span>: <span class="css-val">1px solid red</span>; }</code></pre></div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+                Pokud do boxu přidáte jiný <code>&lt;span&gt;</code>, styl se nechtěně rozbije.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Po refaktoringu do BEM</span>
+              <div class="code-block" style="font-size: 0.78rem; margin-top: 0.5rem;"><pre><code><span class="html-comm">/* Robustní BEM komponenta: */</span>
+<span class="css-sel">.article-card</span> { <span class="css-prop">padding</span>: <span class="css-val">1.25rem</span>; }
+<span class="css-sel">.article-card__title</span> { <span class="css-prop">font-weight</span>: <span class="css-val">700</span>; }
+<span class="css-sel">.article-card__date</span> { <span class="css-prop">color</span>: <span class="css-val">#94a3b8</span>; }
+<span class="css-sel">.article-card--alert</span> { <span class="css-prop">border</span>: <span class="css-val">2px solid #ef4444</span>; }</code></pre></div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">
+                Každá třída nese přesný význam a má nulovou šanci se srazit s jinou částí webu.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky</h2>
+          <p class="slide-subtitle">Ověřte si své znalosti SCSS, metodiky BEM, Tailwind CSS a produkčních nástrojů.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč nemůžeme soubor <code>.scss</code> napřímo nalinkovat do HTML značkou <code>&lt;link&gt;</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Webový prohlížeč neobsahuje překladač jazyka SCSS a rozumí pouze čistému CSS standardu. Soubory SCSS musí nejprve projít fází kompilace (překladu), která vygeneruje běžný soubor <code>.css</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Co znamenají jednotlivá písmena v názvu metodiky BEM a k čemu slouží dvojité podtržítko?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong>B = Block (Blok)</strong>, <strong>E = Element (Prvek)</strong>, <strong>M = Modifier (Modifikátor)</strong>. Dvojité podtržítko (<code>__</code>) odděluje název bloku od jeho vnitřního potomka (např. <code>.card__title</code>), zatímco dvojitá pomlčka (<code>--</code>) označuje variantu nebo stav (např. <code>.card--active</code>).
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>V čem se liší filozofie frameworku Bootstrap od Tailwind CSS?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong>Bootstrap</strong> je komponentový framework – nabízí hotové komponenty (tlačítka, modály, navbar) s předem daným designem. <strong>Tailwind CSS</strong> je utility-first – nabízí drobné stavební kostky (třídy pro barvu, padding, flex), ze kterých si vlastní unikátní design skládáte sami v HTML bez generického vzhledu.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>K čemu slouží nástroj Autoprefixer v produkčním buildu?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Analyzuje hotové CSS a na základě aktuálních statistik podpory prohlížečů (Can I Use) automaticky doplňuje potřebné vendor prefixy (např. <code>-webkit-</code>) pro starší nebo specifické prohlížeče. Vývojář tak nemusí prefixy psát ručně.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ (Controls Bar) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../037-Pristupnost-CSS/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 037 Přístupnost v CSS (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../039-CSS-Animace-a-Transformace/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 039 Animace a Transformace (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Preprocesory a Frameworky
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 038 -->
+  <script src="scss-playground.js"></script>
+</body>
+
+</html>

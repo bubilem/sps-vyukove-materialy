@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 036: Moderní CSS: Proměnné, Nesting a funkce | WEB • SPŠ</title>
+  <meta name="description" content="Moderní CSS technologie pro střední školy: CSS proměnné, nativní nesting, calc, min, max, clamp, @layer a barevné funkce.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 036 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">036 Moderní CSS</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Moderní CSS &bull; Nesting</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Moderní CSS: Proměnné, Nesting a funkce">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 036</span>
+            <span class="badge">Moderní specifikace CSS</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Proměnné &bull; Nesting &bull; Funkce</span>
+          </div>
+          <h1 class="hero-title">Moderní CSS: Proměnné, Nesting a funkce</h1>
+          <p class="hero-subtitle">
+            Konec nutnosti preprocesorů pro běžné úlohy &bull; Detailní průvodce CSS proměnnými (--var), nativním zanořováním pravidel (Nesting), matematickými funkcemi calc, min, max, clamp(), kaskádovými vrstvami @layer a moderními barevnými funkcemi.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Custom Properties
+              </h4>
+              <p>Proměnné v :root, dědičnost v DOM a změna témat i barev za běhu jedním řádkem.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Nativní CSS Nesting
+              </h4>
+              <p>Zanořování selektorů přímo v prohlížeči pomocí znaku &amp; bez nutnosti Sass překladu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                Matematika a Clamp
+              </h4>
+              <p>calc(), min(), max() a plynulá responzivní typografie clamp() bez mediálních dotazů.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                @layer &amp; Barevné funkce
+              </h4>
+              <p>Kaskádové vrstvy pro uspořádání specificity stylů a míchání barev color-mix().</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: CSS Custom Properties (Proměnné)
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="CSS proměnné (--var)">
+        <div class="slide-header">
+          <h2 class="slide-title">CSS Custom Properties: Nativní proměnné v CSS</h2>
+          <p class="slide-subtitle">Definujte barvy, rozměry a písma na jednom místě a měňte je za běhu v celém projektu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Definice na :root</span>
+              <h3 style="margin-top: 0.5rem;">Syntaxe se dvěma pomlčkami (<code>--</code>)</h3>
+              <p style="font-size: 0.86rem;">
+                Globální proměnné definujeme v pseudotřídě <code>:root</code> (odpovídá kořenovému elementu <code>&lt;html&gt;</code>):
+              </p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">:root</span> {
+  <span class="css-prop">--primary-color</span>: <span class="css-val">#6366f1</span>;
+  <span class="css-prop">--base-padding</span>: <span class="css-val">1rem</span>;
+  <span class="css-prop">--border-radius</span>: <span class="css-val">8px</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Názvy proměnných <strong>rozlišují velká a malá písmena</strong> (jsou case-sensitive). <code>--Primary</code> a <code>--primary</code> jsou dvě různé věci!
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Čtení hodnoty: var()</span>
+              <h3 style="margin-top: 0.5rem;">Použití funkce <code>var()</code> s fallbackem</h3>
+              <p style="font-size: 0.86rem;">Proměnnou vložíme na místo jakékoliv hodnoty:</p>
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.btn-primary</span> {
+  <span class="css-prop">background-color</span>: <span class="css-val">var(--primary-color)</span>;
+  <span class="css-prop">padding</span>: <span class="css-val">var(--base-padding)</span>;
+  <span class="css-prop">border-radius</span>: <span class="css-val">var(--border-radius)</span>;
+}
+
+<span class="html-comm">/* Záchranná záložní hodnota (fallback): */</span>
+<span class="css-prop">color</span>: <span class="css-val">var(--custom-accent, #3b82f6)</span>;</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Kaskáda a dědičnost proměnných
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Kaskáda a rozsah proměnných">
+        <div class="slide-header">
+          <h2 class="slide-title">Kaskáda a rozsah (Scope) CSS proměnných</h2>
+          <p class="slide-subtitle">Na rozdíl od preprocesorů (Sass) jsou CSS proměnné živou součástí DOM stromu a podléhají dědičnosti.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon indigo">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <h3>Lokální předefinování hodnot</h3>
+              </div>
+              <p style="font-size: 0.86rem;">
+                Proměnnou můžete uvnitř konkrétní komponenty jednoduše přepsat – změna se projeví <strong>pouze uvnitř této komponenty a jejích potomků</strong>:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.card</span> {
+  <span class="css-prop">--card-accent</span>: <span class="css-val">#6366f1</span>; <span class="html-comm">/* Výchozí barva */</span>
+  <span class="css-prop">border-color</span>: <span class="css-val">var(--card-accent)</span>;
+}
+
+<span class="html-comm">/* Změna barvy pro chybovou kartu bez přepisu vlastností: */</span>
+<span class="css-sel">.card.card-error</span> {
+  <span class="css-prop">--card-accent</span>: <span class="css-val">#f43f5e</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
+                <h3>Dostupnost v JavaScriptu</h3>
+              </div>
+              <p style="font-size: 0.86rem;">CSS proměnné lze za běhu číst i dynamicky měnit pomocí JavaScriptu:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">// Změna barvy motivu uživatele kliknutím:</span>
+<span class="css-sel">document.documentElement.style</span>
+  .<span class="css-prop">setProperty</span>(<span class="html-str">'--primary-color'</span>, <span class="html-str">'#10b981'</span>);
+
+<span class="html-comm">// Přečtení aktuální hodnoty:</span>
+<span class="css-sel">getComputedStyle(element)</span>
+  .<span class="css-prop">getPropertyValue</span>(<span class="html-str">'--primary-color'</span>);</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Přepínač témat (Theme Switcher)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Přepínač témat v praxi">
+        <div class="slide-header">
+          <h2 class="slide-title">Přepínač témat (Light / Dark) čistě přes proměnné</h2>
+          <p class="slide-subtitle">Změnou jediné třídy nebo atributu přebarvíte celý komplexní web bez duplikace CSS pravidel.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Definice palet na rootu</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Výchozí světlý motiv: */</span>
+<span class="css-sel">:root</span>, <span class="css-sel">[data-theme="light"]</span> {
+  <span class="css-prop">--bg-main</span>: <span class="css-val">#ffffff</span>;
+  <span class="css-prop">--bg-card</span>: <span class="css-val">#f8fafc</span>;
+  <span class="css-prop">--text-main</span>: <span class="css-val">#0f172a</span>;
+  <span class="css-prop">--border</span>: <span class="css-val">#e2e8f0</span>;
+}
+
+<span class="html-comm">/* Tmavý motiv při aktivaci atributu: */</span>
+<span class="css-sel">[data-theme="dark"]</span> {
+  <span class="css-prop">--bg-main</span>: <span class="css-val">#0f172a</span>;
+  <span class="css-prop">--bg-card</span>: <span class="css-val">#1e293b</span>;
+  <span class="css-prop">--text-main</span>: <span class="css-val">#f8fafc</span>;
+  <span class="css-prop">--border</span>: <span class="css-val">#334155</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Jednoduchá aplikace na komponentách</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">body</span> {
+  <span class="css-prop">background</span>: <span class="css-val">var(--bg-main)</span>;
+  <span class="css-prop">color</span>: <span class="css-val">var(--text-main)</span>;
+}
+
+<span class="css-sel">.card</span> {
+  <span class="css-prop">background</span>: <span class="css-val">var(--bg-card)</span>;
+  <span class="css-prop">border</span>: <span class="css-val">1px solid var(--border)</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.6rem;">
+                Žádné další selektory ani složité kaskády nepotřebujete. Tlačítko v HTML pouze přepne atribut <code>document.documentElement.dataset.theme = 'dark';</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Nativní CSS Nesting
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Nativní CSS Nesting">
+        <div class="slide-header">
+          <h2 class="slide-title">Nativní CSS Nesting (Zanořování pravidel)</h2>
+          <p class="slide-subtitle">Dlouhá léta hlavní důvod k instalaci Sassu – dnes plně podporovaný standard přímo v prohlížeči.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Tradiční CSS (Bez zanoření)</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.card</span> {
+  <span class="css-prop">padding</span>: <span class="css-val">1.5rem</span>;
+}
+<span class="css-sel">.card h3</span> {
+  <span class="css-prop">margin-top</span>: <span class="css-val">0</span>;
+}
+<span class="css-sel">.card:hover</span> {
+  <span class="css-prop">transform</span>: <span class="css-val">translateY(-2px)</span>;
+}
+<span class="css-sel">.card .btn</span> {
+  <span class="css-prop">background</span>: <span class="css-val">#6366f1</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Moderní CSS Nesting se znakem &amp;</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.card</span> {
+  <span class="css-prop">padding</span>: <span class="css-val">1.5rem</span>;
+
+  <span class="css-sel">&amp; h3</span> {
+    <span class="css-prop">margin-top</span>: <span class="css-val">0</span>;
+  }
+
+  <span class="css-sel">&amp;:hover</span> {
+    <span class="css-prop">transform</span>: <span class="css-val">translateY(-2px)</span>;
+  }
+
+  <span class="css-sel">&amp; .btn</span> {
+    <span class="css-prop">background</span>: <span class="css-val">#6366f1</span>;
+  }
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.4rem;">
+                Znak <code>&amp;</code> představuje odkaz na nadřazený selektor. Kód je modulární, přehledně zabalený do jednoho bloku.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Matematická funkce calc()
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Matematická funkce calc()">
+        <div class="slide-header">
+          <h2 class="slide-title">Kombinace různých jednotek: Funkce <code>calc()</code></h2>
+          <p class="slide-subtitle">Umožňuje provádět matematické operace (+, -, *, /) mezi procenty, pixely, rem a viewport jednotkami.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </div>
+                <h3>Příklady praktického využití</h3>
+              </div>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Šířka celého rodiče mínus pevný 40px okraj: */</span>
+<span class="css-prop">width</span>: <span class="css-val">calc(100% - 40px)</span>;
+
+<span class="html-comm">/* Výška přesně na zbytek okna pod 60px hlavičkou: */</span>
+<span class="css-prop">min-height</span>: <span class="css-val">calc(100vh - 60px)</span>;
+
+<span class="html-comm">/* Výpočet mřížky: */</span>
+<span class="css-prop">width</span>: <span class="css-val">calc((100% - 2rem) / 3)</span>;</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <h3>Kritické pravidlo: Mezery kolem operátorů!</h3>
+              </div>
+              <p style="font-size: 0.86rem;">
+                U operátorů sčítání (<code>+</code>) a odčítání (<code>-</code>) <strong>musí být vždy mezera z obou stran</strong>:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-prop">width</span>: <span class="css-val">calc(100% - 20px)</span>;  <span class="html-comm">/* SPRÁVNĚ */</span>
+<span class="css-prop">width</span>: <span class="css-val">calc(100%-20px)</span>;   <span class="html-comm">/* CHYBA! Prohlížeč kód zahodí! */</span></code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Důvod: zápis <code>-20px</code> prohlížeč chápe jako záporné číslo, ne jako matematické odčítání.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: min(), max() a clamp()
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="min(), max() a clamp()">
+        <div class="slide-header">
+          <h2 class="slide-title">Omezovací funkce a fluidní typografie: <code>min</code>, <code>max</code> a <code>clamp</code></h2>
+          <p class="slide-subtitle">Zajistěte, aby písmo i boxy plynule rostly s velikostí okna, ale nikdy nepřekročily bezpečné meze.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">min() a max()</span>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li><strong><code>min(A, B)</code>:</strong> Vybere tu <em>menší</em> z hodnot. Vynikající pro responzivní šířku:
+                  <div class="code-block" style="font-size: 0.78rem; margin: 0.25rem 0;"><pre><code><span class="css-prop">width</span>: <span class="css-val">min(100%, 800px)</span>; <span class="html-comm">/* Nahrazuje max-width! */</span></code></pre></div>
+                </li>
+                <li><strong><code>max(A, B)</code>:</strong> Vybere tu <em>větší</em> z hodnot. Vynikající pro bezpečný minimální rozměr.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #6366f1; color: #818cf8;">Revoluce: clamp(min, pref, max)</span>
+              <p style="font-size: 0.85rem;">Přijímá 3 parametry: minimální mez, preferovanou pružnou hodnotu a maximální strop:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.4rem 0;"><pre><code><span class="html-comm">/* Fluidní nadpis: na mobilu 24px, plynule roste, max 48px */</span>
+<span class="css-sel">h1</span> {
+  <span class="css-prop">font-size</span>: <span class="css-val">clamp(1.5rem, 4vw + 0.5rem, 3rem)</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Už žádné skokové zvětšování písma přes pět různých Media queries – písmo se plynule zvětšuje s každým jedním pixelem monitoru.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Kaskádové vrstvy @layer
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Kaskádové vrstvy @layer">
+        <div class="slide-header">
+          <h2 class="slide-title">Kaskádové vrstvy (<code>@layer</code>): Konec válek se specificitou</h2>
+          <p class="slide-subtitle">Rozdělte svůj kód do logických architektonických vrstev, kde vyšší vrstva vždy přebije nižší.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Řád a architektura ve velkém CSS</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Dříve styl z knihovny třetí strany s těžkým selektorem (např. <code>#nav .item a</code>) nešlo přepsat naší jednoduchou utilitou <code>.hidden</code>. S <code>@layer</code> to vyřešíte jednoduše:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* 1. Definujeme pořadí priorit (zleva doprava): */</span>
+<span class="css-sel">@layer</span> <span class="css-prop">reset, base, components, utilities</span>;</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Pravidlo ve vrstvě <code>utilities</code> <strong>vždy zvítězí</strong> nad pravidlem v <code>components</code>, bez ohledu na to, jak složitý selektor komponenta má!
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Zápis pravidel do vrstev</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">@layer components</span> {
+  <span class="css-sel">.btn</span> {
+    <span class="css-prop">background</span>: <span class="css-val">#6366f1</span>;
+    <span class="css-prop">color</span>: <span class="css-val">white</span>;
+  }
+}
+
+<span class="css-sel">@layer utilities</span> {
+  <span class="css-sel">.bg-danger</span> {
+    <span class="css-prop">background</span>: <span class="css-val">#f43f5e</span>; <span class="html-comm">/* Přebije .btn bez !important */</span>
+  }
+}</code></pre></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: color-mix() a moderní barvy
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Barevné funkce: color-mix()">
+        <div class="slide-header">
+          <h2 class="slide-title">Barevné funkce nové generace: <code>color-mix()</code> a OKLCH</h2>
+          <p class="slide-subtitle">Míchejte odstíny, vytvářejte průhlednosti a využívejte moderní displeje s širokým gamutem.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 10 10 0 0 0 0-20"></path></svg>
+                </div>
+                <h3>Funkce <code>color-mix()</code></h3>
+              </div>
+              <p style="font-size: 0.86rem;">Umožňuje smíchat dvě barvy v zadaném poměru v daném barevném prostoru:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Vytvoření 20% poloprůhledné varianty tlačítka: */</span>
+<span class="css-prop">background</span>: <span class="css-val">color-mix(in srgb, var(--primary) 20%, transparent)</span>;
+
+<span class="html-comm">/* Ztmavení barvy přimícháním 15 % černé: */</span>
+<span class="css-prop">background</span>: <span class="css-val">color-mix(in srgb, var(--primary), black 15%)</span>;</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon indigo">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h3>Barevný prostor OKLCH</h3>
+              </div>
+              <p style="font-size: 0.86rem;">
+                Tradiční RGB/HSL má problémy s vnímáním lidského oka (např. čistě žlutá se zdá mnohem jasnější než modrá se stejným procentem světlosti).
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Světlost (L), sytost (C), odstín ve stupních (H) */</span>
+<span class="css-prop">color</span>: <span class="css-val">oklch(0.7 0.15 150)</span>;</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                OKLCH je perceptuálně lineární a dokáže zobrazit zářivější barvy na moderních P3 displejích (MacBooky, nové iPhony).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní Theme Studio & Clamp
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Theme Studio & Clamp kalkulátor">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní studio: CSS Proměnné a funkce <code>clamp()</code></h2>
+          <p class="slide-subtitle">Měňte CSS proměnné palety a vyzkoušejte si fluidní velikost nadpisu při změně simulované šířky okna.</p>
+        </div>
+        <div class="slide-content">
+          <div class="modern-studio-grid">
+            <!-- Ovládací panel -->
+            <div class="studio-controls">
+              <span class="badge badge-accent">Nastavení CSS proměnných</span>
+
+              <div class="studio-group">
+                <label class="studio-label" for="studioPreset">Barevná předvolba:</label>
+                <select id="studioPreset" class="gb-select">
+                  <option value="midnight-indigo" selected>Midnight Indigo (Tmavý)</option>
+                  <option value="emerald-forest">Emerald Forest (Zelený)</option>
+                  <option value="cyberpunk-neon">Cyberpunk Neon</option>
+                  <option value="clean-light">Clean Light (Světlý)</option>
+                </select>
+              </div>
+
+              <div class="studio-group">
+                <label class="studio-label" for="studioPrimaryColor">--primary-color:</label>
+                <div class="color-input-row">
+                  <input type="color" id="studioPrimaryColor" class="color-picker" value="#6366f1">
+                  <span style="font-family: var(--font-mono, monospace); font-size: 0.82rem;">Hlavní akcent</span>
+                </div>
+              </div>
+
+              <div class="studio-group">
+                <label class="studio-label" for="studioBgColor">--bg-color:</label>
+                <div class="color-input-row">
+                  <input type="color" id="studioBgColor" class="color-picker" value="#0f172a">
+                  <span style="font-family: var(--font-mono, monospace); font-size: 0.82rem;">Pozadí boxu</span>
+                </div>
+              </div>
+
+              <div class="studio-group">
+                <label class="studio-label" for="studioTextColor">--text-color:</label>
+                <div class="color-input-row">
+                  <input type="color" id="studioTextColor" class="color-picker" value="#f8fafc">
+                  <span style="font-family: var(--font-mono, monospace); font-size: 0.82rem;">Barva textu</span>
+                </div>
+              </div>
+
+              <div style="border-top: 1px dashed var(--border-subtle); padding-top: 0.6rem; margin-top: 0.2rem;">
+                <label class="studio-label" for="studioClampSlider">
+                  <span>Simulovaná šířka okna pro clamp():</span>
+                  <span id="studioClampLabel" style="color: #818cf8; font-family: var(--font-mono, monospace);">720 px</span>
+                </label>
+                <input type="range" id="studioClampSlider" min="320" max="1440" value="720" style="width: 100%; margin-top: 0.3rem;">
+              </div>
+            </div>
+
+            <!-- Náhled a kód -->
+            <div class="studio-preview">
+              <div class="studio-demo-box" id="studioPreviewBox">
+                <h2 class="studio-clamp-text" id="studioClampText">Fluidní nadpis v CSS</h2>
+                <p style="font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                  Tento box využívá výhradně nativní CSS proměnné a funkci <code>clamp(1.25rem, 2.5vw + 0.5rem, 2.5rem)</code>. Žádný preprocesor ani knihovna nejsou potřeba.
+                </p>
+                <button type="button" class="btn btn-primary" style="align-self: flex-start; margin-top: auto;">
+                  Interaktivní tlačítko
+                </button>
+              </div>
+
+              <div class="gb-code">
+                <pre style="margin: 0;"><code id="studioGeneratedCss">:root {
+  --primary-color: #6366f1;
+  --bg-color: #0f172a;
+  --text-color: #f8fafc;
+}</code></pre>
+                <button type="button" class="btn-copy" id="studioCopyBtn">
+                  <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  Kopírovat CSS
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Doporučená architektura CSS souboru
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Architektura moderního CSS">
+        <div class="slide-header">
+          <h2 class="slide-title">Doporučená architektura moderního CSS souboru</h2>
+          <p class="slide-subtitle">Jak strukturovat profesionální stylopis, aby se v něm neztratil ani velký vývojový tým.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3-col">
+            <!-- 1. Tokeny -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon indigo">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </div>
+                <h3>1. Design Tokeny (:root)</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Na samém začátku definujeme globální proměnné: barevnou paletu, typografické stupnice, mezery a stíny.</p>
+            </div>
+
+            <!-- 2. Reset a báze -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                </div>
+                <h3>2. CSS Reset &amp; Base</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Nastavení <code>box-sizing: border-box</code>, pružných obrázků (<code>max-width: 100%</code>) a výchozí typografie pro <code>body</code> a nadpisy.</p>
+            </div>
+
+            <!-- 3. Komponenty a nesting -->
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                </div>
+                <h3>3. Samostatné komponenty</h3>
+              </div>
+              <p style="font-size: 0.84rem;">Každá komponenta (<code>.card</code>, <code>.navbar</code>, <code>.modal</code>) je zapouzdřena pomocí nativního CSS nestingu a lokálních proměnných.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky</h2>
+          <p class="slide-subtitle">Ověřte si své porozumění moderním CSS proměnným, nestingu, clampu a kaskádovým vrstvám.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>V čem se zásadně liší CSS proměnné (Custom Properties) od proměnných v Sassu ($color)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Proměnné v Sassu existují pouze během překladu na serveru/v počítači – do výsledného CSS se propíší jako statické hodnoty. <strong>CSS Custom Properties</strong> žijí přímo v DOM stromu prohlížeče za běhu stránky, podléhají kaskádové dědičnosti a lze je okamžitě měnit JavaScriptem i Media queries.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Proč je v matematické funkci <code>calc()</code> nutné psát mezery kolem znamének <code>+</code> a <code>-</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Znak <code>-</code> bez mezery (např. <code>-20px</code>) CSS parser interpretuje jako zápornou hodnotu jednotky, nikoliv jako operátor odčítání. Syntaxe <code>calc(100%-20px)</code> je tedy syntaktická chyba a prohlížeč celé pravidlo zahodí.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>K čemu slouží funkce <code>clamp(min, preferred, max)</code> a co vyřešila v typografii?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Umožňuje vytvořit <strong>fluidní velikost textu i mezer</strong>. Písmo plynule roste s šířkou viewportu (např. <code>3vw</code>), ale nikdy neklesne pod nastavené minimum (na mobilu) ani nepřekročí nastavené maximum (na velkém monitoru). Nahrazuje desítky skokových Media queries.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Jaký problém řeší kaskádové vrstvy <code>@layer</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Umožňují explicitně seřadit prioritu stylů do vrstev (např. <code>reset, base, components, utilities</code>). Styl ve vyšší vrstvě vždy zvítězí nad stylem v nižší vrstvě bez ohledu na to, jak vysokou specificitu selektor v nižší vrstvě má. Zabraňuje válkám se specificitou a zneužívání <code>!important</code>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ (Controls Bar) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../035-Responzivni-web/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 035 Responzivní web (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../037-Pristupnost-CSS/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 037 Přístupnost v CSS (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Moderní CSS
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 036 -->
+  <script src="modern-css.js"></script>
+</body>
+
+</html>

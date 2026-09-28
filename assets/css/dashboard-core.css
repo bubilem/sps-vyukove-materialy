@@ -5,6 +5,7 @@
    ========================================================================== */
 
 :root {
+  color-scheme: dark;
   --bg-primary: #0a0f1d;
   --bg-secondary: #111827;
   --bg-card: rgba(17, 24, 39, 0.75);
@@ -31,6 +32,7 @@
 }
 
 [data-theme="light"] {
+  color-scheme: light;
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
   --bg-card: rgba(255, 255, 255, 0.95);
@@ -55,6 +57,35 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   padding-bottom: 5rem;
+}
+
+/* ==========================================================================
+   Globální formulářové prvky (Select, Option & Inputs)
+   ========================================================================== */
+select,
+input,
+textarea,
+button {
+  color-scheme: dark;
+}
+
+[data-theme="light"] select,
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] button {
+  color-scheme: light;
+}
+
+select option,
+option {
+  background-color: #111827 !important;
+  color: #f3f4f6 !important;
+}
+
+[data-theme="light"] select option,
+[data-theme="light"] option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
 }
 
 .icon {

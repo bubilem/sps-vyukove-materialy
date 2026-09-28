@@ -1,0 +1,332 @@
+/* ==========================================================================
+   SPŠ Webové technologie - Téma 038: CSS Preprocesory, Architektura a Frameworky
+   Lokální dedikované styly pro předmět WEB (Webové technologie SPŠ)
+   ========================================================================== */
+
+:root {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.28);
+  --web-accent-light: #fb923c;
+  --sass-pink: #cf649a;
+  --sass-glow: rgba(207, 100, 154, 0.25);
+  --tw-cyan: #38bdf8;
+  --bs-purple: #7952b3;
+}
+
+/* Mřížky pro rozvržení karet */
+.grid-2, .grid-2-col, .content-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.grid-3, .grid-3-col, .content-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.grid-4, .grid-4-col, .content-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .grid-2, .grid-2-col, .content-grid-2,
+  .grid-3, .grid-3-col, .content-grid-3,
+  .grid-4, .grid-4-col, .content-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   1. Záhlaví snímků: Nadpis a podnadpis pod sebou
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   2. Hlavičky karet s inline SVG ikonami
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px !important;
+  height: 20px !important;
+  stroke-width: 2 !important;
+}
+
+.card-icon.sass {
+  background: rgba(207, 100, 154, 0.15) !important;
+  color: #cf649a !important;
+  border: 1px solid rgba(207, 100, 154, 0.3) !important;
+}
+
+.card-icon.orange {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}
+
+.card-icon.blue {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+.card-icon.emerald {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.card-icon.purple {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(168, 85, 247, 0.3) !important;
+}
+
+/* ==========================================================================
+   3. Interaktivní SCSS Sandbox (Snímek 10)
+   ========================================================================== */
+.sandbox-split-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  min-height: 440px;
+}
+
+@media (max-width: 900px) {
+  .sandbox-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sandbox-pane {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sandbox-pane-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.5rem;
+}
+
+.sandbox-editor {
+  flex: 1;
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.85rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+}
+
+.sandbox-output {
+  flex: 1;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.85rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  color: #34d399;
+  overflow: auto;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* BEM Diagram komponenty (Snímek 5) */
+.bem-tree-diagram {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.84rem;
+}
+
+.bem-block {
+  color: #fb923c;
+  font-weight: 700;
+}
+
+.bem-element {
+  color: #38bdf8;
+  padding-left: 1.5rem;
+}
+
+.bem-modifier {
+  color: #34d399;
+  padding-left: 3rem;
+}
+
+/* Srovnávací tabulka (Snímek 8) */
+.tools-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  margin-top: 0.5rem;
+}
+
+.tools-table th,
+.tools-table td {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--border-subtle);
+  text-align: left;
+}
+
+.tools-table th {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.tools-table tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   4. Opakovací otázky (Snímek 12)
+   ========================================================================== */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+}
+
+@media (max-width: 900px) {
+  .questions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.question-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 1.1rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.question-card:hover {
+  border-color: rgba(207, 100, 154, 0.4);
+}
+
+.question-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.question-num {
+  color: #cf649a;
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+}
+
+.question-btn {
+  background: rgba(207, 100, 154, 0.1);
+  color: #cf649a;
+  border: 1px solid rgba(207, 100, 154, 0.25);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.question-btn:hover {
+  background: rgba(207, 100, 154, 0.2);
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  border-left: 3px solid #cf649a;
+}
+
+.question-hint.visible {
+  display: block;
+}

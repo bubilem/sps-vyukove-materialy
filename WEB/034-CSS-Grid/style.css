@@ -1,0 +1,429 @@
+/* ==========================================================================
+   SPŠ Webové technologie - Téma 034: CSS Grid a 2D rozvržení
+   Lokální dedikované styly pro předmět WEB (Webové technologie SPŠ)
+   ========================================================================== */
+
+:root {
+  --accent: #f97316;
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --web-accent: #f97316;
+  --web-accent-glow: rgba(249, 115, 22, 0.28);
+  --web-accent-light: #fb923c;
+  --grid-cyan: #06b6d4;
+  --grid-emerald: #10b981;
+  --grid-purple: #a855f7;
+  --grid-amber: #f59e0b;
+  --grid-rose: #f43f5e;
+}
+
+/* Mřížky pro karty snímků */
+.grid-2, .grid-2-col, .content-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.grid-3, .grid-3-col, .content-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.grid-4, .grid-4-col, .content-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .grid-2, .grid-2-col, .content-grid-2,
+  .grid-3, .grid-3-col, .content-grid-3,
+  .grid-4, .grid-4-col, .content-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   1. Záhlaví snímků: Nadpis a podnadpis pod sebou
+   ========================================================================== */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.35rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  width: 100% !important;
+}
+
+.slide-title {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.55 !important;
+  margin: 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   2. Hlavičky karet s inline SVG ikonami
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.card-icon svg,
+.card-icon .icon {
+  width: 20px !important;
+  height: 20px !important;
+  stroke-width: 2 !important;
+}
+
+.card-icon.orange {
+  background: rgba(249, 115, 22, 0.15) !important;
+  color: #fb923c !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+}
+
+.card-icon.cyan {
+  background: rgba(6, 182, 212, 0.15) !important;
+  color: #22d3ee !important;
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+}
+
+.card-icon.emerald {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+.card-icon.purple {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(168, 85, 247, 0.3) !important;
+}
+
+.card-icon.rose {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.3) !important;
+}
+
+.card-icon.amber {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+}
+
+/* ==========================================================================
+   3. Diagramy a vizuální ukázky CSS Gridu
+   ========================================================================== */
+.grid-visual-demo {
+  background: var(--bg-elevated);
+  border: 2px dashed rgba(6, 182, 212, 0.4);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.grid-cell-demo {
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid #06b6d4;
+  color: #22d3ee;
+  border-radius: 6px;
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.grid-lines-diagram {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 60px);
+  gap: 10px;
+  position: relative;
+  background: var(--bg-surface);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  margin: 0.5rem 0;
+}
+
+.grid-lines-diagram .line-label {
+  position: absolute;
+  font-size: 0.7rem;
+  font-family: var(--font-mono, monospace);
+  color: #f59e0b;
+}
+
+/* Srovnávací matice Flexbox vs. Grid (Snímek 9) */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  margin-top: 0.5rem;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border-subtle);
+  text-align: left;
+}
+
+.comparison-table th {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.comparison-table tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   4. Interaktivní Grid Builder (Snímek 10)
+   ========================================================================== */
+.gb-grid-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.25rem;
+  min-height: 480px;
+}
+
+@media (max-width: 1024px) {
+  .gb-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gb-controls {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.gb-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.gb-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gb-select, .gb-input {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.85rem;
+  font-family: var(--font-mono, monospace);
+  outline: none;
+}
+
+.gb-select:focus, .gb-input:focus {
+  border-color: #06b6d4;
+}
+
+.gb-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gb-stage-box {
+  background: var(--bg-surface);
+  border: 2px dashed rgba(6, 182, 212, 0.35);
+  border-radius: 12px;
+  padding: 1.25rem;
+  flex: 1;
+  min-height: 320px;
+  position: relative;
+  overflow: auto;
+}
+
+.gb-stage-badge {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 0.72rem;
+  color: #22d3ee;
+  font-family: var(--font-mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.gb-target-grid {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.gb-item {
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #fff;
+  padding: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+.gb-item-title {
+  font-size: 0.9rem;
+}
+
+.gb-item-area {
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 0.85;
+  font-family: var(--font-mono, monospace);
+}
+
+.gb-code {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: auto;
+}
+
+/* ==========================================
+   5. Opakovací otázky (Snímek 12)
+   ========================================== */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+}
+
+@media (max-width: 900px) {
+  .questions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.question-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 1.1rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.question-card:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.question-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.question-num {
+  color: #22d3ee;
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+}
+
+.question-btn {
+  background: rgba(6, 182, 212, 0.1);
+  color: #22d3ee;
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.question-btn:hover {
+  background: rgba(6, 182, 212, 0.2);
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  border-left: 3px solid #06b6d4;
+}
+
+.question-hint.visible {
+  display: block;
+}

@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 032: Základní vlastnosti CSS | WEB • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Webové technologie (WEB) SPŠ: typografie a fonty, barvy a gradienty, rámečky border a outline, stíny box-shadow, display block/inline, viditelnost a overflow.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 032 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">032 Základní vlastnosti</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Vlastnosti &bull; Typografie &bull; Vzhled</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Základní vlastnosti CSS">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 032</span>
+            <span class="badge">Vizuální formátování prvků</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Základní vlastnosti &bull; Live Studio</span>
+          </div>
+          <h1 class="hero-title">Základní vlastnosti CSS</h1>
+          <p class="hero-subtitle">
+            Klíčový arzenál každého webového vývojáře &bull; Detailní přehled vlastností pro typografii a čitelnost textu, barevná pozadí a gradienty, rámečky a zaoblení, prostorové stíny box-shadow, režimy zobrazení display (block vs. inline), viditelnost a ořezávání přetékajícího obsahu (overflow).
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                Písmo a text
+              </h4>
+              <p>font-family, fallback stack, font-size, line-height 1.5, text-align, decoration a transform.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                Pozadí a gradienty
+              </h4>
+              <p>background-color, background-image s url(), linear-gradient a background-size: cover.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="3" y="3" width="18" height="18" rx="4"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Rámečky a stíny
+              </h4>
+              <p>border shorthand, kulaté rohy border-radius, outline pro a11y focus a prostorový box-shadow.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Display a Overflow
+              </h4>
+              <p>display block/inline/none, rozdíl vůči visibility: hidden a scrollování s overflow: auto.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Typografie a stylování textu
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Typografie a text">
+        <div class="slide-header">
+          <h2 class="slide-title">Typografie a vlastnosti pro formátování textu</h2>
+          <p class="slide-subtitle">Čitelnost textu je nejdůležitějším faktorem webu. Zásady volby fontů, výšky řádku a zarovnání.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                </div>
+                <h3>Písmo a Fallback Font Stack</h3>
+              </div>
+              <ul class="styled-list">
+                <li>
+                  <strong><code>font-family</code>:</strong> Seznam písem oddělených čárkou. Prohlížeč zkouší písma zleva doprava a použije první dostupné:
+                  <div class="code-block" style="font-size: 0.82rem; margin: 0.35rem 0;"><pre><code><span class="css-prop">font-family</span>: <span class="css-val">'Inter', system-ui, -apple-system, sans-serif</span>;</code></pre></div>
+                  <em>Obecné rodiny na konci stacku:</em> <code>sans-serif</code> (bezpatkové), <code>serif</code> (patkové), <code>monospace</code> (neproporcionální pro kód).
+                </li>
+                <li><strong><code>font-size</code>:</strong> Velikost písma (doporučeno v <code>rem</code>, např. <code>1rem</code> pro tělo, <code>1.5rem</code>–<code>2.5rem</code> pro nadpisy).</li>
+                <li><strong><code>font-weight</code>:</strong> Tloušťka řezu (čísla: <code>400</code> normální, <code>600</code> polotučné, <code>700</code> tučné bold).</li>
+                <li><strong><code>font-style</code>:</strong> Kurzíva (<code>italic</code> / <code>normal</code>).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon green">
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg>
+                </div>
+                <h3>Výška řádku a formátování odstavců</h3>
+              </div>
+              <ul class="styled-list">
+                <li>
+                  <strong style="color: #34d399;"><code>line-height</code> (Zásadní pravidlo):</strong> Udává výšku řádku. Zapisujte ji <strong>bez jednotky</strong> (např. <code>1.5</code> až <code>1.6</code>). Bezrozměrné číslo se správně dědí podle velikosti písma potomků bez nežádoucího překrývání!
+                </li>
+                <li><strong><code>text-align</code>:</strong> Horizontální zarovnání: <code>left</code>, <code>center</code>, <code>right</code>, <code>justify</code> (do bloku – na webu nepoužívat kvůli nevzhledným mezerám).</li>
+                <li><strong><code>text-decoration</code>:</strong> Podtržení odkazů (<code>underline</code>, <code>none</code>, barva a styl: <code>underline wavy orange</code>).</li>
+                <li><strong><code>text-transform</code>:</strong> Převod velikosti písmen: <code>uppercase</code> (velká), <code>lowercase</code>, <code>capitalize</code> (první velká).</li>
+                <li><strong><code>letter-spacing</code>:</strong> Prostrkání znaků (např. <code>0.05em</code> u tlačítek psaných velkými písmeny).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Barvy a pozadí prvku
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Pozadí prvku">
+        <div class="slide-header">
+          <h2 class="slide-title">Barvy a pozadí prvku: Vlastnosti <code>background-*</code></h2>
+          <p class="slide-subtitle">Jak prvku nastavit podkladovou barvu, obrázek a správně kontrolovat jeho chování při změně rozlišení.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Jednotlivé vlastnosti pozadí</span>
+              <ul class="styled-list" style="margin-top: 0.75rem;">
+                <li><strong><code>color</code>:</strong> Barva textu (např. <code>#f8fafc</code>).</li>
+                <li><strong><code>background-color</code>:</strong> Plná podkladová barva za obsahem a paddingem.</li>
+                <li><strong><code>background-image</code>:</strong> Cesta k obrázku pomocí funkce <code>url('cesta/k/obrazku.webp')</code>.</li>
+                <li><strong><code>background-repeat</code>:</strong> Opakování tapety: <code>no-repeat</code> (nejčastější), <code>repeat-x</code>, <code>repeat</code>.</li>
+                <li><strong><code>background-position</code>:</strong> Umístění obrázku v rámci prvku: <code>center</code>, <code>top right</code>, <code>50% 50%</code>.</li>
+                <li>
+                  <strong style="color: #38bdf8;"><code>background-size</code> (Klíčová responzivita):</strong><br>
+                  &bull; <code>cover</code>: Roztáhne obrázek tak, aby <em>zcela pokryl</em> celou plochu (ořízne přesahy).<br>
+                  &bull; <code>contain</code>: Zmenší obrázek tak, aby byl <em>celý vidět</em> (mohou vzniknout prázdné pruhy).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Zkrácený zápis (Shorthand)</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">Všechny vlastnosti lze zapsat na jeden řádek pomocí vlastnosti <code>background</code>:</p>
+              
+              <div class="code-block" style="font-size: 0.85rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Typická hero sekce: */</span>
+<span class="css-sel">.hero-banner</span> {
+  <span class="css-prop">background</span>: <span class="css-val">#0f172a url('bg.webp') no-repeat center / cover</span>;
+  <span class="css-prop">color</span>: <span class="css-val">#ffffff</span>;
+  <span class="css-prop">min-height</span>: <span class="css-val">60</span><span class="css-unit">vh</span>;
+}</code></pre>
+              </div>
+
+              <div style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8; padding: 0.65rem 0.85rem; border-radius: 0 8px 8px 0; margin-top: 0.75rem; font-size: 0.82rem;">
+                <strong>Pozor na syntaxi lomítka (/):</strong><br>
+                V shorthandu <code>background</code> se <code>background-size</code> zapisuje za pozici oddělené lomítkem: <code>center / cover</code>. Vždy uvádějte i záložní <code>background-color</code> pro případ, že se obrázek nepodaří stáhnout!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Moderní CSS gradienty na pozadí
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="CSS gradienty">
+        <div class="slide-header">
+          <h2 class="slide-title">Moderní CSS gradienty na pozadí</h2>
+          <p class="slide-subtitle">Vytváření hladkých barevných přechodů čistě v CSS bez nutnosti načítat rastrové obrázky.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <!-- Lineární gradient -->
+            <div class="content-card">
+              <span class="badge badge-accent">1. Lineární přechod: linear-gradient()</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">Přechází v přímém směru pod zadaným úhlem nebo směrem (<code>to right</code>, <code>to bottom</code>, <code>135deg</code>):</p>
+              
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="css-sel">.tlacitko-akce</span> {
+  <span class="css-prop">background</span>: <span class="css-val">linear-gradient(135deg, #f97316, #ea580c)</span>;
+}
+
+<span class="html-comm">/* Přechod s procentuálními zarážkami: */</span>
+<span class="css-sel">.duha</span> {
+  <span class="css-prop">background</span>: <span class="css-val">linear-gradient(to right, #f43f5e 0%, #38bdf8 100%)</span>;
+}</code></pre>
+              </div>
+
+              <!-- Živá ukázka -->
+              <div style="height: 50px; border-radius: 8px; background: linear-gradient(135deg, #f97316, #ea580c); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 0.85rem;">
+                linear-gradient(135deg, #f97316, #ea580c)
+              </div>
+            </div>
+
+            <!-- Radiální gradient & ztmavení -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">2. Radiální přechod &amp; Vrstvení</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">Kruhový přechod ze středu ven nebo poloprůhledné ztmavení fotografie:</p>
+
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Ztmavení fotky pro lepší čitelnost bílého textu: */</span>
+<span class="css-sel">.karta-hero</span> {
+  <span class="css-prop">background</span>:
+    <span class="css-val">linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6))</span>,
+    <span class="css-val">url('foto.webp') center / cover</span>;
+}</code></pre>
+              </div>
+
+              <!-- Živá ukázka -->
+              <div style="height: 50px; border-radius: 8px; background: radial-gradient(circle at center, #38bdf8 0%, #0369a1 100%); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 0.85rem;">
+                radial-gradient(circle, #38bdf8, #0369a1)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Rámečky (Border), zaoblení a obrysy (Outline)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Border, radius a outline">
+        <div class="slide-header">
+          <h2 class="slide-title">Rámečky (Border), zaoblení a obrysy (Outline)</h2>
+          <p class="slide-subtitle">Vymezení hranic elementů, zaoblování rohů a zásadní rozdíl mezi Border a Outline.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Rámeček a zaoblení rohů</span>
+              <ul class="styled-list" style="margin-top: 0.75rem;">
+                <li>
+                  <strong><code>border</code> (Shorthand):</strong> Sdružuje tloušťku, styl a barvu:
+                  <div class="code-block" style="font-size: 0.82rem; margin: 0.35rem 0;"><pre><code><span class="css-prop">border</span>: <span class="css-val">2px solid #f97316</span>;</code></pre></div>
+                  <em>Styly rámečku:</em> <code>solid</code> (plná čára), <code>dashed</code> (čárkovaná), <code>dotted</code> (tečkovaná), <code>none</code>.
+                </li>
+                <li>
+                  <strong style="color: #10b981;"><code>border-radius</code> (Kulaté rohy):</strong><br>
+                  &bull; Mírné zaoblení: <code>border-radius: 8px;</code><br>
+                  &bull; Pilulkové tlačítko: <code>border-radius: 9999px;</code><br>
+                  &bull; Dokonalý kruh: <code>border-radius: 50%;</code> (při shodné šířce a výšce prvků např. profilový avatar 48×48px).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Zásadní rozdíl: Border vs. Outline</span>
+              
+              <div style="margin-top: 0.75rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">Border (Rámeček)</h4>
+                <p style="font-size: 0.85rem;">Je pevnou součástí Box modelu. Zabírá fyzické místo v layoutu a může posouvat okolní obsah (pokud nepoužíváte <code>border-box</code>).</p>
+              </div>
+
+              <div style="margin-top: 0.85rem; border-top: 1px dashed var(--border-subtle); padding-top: 0.75rem;">
+                <h4 style="margin: 0 0 0.35rem 0;">Outline (Vnější obrys)</h4>
+                <p style="font-size: 0.85rem;">Kreslí se <strong>vně rámečku a nezabírá žádné místo</strong> v toku dokumentu. Nikdy nerozhodí layout! Lze odsadit pomocí <code>outline-offset</code>.</p>
+              </div>
+
+              <div style="background: rgba(249, 115, 22, 0.08); border-left: 3px solid #f97316; padding: 0.6rem 0.85rem; border-radius: 0 8px 8px 0; margin-top: 0.75rem; font-size: 0.82rem;">
+                <strong>Zásada přístupnosti (a11y):</strong><br>
+                Nikdy nenastavujte <code>outline: none;</code> bez adekvátní náhrady! Uživatelé navigující klávesnicí by neviděli, kde se právě nachází fokus.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Stíny a hloubka: Box-shadow a Text-shadow
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Stíny: Box-shadow">
+        <div class="slide-header">
+          <h2 class="slide-title">Stíny a prostorová hloubka: <code>box-shadow</code></h2>
+          <p class="slide-subtitle">Vytváření plastičnosti a vizuálního vyvýšení prvků (Elevation) nad rovinu stránky.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Anatomie vlastnosti box-shadow</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">Pořadí parametrů stínu v CSS:</p>
+
+              <div class="code-block" style="font-size: 0.85rem; margin: 0.5rem 0;">
+                <pre><code><span class="css-prop">box-shadow</span>: <span class="css-val">offsetX</span> <span class="css-val">offsetY</span> <span class="css-val">blurRadius</span> <span class="css-val">spreadRadius</span> <span class="css-val">color</span> <span class="css-val">[inset]</span>;</code></pre>
+              </div>
+
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>offsetX / offsetY:</strong> Vodorovný a svislý posun stínu (kladný Y = stín padá dolů).</li>
+                <li><strong>blurRadius:</strong> Poloměr rozostření (0 = ostrá hrana, vyšší = měkký stín).</li>
+                <li><strong>spreadRadius:</strong> Roztažení stínu do šířky (volitelné).</li>
+                <li><strong>color:</strong> Barva stínu (doporučeno poloprůhledná černá <code>rgba(0, 0, 0, 0.15)</code>).</li>
+                <li><strong>inset:</strong> Vnitřní stín (vpadlý do elementu).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Vrstvené stíny pro přirozený vzhled</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">Profesionální designové systémy nespoléhají na jediný tvrdý stín, ale vrství dva měkké stíny přes čárku:</p>
+
+              <div class="code-block" style="font-size: 0.82rem; margin: 0.5rem 0;">
+                <pre><code><span class="html-comm">/* Přirozený moderní stín karty: */</span>
+<span class="css-sel">.modern-card</span> {
+  <span class="css-prop">box-shadow</span>:
+    <span class="css-val">0 4px 6px -1px rgba(0, 0, 0, 0.1)</span>,
+    <span class="css-val">0 2px 4px -2px rgba(0, 0, 0, 0.1)</span>;
+}
+
+<span class="html-comm">/* Text-shadow: posunX posunY rozostření barva */</span>
+<span class="css-sel">.titulek</span> {
+  <span class="css-prop">text-shadow</span>: <span class="css-val">0 2px 4px rgba(0, 0, 0, 0.5)</span>;
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Režimy toku a zobrazení: Vlastnost display
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Režimy zobrazení display">
+        <div class="slide-header">
+          <h2 class="slide-title">Režimy zobrazení a toku dokumentu: <code>display</code></h2>
+          <p class="slide-subtitle">Jakým způsobem se prvek zapojuje do normálního toku stránky: řádkový vs. blokový prvek.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-4-col" style="gap: 1rem;">
+            <!-- 1. block -->
+            <div class="content-card">
+              <span class="badge badge-accent">display: block;</span>
+              <h4 style="margin: 0.5rem 0;">Blokový prvek</h4>
+              <p style="font-size: 0.85rem;">Začíná na <strong>novém řádku</strong> a roztáhne se na 100% šířky rodiče.</p>
+              <ul class="styled-list" style="font-size: 0.8rem;">
+                <li>Plně reaguje na <code>width</code> a <code>height</code>.</li>
+                <li>Plně reaguje na všechny okraje <code>margin</code> i <code>padding</code>.</li>
+                <li>Výchozí pro: <code>div</code>, <code>p</code>, <code>h1-h6</code>, <code>section</code>, <code>ul</code>.</li>
+              </ul>
+            </div>
+
+            <!-- 2. inline -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">display: inline;</span>
+              <h4 style="margin: 0.5rem 0;">Řádkový prvek</h4>
+              <p style="font-size: 0.85rem;">Proudí uvnitř textu vedle ostatních slov. Nezačíná na novém řádku.</p>
+              <ul class="styled-list" style="font-size: 0.8rem;">
+                <li><strong>Ignoruje</strong> <code>width</code> a <code>height</code>.</li>
+                <li>Vertikální <code>margin-top/bottom</code> neovlivňují tok řádků!</li>
+                <li>Výchozí pro: <code>span</code>, <code>a</code>, <code>strong</code>, <code>em</code>.</li>
+              </ul>
+            </div>
+
+            <!-- 3. inline-block -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">display: inline-block;</span>
+              <h4 style="margin: 0.5rem 0;">Kombinovaný hybrid</h4>
+              <p style="font-size: 0.85rem;">Zůstává v řádku vedle ostatních prvků, ale <strong>chová se uvnitř jako blok</strong>.</p>
+              <ul class="styled-list" style="font-size: 0.8rem;">
+                <li>Lze mu nastavit fixní <code>width</code> a <code>height</code>.</li>
+                <li>Plně respektuje vertikální <code>padding</code> i <code>margin</code>.</li>
+                <li>Ideální pro: tlačítka, odznáčky a ikonové štítky.</li>
+              </ul>
+            </div>
+
+            <!-- 4. none -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #f43f5e;">display: none;</span>
+              <h4 style="margin: 0.5rem 0;">Kompletní skrytí</h4>
+              <p style="font-size: 0.85rem;">Element je <strong>zcela vyjmut z renderovacího stromu</strong>.</p>
+              <ul class="styled-list" style="font-size: 0.8rem;">
+                <li>Nezabírá žádné místo na stránce (okolní obsah se sesune).</li>
+                <li>Nereaguje na kliknutí.</li>
+                <li>Čtečky obrazovky jej zcela ignorují.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: display: none vs visibility: hidden vs opacity: 0
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Skrytí prvku: Srovnání">
+        <div class="slide-header">
+          <h2 class="slide-title">Tři způsoby skrytí: <code>display: none</code> vs. <code>visibility</code> vs. <code>opacity</code></h2>
+          <p class="slide-subtitle">Častá otázka u technických pohovorů a klíčový koncept pro animace a přístupnost.</p>
+        </div>
+        <div class="slide-content">
+          <div style="overflow-x: auto;">
+            <table class="truth-table" style="width: 100%; font-size: 0.88rem;">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Vlastnost</th>
+                  <th style="width: 20%;">Zabírá místo v layoutu?</th>
+                  <th style="width: 20%;">Reaguje na myš / klik?</th>
+                  <th style="width: 18%;">Lze plynule animovat?</th>
+                  <th style="width: 17%;">Čtečka obrazovky</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>display: none;</code></td>
+                  <td style="color: #f43f5e; font-weight: 700;">NE (zmizí i prostor)</td>
+                  <td style="color: #f43f5e;">NE</td>
+                  <td style="color: #f43f5e;">NE (skoková změna)</td>
+                  <td style="color: #f43f5e;">Ignoruje</td>
+                </tr>
+                <tr>
+                  <td><code>visibility: hidden;</code></td>
+                  <td style="color: #10b981; font-weight: 700;">ANO (zůstane prázdná díra)</td>
+                  <td style="color: #f43f5e;">NE (proklikne skrz)</td>
+                  <td style="color: #f59e0b;">Omezeně (pouze viditelnost)</td>
+                  <td style="color: #f43f5e;">Ignoruje</td>
+                </tr>
+                <tr>
+                  <td><code>opacity: 0;</code></td>
+                  <td style="color: #10b981; font-weight: 700;">ANO (zůstane prázdná díra)</td>
+                  <td style="color: #10b981; font-weight: 700;">ANO (prvek stále kliká!)</td>
+                  <td style="color: #10b981; font-weight: 700;">ANO (ideální pro transition)</td>
+                  <td style="color: #10b981; font-weight: 700;">Přečte obsah!</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background: rgba(249, 115, 22, 0.08); border-left: 3px solid #f97316; padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin-top: 1rem; font-size: 0.85rem;">
+            <strong style="color: #fb923c;">Tip z praxe:</strong><br>
+            Pokud animujete postupné mizení prvku (fade out), použijte <code>opacity: 0</code> s CSS přechodem a po skončení animace nastavte <code>pointer-events: none</code> (aby neviditelný prvek neblokoval kliknutí pod sebou).
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Přetékání obsahu: Vlastnost overflow
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Přetékání obsahu: overflow">
+        <div class="slide-header">
+          <h2 class="slide-title">Přetékání obsahu: Vlastnost <code>overflow</code></h2>
+          <p class="slide-subtitle">Co se stane, když je text, tabulka nebo obrázek větší než pevně vymezená krabička rodiče.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-4-col" style="gap: 1rem;">
+            <!-- visible -->
+            <div class="content-card">
+              <span class="badge" style="color: #94a3b8;">Výchozí</span>
+              <h4 style="margin: 0.5rem 0;"><code>overflow: visible;</code></h4>
+              <p style="font-size: 0.82rem;">Obsah nepřirozeně přeteče ven z krabičky a překryje okolní text nebo grafiku na stránce.</p>
+              <div style="height: 60px; border: 1px dashed #f43f5e; padding: 4px; overflow: visible; font-size: 0.75rem; background: var(--bg-elevated); margin-top: 0.5rem;">
+                Tento dlouhý text přeteče ven přes rámeček rodiče a nekontrolovaně pokračuje dál...
+              </div>
+            </div>
+
+            <!-- hidden -->
+            <div class="content-card">
+              <span class="badge badge-accent">Oříznutí</span>
+              <h4 style="margin: 0.5rem 0;"><code>overflow: hidden;</code></h4>
+              <p style="font-size: 0.82rem;">Vše, co přesahuje hranice boxu, je nekompromisně oříznuto a skryto. Žádné posuvníky.</p>
+              <div style="height: 60px; border: 1px solid var(--border-subtle); padding: 4px; overflow: hidden; font-size: 0.75rem; background: var(--bg-elevated); margin-top: 0.5rem;">
+                Tento dlouhý text je oříznut přesně na hraně výšky rodičovského bloku a zbytek není vidět...
+              </div>
+            </div>
+
+            <!-- scroll -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #38bdf8; color: #38bdf8;">Trvalý posuvník</span>
+              <h4 style="margin: 0.5rem 0;"><code>overflow: scroll;</code></h4>
+              <p style="font-size: 0.82rem;">Vždy zobrazí posuvníky (vertikální i horizontální), i když obsah vůbec nepřetéká.</p>
+              <div style="height: 60px; border: 1px solid var(--border-subtle); padding: 4px; overflow: scroll; font-size: 0.75rem; background: var(--bg-elevated); margin-top: 0.5rem;">
+                Posuvník je zobrazen natvrdo.
+              </div>
+            </div>
+
+            <!-- auto -->
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Inteligentní auto</span>
+              <h4 style="margin: 0.5rem 0;"><code>overflow: auto;</code></h4>
+              <p style="font-size: 0.82rem;">Posuvník se objeví <strong>pouze tehdy</strong>, když je obsah skutečně delší než rozměry krabice.</p>
+              <div style="height: 60px; border: 1px solid var(--border-subtle); padding: 4px; overflow: auto; font-size: 0.75rem; background: var(--bg-elevated); margin-top: 0.5rem;">
+                Praktický standard pro kódové bloky a responzivní tabulky (<code>overflow-x: auto</code>).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní CSS Styler (Live Studio)
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Interaktivní CSS Studio">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní laboratoř: CSS Property Live Studio</h2>
+          <p class="slide-subtitle">Měň hodnoty vlastností v ovládacím panelu vlevo. Sleduj živé vykreslení a okamžitě generovaný CSS kód.</p>
+        </div>
+        <div class="slide-content">
+          <div class="styler-grid">
+            <!-- Ovládací panel -->
+            <div class="styler-controls">
+              <!-- Režim display -->
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Display:</span>
+                </div>
+                <select id="propDisplay" class="styler-input-select">
+                  <option value="block">block</option>
+                  <option value="inline-block" selected>inline-block</option>
+                  <option value="none">none</option>
+                </select>
+              </div>
+
+              <!-- Písmo a váha -->
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Velikost písma:</span>
+                  <span id="valFontSize" class="styler-val-badge">16px</span>
+                </div>
+                <input type="range" id="propFontSize" class="styler-slider" min="12" max="28" value="16">
+              </div>
+
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Tloušťka (font-weight):</span>
+                </div>
+                <select id="propFontWeight" class="styler-input-select">
+                  <option value="400">400 (Normal)</option>
+                  <option value="600" selected>600 (Semi-bold)</option>
+                  <option value="700">700 (Bold)</option>
+                  <option value="900">900 (Black)</option>
+                </select>
+              </div>
+
+              <!-- Zarovnání textu -->
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Zarovnání (text-align):</span>
+                </div>
+                <select id="propTextAlign" class="styler-input-select">
+                  <option value="left" selected>left</option>
+                  <option value="center">center</option>
+                  <option value="right">right</option>
+                </select>
+              </div>
+
+              <!-- Barvy textu a pozadí -->
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Barva textu / Barva pozadí:</span>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                  <input type="color" id="propTextColor" value="#ffffff" style="flex: 1; height: 32px; border-radius: 6px; border: 1px solid var(--border-subtle); background: transparent; cursor: pointer;">
+                  <input type="color" id="propBgColor" value="#1e293b" style="flex: 1; height: 32px; border-radius: 6px; border: 1px solid var(--border-subtle); background: transparent; cursor: pointer;">
+                </div>
+              </div>
+
+              <!-- Rámeček -->
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Tloušťka rámečku (border):</span>
+                  <span id="valBorderWidth" class="styler-val-badge">2px</span>
+                </div>
+                <input type="range" id="propBorderWidth" class="styler-slider" min="0" max="10" value="2">
+              </div>
+
+              <div class="styler-control-row" style="display: flex; flex-direction: row; gap: 0.5rem;">
+                <select id="propBorderStyle" class="styler-input-select" style="flex: 2;">
+                  <option value="solid" selected>solid</option>
+                  <option value="dashed">dashed</option>
+                  <option value="dotted">dotted</option>
+                  <option value="none">none</option>
+                </select>
+                <input type="color" id="propBorderColor" value="#f97316" style="flex: 1; height: 32px; border-radius: 6px; border: 1px solid var(--border-subtle); background: transparent; cursor: pointer;">
+              </div>
+
+              <!-- Radius a Stín -->
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Zaoblení (border-radius):</span>
+                  <span id="valBorderRadius" class="styler-val-badge">12px</span>
+                </div>
+                <input type="range" id="propBorderRadius" class="styler-slider" min="0" max="40" value="12">
+              </div>
+
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Stín (box-shadow blur):</span>
+                  <span id="valShadow" class="styler-val-badge">16px</span>
+                </div>
+                <input type="range" id="propShadow" class="styler-slider" min="0" max="40" value="16">
+              </div>
+
+              <!-- Overflow -->
+              <div class="styler-control-row">
+                <div class="styler-label-line">
+                  <span>Přetékání (overflow):</span>
+                </div>
+                <select id="propOverflow" class="styler-input-select">
+                  <option value="visible">visible</option>
+                  <option value="hidden" selected>hidden</option>
+                  <option value="auto">auto</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec s živým náhledem a kódem -->
+            <div class="styler-preview-col">
+              <div class="styler-stage">
+                <!-- Živý prvek -->
+                <div id="stylerTarget" class="styler-card-target" style="padding: 1.25rem; background-color: #1e293b; color: #ffffff; border: 2px solid #f97316; border-radius: 12px; font-size: 16px; font-weight: 600; text-align: left; display: inline-block;">
+                  <h3 style="margin: 0 0 0.4rem 0; font-size: 1.15em; color: inherit;">Ukázková karta</h3>
+                  <p style="margin: 0; font-size: 0.85em; opacity: 0.9; line-height: 1.4;">
+                    Změň vlastnosti vlevo a sleduj okamžitou odezvu přímo v prohlížeči.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Vygenerovaný kód -->
+              <div class="code-output-card">
+                <div class="code-output-header">
+                  <span class="code-output-title">Generovaný čistý CSS kód</span>
+                  <button type="button" class="btn-copy-css" id="btnCopyCss">
+                    <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Kopírovat CSS
+                  </button>
+                </div>
+                <div class="code-block" style="margin: 0; font-size: 0.8rem;">
+                  <pre><code id="stylerCssCode">/* Kód se generuje zde */</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Souhrn a tahák nejpoužívanějších vlastností
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Tahák vlastností">
+        <div class="slide-header">
+          <h2 class="slide-title">Rychlý tahák: Základní vlastnosti CSS pro žáky SPŠ</h2>
+          <p class="slide-subtitle">Přehledná tabulka nejdůležitějších vlastností, jejich obvyklých hodnot a správného užití.</p>
+        </div>
+        <div class="slide-content">
+          <div style="overflow-x: auto;">
+            <table class="truth-table" style="width: 100%; font-size: 0.85rem;">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Vlastnost</th>
+                  <th style="width: 35%;">Příklad typického zápisu</th>
+                  <th style="width: 40%;">Smysl a doporučení</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>font-family</code></td>
+                  <td><code>'Inter', system-ui, sans-serif;</code></td>
+                  <td>Vždy zakončujte obecnou rodinou (sans-serif / monospace).</td>
+                </tr>
+                <tr>
+                  <td><code>line-height</code></td>
+                  <td><code>1.5;</code> (bez jednotky)</td>
+                  <td>Zajišťuje optimální čitelnost odstavců a bezpečné dědění.</td>
+                </tr>
+                <tr>
+                  <td><code>background</code></td>
+                  <td><code>#0f172a url('bg.webp') center/cover;</code></td>
+                  <td>Využívejte cover pro responzivní plochy bez deformace.</td>
+                </tr>
+                <tr>
+                  <td><code>border-radius</code></td>
+                  <td><code>8px;</code> nebo <code>50%;</code> pro kruh</td>
+                  <td>Zjemňuje hrany karet, tlačítek a profilových obrázků.</td>
+                </tr>
+                <tr>
+                  <td><code>box-shadow</code></td>
+                  <td><code>0 4px 12px rgba(0, 0, 0, 0.15);</code></td>
+                  <td>Dodává prvkům plastičnost a pocit hloubky nad stránkou.</td>
+                </tr>
+                <tr>
+                  <td><code>display</code></td>
+                  <td><code>block | inline-block | none;</code></td>
+                  <td>Řídí tok elementu a reakci na rozměry width/height.</td>
+                </tr>
+                <tr>
+                  <td><code>overflow</code></td>
+                  <td><code>hidden;</code> nebo <code>overflow-x: auto;</code></td>
+                  <td>Zabraňuje nežádoucímu přetékání a umožňuje scrollování tabulek.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Ověření znalostí a kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Ověření znalostí: Kontrolní otázky</h2>
+          <p class="slide-subtitle">Otestujte si pochopení základních vlastností, toku prvků a typografie. Kliknutím zobrazíte odpověď.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">1</span>
+                <p class="question-text">Proč se u vlastnosti <code>line-height</code> doporučuje zadávat hodnotu jako bezrozměrné číslo (např. <code>1.5</code>) a ne v pixelech (např. <code>24px</code>)?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Bezrozměrné číslo funguje jako <strong>násobič aktuální velikosti písma</strong>. Pokud rodičovský prvek předá dětem <code>line-height: 1.5</code>, každý vnořený element (např. velký nadpis i malý popisek) si spočítá výšku řádku jako 1.5-násobek svého vlastního <code>font-size</code>. Pokud byste zadali fixních <code>24px</code>, velký nadpis s písmem 32px by se ošklivě zhroutil a řádky by se překryly přes sebe.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">2</span>
+                <p class="question-text">Máte prvek <code>&lt;span&gt;</code> s nastavenou šířkou <code>width: 200px; margin-top: 30px;</code>, ale šířka ani horní okraj se neprojeví. Proč a jak to opravit?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Element <code>&lt;span&gt;</code> má výchozí zobrazení <strong><code>display: inline</code></strong>. Čistě řádkové prvky z principu ignorují vlastnosti <code>width</code>, <code>height</code> i vertikální <code>margin-top / margin-bottom</code>. Řešením je změnit režim zobrazení na <strong><code>display: inline-block;</code></strong> (pokud má zůstat v toku textu) nebo <strong><code>display: block;</code></strong>.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">3</span>
+                <p class="question-text">Jaký je rozdíl mezi <code>background-size: cover</code> a <code>background-size: contain</code> při změně velikosti okna?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Hodnota <strong><code>cover</code></strong> roztáhne obrázek tak, aby <em>zcela pokryl</em> celou plochu elementu. Poměr stran zůstává zachován, ale části obrázku mohou být po stranách oříznuty. Naproti tomu <strong><code>contain</code></strong> zmenší nebo zvětší obrázek tak, aby se <em>celý vešel</em> dovnitř elementu bez jakéhokoliv oříznutí, což ale může zanechat prázdné pruhy po stranách.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-number">4</span>
+                <p class="question-text">Jak jednoduše vytvořit v CSS kruhový profilový obrázek a jak zajistit, aby se nedeformoval?</p>
+              </div>
+              <button class="question-answer-btn">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Prvku nastavíme shodnou šířku a výšku (např. <code>width: 64px; height: 64px;</code>) a zaoblení rohů <strong><code>border-radius: 50%;</code></strong>. Proti deformaci (zploštění) fotografie navíc přidáme vlastnost <strong><code>object-fit: cover;</code></strong>, která se chová analogicky jako background-size a zachová správný poměr stran snímku.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../031-CSS-selektory/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 031 CSS selektory (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../033-Pozicovani-a-Flexbox/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 033 Pozicování a Flexbox (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Základní vlastnosti
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 032 -->
+  <script src="css-properties.js"></script>
+</body>
+
+</html>

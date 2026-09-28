@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 039: CSS Animace a Transformace | WEB • SPŠ</title>
+  <meta name="description" content="Výuková prezentace o animacích v CSS pro SPŠ: transition, 2D/3D transform, @keyframes, GPU akcelerace a mikrointerakce.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <link rel="stylesheet" href="../../assets/css/syntax/web.css">
+  <!-- Dedikované lokální styly pro téma 039 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět WEB: Webové technologie">WEB</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">039 Animace a Transformace</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #fb923c; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">Animace &bull; Transformace</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="CSS Animace a Transformace">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět WEB &bull; Téma 039</span>
+            <span class="badge">CSS Interaktivita &amp; Pohyb</span>
+            <span class="badge" style="border-color: rgba(249, 115, 22, 0.4); color: #fb923c;">Animace &bull; Transformace</span>
+          </div>
+          <h1 class="hero-title">CSS Animace a Transformace</h1>
+          <p class="hero-subtitle">
+            Oživte web plynulými interakcemi a prostorovým pohybem &bull; Vlastnosti přechodů transition a časovací funkce cubic-bezier, transformace ve 2D a 3D prostoru s perspektivou, klíčové snímky @keyframes a optimalizace pro stabilních 60 FPS s hardwarovou akcelerací grafickou kartou.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f97316;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Plynulé přechody
+              </h4>
+              <p>transition-property, duration, delay a plynulost timing-function pro přirozenou odezvu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                2D &amp; 3D Transform
+              </h4>
+              <p>translate, rotate, scale, skew a prostorová hloubka s perspective a rotate3d.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+                @keyframes Časová osa
+              </h4>
+              <p>Složité vícefázové sekvence, nekonečné smyčky infinite a reverzní běhy alternate.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                GPU Akcelerace &amp; 60 FPS
+              </h4>
+              <p>Animace přes transform a opacity bez překreslování layoutu a zatěžování procesoru.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Plynulé přechody transition
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Plynulé přechody: transition">
+        <div class="slide-header">
+          <h2 class="slide-title">Plynulé přechody stavů: Vlastnost <code>transition</code></h2>
+          <p class="slide-subtitle">Zajistí, aby se barva, poloha nebo stín neměnily skokově, ale animovaly se v čase.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">4 parametry vlastnosti transition</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Zkratka: [vlastnost] [doba] [časování] [zpoždění] */</span>
+<span class="css-prop">transition</span>: <span class="css-val">background-color 0.3s ease 0.1s</span>;
+
+<span class="html-comm">/* Animace více vlastností oddělených čárkou: */</span>
+<span class="css-prop">transition</span>: <span class="css-val">transform 0.25s ease, opacity 0.3s linear</span>;</code></pre></div>
+              <ul class="styled-list" style="font-size: 0.82rem;">
+                <li><strong>transition-property:</strong> Která vlastnost se animuje (např. <code>transform</code>, <code>opacity</code>).</li>
+                <li><strong>transition-duration:</strong> Doba trvání v sekundách či milisekundách (např. <code>0.3s</code>, <code>200ms</code>).</li>
+                <li><strong>transition-timing-function:</strong> Průběh rychlosti (<code>ease</code>, <code>linear</code>, <code>ease-in-out</code>).</li>
+                <li><strong>transition-delay:</strong> Zpoždění před startem přechodu.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #f43f5e; color: #fb7185;">Častá chyba: transition: all;</span>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                Zápis <code>transition: all 0.3s;</code> nutí prohlížeč hlídat a přepočítávat každou změnu ve stylopisu.
+              </p>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.55rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-top: 0.5rem;">
+                <strong>Správná praxe:</strong> Vždy explicitně jmenujte vlastnosti, které chcete animovat (např. <code>transition: transform 0.2s, box-shadow 0.2s;</code>). Šetříte procesor i baterii mobilu.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: 2D transformace
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="2D transformace">
+        <div class="slide-header">
+          <h2 class="slide-title">2D Transformace: Posun, Zvětšení, Rotace a Zkosení</h2>
+          <p class="slide-subtitle">Měňte geometrii prvků bez toho, aby to ovlivnilo polohu sousedních boxů v toku stránky.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Čtyři základní funkce transform</span>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* 1. Posun o X a Y: */</span>
+<span class="css-prop">transform</span>: <span class="css-val">translate(20px, -10px)</span>;
+
+<span class="html-comm">/* 2. Zvětšení / zmenšení měřítka: */</span>
+<span class="css-prop">transform</span>: <span class="css-val">scale(1.15)</span>; <span class="html-comm">/* +15 % */</span>
+
+<span class="html-comm">/* 3. Rotace ve stupních (deg): */</span>
+<span class="css-prop">transform</span>: <span class="css-val">rotate(45deg)</span>;
+
+<span class="html-comm">/* 4. Zkosení: */</span>
+<span class="css-prop">transform</span>: <span class="css-val">skewX(-15deg)</span>;</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #8b5cf6; color: #a78bfa;">Skládání a kotevní bod</span>
+              <h3 style="margin-top: 0.5rem;">Kombinace více transformací</h3>
+              <p style="font-size: 0.85rem;">Transformace lze libovolně řetězit za sebe:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.4rem 0;"><pre><code><span class="css-sel">.card:hover</span> {
+  <span class="css-prop">transform</span>: <span class="css-val">translateY(-6px) scale(1.03) rotate(-1deg)</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Vlastnost <strong><code>transform-origin: center;</code></strong> určuje střed otáčení a zvětšování (výchozí střed lze změnit např. na <code>top left</code>).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: 3D transformace a perspektiva
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="3D transformace a flip card">
+        <div class="slide-header">
+          <h2 class="slide-title">3D transformace v CSS: Perspektiva a otočné karty</h2>
+          <p class="slide-subtitle">Vytvořte iluzi trojrozměrné hloubky a prostorového otáčení objektů přímo na monitoru.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Vlastnost perspective na rodiči</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Bez perspektivy vypadá 3D rotace jen jako plošné splácnutí. Vlastnost <code>perspective: 800px;</code> definuje vzdálenost oka pozorovatele od obrazovky:
+              </p>
+              <div class="code-block" style="font-size: 0.78rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.scene</span> {
+  <span class="css-prop">perspective</span>: <span class="css-val">1000px</span>; <span class="html-comm">/* 3D hloubka */</span>
+}
+<span class="css-sel">.box-3d</span> {
+  <span class="css-prop">transform</span>: <span class="css-val">rotateY(45deg) rotateX(15deg)</span>;
+  <span class="css-prop">transform-style</span>: <span class="css-val">preserve-3d</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #ec4899; color: #f472b6;">Živá ukázka: 3D Flip Card (Najetím myši)</span>
+              <div style="display: flex; justify-content: center; align-items: center; min-height: 140px; margin-top: 0.5rem;">
+                <div class="flip-card-wrapper">
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front">Přední strana</div>
+                    <div class="flip-card-back">Zadní strana</div>
+                  </div>
+                </div>
+              </div>
+              <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center;">
+                Tajemství: <code>backface-visibility: hidden;</code> zajistí, že zadní strana karty není vidět, dokud se neotočí.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Časová osa @keyframes
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Časová osa @keyframes">
+        <div class="slide-header">
+          <h2 class="slide-title">Plnohodnotné animace: Časová osa <code>@keyframes</code></h2>
+          <p class="slide-subtitle">Zatímco transition umí pouze přechod z bodu A do bodu B, @keyframes nabízí neomezenou časovou osu.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Definice klíčových snímků</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">Animaci pojmenujeme a určíme její průběh od 0 % do 100 %:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">@keyframes pulseGlow</span> {
+  <span class="css-val">0%</span> {
+    <span class="css-prop">transform</span>: <span class="css-val">scale(1)</span>;
+    <span class="css-prop">box-shadow</span>: <span class="css-val">0 0 0 0 rgba(139, 92, 246, 0.6)</span>;
+  }
+  <span class="css-val">70%</span> {
+    <span class="css-prop">transform</span>: <span class="css-val">scale(1.08)</span>;
+    <span class="css-prop">box-shadow</span>: <span class="css-val">0 0 0 14px rgba(139, 92, 246, 0)</span>;
+  }
+  <span class="css-val">100%</span> {
+    <span class="css-prop">transform</span>: <span class="css-val">scale(1)</span>;
+  }
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #8b5cf6; color: #a78bfa;">Jak animaci spustit na prvku?</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">Přiřadíme název animace a dobu trvání vlastností <code>animation</code>:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.btn-pulse</span> {
+  <span class="css-prop">animation</span>: <span class="css-val">pulseGlow 2s infinite ease-in-out</span>;
+}</code></pre></div>
+              <ul class="styled-list" style="font-size: 0.82rem; margin-top: 0.4rem;">
+                <li><code>infinite</code>: Animace se opakuje donekonečna.</li>
+                <li>Lze specifikovat i přesný počet opakování (např. <code>3</code>).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Parametry vlastnosti animation
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Parametry vlastnosti animation">
+        <div class="slide-header">
+          <h2 class="slide-title">Parametry vlastnosti <code>animation</code></h2>
+          <p class="slide-subtitle">Podrobná kontrola nad směrem běhu, opakováním a chováním po skončení animace.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Klíčové podvlastnosti</span>
+              <ul class="styled-list" style="font-size: 0.84rem; margin-top: 0.5rem;">
+                <li><strong>animation-iteration-count:</strong> Počet opakování (číslo nebo <code>infinite</code>).</li>
+                <li><strong>animation-direction:</strong> Směr přehrávání: <code>normal</code>, <code>reverse</code>, <code>alternate</code> (tam a zpět jako kyvadlo!).</li>
+                <li><strong>animation-play-state:</strong> Možnost pozastavení animace: <code>running</code> nebo <code>paused</code> (např. na hover!).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Zásadní vlastnost: animation-fill-mode</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">Co se stane, když neopakovaná animace doběhne do konce?</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Prvek zůstane ve stavu 100% a nevrátí se na začátek: */</span>
+<span class="css-prop">animation-fill-mode</span>: <span class="css-val">forwards</span>;</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Bez <code>forwards</code> prvek po skončení animace okamžitě „blikne“ zpět do svého původního výchozího stavu.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Hardware vs. Software rendering (GPU)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="GPU akcelerace a 60 FPS">
+        <div class="slide-header">
+          <h2 class="slide-title">Výkon a plynulost (60/120 FPS): GPU akcelerace</h2>
+          <p class="slide-subtitle">Rozdíl mezi drahým přepočítáváním stránky (Layout/Paint) a bleskovým vykreslováním na grafické kartě (Composite).</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <h3>Dvě bezpečné vlastnosti pro GPU</h3>
+              </div>
+              <p style="font-size: 0.88rem;">Pokud chcete naprosto plynulé animace bez sekání procesoru, animujte <strong>výhradně</strong>:</p>
+              <div style="background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; padding: 0.6rem 0.85rem; border-radius: 0 6px 6px 0; font-size: 0.86rem; margin: 0.6rem 0;">
+                1. <strong><code>transform</code></strong> (translate, scale, rotate)<br>
+                2. <strong><code>opacity</code></strong> (průhlednost)
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Tyto vlastnosti běží přímo na grafickém čipu (GPU) ve fázi <em>Composite</em> a nezatěžují hlavní procesorové vlákno.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+                <h3>Černé pole: Co NIKDY neanimovat</h3>
+              </div>
+              <p style="font-size: 0.88rem;">Nikdy neanimujte vlastnosti, které vyvolávají <strong>Reflow / Layout</strong>:</p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* ZÁKAZ animování: vyvolává záseky! */</span>
+<span class="css-prop">width</span>, <span class="css-prop">height</span>, <span class="css-prop">top</span>, <span class="css-prop">left</span>, <span class="css-prop">margin</span>, <span class="css-prop">padding</span></code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Při změně např. <code>top</code> musí prohlížeč přepočítat geometrii celé stránky pro každý jeden snímek (60krát za sekundu). Na mobilu se animace okamžitě začne trhat.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Optimalizace: will-change
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Optimalizace will-change">
+        <div class="slide-header">
+          <h2 class="slide-title">Optimalizace výkonu a vlastnost <code>will-change</code></h2>
+          <p class="slide-subtitle">Jak předem upozornit prohlížeč na nadcházející animaci a proč to nepřehánět.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">Včasná příprava vrstvy</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Pokud víte, že prvek bude náročně animován, sdělte to prohlížeči předem:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="css-sel">.heavy-card</span> {
+  <span class="css-prop">will-change</span>: <span class="css-val">transform, opacity</span>;
+}</code></pre></div>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">
+                Prohlížeč pro tento prvek předem vytvoří samostatnou hardwarovou vrstvu v paměti GPU a animace začne okamžitě bez prodlevy.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #f59e0b; color: #fbbf24;">Varování: Šetřete paměť!</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Nikdy nenastavujte <code>will-change</code> na všechny prvky v kódu (<code>* { will-change: all; }</code>).
+              </p>
+              <div style="background: rgba(245, 158, 11, 0.1); border-left: 3px solid #f59e0b; padding: 0.55rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.82rem; margin-top: 0.5rem;">
+                Každá nová GPU vrstva spotřebovává operační a grafickou paměť. Příliš mnoho vrstev může vést k pádu prohlížeče v mobilním telefonu.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Scroll-driven animace
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Scroll-driven animace">
+        <div class="slide-header">
+          <h2 class="slide-title">Budoucnost: Scroll-driven animace v čistém CSS</h2>
+          <p class="slide-subtitle">Animace řízené posunem stránky (scrollováním) bez nutnosti instalovat těžké JavaScriptové knihovny.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2-col">
+            <div class="content-card">
+              <span class="badge badge-accent">animation-timeline: scroll()</span>
+              <p style="font-size: 0.86rem; margin-top: 0.5rem;">
+                Časová osa animace není vázána na vteřiny, ale na <strong>procento odscrollované stránky</strong>:
+              </p>
+              <div class="code-block" style="font-size: 0.8rem; margin: 0.5rem 0;"><pre><code><span class="html-comm">/* Ukazatel čtení (Progress bar na horní liště): */</span>
+<span class="css-sel">@keyframes growProgressBar</span> {
+  <span class="css-val">from</span> { <span class="css-prop">transform</span>: <span class="css-val">scaleX(0)</span>; }
+  <span class="css-val">to</span>   { <span class="css-prop">transform</span>: <span class="css-val">scaleX(1)</span>; }
+}
+
+<span class="css-sel">.reading-progress-bar</span> {
+  <span class="css-prop">animation</span>: <span class="css-val">growProgressBar linear</span>;
+  <span class="css-prop">animation-timeline</span>: <span class="css-val">scroll()</span>;
+}</code></pre></div>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="border-color: #10b981; color: #34d399;">Proč je to revoluční?</span>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li>Běží mimo hlavní vlákno JavaScriptu &rarr; <strong>ani při rychlém rolování se nezasekne</strong>.</li>
+                <li>Už není potřeba instalovat knihovny jako GSAP ScrollTrigger pro základní efekty postupného odkrývání prvků (Reveal on scroll).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní Keyframe Animator
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Keyframe Animator">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor: Keyframe Animator &amp; Timing</h2>
+          <p class="slide-subtitle">Zkoušejte různé animační efekty, časovací funkce a doby trvání s živým náhledem a kódem.</p>
+        </div>
+        <div class="slide-content">
+          <div class="anim-studio-grid">
+            <!-- Ovládací panel -->
+            <div class="anim-controls">
+              <span class="badge badge-accent">Nastavení animace</span>
+
+              <div class="studio-group">
+                <label class="studio-label" for="animEffect">Typ animace:</label>
+                <select id="animEffect" class="gb-select">
+                  <option value="bounce" selected>Bounce (Skákání)</option>
+                  <option value="spin">Spin (Rotace)</option>
+                  <option value="pulse">Pulse (Tepání)</option>
+                  <option value="flip3d">3D Flip (Prostorový obrat)</option>
+                  <option value="swing">Swing (Kymácení)</option>
+                </select>
+              </div>
+
+              <div class="studio-group">
+                <label class="studio-label" for="animTiming">Časovací funkce:</label>
+                <select id="animTiming" class="gb-select">
+                  <option value="ease" selected>ease (Plynulý start i dojezd)</option>
+                  <option value="linear">linear (Konstantní rychlost)</option>
+                  <option value="ease-in">ease-in (Pomalý rozjezd)</option>
+                  <option value="ease-out">ease-out (Pomalý dojezd)</option>
+                  <option value="cubic-bezier(0.68, -0.55, 0.27, 1.55)">Pružina (Elastic bounce)</option>
+                </select>
+              </div>
+
+              <div class="studio-group">
+                <label class="studio-label" for="animDuration">
+                  <span>Doba trvání:</span>
+                  <span id="animDurationLabel" style="color: #a78bfa; font-family: var(--font-mono, monospace);">1.0s</span>
+                </label>
+                <input type="range" id="animDuration" min="0.3" max="3.0" step="0.1" value="1.0" style="width: 100%;">
+              </div>
+
+              <button type="button" class="btn btn-secondary" id="animRestartBtn" style="margin-top: 0.5rem; font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                Restartovat animaci
+              </button>
+            </div>
+
+            <!-- Plocha animace -->
+            <div class="anim-stage-panel">
+              <div class="anim-viewport">
+                <div class="anim-target-box" id="animTargetBox">
+                  <span>ANIMACE</span>
+                </div>
+              </div>
+
+              <div class="gb-code">
+                <pre style="margin: 0;"><code id="animGeneratedCss">@keyframes bounceEffect { ... }</code></pre>
+                <button type="button" class="btn-copy" id="animCopyBtn">
+                  <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  Kopírovat CSS
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Galerie mikrointerakcí (UX)
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Galerie mikrointerakcí">
+        <div class="slide-header">
+          <h2 class="slide-title">Galerie běžných mikrointerakcí pro moderní UX</h2>
+          <p class="slide-subtitle">Drobné, ale zásadní detaily, které dělají z obyčejné stránky prémiový uživatelský zážitek.</p>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3-col">
+            <!-- 1. Pulzující CTA -->
+            <div class="content-card">
+              <div class="micro-demo-box">
+                <button type="button" class="btn btn-primary btn-pulsing" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;">
+                  Klikněte zde
+                </button>
+              </div>
+              <h4 style="margin: 0.5rem 0 0.25rem 0;">1. Pulzující tlačítko (CTA)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Jemně přitahuje pozornost oka k nejdůležitější akci na stránce.</p>
+            </div>
+
+            <!-- 2. Spinner -->
+            <div class="content-card">
+              <div class="micro-demo-box">
+                <div class="spinner-demo"></div>
+              </div>
+              <h4 style="margin: 0.5rem 0 0.25rem 0;">2. Načítací kolečko (Spinner)</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Jednoduchá <code>rotate(360deg)</code> animace indikující stahování dat.</p>
+            </div>
+
+            <!-- 3. Skeleton loader -->
+            <div class="content-card">
+              <div class="micro-demo-box">
+                <div class="skeleton-bar" style="width: 85%;"></div>
+                <div class="skeleton-bar" style="width: 60%;"></div>
+              </div>
+              <h4 style="margin: 0.5rem 0 0.25rem 0;">3. Skeleton Loader</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Lineární gradient projíždějící šedým obrysem textu vytváří dojem bleskového načítání.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a opakovací otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a opakovací otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky</h2>
+          <p class="slide-subtitle">Ověřte si své porozumění CSS animacím, časování, 3D prostoru a pravidlům GPU akcelerace.</p>
+        </div>
+        <div class="slide-content">
+          <div class="questions-grid">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč je pro plynulost animace bezpečné animovat <code>transform</code> a <code>opacity</code>, ale ne <code>top</code> nebo <code>width</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Vlastnosti <code>transform</code> a <code>opacity</code> jsou zpracovávány přímo na grafické kartě (GPU) v tzv. Composite fázi. Změna <code>top</code> či <code>width</code> naproti tomu nutí prohlížeč v každém snímku znovu přepočítat geometrii celé stránky (Reflow/Layout), což vyvolává zasekávání na mobilních zařízeních.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>V čem se liší vlastnost <code>transition</code> od animace definované pomocí <code>@keyframes</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                <strong><code>transition</code></strong> vyžaduje změnu stavu (např. <code>:hover</code>) a animuje pouze plynulý přechod mezi výchozím a cílovým stavem (A &rarr; B). <strong><code>@keyframes</code></strong> je plnohodnotná animace běžící samostatně s libovolným množstvím mezilehlých kroků na časové ose (0 % až 100 %) a může se opakovat nekonečně.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>K čemu slouží vlastnost <code>animation-fill-mode: forwards;</code>?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Zajistí, že po doběhnutí animace prvek zůstane ve svém finálním stavu (ve 100% klíčovém snímku). Bez tohoto nastavení by prvek okamžitě po skončení blikl zpět do svého původního nestylovaného stavu před animací.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Co způsobuje vlastnost <code>perspective</code> u 3D transformací?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Zobrazit odpověď
+              </button>
+              <div class="question-hint">
+                Vytváří iluzi hloubky prostoru (definuje pomyslnou vzdálenost oka pozorovatele od plochy monitoru). Bez perspektivy vypadá 3D rotace pouze jako ploché smrštění nebo deformace, teprve s ní získává objekt realistické zkosení vzdalujících se hran.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ (Controls Bar) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../038-CSS-Preprocesory-a-Frameworky/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 038 Preprocesory a Frameworky (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu WEB">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další blok: Programování v JavaScriptu (V přípravě)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Animace a Transformace
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro téma 039 -->
+  <script src="animation-playground.js"></script>
+</body>
+
+</html>
