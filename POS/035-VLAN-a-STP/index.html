@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 035: VLAN, Trunking a STP v přepínané síti | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Virtuální sítě VLAN (IEEE 802.1Q), Access vs. Trunk porty, Native VLAN, Inter-VLAN směrování, rizika broadcastových bouří a Spanning Tree Protocol (STP / RSTP).">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 035 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">035 VLAN a STP</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">IEEE 802.1Q &bull; 802.1D / RSTP</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="VLAN a Spanning Tree Protocol (STP)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 035</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:SRWE Enterprise LAN</span>
+          </div>
+          <h1 class="hero-title">VLAN a Spanning Tree Protocol (STP)</h1>
+          <p class="hero-subtitle">
+            Segmentace podnikových sítí a spolehlivá redundance bez smyček &bull; Virtuální sítě IEEE 802.1Q, Access a Trunk porty, Native VLAN, broadcastové bouře a bezsmyčkový strom Spanning Tree.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                Segmentace: VLAN
+              </h4>
+              <p>Logické rozdělení jednoho switche na více nezávislých sítí (oddělení broadcastových domén a bezpečnost).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Trunking &amp; 802.1Q
+              </h4>
+              <p>Přenášení desítek VLAN přes jeden fyzický kabel pomocí 4bajtového tagu IEEE 802.1Q a Native VLAN.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Broadcast Storm
+              </h4>
+              <p>Katastrofální následky redundantních kabelových spojů bez ochrany: nekonečné cyklení a pád sítě.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                STP / RSTP Strom
+              </h4>
+              <p>Volba Root Bridge, logické blokování redundantních portů a blesková obnova spojení při havárii linky.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Problém jedné ploché LAN
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Problém jedné velké ploché LAN">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Architektura sítí</span>
+            <h2>Proč jedna velká plochá LAN představuje katastrofu?</h2>
+          </div>
+
+          <p class="slide-lead">
+            Důvody rozdělování rozsáhlých lokálních sítí: zahlcení broadcastovými zprávami, bezpečnostní rizika a omezená správa priorit.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <h3 style="color: #fb7185;">Rizika sítě bez segmentace</h3>
+              <p>
+                Pokud ve škole či firmě propojíte 300 počítačů běžnými switchi bez VLAN, všichni se nacházejí v <strong>jediné obrovské broadcastové doméně</strong>:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li><strong>Zahlcení broadcasty:</strong> Každý ARP dotaz a DHCP zpráva dorazí ke všem 300 stanicím, které musí přerušit procesor a zprávu zpracovat.</li>
+                <li><strong>Nulová bezpečnost:</strong> Žáci v učebnách mohou odposlouchávat nešifrovaný provoz učitelů, účtárny a vedení školy.</li>
+                <li><strong>Špatné řízení provozu (QoS):</strong> Nelze upřednostnit důležité školní servery a VoIP telefony před stahováním studentů.</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h3 style="color: #34d399;">Řešení: Logická segmentace</h3>
+              <p>
+                Dříve se problém řešil nákupem samostatného fyzického switche pro každou učebnu a natažením oddělených kabelových tras.
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                <strong>Moderní přístup:</strong> Využití <strong>VLAN (Virtual Local Area Network)</strong>. Na témže jediném switchi logicky oddělíme síť studentů, učitelů, kamerového systému a Wi-Fi hostů bez tahání centimetru kabelu navíc!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Co je to VLAN (IEEE 802.1Q)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Koncept a číslování VLAN">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Standardizace</span>
+            <h2>Co je to VLAN a rozsah identifikátorů VLAN ID</h2>
+          </div>
+
+          <p class="slide-lead">
+            VLAN logicky rozděluje jeden fyzický přepínač na více nezávislých virtuálních přepínačů. Zařízení v různých VLAN se navzájem <strong>vůbec neslyší na L2 vrstvě</strong> (ani broadcastem!).
+          </p>
+
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Rozsah VLAN ID</th>
+                <th>Čísla VLAN</th>
+                <th>Využití a vlastnosti</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Výchozí VLAN (Default)</strong></td>
+                <td><code>VLAN 1</code></td>
+                <td>Tovární nastavení všech portů switche. Nelze ji smazat ani přejmenovat.</td>
+              </tr>
+              <tr>
+                <td><strong>Běžný rozsah (Normal Range)</strong></td>
+                <td><code>VLAN 2 až 1001</code></td>
+                <td>Standardní rozsah pro firemní i školní sítě (např. VLAN 10 Studenti, VLAN 20 Učitelé). Ukládá se do souboru <code>vlan.dat</code> ve flash paměti.</td>
+              </tr>
+              <tr>
+                <td><strong>Starší rezervované</strong></td>
+                <td><code>1002 až 1005</code></td>
+                <td>Rezervováno pro starší sítě Token Ring a FDDI (nelze smazat).</td>
+              </tr>
+              <tr>
+                <td><strong>Rozšířený rozsah (Extended Range)</strong></td>
+                <td><code>1006 až 4094</code></td>
+                <td>Pro datacentra a poskytovatele internetu (ISP). Ukládá se do <code>running-config</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Typy portů (Access vs. Trunk)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Access porty vs. Trunk porty">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Konfigurace portů</span>
+            <h2>Typy switchportů: Access port vs. Trunk port</h2>
+          </div>
+
+          <p class="slide-lead">
+            Základní konfigurace portů na přepínači pro koncová zařízení (Access) a mezisíťové páteřní propoje (Trunk).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Přístupový port (Access Port)
+              </h3>
+              <p>
+                Port přiřazený do <strong>jediné konkrétní VLAN</strong>. Slouží k připojení koncových zařízení: počítačů, tiskáren, IP telefonů či serverů.
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                <strong>Rámce jsou BEZ TAGU (Untagged):</strong> Koncový počítač o žádné VLAN neví! Rámec opouští switch jako standardní ethernetový rámec. Značku přiřazuje switch až při vstupu na port.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><line x1="6" y1="3" x2="6" y2="21"></line><line x1="18" y1="3" x2="18" y2="21"></line><line x1="6" y1="12" x2="18" y2="12"></line></svg>
+                Páteřní port (Trunk Port)
+              </h3>
+              <p>
+                Port, který <strong>přenáší provoz více různých VLAN současně</strong> přes jediný fyzický kabel (např. mezi dvěma switchi nebo mezi switchem a routerem).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem; border-left: 4px solid #60a5fa;">
+                <strong>Rámce jsou OZNAČKOVANÉ (Tagged):</strong> Aby protější switch věděl, do jaké sítě rámec patří, vkládá odesílající switch do každého rámce 4bajtový tag <strong>IEEE 802.1Q</strong>!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Tagging IEEE 802.1Q (Simulator)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Anatomie 802.1Q Tagu a trenažér">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Anatomie 802.1Q Tagu vloženého do rámce</h2>
+          </div>
+
+          <p class="slide-lead">
+            Standard IEEE 802.1Q vkládá za Source MAC adresu <strong>4bajtový tag</strong>. Zadejte parametry níže a sledujte rozpad bitů:
+          </p>
+
+          <div class="vlan-tag-box">
+            <div class="tag-inputs-row">
+              <div class="tag-input-group">
+                <label for="tagVidInput" class="tag-input-label">VLAN ID (1 až 4094):</label>
+                <input type="number" id="tagVidInput" class="mac-input" value="10" min="1" max="4094" style="width: 140px;">
+              </div>
+
+              <div class="tag-input-group">
+                <label for="tagPcpSelect" class="tag-input-label">PCP Priorita (QoS 0–7):</label>
+                <select id="tagPcpSelect" class="mac-input" style="min-width: 220px;">
+                  <option value="0">0: Best Effort (Běžný)</option>
+                  <option value="1">1: Background</option>
+                  <option value="3">3: Critical Data</option>
+                  <option value="5" selected>5: Voice (Hlas VoIP)</option>
+                  <option value="6">6: Internetwork Ctrl</option>
+                </select>
+              </div>
+
+              <div class="tag-input-group checkbox-group" style="padding-bottom: 0.5rem;">
+                <label class="tag-input-label" style="cursor: pointer; display: inline-flex; align-items: center; margin: 0;">
+                  <input type="checkbox" id="tagDeiCheck">
+                  DEI (Drop Eligible)
+                </label>
+              </div>
+            </div>
+
+            <!-- Vizuální rozpad 4 bajtů tagu -->
+            <div class="tag-bits-strip">
+              <div class="tag-field-card">
+                <div class="tag-field-name">TPID (Typ tagu)</div>
+                <div class="tag-field-val">0x8100</div>
+                <div class="tag-field-desc">16 bitů (Identifikátor 802.1Q)</div>
+              </div>
+
+              <div class="tag-field-card">
+                <div class="tag-field-name">PCP (Priorita)</div>
+                <div class="tag-field-val" id="tagPcpVal">5 (bin: 101)</div>
+                <div class="tag-field-desc">3 bity (8 úrovní QoS 802.1p)</div>
+              </div>
+
+              <div class="tag-field-card">
+                <div class="tag-field-name">DEI</div>
+                <div class="tag-field-val" id="tagDeiVal">0</div>
+                <div class="tag-field-desc">1 bit (Přednostní zahození)</div>
+              </div>
+
+              <div class="tag-field-card">
+                <div class="tag-field-name">VID (VLAN Identifier)</div>
+                <div class="tag-field-val" id="tagVidVal">10 (bin: 000000001010)</div>
+                <div class="tag-field-desc">12 bitů (Identifikátor sítě)</div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(0,0,0,0.4); border-radius: 8px;">
+              <span style="font-size: 0.85rem; color: #cbd5e1;">Hexadecimální náhled vložených 4 bajtů v rámci:</span>
+              <span id="tagHexPreview" style="font-family: ui-monospace, monospace; font-size: 1.1rem; font-weight: 700; color: #10b981;">0x8100 A0 0A</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Inter-VLAN Routing
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Směrování mezi VLAN (Inter-VLAN)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Propojení sítí</span>
+            <h2>Jak spolu mohou komunikovat různé VLAN?</h2>
+          </div>
+
+          <p class="slide-lead">
+            Proč L2 přepínač nepropojuje provoz mezi různými virtuálními sítěmi a jaké technologie směrování na L3 se pro tento účel využívají.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Základní pravidlo: Switch na L2 nepropojuje!
+              </h3>
+              <p>
+                Pokud je PC 1 ve VLAN 10 a tiskárna ve VLAN 20, <strong>L2 switch je nikdy přímo nespojí</strong>. Rámec z VLAN 10 nesmí za žádných okolností přeskočit do VLAN 20.
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                Pro přechod mezi VLAN je nezbytné <strong>směrování na síťové vrstvě (L3 Routing)</strong>!
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Dvě moderní metody propojení
+              </h3>
+              <ul class="feature-list">
+                <li>
+                  <strong>1. Router-on-a-Stick:</strong><br>
+                  Switch je propojen s routerem jedním trunk kabelem. Na routeru se vytvoří virtuální dílčí rozhraní (např. <code>g0/0.10</code> pro VLAN 10 a <code>g0/0.20</code> pro VLAN 20). Router rámec přijme, rozbalí a přepošle do druhé VLAN.
+                </li>
+                <li>
+                  <strong>2. L3 Switch (Vícevrstvý přepínač):</strong><br>
+                  Přepínač má v sobě integrovaný směrovací procesor (SVI – Switched Virtual Interface). Směrování probíhá hardwarově přímo na čipu switche rychlostí kabelu (Wire Speed)!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Riziko smyček a Broadcast Storm
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Riziko smyček a Broadcast Storm">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Havárie sítě</span>
+            <h2>Fyzické smyčky v LAN a katastrofa: Broadcast Storm</h2>
+          </div>
+
+          <p class="slide-lead">
+            Co se stane při nechtěném nebo záložním fyzickém propojení přepínačů do kruhu a absenci počítadla TTL v ethernetovém rámci.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <h3 style="color: #fb7185;">Proč zapojujeme záložní kabely?</h3>
+              <p>
+                V podnikových sítích nechceme, aby překopnutý kabel odřízl půlku budovy. Proto propojujeme switche záložními spoji do kruhu či trojúhelníku (redundance).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem; border-left: 4px solid #f43f5e;">
+                <strong>Ale pozor: Ethernetový rámec NEMÁ TTL!</strong><br>
+                Zatímco IP paket má počítadlo skoků TTL (Time-to-Live), které jej po vypršení zničí, rámec na L2 může v kruhu cirkulovat <strong>do nekonečna</strong>!
+              </div>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h3 style="color: #f59e0b;">Příznaky broadcastové bouře</h3>
+              <ul class="feature-list" style="font-size: 0.85rem;">
+                <li><strong>Nekonečná multiplikace:</strong> Jeden broadcast odeslaný z PC se ve smyčce rozdvojí na každém switchi &rarr; během několika sekund cirkulují miliony kopií.</li>
+                <li><strong>Zahlcení linky na 100%:</strong> Porty blikají zběsilou rychlostí, uživatelská data se vůbec nedostanou na řadu.</li>
+                <li><strong>MAC Table Flapping:</strong> CAM tabulky switchů neustále přepisují porty odesílatele sem a tam, switch spotřebuje 100% CPU a zkolabuje.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Spanning Tree Protocol (STP)
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Princip protokolu STP (IEEE 802.1D)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Záchrana sítě</span>
+            <h2>Spanning Tree Protocol (STP – IEEE 802.1D / 802.1w)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Vynalezen Radia Perlmanovou v roce 1985. STP vytváří ze switchované sítě se smyčkami <strong>virtuální bezsmyčkový strom (Spanning Tree)</strong>:
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #eab308;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                1. Volba Root Bridge
+              </h4>
+              <p>Všechny switche si posílají zprávy BPDU a zvolí jednoho „krále sítě“ – <strong>Root Bridge</strong> (switch s nejnižším Bridge ID).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                2. Logické zablokování
+              </h4>
+              <p>STP najde záložní cesty a <strong>logicky zablokuje vybrané porty (Blocking / Alternate)</strong>. Fyzicky kabel visí, ale data jím neproudí.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                3. Blesková obnova
+              </h4>
+              <p>Pokud dojde k přerušení hlavní linky, STP to detekuje a <strong>během zlomku sekundy odblokuje záložní port</strong> &rarr; síť funguje dál!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Role portů a Root Bridge
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Role portů a Bridge ID">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Pravidla volby</span>
+            <h2>Bridge ID a tři klíčové role portů v STP</h2>
+          </div>
+
+          <p class="slide-lead">
+            Výběr centrálního kořenového přepínače sítě Root Bridge a určení povolených či blokovaných rolí jednotlivých portů.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #eab308;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Bridge ID (BID): Kdo bude Root Bridge?
+              </h3>
+              <p>Každý switch má své Bridge ID skládající se ze dvou částí:</p>
+              <div style="padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 8px; font-family: ui-monospace, monospace; margin: 0.75rem 0;">
+                BID = Priorita (výchozí 32768) + MAC adresa switche
+              </div>
+              <p style="font-size: 0.85rem;">
+                Root Bridge se stává switch s <strong>nejnižší hodnotou BID</strong>. Administrátor může volbu určit nastavením priority (např. <code>spanning-tree vlan 1 priority 4096</code>).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Role portů na přepínačích
+              </h3>
+              <ul class="feature-list" style="font-size: 0.85rem;">
+                <li><strong>Root Port (RP):</strong> Port na běžném switchi, který má <em>nejnižší cenu cesty</em> k Root Bridge. Je vždy ve stavu Forwarding.</li>
+                <li><strong>Designated Port (DP):</strong> Určený odesílací port pro daný fyzický segment kabelu. Všechny porty na Root Bridge jsou vždy DP (Forwarding).</li>
+                <li><strong>Alternate / Blocking Port (BLK):</strong> Záložní port, který by způsobil smyčku. Je logicky zablokován a čeká na havárii.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní simulátor STP
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Simulátor STP topologie a havárie linky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Živý simulátor trojúhelníkové STP topologie</h2>
+          </div>
+
+          <p class="slide-lead">
+            SW 1 je zvolen Root Bridge (nejnižší priorita 4096). Kliknutím přerušte hlavní trasu a sledujte reakci protokolu STP:
+          </p>
+
+          <div class="stp-sim-box">
+            <div class="stp-topology-canvas">
+              <canvas id="stpCanvas"></canvas>
+            </div>
+
+            <div class="stp-controls">
+              <button class="csmacd-btn" id="btnStpToggleLink">Přerušit linku SW1 &harr; SW2 (Simulovat havárii)</button>
+              <button class="mac-preset-btn" id="btnStpReset">Resetovat topologii</button>
+            </div>
+
+            <div class="sim-log-box" id="stpLog" style="margin-top: 1rem;">
+              Topologie v normálním stavu: SW 1 je Root Bridge, záložní port na lince SW2 &harr; SW3 je blokován (Alternate Port).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Evoluce: STP vs. RSTP
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Evoluce: STP vs. Rapid STP (RSTP)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Moderní standardy</span>
+            <h2>Evoluce STP: Od pomalého 802.1D po Rapid STP (802.1w)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Srovnání konvergenčních časů a stavů portů mezi tradičním pomalým protokolem 802.1D a moderním bleskovým Rapid STP 802.1w.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <h3 style="color: #fb7185;">Původní STP (IEEE 802.1D)</h3>
+              <p>
+                Tradiční protokol ze začátků sítí. Přechod portu prochází 4 fázemi:
+              </p>
+              <div style="font-family: ui-monospace, monospace; font-size: 0.825rem; margin: 0.5rem 0; color: #cbd5e1;">
+                Blocking (20 s) &rarr; Listening (15 s) &rarr; Learning (15 s) &rarr; Forwarding
+              </div>
+              <div class="info-box" style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <strong>Obrovská nevýhoda:</strong> Obnova sítě při výpadku trvala <strong>30 až 50 sekund</strong>! Po tuto dobu byla celá síť odříznuta.
+              </div>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h3 style="color: #34d399;">Rapid STP (IEEE 802.1w / RSTP)</h3>
+              <p>
+                Moderní standard využívaný ve všech současných switchích.
+              </p>
+              <div style="font-family: ui-monospace, monospace; font-size: 0.825rem; margin: 0.5rem 0; color: #10b981;">
+                Discarding &rarr; Learning &rarr; Forwarding
+              </div>
+              <div class="info-box" style="margin-top: 0.5rem; font-size: 0.8rem;">
+                <strong>Výhoda:</strong> Místo čekání na pasivní časovače si switche vymění aktivní dialog <em>Proposal / Agreement</em> a síť zkonverguje za <strong>několik milisekund</strong>! Uživatel žádný výpadek ani nepostřehne.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí tématu a kontrolní otázky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Závěrečné shrnutí</span>
+            <h2>Shrnutí klíčových poznatků a kontrolní otázky</h2>
+          </div>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                1. Význam VLAN
+              </h4>
+              <p>Logicky člení síť na nezávislé broadcastové domény. Access porty jsou bez tagu, Trunk porty nesou 802.1Q tag.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                2. Inter-VLAN Routing
+              </h4>
+              <p>Přechod mezi různými VLAN vyžaduje L3 směrování – buď Router-on-a-Stick, nebo výkonný L3 Switch (SVI).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                3. Ochrana STP
+              </h4>
+              <p>Eliminuje broadcastové bouře při zapojení záložních kabelů logickým zablokováním alternativních portů.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: #f1f5f9;">Ověření znalostí (Kliknutím zobrazte vysvětlení):</h3>
+
+          <div class="questions-grid">
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč musí být rámce na Trunk lince označkovány 802.1Q tagem, zatímco na Access lince nikoliv?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Trunk linka přenáší rámce mnoha různých VLAN současně přes jediný společný kabel. Bez 4bajtového tagu 802.1Q (který obsahuje 12bitové VLAN ID) by přijímající switch neměl jak poznat, do které virtuální sítě daný rámec patří. Naopak Access port vede k běžnému koncovému počítači, který o VLANách nic neví a formát tagu 802.1Q by nepodporoval.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Proč je ve switchované síti bez protokolu STP broadcastová bouře tak zničující, zatímco na síťové vrstvě (L3) nehrozí?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Na síťové vrstvě L3 má každý IP paket v záhlaví pole TTL (Time-to-Live), které se na každém směrovači sníží o jedničku, a při dosažení nuly router paket zahodí. Ethernetový rámec na linkové vrstvě L2 však žádné pole TTL nemá! Pokud tedy v L2 síti vznikne fyzická smyčka, broadcasty v ní cyklí a násobí se do nekonečna, dokud linky a procesory switchů kompletně nezkolabují.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jaký je rozdíl mezi konvergencí původního STP (802.1D) a Rapid STP (802.1w)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Původní STP 802.1D se spoléhalo na fixní pasivní časovače (Max Age 20 s, Forward Delay 15 s pro Listening a 15 s pro Learning), takže odblokování záložní linky trvalo 30 až 50 sekund. Rapid STP (802.1w) používá aktivní handshaking (Proposal/Agreement dialog) mezi sousedními switchi na point-to-point linkách, díky čemuž záložní port přejde do stavu Forwarding za méně než 1 sekundu (obvykle několik set milisekund).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../034-Protokol-ARP/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 034 Protokol ARP (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../042-Subnetting-VLSM/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 042 Subnetting a VLSM (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: VLAN a STP
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro trenažér 802.1Q tagu a STP simulátor -->
+  <script src="vlan-stp-playground.js"></script>
+</body>
+
+</html>

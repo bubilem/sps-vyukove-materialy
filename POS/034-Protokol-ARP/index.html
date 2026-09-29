@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 034: Protokol ARP (Address Resolution Protocol) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Protokol ARP (RFC 826), mapování IP na MAC adresy, struktura ARP paketu, ARP Request vs. Reply, ARP Cache, komunikace přes Default Gateway, rizika ARP Spoofingu a obrana DAI.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 034 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">034 Protokol ARP</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">RFC 826 &bull; L2/L3 Bridge</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Protokol ARP (Address Resolution Protocol)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 034</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">RFC 826 &bull; L2 / L3 vazba</span>
+          </div>
+          <h1 class="hero-title">Protokol ARP (Address Resolution Protocol)</h1>
+          <p class="hero-subtitle">
+            Most mezi logickými IP adresami a fyzickými MAC adresami &bull; Mechanismus překladu, broadcastové dotazy, ukládání do vyrovnávací paměti ARP Cache, komunikace přes výchozí bránu a obrana proti ARP Spoofingu.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Dilema adresování
+              </h4>
+              <p>Aplikace zná cílovou IP adresu, ale switch vyžaduje fyzickou MAC adresu. Jak ji stanice zjistí?</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Request &amp; Reply
+              </h4>
+              <p>ARP Request jako L2 Broadcast (FF:FF:FF:FF:FF:FF) a cílená odpověď ARP Reply jako Unicast.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                ARP Cache
+              </h4>
+              <p>Ukládání překladů v paměti RAM pro zrychlení sítě, stárnutí TTL a příkazy <code>arp -a</code> a <code>arp -d</code>.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                ARP Spoofing &amp; DAI
+              </h4>
+              <p>Útoky typu Man-in-the-Middle podvržením falešných ARP zpráv a obrana Dynamic ARP Inspection na switchích.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Dilema adresování (IP vs. MAC)
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Proč potřebujeme obě adresy?">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Principy komunikace</span>
+            <h2>Dilema síťové komunikace: Proč nestačí jen IP adresa?</h2>
+          </div>
+
+          <p class="slide-lead">
+            Proč je síťová komunikace rozdělena na logické směrování IP paketů a fyzické doručování ethernetových rámců na lokální lince.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Logická IP adresa (Vrstva L3)
+              </h3>
+              <p>
+                IP adresa vyjadřuje <strong>KDE</strong> se zařízení nachází v hierarchické globální síti (je analogií poštovní adresy: Stát, Město, Ulice).
+              </p>
+              <ul class="feature-list" style="margin-top: 0.75rem;">
+                <li>Slouží k doručování mezi různými sítěmi po celém světě.</li>
+                <li>Zůstává stejná od odesílatele až k cílovému serveru (End-to-End).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="2" y="7" width="20" height="14" rx="2"></rect><line x1="6" y1="21" x2="6" y2="7"></line><line x1="10" y1="21" x2="10" y2="7"></line><line x1="14" y1="21" x2="14" y2="7"></line><line x1="18" y1="21" x2="18" y2="7"></line></svg>
+                Fyzická MAC adresa (Vrstva L2)
+              </h3>
+              <p>
+                MAC adresa vyjadřuje <strong>KDO</strong> je bezprostředním sousedem na lokální lince (je analogií rodného čísla nebo jména příjemce).
+              </p>
+              <ul class="feature-list" style="margin-top: 0.75rem;">
+                <li>Přepínače v lokální síti nerozumí IP adresám – přeposílají výhradně podle MAC!</li>
+                <li>Před odesláním rámce musí síťová karta vyplnit cílovou MAC adresu příjemce.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="info-box" style="margin-top: 1.5rem; text-align: center; border: 1px solid rgba(59, 130, 246, 0.35);">
+            <strong>Úloha protokolu ARP:</strong> Zjistit cílovou 48bitovou MAC adresu zařízení na lokální lince, pokud známe pouze jeho 32bitovou IPv4 adresu.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Struktura zprávy ARP (PDU)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Struktura zprávy ARP (PDU)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní rozbor formátu</span>
+            <h2>Formát zprávy protokolu ARP (PDU RFC 826)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Klikněte na jednotlivá pole paketu ARP pro zobrazení jejich technického významu:
+          </p>
+
+          <div class="frame-visualizer">
+            <div class="arp-pdu-grid">
+              <div class="arp-pdu-cell active" data-field="hwtype">
+                <span class="arp-pdu-tag">L2 Typ</span>
+                <div class="arp-pdu-name">Hardware Type</div>
+                <div class="arp-pdu-size">2 bajty (1 = Ethernet)</div>
+              </div>
+              <div class="arp-pdu-cell" data-field="protype">
+                <span class="arp-pdu-tag">L3 Protokol</span>
+                <div class="arp-pdu-name">Protocol Type</div>
+                <div class="arp-pdu-size">2 bajty (0x0800 = IPv4)</div>
+              </div>
+              <div class="arp-pdu-cell" data-field="hwsize">
+                <span class="arp-pdu-tag">Délka MAC</span>
+                <div class="arp-pdu-name">HW Length</div>
+                <div class="arp-pdu-size">1 bajt (6 B)</div>
+              </div>
+              <div class="arp-pdu-cell" data-field="prosize">
+                <span class="arp-pdu-tag">Délka IP</span>
+                <div class="arp-pdu-name">Protocol Length</div>
+                <div class="arp-pdu-size">1 bajt (4 B)</div>
+              </div>
+              <div class="arp-pdu-cell" data-field="opcode">
+                <span class="arp-pdu-tag">Operace</span>
+                <div class="arp-pdu-name">Opcode</div>
+                <div class="arp-pdu-size">2 bajty (1=Req, 2=Reply)</div>
+              </div>
+              <div class="arp-pdu-cell" data-field="sendermac">
+                <span class="arp-pdu-tag">Zdroj MAC</span>
+                <div class="arp-pdu-name">Sender MAC</div>
+                <div class="arp-pdu-size">6 bajtů</div>
+              </div>
+              <div class="arp-pdu-cell" data-field="senderip">
+                <span class="arp-pdu-tag">Zdroj IP</span>
+                <div class="arp-pdu-name">Sender IP</div>
+                <div class="arp-pdu-size">4 bajty</div>
+              </div>
+              <div class="arp-pdu-cell" data-field="targetip">
+                <span class="arp-pdu-tag">Cíl IP (Hledaná)</span>
+                <div class="arp-pdu-name">Target IP</div>
+                <div class="arp-pdu-size">4 bajty</div>
+              </div>
+            </div>
+
+            <div class="frame-detail-card">
+              <div class="frame-detail-title" id="arpPduTitle">
+                Hardware Type (2 bajty)
+              </div>
+              <div class="frame-detail-desc" id="arpPduDesc">
+                Určuje typ protokolu na linkové vrstvě L2. Pro běžný drátový Ethernet i Wi-Fi má toto pole vždy hodnotu 1.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Proces ARP Request
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Proces ARP Request">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Krok 1: Dotaz</span>
+            <h2>Proces ARP Request: Všesměrový dotaz do sítě</h2>
+          </div>
+
+          <p class="slide-lead">
+            Když stanice nezná fyzickou adresu cílového zařízení, rozešle dotaz formou všesměrového rámce Broadcast do celé lokální sítě.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Proč musí být ARP Request Broadcast?
+              </h3>
+              <p>
+                Počítač PC 1 potřebuje poslat data na IP <code>192.168.1.20</code>, ale neví, kdo tuto adresu v síti má a jaká je jeho fyzická MAC adresa.
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                Proto zabalí ARP Request do ethernetového rámce s <strong>cílovou MAC adresou FF:FF:FF:FF:FF:FF (Broadcast)</strong>.
+              </div>
+              <p style="margin-top: 0.75rem; font-size: 0.85rem;">
+                Switch obdrží rámec na portu a provede operaci <em>Flooding</em>: rozešle jej na všechny ostatní aktivní porty.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Reakce ostatních stanic v segmentu
+              </h3>
+              <ul class="feature-list">
+                <li><strong>Stanice s jinou IP:</strong> Přijmou broadcast, prozkoumají pole <em>Target IP</em>, zjistí, že se neshoduje s jejich vlastní adresou, a rámec tiše zahodí.</li>
+                <li><strong>Cílová stanice (192.168.1.20):</strong> Zjistí shodu. Zároveň si z došlé zprávy <strong>okamžitě uloží odesílatele (PC 1) do své vlastní ARP Cache</strong>, aby se později nemusela ptát znovu!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Proces ARP Reply
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Proces ARP Reply">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Krok 2: Odpověď</span>
+            <h2>Proces ARP Reply: Cílená Unicast odpověď</h2>
+          </div>
+
+          <p class="slide-lead">
+            Cílové zařízení odpovídá přímo tazateli adresným rámcem Unicast a obě strany si aktualizují své tabulky překladu.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Proč je ARP Reply Unicast?
+              </h3>
+              <p>
+                Cílová stanice PC 2 již zná fyzickou MAC adresu tazatele (PC 1 ji uvedla v poli <em>Sender MAC</em> dotazu).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem; border-left: 4px solid #10b981;">
+                Proto PC 2 odesílá odpověď ARP Reply jako <strong>přímý Unicast</strong> určený výhradně pro MAC adresu PC 1.
+              </div>
+              <p style="margin-top: 0.75rem; font-size: 0.85rem;">
+                Switch již zná port PC 1 ze své CAM tabulky, takže odpověď nijak nezaplavuje síť a doručí ji pouze původnímu tazateli.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Dokončení na PC 1
+              </h3>
+              <ul class="feature-list">
+                <li>PC 1 obdrží ARP Reply.</li>
+                <li>Přečte MAC adresu PC 2 a uloží si záznam do své <strong>ARP Cache</strong>.</li>
+                <li>Nyní je přerušení vyřešeno: původní IP paket je okamžitě zabalen do ethernetového rámce a odeslán na cílovou MAC adresu!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: ARP Cache (Tabulka překladu)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="ARP Cache a příkazy v OS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Vyrovnávací paměť RAM</span>
+            <h2>ARP Cache (Tabulka překladu) a příkazy v OS</h2>
+          </div>
+
+          <p class="slide-lead">
+            Lokální vyrovnávací paměť operačního systému pro dočasné ukládání zjištěných mapování IP adres na MAC adresy.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Dynamické vs. statické záznamy
+              </h3>
+              <p>
+                Kdyby se počítač ptal přes ARP před každým jednotlivým paketem, síť by byla paralyzována broadcasty. Proto se výsledky ukládají do RAM:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Dynamické záznamy:</strong> Vytvořené automaticky po přijetí ARP Reply. Mají časovač stárnutí (typicky 2 až 20 minut dle operačního systému).</li>
+                <li><strong>Statické záznamy:</strong> Zadané administrátorem ručně. Nikdy neexpirují a mají přednost (ochrana serverů).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Příkazy v příkazové řádce (CMD / Terminal)
+              </h3>
+              <div style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 0.85rem; font-family: ui-monospace, monospace; font-size: 0.825rem; line-height: 1.6;">
+                <span style="color: #38bdf8;">arp -a</span> &rarr; Zobrazí aktuální obsah ARP tabulky<br>
+                <span style="color: #f43f5e;">arp -d *</span> &rarr; Vymaže všechny dynamické záznamy z RAM<br>
+                <span style="color: #10b981;">arp -s 192.168.1.1 00-11-22-33-44-fe</span> &rarr; Přidá statický záznam
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Komunikace mimo LAN (Default Gateway)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Komunikace mimo LAN a Default Gateway">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Klíčový síťový koncept</span>
+            <h2>Komunikace mimo lokální LAN: Role Default Gateway</h2>
+          </div>
+
+          <p class="slide-lead">
+            Jak postupuje stanice, pokud cílová IP adresa neleží ve stejné lokální síti, ale na vzdáleném internetu.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Častý omyl studentů: ARP pro Google?
+              </h3>
+              <p>
+                Představte si, že váš počítač v učebně (IP <code>192.168.1.10</code>) otevírá web <code>google.com</code> (IP <code>142.250.180.206</code>).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem; border-left: 4px solid #f43f5e;">
+                <strong>Otázka:</strong> Pošle váš počítač ARP dotaz: „Kdo má IP 142.250.180.206?“<br>
+                <strong>Odpověď: NIKDY V ŽIVOTĚ!</strong>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Jak to funguje ve skutečnosti?
+              </h3>
+              <ul class="feature-list">
+                <li>Počítač pomocí své <strong>masky podsítě</strong> zjistí, že cíl leží ve vzdálené síti na internetu.</li>
+                <li>Aby se paket dostal ven z budovy, musí jej předat svému směrovači: <strong>Default Gateway (192.168.1.1)</strong>.</li>
+                <li>PC pošle ARP dotaz na <strong>MAC adresu směrovače (Default Gateway)</strong>!</li>
+                <li>Výsledný rámec má cílovou IP = Google, ale cílovou MAC = Router!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Interaktivní simulátor ARP
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Interaktivní simulátor ARP dialogu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Živý simulátor procesů protokolu ARP</h2>
+          </div>
+
+          <p class="slide-lead">
+            Vyzkoušejte lokální vyhledání, komunikaci přes výchozí bránu i simulaci kybernetického útoku ARP Poisoning:
+          </p>
+
+          <div class="arp-sim-box">
+            <div class="arp-nodes-grid">
+              <div class="arp-node-card highlight-src" id="nodePc1">
+                <div class="arp-node-title">PC 1 (Tazatel)</div>
+                <div class="arp-node-ip">192.168.1.10</div>
+                <div class="arp-node-mac">00:11:22:33:44:01</div>
+              </div>
+
+              <div class="arp-node-card" id="nodePc2">
+                <div class="arp-node-title">PC 2 (Cíl v LAN)</div>
+                <div class="arp-node-ip">192.168.1.20</div>
+                <div class="arp-node-mac">00:11:22:33:44:02</div>
+              </div>
+
+              <div class="arp-node-card" id="nodePc3">
+                <div class="arp-node-title">PC 3 (Útočník)</div>
+                <div class="arp-node-ip">192.168.1.30</div>
+                <div class="arp-node-mac">00:11:22:33:44:03</div>
+              </div>
+
+              <div class="arp-node-card" id="nodeRouter">
+                <div class="arp-node-title">Router (Default GW)</div>
+                <div class="arp-node-ip">192.168.1.1</div>
+                <div class="arp-node-mac">00:11:22:33:44:FE</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+              <button class="csmacd-btn" id="btnArpLocal">1. Komunikace v LAN (PC 1 &rarr; PC 2)</button>
+              <button class="csmacd-btn" id="btnArpGateway">2. Komunikace na Internet (přes Bránu)</button>
+              <button class="csmacd-btn btn-collide" id="btnArpAttack">3. Simulovat ARP Poisoning útok!</button>
+              <button class="mac-preset-btn" id="btnArpFlush">Vymazat Cache (arp -d)</button>
+            </div>
+
+            <!-- ARP Cache PC 1 -->
+            <div class="arp-cache-box">
+              <div class="arp-cache-title">
+                <span>Obsah paměti ARP Cache v PC 1 (příkaz arp -a)</span>
+                <span style="color: #38bdf8;">RAM PC 1</span>
+              </div>
+              <table class="arp-table">
+                <thead>
+                  <tr>
+                    <th>Internetová adresa (IP)</th>
+                    <th>Fyzická adresa (MAC)</th>
+                    <th>Typ záznamu</th>
+                  </tr>
+                </thead>
+                <tbody id="arpCacheTbody">
+                  <!-- Plněno JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sim-log-box" id="arpSimLog" style="margin-top: 1rem;">
+              Připraveno. Zvolte scénář výše pro spuštění animace.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Bezpečnostní rizika (ARP Spoofing)
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Bezpečnostní rizika: ARP Spoofing a DAI">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Kybernetická bezpečnost</span>
+            <h2>Útok ARP Spoofing / Poisoning a obrana DAI</h2>
+          </div>
+
+          <p class="slide-lead">
+            Zranitelnost protokolu ARP vůči podvržení odpovědí (Man-in-the-Middle) a hardwarová obrana přepínačů Dynamic ARP Inspection.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <h3 style="color: #fb7185;">Jak funguje ARP Poisoning (MITM)</h3>
+              <p>
+                Protokol ARP byl navržen v roce 1982 jako <strong>zcela bezstavový a bez jakékoliv autentizace</strong>.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li>Pokud počítač obdrží ARP Reply, slepě jí uvěří a přepíše svou ARP Cache, <em>i když se na nic neptal</em>!</li>
+                <li>Útočník pošle falešnou odpověď oběti i routeru: stane se prostředníkem (Man-in-the-Middle) a může odposlouchávat či modifikovat veškerá nešifrovaná data.</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h3 style="color: #34d399;">Obrana na switchích: DAI</h3>
+              <p>
+                Moderní podnikové přepínače (Cisco Catalyst) obsahují hardwarovou funkci <strong>Dynamic ARP Inspection (DAI)</strong>:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li>Switch zachytává všechny ARP zprávy a porovnává je s důvěryhodnou databází <strong>DHCP Snooping Binding Table</strong>.</li>
+                <li>Pokud útočník na svém portu tvrdí, že má IP adresu brány, switch falešný paket okamžitě <strong>zahodí a port může zablokovat</strong>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Gratuitous ARP a Proxy ARP
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Gratuitous ARP a Proxy ARP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Speciální varianty ARP</span>
+            <h2>Gratuitous ARP a Proxy ARP v praxi</h2>
+          </div>
+
+          <p class="slide-lead">
+            Speciální provozní režimy protokolu: samočinná kontrola kolize IP adres (GARP) a zastupování směrovačem (Proxy ARP).
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+            <div class="content-card">
+              <h4 style="color: #38bdf8;">Gratuitous ARP (GARP)</h4>
+              <p>
+                „Nevyžádaný ARP dotaz“, kdy stanice vysílá dotaz na svou <strong>vlastní IP adresu</strong> (Sender IP = Target IP).
+              </p>
+              <ul class="feature-list" style="font-size: 0.85rem; margin-top: 0.75rem;">
+                <li><strong>Detekce IP konfliktů:</strong> Při spuštění PC vyšle GARP. Pokud někdo odpoví, OS okamžitě nahlásí: <em>„Konflikt IP adres v síti!“</em> a zakáže rozhraní.</li>
+                <li><strong>Aktualizace CAM tabulek:</strong> Při výměně síťové karty nebo přepnutí záložního cluster serveru GARP bleskově aktualizuje CAM tabulky všech switchů.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #f59e0b;">Proxy ARP</h4>
+              <p>
+                Technika, kdy <strong>směrovač (Router) odpoví svou vlastní MAC adresou</strong> na ARP dotaz stanice, která hledá cíl v cizí síti.
+              </p>
+              <ul class="feature-list" style="font-size: 0.85rem; margin-top: 0.75rem;">
+                <li>Slouží jako záchranná brzda pro špatně nakonfigurované stanice, které nemají nastavenou výchozí bránu.</li>
+                <li>Nevýhoda: Zbytečně plní ARP Cache stanic a může maskovat chyby v návrhu sítě. V moderních sítích bývá vypnut.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Shrnutí a otázky
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Shrnutí tématu a kontrolní otázky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Závěrečné shrnutí</span>
+            <h2>Shrnutí klíčových poznatků a kontrolní otázky</h2>
+          </div>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                1. Účel protokolu ARP
+              </h4>
+              <p>Překládá známou logickou IPv4 adresu na neznámou fyzickou MAC adresu pro doručení v lokálním segmentu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                2. Request vs. Reply
+              </h4>
+              <p>ARP Request je vždy L2 Broadcast (hledá se cíl). ARP Reply je vždy L2 Unicast (odesílatel je již znám).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                3. Role Default Gateway
+              </h4>
+              <p>Při komunikaci mimo lokální podsíť počítač NIKDY nehledá MAC cizího serveru, ale hledá MAC adresu brány.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: #f1f5f9;">Ověření znalostí (Kliknutím zobrazte vysvětlení):</h3>
+
+          <div class="questions-grid">
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč je ARP Request vysílán jako Broadcast, zatímco ARP Reply jako Unicast?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Při vysílání ARP Requestu odesílatel neví, které konkrétní zařízení hledanou IP adresu vlastní, ani na jakém portu switche se nachází – musí se proto zeptat všech v segmentu pomocí broadcastu na adresu FF:FF:FF:FF:FF:FF. Naopak cílová stanice při sestavování odpovědi ARP Reply již přesně zná MAC adresu tazatele (získala ji z pole Sender MAC v přijatém dotazu), a proto odpovídá přímo unicastem.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Jak počítač pozná, zda má poslat ARP dotaz na cílový počítač, nebo na Default Gateway?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Počítač provede matematickou operaci logického součinu (AND) mezi svou IP adresou a svou maskou podsítě, a totéž provede pro cílovou IP adresu. Pokud se výsledná čísla sítě shodují, cíl leží ve stejné LAN &rarr; ARP se ptá přímo na cíl. Pokud se čísla sítě neshodují, cíl leží v cizí síti &rarr; ARP se ptá na MAC adresu Default Gateway!
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Proč je protokol IPv6 imunní vůči klasickým ARP útokům?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                V protokolu IPv6 protokol ARP vůbec neexistuje! Byl plně nahrazen modernějším protokolem <strong>NDP (Neighbor Discovery Protocol)</strong> běžícím nad ICMPv6, který využívá efektivní multicastové zprávy (Solicited-Node Multicast) místo broadcastů a podporuje kryptografické zabezpečení SEND (Secure Neighbor Discovery).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../033-Switch/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 033 Switch (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../035-VLAN-a-STP/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 035 VLAN a STP (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 11</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Protokol ARP
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro simulátor ARP, tabulku a PDU -->
+  <script src="arp-playground.js"></script>
+</body>
+
+</html>

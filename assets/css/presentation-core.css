@@ -101,7 +101,7 @@ body {
 }
 
 /* ==========================================================================
-   Globální formulářové prvky (Select, Option & Inputs)
+   Globální formulářové prvky (Select, Input, Checkbox, Textarea & Label)
    ========================================================================== */
 select,
 input,
@@ -117,16 +117,270 @@ button {
   color-scheme: light;
 }
 
+/* 1. Základní textové a číselné vstupy */
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input:not([type]),
+textarea {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  color: #f1f5f9;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.55rem 0.85rem;
+  line-height: 1.45;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="search"]:hover,
+input[type="password"]:hover,
+input[type="email"]:hover,
+input[type="tel"]:hover,
+input[type="url"]:hover,
+input:not([type]):hover,
+textarea:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(30, 41, 59, 0.9);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input:not([type]):focus,
+textarea:focus {
+  outline: none;
+  border-color: #38bdf8;
+  background: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+/* 2. Rozbalovací nabídky (Select) s moderní vektorovou šipkou */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: rgba(15, 23, 42, 0.85) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 0.85rem center;
+  background-size: 1rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  color: #f1f5f9;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.55rem 2.4rem 0.55rem 0.95rem;
+  line-height: 1.45;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+select:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  background-color: rgba(30, 41, 59, 0.9);
+}
+
+select:focus {
+  outline: none;
+  border-color: #38bdf8;
+  background-color: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
 select option,
 option {
-  background-color: #111827 !important;
-  color: #f3f4f6 !important;
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  padding: 0.5rem 0.75rem;
+}
+
+/* 3. Vlastní zaškrtávací pole (Checkbox) */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background-color: rgba(15, 23, 42, 0.85);
+  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0.5rem 0 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"]:hover {
+  border-color: #38bdf8;
+  background-color: rgba(30, 41, 59, 0.95);
+}
+
+input[type="checkbox"]:checked {
+  background-color: #0284c7;
+  border-color: #38bdf8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  background-size: 75% 75%;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+}
+
+/* 4. Popisky (Labels) a formulářové kontejnery */
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+label:has(input[type="checkbox"]),
+label:has(input[type="radio"]) {
+  cursor: pointer;
+  color: #f1f5f9;
+  font-weight: 500;
+}
+
+label:has(input[type="checkbox"]):hover,
+label:has(input[type="radio"]):hover {
+  color: #ffffff;
+}
+
+/* Zpětná kompatibilita a sdílené třídy pro simulátory */
+.mac-input,
+.form-input,
+.calc-input {
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #f1f5f9;
+}
+
+input[type="text"].mac-input,
+input.calc-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.04em;
+}
+
+/* 5. Světlý motiv pro všechny formulářové prvky */
+[data-theme="light"] input[type="text"],
+[data-theme="light"] input[type="number"],
+[data-theme="light"] input[type="search"],
+[data-theme="light"] input[type="password"],
+[data-theme="light"] input[type="email"],
+[data-theme="light"] input[type="tel"],
+[data-theme="light"] input[type="url"],
+[data-theme="light"] input:not([type]),
+[data-theme="light"] textarea {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] input[type="text"]:hover,
+[data-theme="light"] input[type="number"]:hover,
+[data-theme="light"] input[type="search"]:hover,
+[data-theme="light"] input[type="password"]:hover,
+[data-theme="light"] input[type="email"]:hover,
+[data-theme="light"] input[type="tel"]:hover,
+[data-theme="light"] input[type="url"]:hover,
+[data-theme="light"] input:not([type]):hover,
+[data-theme="light"] textarea:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+}
+
+[data-theme="light"] input[type="text"]:focus,
+[data-theme="light"] input[type="number"]:focus,
+[data-theme="light"] input[type="search"]:focus,
+[data-theme="light"] input[type="password"]:focus,
+[data-theme="light"] input[type="email"]:focus,
+[data-theme="light"] input[type="tel"]:focus,
+[data-theme="light"] input[type="url"]:focus,
+[data-theme="light"] input:not([type]):focus,
+[data-theme="light"] textarea:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+  background: #ffffff;
+}
+
+[data-theme="light"] select {
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230284c7' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme="light"] select:hover {
+  border-color: #94a3b8;
+  background-color: #f8fafc;
+}
+
+[data-theme="light"] select:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
+  background-color: #ffffff;
 }
 
 [data-theme="light"] select option,
 [data-theme="light"] option {
   background-color: #ffffff !important;
   color: #0f172a !important;
+}
+
+[data-theme="light"] input[type="checkbox"] {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] input[type="checkbox"]:hover {
+  border-color: #0284c7;
+}
+
+[data-theme="light"] input[type="checkbox"]:checked {
+  background-color: #0284c7;
+  border-color: #0284c7;
+  box-shadow: 0 0 8px rgba(2, 132, 199, 0.3);
+}
+
+[data-theme="light"] label {
+  color: #64748b;
+}
+
+[data-theme="light"] label:has(input[type="checkbox"]),
+[data-theme="light"] label:has(input[type="radio"]) {
+  color: #0f172a;
+}
+
+[data-theme="light"] label:has(input[type="checkbox"]):hover,
+[data-theme="light"] label:has(input[type="radio"]):hover {
+  color: #0284c7;
 }
 
 .icon {
@@ -695,13 +949,14 @@ option {
 /* ==========================================================================
    Běžné Snímky (Slide Header & Typografie)
    ========================================================================== */
-.slide-header {
+.slide-header,
+.slide-header-badge {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 0.35rem;
-  margin-bottom: 1.25rem;
+  gap: 0.45rem;
+  margin-bottom: 1.4rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border-subtle);
   width: 100%;
@@ -754,7 +1009,7 @@ option {
   font-size: 0.98rem;
   color: var(--text-secondary);
   line-height: 1.55;
-  margin: 0;
+  margin: 0 0 1.35rem 0;
   max-width: 1100px;
 }
 
@@ -769,6 +1024,8 @@ option {
 }
 
 /* Globální mřížky pro karty a rozvržení snímků */
+.split-layout,
+.two-column-layout,
 .grid-2,
 .grid-2-col,
 .content-grid-2 {
@@ -776,6 +1033,35 @@ option {
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   width: 100%;
+  align-items: stretch;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .split-layout,
+  .two-column-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.split-layout > .card,
+.split-layout > .content-card,
+.split-layout > div.content-card,
+.grid-2 > .card,
+.grid-2 > .content-card,
+.content-grid-2 > .card,
+.content-grid-2 > .content-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.split-layout > .content-card > .info-box:last-child,
+.split-layout > .content-card > .comparison-table:last-child,
+.grid-2 > .content-card > .info-box:last-child,
+.grid-2 > .content-card > .comparison-table:last-child {
+  margin-top: auto;
 }
 
 .grid-3,
@@ -897,6 +1183,11 @@ option {
 }
 
 /* V mřížkách se vertikální margin ruší – rozestupy řídí gap */
+.split-layout > .card,
+.split-layout > .content-card,
+.split-layout > div.content-card,
+.two-column-layout > .card,
+.two-column-layout > .content-card,
 .grid-2 > .card,
 .grid-2 > .content-card,
 .grid-2-col > .card,
@@ -918,7 +1209,188 @@ option {
 .summary-grid > .card,
 .summary-grid > .content-card,
 .questions-grid > .question-card {
-  margin-top: 0;
+  margin-top: 0 !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   Informační boxy a upozornění (.info-box, .alert-box)
+   ========================================================================== */
+.info-box,
+.alert-box {
+  padding: 0.95rem 1.25rem !important;
+  border-radius: 8px !important;
+  background: rgba(30, 41, 59, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 4px solid var(--accent, #38bdf8) !important;
+  color: var(--text-secondary, #cbd5e1) !important;
+  font-size: 0.88rem !important;
+  line-height: 1.55 !important;
+  box-sizing: border-box !important;
+}
+
+[data-theme="light"] .info-box,
+[data-theme="light"] .alert-box {
+  background: rgba(241, 245, 249, 0.85) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #334155 !important;
+}
+
+/* ==========================================================================
+   Interaktivní ověření znalostí (.questions-grid, .question-card, .question-list)
+   ========================================================================== */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.question-card {
+  background: var(--bg-card, rgba(30, 41, 59, 0.5));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+[data-theme="light"] .question-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.question-card:hover {
+  border-color: var(--accent, #38bdf8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.question-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary, #f1f5f9);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+[data-theme="light"] .question-title {
+  color: #0f172a;
+}
+
+.question-num {
+  color: var(--accent, #38bdf8);
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.question-btn,
+.question-answer-btn {
+  background: rgba(56, 189, 248, 0.1);
+  color: var(--accent, #38bdf8);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  margin-top: auto;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.question-btn:hover,
+.question-answer-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.question-btn svg,
+.question-answer-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.question-btn.open svg,
+.question-answer-btn.open svg {
+  transform: rotate(180deg);
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--text-secondary, #cbd5e1);
+  border-left: 3px solid var(--accent, #38bdf8);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+[data-theme="light"] .question-hint {
+  background: rgba(241, 245, 249, 0.95);
+  color: #334155;
+  border-color: #0284c7;
+}
+
+.question-hint.visible {
+  display: block;
+}
+
+/* Podpora i pro nativní details/summary otázky */
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+details.question-item {
+  background: var(--bg-card, rgba(30, 41, 59, 0.5));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  border-radius: 10px;
+  padding: 0.9rem 1.25rem;
+  transition: all 0.25s ease;
+}
+
+[data-theme="light"] details.question-item {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+details.question-item[open] {
+  border-color: var(--accent, #38bdf8);
+}
+
+summary.question-summary {
+  font-weight: 600;
+  color: var(--text-primary, #f1f5f9);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+[data-theme="light"] summary.question-summary {
+  color: #0f172a;
+}
+
+details.question-item[open] .question-hint {
+  display: block !important;
+  margin-top: 0.75rem;
 }
 
 /* Odznak na začátku karty nesmí být přilepen k nadpisu */
@@ -1147,17 +1619,19 @@ option {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Stylizovaný seznam (odrážkový) – používáno ve všech modulech */
-.styled-list {
+/* Stylizovaný seznam (odrážkový) – používáno ve všech modulech (.styled-list, .feature-list) */
+.styled-list,
+.feature-list {
   list-style: none;
   padding: 0;
-  margin: 0.85rem 0 0;
+  margin: 0.75rem 0 0;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.55rem;
 }
 
-.styled-list li {
+.styled-list li,
+.feature-list li {
   padding-left: 1.35rem;
   position: relative;
   font-size: 0.95rem;
@@ -1165,16 +1639,41 @@ option {
   line-height: 1.55;
 }
 
-.styled-list li::before {
+.styled-list li::before,
+.feature-list li::before {
   content: '';
   position: absolute;
-  left: 0;
+  left: 0.15rem;
   top: 0.55em;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  opacity: 0.7;
+  opacity: 0.85;
+}
+
+[data-theme="light"] .styled-list li,
+[data-theme="light"] .feature-list li {
+  color: #334155;
+}
+
+[data-theme="light"] .styled-list li::before,
+[data-theme="light"] .feature-list li::before {
+  background: #0284c7;
+}
+
+/* Fallback pro neklasifikované odrážkové seznamy uvnitř karet */
+.content-card ul:not([class]),
+.card ul:not([class]),
+.sublayer-box ul:not([class]) {
+  padding-left: 1.35rem;
+  margin: 0.6rem 0;
+}
+.content-card ul:not([class]) li,
+.card ul:not([class]) li,
+.sublayer-box ul:not([class]) li {
+  margin-bottom: 0.35rem;
+  line-height: 1.55;
 }
 
 /* Callouty & Alerty */
@@ -1602,6 +2101,107 @@ tbody tr:hover {
   border-color: var(--text-secondary);
 }
 
+/* ==========================================================================
+   Tlačítka interaktivních simulátorů a trenažérů (.csmacd-btn, .mac-preset-btn)
+   ========================================================================== */
+.csmacd-btn,
+.csmaca-btn,
+.sim-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(59, 130, 246, 0.18);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+  padding: 0.55rem 1.15rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.csmacd-btn:hover,
+.csmaca-btn:hover,
+.sim-btn:hover {
+  background: rgba(59, 130, 246, 0.35);
+  border-color: #3b82f6;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.csmacd-btn.btn-collide,
+.sim-btn.btn-collide {
+  background: rgba(244, 63, 94, 0.2);
+  border-color: rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+}
+
+.csmacd-btn.btn-collide:hover,
+.sim-btn.btn-collide:hover {
+  background: rgba(244, 63, 94, 0.35);
+  color: #ffffff;
+}
+
+.mac-preset-btn,
+.sim-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  padding: 0.5rem 0.9rem;
+  border-radius: 7px;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.mac-preset-btn:hover,
+.sim-reset-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: #3b82f6;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .csmacd-btn,
+[data-theme="light"] .csmaca-btn,
+[data-theme="light"] .sim-btn {
+  background: rgba(2, 132, 199, 0.12);
+  border-color: rgba(2, 132, 199, 0.3);
+  color: #0369a1;
+}
+
+[data-theme="light"] .csmacd-btn:hover,
+[data-theme="light"] .csmaca-btn:hover,
+[data-theme="light"] .sim-btn:hover {
+  background: rgba(2, 132, 199, 0.22);
+  color: #0c4a6e;
+}
+
+[data-theme="light"] .mac-preset-btn,
+[data-theme="light"] .sim-reset-btn {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+[data-theme="light"] .mac-preset-btn:hover,
+[data-theme="light"] .sim-reset-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
 /* Tlačítka pro kopírování kódu (.btn-copy, .copy-btn a všechna Copy tlačítka v ukázkách) */
 .btn-copy,
 .copy-btn,
@@ -1665,6 +2265,142 @@ button[id*="CopyCodeBtn"]:hover,
   border-color: #0284c7 !important;
   color: #0284c7 !important;
   box-shadow: 0 3px 8px rgba(2, 132, 199, 0.25) !important;
+}
+
+/* ==========================================================================
+   Interaktivní analyzátor rámců a paketů (.frame-visualizer, .frame-strip)
+   ========================================================================== */
+.frame-visualizer {
+  background: var(--bg-card, rgba(15, 23, 42, 0.85));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.frame-strip {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.frame-block {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 0.75rem 0.45rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  user-select: none;
+}
+
+.frame-block:hover,
+.frame-block.active {
+  transform: translateY(-3px);
+  border-color: var(--accent, #38bdf8);
+  background: rgba(56, 189, 248, 0.18);
+  box-shadow: 0 6px 18px var(--accent-glow, rgba(56, 189, 248, 0.25));
+}
+
+.frame-block-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted, #94a3b8);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+}
+
+.frame-block-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary, #f1f5f9);
+  margin: 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.frame-block-size {
+  font-size: 0.75rem;
+  color: var(--accent, #38bdf8);
+  font-family: var(--font-mono, monospace);
+}
+
+.frame-detail-card {
+  background: rgba(2, 6, 23, 0.7);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 10px;
+  padding: 1.25rem;
+  min-height: 110px;
+}
+
+.frame-detail-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent, #38bdf8);
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.frame-detail-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary, #cbd5e1);
+}
+
+.frame-detail-raw {
+  margin-top: 0.55rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  color: var(--accent-emerald, #10b981);
+}
+
+[data-theme="light"] .frame-visualizer {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .frame-block {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] .frame-block-name {
+  color: #0f172a;
+}
+
+[data-theme="light"] .frame-block:hover,
+[data-theme="light"] .frame-block.active {
+  background: rgba(2, 132, 199, 0.12);
+  border-color: #0284c7;
+}
+
+[data-theme="light"] .frame-detail-card {
+  background: #f1f5f9;
+  border-color: rgba(2, 132, 199, 0.3);
+}
+
+[data-theme="light"] .frame-detail-title {
+  color: #0284c7;
+}
+
+[data-theme="light"] .frame-detail-desc {
+  color: #334155;
+}
+
+[data-theme="light"] .frame-detail-raw {
+  background: #e2e8f0;
+  color: #047857;
 }
 
 .slide-counter {

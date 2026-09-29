@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 030: Linková vrstva (Data Link Layer) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Linková vrstva (L2), podvrstvy LLC a MAC, řízení přístupu k médiu, anatomie rámce, MAC adresy, FCS/CRC-32 a Hop-by-Hop doručování.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 030 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">030 Linková vrstva</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; Data Link Layer</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Linková vrstva (Data Link Layer)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 030</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Layer 2</span>
+          </div>
+          <h1 class="hero-title">Linková vrstva (Data Link Layer)</h1>
+          <p class="hero-subtitle">
+            Most mezi fyzickými signály a globálními pakety &bull; Enkapsulace do rámců, fyzické MAC adresování, řízení přístupu ke sdílenému médiu a kontrola integrity dat FCS/CRC.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Podvrstvy LLC a MAC
+              </h4>
+              <p>Dělba práce dle IEEE 802: Logické řízení spojení (LLC 802.2) a řízení přístupu k médiu (MAC 802.3/802.11).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>
+                Anatomie rámce
+              </h4>
+              <p>Struktura PDU L2: Preamble, SFD, MAC adresy, EtherType, užitečný náklad a zápatí FCS s kontrolou chyb.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                MAC adresování
+              </h4>
+              <p>48bitové fyzické adresy: identifikátor výrobce OUI, stanice NIC, bity Unicast/Multicast a Universal/Local.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                FCS &amp; Integrita
+              </h4>
+              <p>Cyklický redundantní kód (CRC-32) pro okamžitou detekci chyb za běhu a princip Hop-by-Hop přeposílání.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Místo v modelech OSI a TCP/IP
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Postavení v modelech OSI a TCP/IP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Architektura sítí</span>
+            <h2>Linková vrstva v modelech OSI a TCP/IP</h2>
+          </div>
+
+          <p class="slide-lead">
+            Proč surový proud fyzických bitů nestačí pro spolehlivou komunikaci a jak linková vrstva odděluje hardware od síťového softwaru.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line></svg>
+                Proč surové bity z L1 nestačí?
+              </h3>
+              <p>
+                Fyzická vrstva (L1) přenáší pouze <strong>nestrukturovaný proud elektrických napětí, optických záblesků či radiových vln</strong>. L1 neví, kde zpráva začíná, kde končí, komu patří ani zda nedošlo k poškození šumem.
+              </p>
+              <ul class="feature-list" style="margin-top: 1rem;">
+                <li><strong>Ohraničení dat (Framing):</strong> Vytváří z toku bitů ucelené jednotky – <em>rámce (frames)</em>.</li>
+                <li><strong>Lokální doručování (Hop-by-Hop):</strong> Odpovídá za přenos rámce mezi dvěma přímo spojenými uzly ve stejném fyzickém segmentu sítě.</li>
+                <li><strong>Enkapsulace:</strong> Přebírá paket od síťové vrstvy L3 (IPv4/IPv6), přidává záhlaví (Header) a jako jediná vrstva přidává i zápatí (Trailer).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Kde linková vrstva fyzicky sídlí?
+              </h3>
+              <p>
+                Na rozdíl od vyšších vrstev (L3 až L7), které jsou řízeny softwarově operačním systémem, linková vrstva je realizována <strong>přímo v hardwaru síťové karty (NIC – Network Interface Card)</strong>.
+              </p>
+              <div class="info-box" style="margin-top: 1rem; border-left: 4px solid #3b82f6;">
+                <strong>Hardware + Ovladač:</strong><br>
+                Síťový řadič na základní desce / kartě autonomně generuje kontrolní součty FCS, ověřuje MAC adresy příjemce a filtruje nechtěné rámce bez zatěžování hlavního procesoru (CPU) počítače.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Podvrstvy LLC a MAC
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Dvě podvrstvy L2: LLC a MAC">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Standard IEEE 802</span>
+            <h2>Rozdělení linkové vrstvy na LLC a MAC v TCP/IP modelu</h2>
+          </div>
+
+          <p class="slide-lead">
+            Komise IEEE rozdělila linkovou vrstvu na dvě specializované podvrstvy, aby oddělila logickou komunikaci se síťovým softwarem (L3) od specifik konkrétního fyzického média (L1).
+          </p>
+
+          <div class="split-layout">
+            <!-- Levý sloupec: Hybridní TCP/IP model s vyznačenou L2 -->
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Hybridní 5vrstvý TCP/IP model
+              </h3>
+              <p style="font-size: 0.86rem;">
+                Začlenění linkové vrstvy mezi operační systém a fyzický přenosový kanál:
+              </p>
+
+              <div class="tcp-stack-container" style="margin-top: 0.5rem;">
+                <div class="tcp-layer-row">
+                  <span class="layer-num-badge badge-l5">L5 / L7</span>
+                  <div>
+                    <span class="layer-name">Aplikační vrstva</span>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">HTTP, HTTPS, DNS, DHCP, SSH</div>
+                  </div>
+                  <span class="layer-pdu">Zpráva / Data</span>
+                </div>
+
+                <div class="tcp-layer-row">
+                  <span class="layer-num-badge badge-l4">L4</span>
+                  <div>
+                    <span class="layer-name">Transportní vrstva</span>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">TCP (spolehlivý), UDP (rychlý)</div>
+                  </div>
+                  <span class="layer-pdu">Segment / Datagram</span>
+                </div>
+
+                <div class="tcp-layer-row">
+                  <span class="layer-num-badge badge-l3">L3</span>
+                  <div>
+                    <span class="layer-name">Síťová vrstva</span>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">IPv4, IPv6, ICMP, ARP (směrování)</div>
+                  </div>
+                  <span class="layer-pdu">Paket</span>
+                </div>
+
+                <div class="tcp-layer-row layer-highlight">
+                  <span class="layer-num-badge badge-l2">L2</span>
+                  <div>
+                    <span class="layer-name" style="color: #34d399;">Linková vrstva (Data Link)</span>
+                    <div style="font-size: 0.75rem; color: #6ee7b7;">Děleno IEEE 802 na LLC a MAC &bull; Zde se nacházíme!</div>
+                  </div>
+                  <span class="layer-pdu" style="color: #34d399; font-weight: 700;">Rámec (Frame)</span>
+                </div>
+
+                <div class="l2-sublayers-box">
+                  <div class="l2-sublayer-item">
+                    <span><strong>Horní: LLC (IEEE 802.2)</strong> &ndash; Most k síťové L3</span>
+                    <span class="badge badge-llc" style="font-size: 0.7rem; padding: 0.1rem 0.4rem;">Software</span>
+                  </div>
+                  <div class="l2-sublayer-item">
+                    <span><strong>Spodní: MAC (IEEE 802.3/11)</strong> &ndash; Most k fyzické L1</span>
+                    <span class="badge badge-mac" style="font-size: 0.7rem; padding: 0.1rem 0.4rem;">Hardware NIC</span>
+                  </div>
+                </div>
+
+                <div class="tcp-layer-row">
+                  <span class="layer-num-badge badge-l1">L1</span>
+                  <div>
+                    <span class="layer-name">Fyzická vrstva</span>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">Metalický kabel (UTP), optické vlákno, rádiové vlny</div>
+                  </div>
+                  <span class="layer-pdu">Bity (0 / 1)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Podrobný rozbor LLC a MAC -->
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Úkoly podvrstev LLC a MAC
+              </h3>
+
+              <div class="sublayer-box" style="margin-top: 0.5rem;">
+                <div class="sublayer-header">
+                  <div>
+                    <h4 style="margin: 0; color: #38bdf8; font-size: 0.95rem;">1. LLC – Logical Link Control (IEEE 802.2)</h4>
+                    <small style="color: #94a3b8;">Software v ovladači &bull; Zcela nezávislá na médiu</small>
+                  </div>
+                  <span class="sublayer-badge badge-llc">Software &bull; L3 Bridge</span>
+                </div>
+                <ul class="feature-list" style="margin-top: 0.65rem; font-size: 0.86rem;">
+                  <li>Komunikuje s protokoly síťové vrstvy (IPv4, IPv6).</li>
+                  <li>Do rámce vkládá identifikátor síťového protokolu (EtherType / DSAP / SSAP).</li>
+                  <li>Umožňuje, aby stejný síťový software fungoval přes libovolné přenosové médium.</li>
+                </ul>
+              </div>
+
+              <div class="sublayer-box" style="margin-top: 0.85rem;">
+                <div class="sublayer-header">
+                  <div>
+                    <h4 style="margin: 0; color: #60a5fa; font-size: 0.95rem;">2. MAC – Media Access Control (IEEE 802.3, 802.11)</h4>
+                    <small style="color: #94a3b8;">Hardware přímo na čipu síťové karty (NIC)</small>
+                  </div>
+                  <span class="sublayer-badge badge-mac">Hardware &bull; L1 Bridge</span>
+                </div>
+                <ul class="feature-list" style="margin-top: 0.65rem; font-size: 0.86rem;">
+                  <li><strong>Enkapsulace dat:</strong> Sestavuje rámec, doplňuje preambuli, MAC adresy a kontrolní součet FCS.</li>
+                  <li><strong>Řízení přístupu (Media Access):</strong> Určuje, kdy stanice smí vysílat na sdílené médium (CSMA/CD u sběrnice, CSMA/CA u Wi-Fi).</li>
+                </ul>
+              </div>
+
+              <div class="info-box" style="margin-top: auto; border-left: 4px solid #10b981;">
+                <strong>Geniální výhoda rozdělení:</strong> Protokol IPv4 nemusí vůbec vědět, zda data putují optickým kabelem nebo vzduchem přes Wi-Fi. Ovladač LLC poskytuje jednotné rozhraní a hardwarová MAC se postará o zbytek!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Topologie a duplex
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Topologie a režimy přenosu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Organizace sítě</span>
+            <h2>Topologie sítí a přenosové režimy (Duplex)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Přehled základních geometrických topologií LAN a vizuální srovnání střídavého (Half-Duplex) a plně obousměrného (Full-Duplex) přenosu dat po lince.
+          </p>
+
+          <!-- Klíčový didaktický koncept: Fyzická vs. Logická topologie -->
+          <div class="split-layout" style="margin-bottom: 0.9rem; gap: 1.15rem;">
+            <div class="content-card" style="padding: 0.85rem 1.15rem; border-left: 4px solid #38bdf8;">
+              <h4 style="margin: 0 0 0.35rem 0; color: #38bdf8; font-size: 0.92rem; display: flex; align-items: center; gap: 0.5rem;">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                Fyzická topologie (Kabeláž a umístění)
+              </h4>
+              <p style="font-size: 0.84rem; margin: 0; line-height: 1.45; color: var(--text-secondary);">
+                Udává <strong>skutečné fyzické uspořádání kabelů, zásuvek a síťových zařízení</strong> v prostoru (např. kabely vedoucí paprskovitě z patch panelu do zásuvek ve tvaru hvězdy, přímý kabel bod-bod apod.).
+              </p>
+            </div>
+
+            <div class="content-card" style="padding: 0.85rem 1.15rem; border-left: 4px solid #a855f7;">
+              <h4 style="margin: 0 0 0.35rem 0; color: #c084fc; font-size: 0.92rem; display: flex; align-items: center; gap: 0.5rem;">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Logická topologie (Cesta a přenos dat)
+              </h4>
+              <p style="font-size: 0.84rem; margin: 0; line-height: 1.45; color: var(--text-secondary);">
+                Popisuje <strong>způsob, jakým data po médiu skutečně putují a jak zařízení k médiu přistupují</strong>. Např. Ethernet s rozbočovačem (Hub) je <em>fyzicky hvězda</em>, ale <em>logicky sběrnice</em> (všichni slyší vše).
+              </p>
+            </div>
+          </div>
+
+          <!-- Střední pás: 4 základní topologie s SVG schématy -->
+          <div class="topologies-grid">
+            <!-- Sběrnice (Bus) -->
+            <div class="topology-card">
+              <svg class="topology-svg" viewBox="0 0 100 70">
+                <line x1="10" y1="35" x2="90" y2="35" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                <rect x="6" y="27" width="5" height="16" fill="#f43f5e" rx="1"/>
+                <rect x="89" y="27" width="5" height="16" fill="#f43f5e" rx="1"/>
+                <line x1="25" y1="35" x2="25" y2="20" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="50" y1="35" x2="50" y2="50" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="75" y1="35" x2="75" y2="20" stroke="#94a3b8" stroke-width="2"/>
+                <rect x="18" y="8" width="14" height="12" rx="2" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <rect x="43" y="50" width="14" height="12" rx="2" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <rect x="68" y="8" width="14" height="12" rx="2" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+              </svg>
+              <div class="topology-title">Sběrnice (Bus)</div>
+              <div class="topology-desc">Sdílené médium s terminátory (10BASE2). V sítích s Hubem: fyzická hvězda, ale logická sběrnice.</div>
+            </div>
+
+            <!-- Hvězda & Strom (Star / Tree) -->
+            <div class="topology-card">
+              <svg class="topology-svg" viewBox="0 0 100 70">
+                <rect x="42" y="27" width="16" height="16" rx="3" fill="#3b82f6" stroke="#93c5fd" stroke-width="1.5"/>
+                <line x1="50" y1="27" x2="25" y2="15" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="50" y1="27" x2="75" y2="15" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="50" y1="43" x2="25" y2="55" stroke="#60a5fa" stroke-width="1.5"/>
+                <line x1="50" y1="43" x2="75" y2="55" stroke="#60a5fa" stroke-width="1.5"/>
+                <circle cx="25" cy="15" r="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <circle cx="75" cy="15" r="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <circle cx="25" cy="55" r="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <circle cx="75" cy="55" r="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+              </svg>
+              <div class="topology-title">Hvězda / Strom (Star)</div>
+              <div class="topology-desc">Centrální switch. Fyzická i logická hvězda, moderní LAN standard s mikro-segmentací portů.</div>
+            </div>
+
+            <!-- Kruh (Ring / Circle) -->
+            <div class="topology-card">
+              <svg class="topology-svg" viewBox="0 0 100 70">
+                <circle cx="50" cy="35" r="24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 2"/>
+                <circle cx="50" cy="11" r="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+                <circle cx="74" cy="35" r="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+                <circle cx="50" cy="59" r="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+                <circle cx="26" cy="35" r="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+              </svg>
+              <div class="topology-title">Kruh (Ring)</div>
+              <div class="topology-desc">Uzavřená smyčka (Token Ring, FDDI). Logický kruh zapojovaný do fyzické hvězdy přes jednotku MAU.</div>
+            </div>
+
+            <!-- Mřížka (Mesh) -->
+            <div class="topology-card">
+              <svg class="topology-svg" viewBox="0 0 100 70">
+                <line x1="25" y1="20" x2="75" y2="20" stroke="#10b981" stroke-width="1.2"/>
+                <line x1="25" y1="50" x2="75" y2="50" stroke="#10b981" stroke-width="1.2"/>
+                <line x1="25" y1="20" x2="25" y2="50" stroke="#10b981" stroke-width="1.2"/>
+                <line x1="75" y1="20" x2="75" y2="50" stroke="#10b981" stroke-width="1.2"/>
+                <line x1="25" y1="20" x2="75" y2="50" stroke="#10b981" stroke-width="1.2"/>
+                <line x1="25" y1="50" x2="75" y2="20" stroke="#10b981" stroke-width="1.2"/>
+                <circle cx="25" cy="20" r="5" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+                <circle cx="75" cy="20" r="5" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+                <circle cx="25" cy="50" r="5" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+                <circle cx="75" cy="50" r="5" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+              </svg>
+              <div class="topology-title">Mřížka (Mesh)</div>
+              <div class="topology-desc">Plná či parciální redundance. Páteřní WAN spoje a datacentra s alternativními trasami.</div>
+            </div>
+          </div>
+
+          <!-- Spodní pás: Vizuální Half-Duplex vs. Full-Duplex -->
+          <div class="duplex-visual-grid">
+            <div class="duplex-card half">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="margin: 0; color: #fbbf24; font-size: 0.95rem;">Half-Duplex (Poloviční obousměrný přenos)</h4>
+                <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; font-size: 0.7rem;">Riziko kolize!</span>
+              </div>
+              
+              <!-- Vizuální schéma: 1 sdílená dráha -->
+              <div class="duplex-channel-diagram">
+                <span style="font-weight: 700; font-size: 0.8rem; color: #cbd5e1;">Uzel A</span>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                  <span style="font-size: 0.72rem; color: #f59e0b; font-weight: 600;">1 sdílený kanál: pouze jeden směr v daný okamžik</span>
+                  <svg viewBox="0 0 140 16" style="width: 140px; height: 16px;">
+                    <line x1="10" y1="8" x2="130" y2="8" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6 3"/>
+                    <polyline points="18 4 10 8 18 12" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                    <polyline points="122 4 130 8 122 12" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                  </svg>
+                </div>
+                <span style="font-weight: 700; font-size: 0.8rem; color: #cbd5e1;">Uzel B</span>
+              </div>
+
+              <ul class="feature-list" style="font-size: 0.82rem; margin: 0;">
+                <li>Vysílání a příjem se musí střídat (princip vysílačky Walkie-Talkie).</li>
+                <li>Pokud začnou vysílat oba najednou, dojde ke srážce signálů (kolizi).</li>
+                <li><strong>Použití:</strong> Bezdrátové Wi-Fi sítě, staré rozbočovače (Hub).</li>
+              </ul>
+            </div>
+
+            <div class="duplex-card full">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="margin: 0; color: #34d399; font-size: 0.95rem;">Full-Duplex (Plně obousměrný přenos)</h4>
+                <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 0.7rem;">Nulové kolize</span>
+              </div>
+
+              <!-- Vizuální schéma: 2 oddělené dráhy TX a RX -->
+              <div class="duplex-channel-diagram">
+                <span style="font-weight: 700; font-size: 0.8rem; color: #cbd5e1;">Uzel A</span>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; width: 60%;">
+                  <!-- TX trasa -->
+                  <div style="display: flex; align-items: center; gap: 6px; width: 100%;">
+                    <span style="font-size: 0.68rem; font-family: ui-monospace, monospace; color: #38bdf8;">TX &rarr;</span>
+                    <svg viewBox="0 0 100 8" style="flex: 1; height: 8px;">
+                      <line x1="2" y1="4" x2="95" y2="4" stroke="#38bdf8" stroke-width="2"/>
+                      <polyline points="90 1 96 4 90 7" fill="none" stroke="#38bdf8" stroke-width="1.8"/>
+                    </svg>
+                  </div>
+                  <!-- RX trasa -->
+                  <div style="display: flex; align-items: center; gap: 6px; width: 100%;">
+                    <span style="font-size: 0.68rem; font-family: ui-monospace, monospace; color: #34d399;">&larr; RX</span>
+                    <svg viewBox="0 0 100 8" style="flex: 1; height: 8px;">
+                      <line x1="5" y1="4" x2="98" y2="4" stroke="#34d399" stroke-width="2"/>
+                      <polyline points="10 1 4 4 10 7" fill="none" stroke="#34d399" stroke-width="1.8"/>
+                    </svg>
+                  </div>
+                </div>
+                <span style="font-weight: 700; font-size: 0.8rem; color: #cbd5e1;">Uzel B</span>
+              </div>
+
+              <ul class="feature-list" style="font-size: 0.82rem; margin: 0;">
+                <li>Současné nezávislé vysílání i příjem v obou směrech (princip dálnice).</li>
+                <li>Oddělené kroucené páry u UTP (nebo 2 optická vlákna) zcela vylučují kolize.</li>
+                <li><strong>Použití:</strong> Všechny moderní přepínané sítě LAN (Ethernet switch).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Řízení přístupu k médiu
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Řízení přístupu k médiu (MAC metody)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Media Access Control</span>
+            <h2>Metody řízení přístupu ke sdílenému médiu</h2>
+          </div>
+
+          <p class="slide-lead">
+            Pokud více stanic sdílí stejný přenosový prostor (např. radiové vlny Wi-Fi nebo společný kabel), musí existovat přísná pravidla, kdo a kdy smí vysílat.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #38bdf8;">
+              <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: #38bdf8;">Soutěživý přístup (Contention-Based)</span>
+              <h3 style="margin-top: 0.75rem;">Náhodný přístup: Kdo dřív přijde...</h3>
+              <p>
+                Zařízení soutěží o možnost vysílat. Pokud začnou vysílat dvě stanice současně, dojde ke kolizi signálu a data se poškodí.
+              </p>
+              <ul class="feature-list">
+                <li><strong>CSMA/CD (Collision Detection):</strong> Používáno v původním drátovém Ethernetu. Stanice naslouchá médiu, při kolizi vyšle Jam signál a čeká náhodný čas.</li>
+                <li><strong>CSMA/CA (Collision Avoidance):</strong> Používáno ve Wi-Fi. Stanice se kolizím aktivně vyhýbá (odpočet zpoždění, volitelný signál RTS/CTS a potvrzování ACK).</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Řízený přístup (Controlled Access)</span>
+              <h3 style="margin-top: 0.75rem;">Deterministický přístup: Pořadí na lístek</h3>
+              <p>
+                Každé zařízení dostane přesně přidělený časový slot nebo pověření k vysílání. Nedochází k žádným kolizím, ale režie protokolu snižuje efektivní propustnost.
+              </p>
+              <ul class="feature-list">
+                <li><strong>Předávání pešti (Token Passing):</strong> Stanice smí vysílat pouze tehdy, když drží speciální elektronickou známku (token). Příklady: starší sítě Token Ring (IBM) nebo optické FDDI.</li>
+                <li><strong>Polling (Dotazování master/slave):</strong> Centrální řadič se postupně ptá jednotlivých stanic, zda mají data k odeslání.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Anatomie rámce (Interactive Frame Inspector)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Anatomie rámce a Frame Inspector">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Anatomie ethernetového rámce (PDU L2)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Klikněte na jednotlivá pole ethernetového rámce níže pro podrobnou technickou analýzu jejich funkce a velikosti:
+          </p>
+
+          <div class="frame-visualizer">
+            <div class="frame-strip">
+              <div class="frame-block active" data-field="preamble">
+                <span class="frame-block-tag">Předzahrádka</span>
+                <div class="frame-block-name">Preamble &amp; SFD</div>
+                <div class="frame-block-size">8 bajtů</div>
+              </div>
+              <div class="frame-block" data-field="dst">
+                <span class="frame-block-tag">Cíl (L2)</span>
+                <div class="frame-block-name">Dest MAC</div>
+                <div class="frame-block-size">6 bajtů</div>
+              </div>
+              <div class="frame-block" data-field="src">
+                <span class="frame-block-tag">Zdroj (L2)</span>
+                <div class="frame-block-name">Source MAC</div>
+                <div class="frame-block-size">6 bajtů</div>
+              </div>
+              <div class="frame-block" data-field="type">
+                <span class="frame-block-tag">L3 Protokol</span>
+                <div class="frame-block-name">EtherType</div>
+                <div class="frame-block-size">2 bajty</div>
+              </div>
+              <div class="frame-block" data-field="payload">
+                <span class="frame-block-tag">Payload</span>
+                <div class="frame-block-name">Data (L3 Paket)</div>
+                <div class="frame-block-size">46 – 1500 B</div>
+              </div>
+              <div class="frame-block" data-field="fcs">
+                <span class="frame-block-tag">Zápatí</span>
+                <div class="frame-block-name">FCS (CRC-32)</div>
+                <div class="frame-block-size">4 bajty</div>
+              </div>
+            </div>
+
+            <div class="frame-detail-card">
+              <div class="frame-detail-title" id="frameDetailTitle">
+                Preamble &amp; SFD (Předzahrádka a oddělovač)
+              </div>
+              <div class="frame-detail-desc" id="frameDetailDesc">
+                7 bajtů střídavých jedniček a nul (10101010...) pro synchronizaci hodin přijímače s vysílačem, zakončeno 1 bajtem SFD (Start of Frame Delimiter: 10101011), který oznamuje: „pozor, hned za tímto bajtem začíná cílová MAC adresa!“.
+              </div>
+              <div class="frame-detail-raw" id="frameDetailRaw">
+                Binárně: 10101010...10101011 (Celkem 8 B / 64 bitů)
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.85rem; color: #94a3b8; text-align: center;">
+            Minimální velikost celého ethernetového rámce (bez Preamble) je <strong>64 bajtů</strong>, maximální standardní velikost je <strong>1518 bajtů</strong>.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Fyzické adresování (MAC Adresa)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Struktura MAC adresy">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Hardware adresování</span>
+            <h2>Fyzická adresa MAC (Media Access Control)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Unikátní fyzický identifikátor každého síťového rozhraní na světě, vypálený do hardwaru síťové karty (BIA).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                48 bitů / 6 bajtů v hexadecimálním zápisu
+              </h3>
+              <p>
+                Každé síťové rozhraní (ethernetový port, Wi-Fi modul, Bluetooth) má výrobcem vypálenou trvalou fyzickou adresu (tzv. <em>Burned-In Address – BIA</em>).
+              </p>
+              <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 8px; font-family: ui-monospace, monospace; font-size: 0.85rem;">
+                <strong>Různé formáty zápisu stejné MAC adresy:</strong><br>
+                &bull; Standard IEEE: <code>00:1A:2B:3C:4D:5E</code> (dvojtečky)<br>
+                &bull; Windows formát: <code>00-1A-2B-3C-4D-5E</code> (pomlčky)<br>
+                &bull; Cisco formát: <code>001a.2b3c.4d5e</code> (tečky po 4 znacích)
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                Dvě poloviny MAC adresy
+              </h3>
+              <ul class="feature-list">
+                <li>
+                  <strong style="color: #38bdf8;">OUI (Prvních 24 bitů / 3 bajty):</strong><br>
+                  Organizationally Unique Identifier – unikátní kód výrobce přidělený autoritou IEEE (např. Cisco, Apple, Intel, Raspberry Pi).
+                </li>
+                <li>
+                  <strong style="color: #10b981;">NIC ID (Druhých 24 bitů / 3 bajty):</strong><br>
+                  Sériové číslo síťové karty přidělené samotným výrobcem. Žádné dvě karty na světě nesmí mít stejnou kombinaci OUI + NIC ID.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Interaktivní MAC Dekodér
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Interaktivní MAC dekodér a bity">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Interaktivní MAC Dekodér a analýza bitů</h2>
+          </div>
+
+          <p class="slide-lead">
+            Zadejte libovolnou MAC adresu nebo zvolte přednastavenou. Simulátor analyzuje výrobce OUI i stav speciálních řídicích bitů:
+          </p>
+
+          <div class="mac-tool-box">
+            <div class="mac-input-group">
+              <input type="text" id="macInput" class="mac-input" value="B8:27:EB:12:34:56" placeholder="Zadejte MAC (např. 00:1A:2B:3C:4D:5E)" maxlength="17">
+              <button class="mac-preset-btn" data-mac="00:1A:2B:55:66:77">Cisco</button>
+              <button class="mac-preset-btn" data-mac="B8:27:EB:AA:BB:CC">Raspberry Pi</button>
+              <button class="mac-preset-btn" data-mac="AC:DE:48:11:22:33">Apple</button>
+              <button class="mac-preset-btn" data-mac="01:00:5E:00:00:01">Multicast</button>
+              <button class="mac-preset-btn" data-mac="FF:FF:FF:FF:FF:FF">Broadcast</button>
+            </div>
+
+            <div class="mac-breakdown-grid">
+              <div class="mac-half-card">
+                <div class="mac-half-title">1. Část: OUI (Výrobce hardwaru)</div>
+                <div class="mac-bytes-display" id="ouiBytes">B8:27:EB</div>
+                <div style="font-size: 0.95rem; font-weight: 600; color: #f1f5f9;" id="vendorName">
+                  Raspberry Pi Foundation
+                </div>
+              </div>
+
+              <div class="mac-half-card">
+                <div class="mac-half-title">2. Část: NIC ID (Číslo karty)</div>
+                <div class="mac-bytes-display" id="nicBytes" style="color: #10b981;">12:34:56</div>
+                <div style="font-size: 0.85rem; color: #94a3b8;">
+                  Unikátní sériové číslo rozhraní výrobce
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1rem;" class="mac-flag-row">
+              <div class="mac-flag-item">
+                <span>Typ přenosu dle bitu 0 (I/G bit):</span>
+                <span class="flag-badge flag-unicast" id="igBadge">Unicast (Individuální adresa)</span>
+              </div>
+              <div class="mac-flag-item">
+                <span>Správa adresy dle bitu 1 (U/L bit):</span>
+                <span class="flag-badge flag-universal" id="ulBadge">Globálně unikátní OUI (Globally Unique)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Typy adresování L2
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Unicast, Multicast a Broadcast">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Režimy doručování</span>
+            <h2>Typy adresování na linkové vrstvě</h2>
+          </div>
+
+          <p class="slide-lead">
+            Rozlišení tří základních způsobů doručování rámců podle počtu cílových zařízení v segmentu sítě.
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                <h4 style="margin: 0; color: #10b981;">Unicast</h4>
+                <span class="sublayer-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">1 na 1</span>
+              </div>
+              <p>Rámec je určen pro <strong>jedinou konkrétní síťovou kartu</strong> v segmentu.</p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li>Cílová MAC odpovídá přesně jednomu cíli.</li>
+                <li>I/G bit v prvním bajtu má hodnotu <strong>0</strong>.</li>
+                <li>Ostatní síťové karty rámec tiše ignorují.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                <h4 style="margin: 0; color: #f43f5e;">Broadcast</h4>
+                <span class="sublayer-badge" style="background: rgba(244, 63, 94, 0.2); color: #fb7185;">1 všem</span>
+              </div>
+              <p>Rámec je určen pro <strong>všechny aktivní stanice v daném L2 segmentu</strong>.</p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li>Vyhrazena speciální adresa: <code>FF:FF:FF:FF:FF:FF</code> (všechny bity jedničkové).</li>
+                <li>Každá síťová karta musí rámec převzít a předat CPU.</li>
+                <li>Využití: Protokol ARP, hledání DHCP serveru.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                <h4 style="margin: 0; color: #f59e0b;">Multicast</h4>
+                <span class="sublayer-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">1 skupině</span>
+              </div>
+              <p>Rámec je doručen pouze <strong>skupině stanic, které se k odběru přihlásily</strong>.</p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li>IPv4 Multicast má rezervovaný rozsah MAC: <code>01:00:5E:xx:xx:xx</code>.</li>
+                <li>IPv6 Multicast začíná prefixem <code>33:33:xx:xx:xx:xx</code>.</li>
+                <li>Šetří kapacitu linky (např. video streamy, směrovací protokoly OSPF).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Kontrola integrity FCS a CRC-32
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Kontrola integrity: FCS a CRC-32">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Detekce chyb &bull; Interaktivní simulátor</span>
+            <h2>FCS (Frame Check Sequence) a algoritmus CRC-32</h2>
+          </div>
+
+          <p class="slide-lead">
+            Vysílač spočítá matematický kontrolní kód CRC-32 a uloží jej do zápatí. Vyzkoušejte kliknutím znegovat libovolný bit a sledujte reakci síťové karty:
+          </p>
+
+          <div class="crc-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.85rem; font-weight: 700; color: #94a3b8; text-transform: uppercase;">
+                Užitečná data rámce (Bity na médiu):
+              </span>
+              <button class="mac-preset-btn" id="resetCrcBtn" style="padding: 0.3rem 0.6rem;">Obnovit původní bity</button>
+            </div>
+
+            <div class="crc-interactive-bits" id="crcBitsContainer">
+              <!-- Bity vygenerovány JS -->
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem;">
+              <span style="font-size: 0.9rem; color: #cbd5e1;">Vypočtený kontrolní součet CRC-32:</span>
+              <span id="crcDisplay" style="font-family: ui-monospace, monospace; font-size: 1.15rem; font-weight: 700; color: #38bdf8;">0x4C1A8F20</span>
+            </div>
+
+            <div class="crc-status-bar crc-status-valid" id="crcStatusBar">
+              <div id="crcStatusText">
+                <strong>KONTROLNÍ SOUČET SOUHLASÍ (OK):</strong> Rámec byl doručen bez chyby a je předán síťové vrstvě L3.
+              </div>
+            </div>
+          </div>
+
+          <div class="info-box" style="margin-top: 1rem; border-left: 4px solid #f43f5e;">
+            <strong>Zásadní pravidlo linkové vrstvy:</strong> L2 chyby <strong>neopravuje</strong>! Pokud CRC nesouhlasí, rámec je bez milosti zahozen. Opravu a případné vyžádání ztracených dat řeší až spolehlivý transportní protokol na vrstvě L4 (TCP).
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Hop-by-Hop přeposílání
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Hop-by-Hop doručování dat">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Principy komunikace</span>
+            <h2>Hop-by-Hop doručování: Jak cestuje rámec světem</h2>
+          </div>
+
+          <p class="slide-lead">
+            Největší rozdíl mezi L2 a L3: <strong>IP adresy se po celé cestě nemění</strong> (end-to-end), ale <strong>rámec a MAC adresy se na každém směrovači vymění</strong> za nové!
+          </p>
+
+          <div class="hop-diagram">
+            <div class="hop-node">
+              <div class="hop-node-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
+              <div class="hop-node-title">Odesílatel (PC A)</div>
+              <div class="hop-meta">IP: 192.168.1.10<br>MAC: AA:AA:AA:AA:AA:AA</div>
+              <div class="hop-segment">
+                1. Skok (LAN A)<br>
+                Src MAC: AA:AA...<br>
+                Dst MAC: R1-Fa0/0
+              </div>
+            </div>
+
+            <div class="hop-node">
+              <div class="hop-node-icon" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; border-color: rgba(6, 182, 212, 0.3);">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 8 8 12 12 16"></polyline><line x1="16" y1="12" x2="8" y2="12"></line></svg>
+              </div>
+              <div class="hop-node-title">Směrovač (Router 1)</div>
+              <div class="hop-meta">Rozbalí L2 rámec, zkontroluje IP cíl a zabalí paket do nového L2 rámce!</div>
+              <div class="hop-segment" style="color: #f59e0b;">
+                2. Skok (WAN Linka)<br>
+                Nové L2 záhlaví!<br>
+                (např. HDLC / PPP)
+              </div>
+            </div>
+
+            <div class="hop-node">
+              <div class="hop-node-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border-color: rgba(16, 185, 129, 0.3);">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              </div>
+              <div class="hop-node-title">Příjemce (Server B)</div>
+              <div class="hop-meta">IP: 203.0.113.50<br>MAC: BB:BB:BB:BB:BB:BB</div>
+              <div class="hop-segment" style="color: #10b981;">
+                Cílový segment<br>
+                Src MAC: R2-Fa0/1<br>
+                Dst MAC: BB:BB...
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.85rem; color: #94a3b8; text-align: center;">
+            Rámec L2 žije pouze po dobu jednoho fyzického skoku (mezi PC a routerem, nebo mezi dvěma routery). Na každém L3 směrovači zaniká.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí a otázky
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí tématu a kontrolní otázky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Závěrečné shrnutí</span>
+            <h2>Shrnutí klíčových poznatků a kontrolní otázky</h2>
+          </div>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                1. Účel L2 vrstvy
+              </h4>
+              <p>Mění tok fyzických bitů na strukturované rámce, zajišťuje doručování v lokálním segmentu (Hop-by-Hop) a řídí přístup k médiu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                2. Struktura adresy MAC
+              </h4>
+              <p>48bitová fyzická adresa rozdělená na OUI (první 3 bajty – výrobce) a NIC ID (druhé 3 bajty – konkrétní síťová karta).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                3. Detekce chyb FCS
+              </h4>
+              <p>Kontrola integrity pomocí CRC-32 v zápatí. Poškozený rámec je okamžitě zahozen, L2 vrstva neprovádí žádné opravy.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: #f1f5f9;">Ověření znalostí (Kliknutím zobrazte vysvětlení):</h3>
+
+          <div class="questions-grid">
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč je v záhlaví rámce podvrstva LLC oddělena od podvrstvy MAC?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Oddělení dle IEEE 802 umožňuje, aby software síťové vrstvy (např. protokol IPv4 nebo IPv6) komunikoval s jednotným rozhraním LLC, zatímco spodní podvrstva MAC řeší hardwarová specifika konkrétního média (kabelový Ethernet vs. bezdrátová Wi-Fi).
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Co se stane se zdrojovou a cílovou MAC adresou rámce, když paket projde směrovačem (L3 routerem)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Původní ethernetový rámec je routerem kompletně odstraněn (zanikne). Router vytvoří pro další skok zcela nový rámec, kde zdrojovou MAC je odchozí rozhraní daného routeru a cílovou MAC je buď následující router, nebo cílová stanice. Původní IP adresy uvnitř paketu však zůstávají beze změny!
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Proč ethernetový rámec jako jediný PDU obsahuje kromě záhlaví také zápatí (Trailer)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Zápatí obsahuje pole FCS (Frame Check Sequence) s kontrolním kódem CRC-32. Důvodem umístění na konci je výpočetní efektivita: síťová karta může počítat kontrolní součet postupně v reálném čase, jak bity procházejí vysílačem, a výslednou hodnotu připojit hned za poslední bit dat bez nutnosti zdržovat vysílání.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../020-Fyzicka-vrstva/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 020 Fyzická vrstva (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../031-Ethernet/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 031 Ethernet (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Linková vrstva
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro interaktivní rozpad rámce, MAC dekodér a CRC simulátor -->
+  <script src="frame-playground.js"></script>
+</body>
+
+</html>

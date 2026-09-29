@@ -1,0 +1,348 @@
+/* ==========================================================================
+   Dedikované styly pro Téma 031: Ethernet (IEEE 802.3)
+   Předmět: Počítačové sítě (POS) - SPŠ
+   ========================================================================== */
+
+:root {
+  --theme-accent: #3b82f6;
+  --theme-accent-glow: rgba(59, 130, 246, 0.25);
+  --theme-teal: #06b6d4;
+  --theme-emerald: #10b981;
+  --theme-amber: #f59e0b;
+  --theme-rose: #f43f5e;
+}
+
+/* ==========================================================================
+   Rozvržení záhlaví a rozestupy
+   ========================================================================== */
+.slide-header-badge,
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0.45rem !important;
+  margin-bottom: 1.4rem !important;
+  padding-bottom: 0.75rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  width: 100% !important;
+}
+
+[data-theme="light"] .slide-header-badge,
+[data-theme="light"] .slide-header {
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.slide-header-badge h2,
+.slide-header .slide-title,
+.slide h2 {
+  font-size: 1.85rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary, #f1f5f9) !important;
+  margin: 0 !important;
+}
+
+.slide-lead,
+.slide-subtitle {
+  font-size: 0.96rem !important;
+  color: var(--text-secondary, #94a3b8) !important;
+  line-height: 1.55 !important;
+  margin: 0 0 1.35rem 0 !important;
+  max-width: 1100px !important;
+}
+
+/* ==========================================================================
+   Dvourámečky – Vždy stejná výška a pružné zarovnání
+   ========================================================================== */
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: stretch; /* Obě karty budou mít vždy stejnou výšku */
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .split-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.split-layout > .content-card,
+.split-layout > .card,
+.split-layout > .mac-half-card,
+.summary-grid > .content-card,
+.summary-grid > .card {
+  margin-top: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+}
+
+.split-layout > .content-card > .info-box,
+.split-layout > .content-card > .comparison-table,
+.summary-grid > .content-card > .info-box {
+  margin-top: auto !important;
+}
+
+.content-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #f1f5f9;
+}
+
+.content-card p {
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  color: #cbd5e1;
+}
+
+.content-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   1. CSMA/CD Simulátor sběrnice
+   ========================================================================== */
+.csmacd-box {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.bus-canvas-container {
+  width: 100%;
+  height: 220px;
+  background: rgba(2, 6, 23, 0.8);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.csmacd-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.csmacd-btn {
+  background: rgba(59, 130, 246, 0.18);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.csmacd-btn:hover {
+  background: rgba(59, 130, 246, 0.35);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.csmacd-btn.btn-collide {
+  background: rgba(244, 63, 94, 0.2);
+  border-color: rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+}
+
+.csmacd-btn.btn-collide:hover {
+  background: rgba(244, 63, 94, 0.35);
+  color: #fff;
+}
+
+.csmacd-log {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.825rem;
+  color: #38bdf8;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   2. Pipeline & IFG Timing Kalkulátor
+   ========================================================================== */
+.pipeline-box {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+}
+
+.speed-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.speed-chip {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.speed-chip.active,
+.speed-chip:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #3b82f6;
+  color: #60a5fa;
+  transform: translateY(-1px);
+}
+
+.timing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 800px) {
+  .timing-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.timing-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.timing-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+
+.timing-val {
+  font-family: ui-monospace, monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* Vizuální lišta pipeliny */
+.pipeline-visual-bar {
+  display: flex;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 1rem;
+}
+
+.pipe-segment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  transition: width 0.3s ease;
+}
+
+.pipe-preamble { background: #3b82f6; width: 10%; }
+.pipe-frame { background: #10b981; width: 75%; }
+.pipe-ifg { background: #f59e0b; width: 15%; }
+
+/* ==========================================================================
+   3. Kabelový a Pinout trenažér
+   ========================================================================== */
+.pinout-card {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 1rem 0;
+}
+
+.cable-wire-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+.wire-color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dot-wo { background: repeating-linear-gradient(45deg, #fff, #fff 3px, #f97316 3px, #f97316 6px); }
+.dot-o { background: #ea580c; }
+.dot-wg { background: repeating-linear-gradient(45deg, #fff, #fff 3px, #22c55e 3px, #22c55e 6px); }
+.dot-bl { background: #2563eb; }
+.dot-wbl { background: repeating-linear-gradient(45deg, #fff, #fff 3px, #3b82f6 3px, #3b82f6 6px); }
+.dot-g { background: #16a34a; }
+.dot-wbr { background: repeating-linear-gradient(45deg, #fff, #fff 3px, #854d0e 3px, #854d0e 6px); }
+.dot-br { background: #78350f; }
+
+/* Srovnávací tabulky */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.comparison-table th {
+  background: rgba(30, 41, 59, 0.8);
+  color: #f8fafc;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid rgba(59, 130, 246, 0.4);
+}
+
+.comparison-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.comparison-table tr:hover td {
+  background: rgba(59, 130, 246, 0.08);
+}

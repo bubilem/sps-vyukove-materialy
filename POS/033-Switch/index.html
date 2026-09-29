@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 033: L2 Switch a přepínání v LAN | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Přepínač L2 Switch, kolizní vs. broadcastové domény, CAM tabulka, operace Learning, Forwarding, Filtering a Flooding, metody Store-and-Forward vs. Cut-Through a vyrovnávací paměti.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 033 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">033 Switch</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">Cisco CCNA &bull; L2 Switching</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="L2 Switch a přepínání v LAN">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 033</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Layer 2 Switching</span>
+          </div>
+          <h1 class="hero-title">L2 Switch a přepínání v LAN</h1>
+          <p class="hero-subtitle">
+            Inteligentní mozek moderních sítí &bull; Rozdělení kolizních domén, dynamické učení CAM tabulky, operace Forwarding/Flooding, metody Store-and-Forward vs. Cut-Through a architektura vyrovnávací paměti.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Hub vs. Switch
+              </h4>
+              <p>Přechod z 1 společné kolizní domény (Hub) na mikro-segmentaci s dedikovanou rychlostí pro každý port.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                CAM Tabulka
+              </h4>
+              <p>Asociativní paměť mapující MAC adresy na konkrétní fyzické porty a časovač stárnutí (Aging timer 300 s).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                4 Operace přepínače
+              </h4>
+              <p>Zlatá pravidla L2 přepínání: Learning (učení), Filtering (filtrování), Forwarding a Flooding (zaplavení).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Metody přepínání
+              </h4>
+              <p>Store-and-Forward (kontrola FCS) vs. Cut-Through (minimální latence pro burzy a datacentra).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Od Hubu k inteligentnímu Switchi
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Od Hubu k inteligentnímu Switchi">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Evoluce aktivních prvků</span>
+            <h2>Od hloupého rozbočovače (Hub) k inteligentnímu přepínači (Switch)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Technologický skok od sdílené sběrnice ke směrování rámců na základě cílových MAC adres pomocí vyhrazeného přepínacího pole.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <h3 style="color: #fb7185;">Rozbočovač (Hub – L1)</h3>
+              <p>
+                Hub je čistě fyzické zařízení (opakovač). Nerozumí rámcům, nečte MAC adresy a nemá žádnou paměť.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.75rem;">
+                <li>Co přijme na jednom portu, <strong>zesílí a pošle na všechny ostatní porty</strong>.</li>
+                <li>Všechny připojené stanice sdílejí jedinou přenosovou linku (např. 10 Mb/s pro celou síť dohromady).</li>
+                <li>Hrozí neustálé kolize &rarr; nutný poloviční duplex (Half-Duplex).</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h3 style="color: #34d399;">Přepínač (Switch – L2)</h3>
+              <p>
+                Switch je inteligentní zařízení linkové vrstvy se specializovaným procesorem (ASIC) a vyrovnávací pamětí.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.75rem;">
+                <li><strong>Mikro-segmentace:</strong> Každý port je samostatná nezávislá kolizní doména.</li>
+                <li>Každé zařízení má k dispozici <strong>plnou dedikovanou rychlost portu</strong> (např. 1 Gb/s tam i zpět).</li>
+                <li>Plný duplex (Full-Duplex) &rarr; nulové kolize!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Kolizní vs. Broadcastové domény
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Kolizní vs. Broadcastové domény">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Segmentace LAN</span>
+            <h2>Kolizní domény vs. Broadcastové domény</h2>
+          </div>
+
+          <p class="slide-lead">
+            Dva fundamentální pojmy síťové architektury: kde hrozí fyzická srážka signálů a kam až dosáhne všesměrové vysílání.
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Kolizní doména (Collision Domain)
+              </h3>
+              <p>
+                Oblast sítě, ve které by se rámce dvou vysílajících stanic mohly vzájemně srazit.
+              </p>
+              <div class="info-box" style="margin-top: 1rem;">
+                <strong>Zlaté pravidlo:</strong><br>
+                &bull; <strong>Hub:</strong> Celá síť tvoří 1 jedinou kolizní doménu.<br>
+                &bull; <strong>Switch:</strong> <em>Každý jednotlivý port</em> tvoří samostatnou kolizní doménu!<br>
+                &bull; <strong>24portový switch = 24 samostatných kolizních domén.</strong>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Broadcastová doména (Broadcast Domain)
+              </h3>
+              <p>
+                Oblast sítě, do které se rozšíří všesměrové vysílání (Broadcast na adresu <code>FF:FF:FF:FF:FF:FF</code>).
+              </p>
+              <div class="info-box" style="margin-top: 1rem;">
+                <strong>Zlaté pravidlo:</strong><br>
+                &bull; Běžný L2 Switch <strong>nerozděluje</strong> broadcastové domény! Všech 24 portů je v 1 společné broadcastové doméně.<br>
+                &bull; Broadcastové domény rozdělují až <strong>směrovače (L3 Routery)</strong> nebo virtuální sítě <strong>VLAN (IEEE 802.1Q)</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Srdce switche: CAM tabulka
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Struktura a funkce CAM tabulky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Hardware architektura</span>
+            <h2>Srdce přepínače: CAM tabulka (MAC Address Table)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Vysokorychlostní asociativní paměť mapující naučené fyzické adresy zařízení k jednotlivým portům přepínače.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Content Addressable Memory (CAM)
+              </h3>
+              <p>
+                Běžná paměť RAM v počítači hledá data podle zadané adresy. Speciální čip <strong>CAM</strong> dělá přesný opak: zadáte mu data (cílovou MAC adresu) a on v <strong>jediném taktu procesoru (1 clock cycle)</strong> vrátí číslo portu, kde se daná adresa nachází!
+              </p>
+              <p style="margin-top: 0.5rem; font-size: 0.875rem;">
+                Díky hardwarové CAM tabulce může switch přepínat miliony rámců za sekundu při plné rychlosti linky (tzv. <em>Wire Speed</em>).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Položky a stárnutí (Aging Timer)
+              </h3>
+              <ul class="feature-list">
+                <li><strong>MAC adresa stanice:</strong> 48bitová fyzická adresa naučená ze záhlaví rámce.</li>
+                <li><strong>Port:</strong> Fyzické rozhraní switche (např. <code>Fa0/1</code>, <code>Gi0/1</code>).</li>
+                <li><strong>VLAN:</strong> Virtuální síť, do které port patří (výchozí VLAN 1).</li>
+                <li><strong>Časovač stárnutí (Aging timer):</strong> Výchozí hodnota je <strong>300 sekund (5 minut)</strong>. Pokud stanice 5 minut nic nepošle, její záznam je z tabulky smazán, aby se uvolnilo místo.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Čtyři základní operace přepínače
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Čtyři operace L2 přepínače">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Logika přepínání</span>
+            <h2>Čtyři základní operace přepínače: Pravidla provozu</h2>
+          </div>
+
+          <p class="slide-lead">
+            Rozhodovací strom přepínače při doručení rámce: učení zdrojové adresy a následné přeposlání, zaplavení nebo zahození.
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+            <div class="content-card" style="border-top: 3px solid #38bdf8;">
+              <h4 style="color: #38bdf8;">1. Learning (Učení)</h4>
+              <p>Přečte <strong>Source MAC</strong> každého příchozího rámce. Pokud v CAM tabulce ještě není, zapíše ji spolu s číslem příchozího portu.</p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h4 style="color: #10b981;">2. Forwarding (Přeposlání)</h4>
+              <p>Zkontroluje <strong>Destination MAC</strong>. Pokud je v CAM tabulce nalezena, odešle rámec <strong>pouze na daný konkrétní port</strong>.</p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h4 style="color: #f59e0b;">3. Filtering (Filtrování)</h4>
+              <p>Pokud se odesílatel i cíl nacházejí na stejném portu, switch rámec dále nepouští a zahodí jej (šetří kapacitu zbytku sítě).</p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <h4 style="color: #fb7185;">4. Flooding (Zaplavení)</h4>
+              <p>Pokud je cíl neznámý (<em>Unknown Unicast</em>) nebo jde o <em>Broadcast</em>, rozešle rámec na <strong>všechny porty kromě příchozího</strong>!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Interaktivní simulátor switche
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Interaktivní simulátor CAM tabulky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Živý simulátor operací switche a CAM tabulky</h2>
+          </div>
+
+          <p class="slide-lead">
+            Zvolte odesílatele a příjemce a sledujte proces učení, stav LED diod a rozhodování mezi Unicast forwardingem a Floodingem:
+          </p>
+
+          <div class="switch-sim-box">
+            <!-- Vizuál šasi switche se 4 porty -->
+            <div class="switch-chassis">
+              <div class="chassis-header">
+                <div class="chassis-brand">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                  SPŠ-CATALYST 4-PORT L2 SWITCH
+                </div>
+                <div style="font-size: 0.75rem; color: #10b981; font-family: ui-monospace, monospace;">STATUS: ONLINE</div>
+              </div>
+
+              <div class="switch-ports-row">
+                <div class="switch-port-card">
+                  <div class="port-led" id="ledFa01"></div>
+                  <div class="port-name">Port Fa0/1</div>
+                  <div class="port-device">Počítač PC A</div>
+                  <div class="port-mac">..:AA:AA:AA</div>
+                </div>
+
+                <div class="switch-port-card">
+                  <div class="port-led" id="ledFa02"></div>
+                  <div class="port-name">Port Fa0/2</div>
+                  <div class="port-device">Počítač PC B</div>
+                  <div class="port-mac">..:BB:BB:BB</div>
+                </div>
+
+                <div class="switch-port-card">
+                  <div class="port-led" id="ledFa03"></div>
+                  <div class="port-name">Port Fa0/3</div>
+                  <div class="port-device">Počítač PC C</div>
+                  <div class="port-mac">..:CC:CC:CC</div>
+                </div>
+
+                <div class="switch-port-card">
+                  <div class="port-led" id="ledFa04"></div>
+                  <div class="port-name">Port Fa0/4</div>
+                  <div class="port-device">Počítač PC D</div>
+                  <div class="port-mac">..:DD:DD:DD</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ovládací lišta simulace -->
+            <div class="sim-action-bar">
+              <label style="font-weight: 700; font-size: 0.85rem; color: #cbd5e1;">Odesílatel (Zdroj):</label>
+              <select id="simSrcSelect" class="sim-select">
+                <option value="pca">PC A (Fa0/1)</option>
+                <option value="pcb">PC B (Fa0/2)</option>
+                <option value="pcc">PC C (Fa0/3)</option>
+                <option value="pcd">PC D (Fa0/4)</option>
+              </select>
+
+              <label style="font-weight: 700; font-size: 0.85rem; color: #cbd5e1;">Příjemce (Cíl):</label>
+              <select id="simDstSelect" class="sim-select">
+                <option value="pcb">PC B (Fa0/2)</option>
+                <option value="pca">PC A (Fa0/1)</option>
+                <option value="pcc">PC C (Fa0/3)</option>
+                <option value="pcd">PC D (Fa0/4)</option>
+                <option value="bcast">Broadcast (FF:FF:FF:FF:FF:FF)</option>
+              </select>
+
+              <button class="csmacd-btn" id="btnSimSend">Odeslat rámec</button>
+              <button class="mac-preset-btn" id="btnSimFlush">Vymazat CAM tabulku</button>
+            </div>
+
+            <!-- Živá CAM Tabulka -->
+            <div class="cam-table-container">
+              <table class="cam-table">
+                <thead>
+                  <tr>
+                    <th>MAC Adresa (Naučená)</th>
+                    <th>Fyzický Port</th>
+                    <th>VLAN</th>
+                    <th>Typ záznamu / Aging</th>
+                  </tr>
+                </thead>
+                <tbody id="camTbody">
+                  <!-- Řádky plněny JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="sim-log-box" id="simLog" style="margin-top: 1rem;">
+              Zvolte odesílatele a cíl a stiskněte „Odeslat rámec“.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Metody přepínání (Forwarding Methods)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Metody přepínání: Store-and-Forward vs. Cut-Through">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Architektura ASIC</span>
+            <h2>Metody přepínání: Store-and-Forward vs. Cut-Through</h2>
+          </div>
+
+          <p class="slide-lead">
+            Porovnání interních přepínacích strategií čipu ASIC z hlediska dosahované latence a spolehlivosti kontroly chyb.
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h4 style="color: #34d399;">1. Store-and-Forward</h4>
+              <p>Přijme <strong>celý rámec do vyrovnávací paměti</strong>, ověří kontrolní kód FCS/CRC a teprve pak začne vysílat na cílový port.</p>
+              <ul class="feature-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li>Zaručeně odfiltruje poškozené rámce (runts, chybné CRC).</li>
+                <li>Podporuje propojení portů s různou rychlostí (např. 1G &rarr; 100M).</li>
+                <li><strong>Výchozí standard u většiny Cisco switchů.</strong></li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #38bdf8;">
+              <h4 style="color: #38bdf8;">2. Cut-Through</h4>
+              <p>Přečte <strong>pouze prvních 6 bajtů</strong> (cílovou MAC adresu) a okamžitě začne rámec vysílat ven, ještě než dorazil zbytek dat!</p>
+              <ul class="feature-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li>Extrémně nízká a konstantní latence v řádu stovek nanosekund.</li>
+                <li>Propouští poškozené rámce dál do sítě.</li>
+                <li>Využití: Finanční burzy (HFT) a datacentra (Cisco Nexus).</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h4 style="color: #f59e0b;">3. Fragment-Free</h4>
+              <p>Kompromis: Přečte <strong>prvních 64 bajtů</strong> (minimální délku rámce) a pak začne vysílat.</p>
+              <ul class="feature-list" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                <li>Odfiltruje většinu kolizních útržků (runts < 64 B).</li>
+                <li>Rychlejší než Store-and-Forward, ale neověřuje CRC celého rámce.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Kalkulátor latence přepínání
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Kalkulátor latence přepínání">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Porovnání latence: Store-and-Forward vs. Cut-Through</h2>
+          </div>
+
+          <p class="slide-lead">
+            Sledujte, jak dramaticky velikost rámce ovlivňuje latenci u Store-and-Forward oproti bleskovému Cut-Through:
+          </p>
+
+          <div class="csmacd-box">
+            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+              <div>
+                <label style="font-weight: 700; color: #cbd5e1; font-size: 0.85rem;">Rychlost portu:</label>
+                <select id="latSpeedSelect" class="sim-select" style="margin-left: 0.5rem;">
+                  <option value="100">100 Mb/s (Fast Ethernet)</option>
+                  <option value="1000" selected>1 Gb/s (Gigabit Ethernet)</option>
+                  <option value="10000">10 Gb/s (10G Ethernet)</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="font-weight: 700; color: #cbd5e1; font-size: 0.85rem;">Velikost rámce:</label>
+                <select id="latSizeSelect" class="sim-select" style="margin-left: 0.5rem;">
+                  <option value="64">Minimální rámec (64 bajtů)</option>
+                  <option value="1518" selected>Maximální MTU rámec (1518 bajtů)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="split-layout">
+              <div class="mac-half-card">
+                <div class="mac-half-title">Metoda Store-and-Forward</div>
+                <div id="outStoreLat" style="font-size: 1.5rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem;">
+                  12.14 µs
+                </div>
+                <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0;">
+                  Latence závisí na délce rámce – switch musí počkat na přijetí všech bajtů a ověření CRC.
+                </p>
+              </div>
+
+              <div class="mac-half-card">
+                <div class="mac-half-title">Metoda Cut-Through</div>
+                <div id="outCutLat" style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">
+                  0.05 µs (48 ns)
+                </div>
+                <p style="font-size: 0.85rem; color: #cbd5e1; margin: 0;" id="outDiffLat">
+                  253× rychlejší v Cut-Through!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Buffering a pokročilé funkce
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Vyrovnávací paměti a pokročilé funkce">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Hardware &amp; Bezpečnost</span>
+            <h2>Vyrovnávací paměť (Buffering) a bezpečnost portů</h2>
+          </div>
+
+          <p class="slide-lead">
+            Principy řízení front paketů v paměti RAM a ochrana před útoky typu zahlcení tabulky adres MAC Flooding.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Architektura vyrovnávací paměti
+              </h3>
+              <p>Pokud data přicházejí rychleji, než je port stíhá odesílat, ukládají se do fronty:</p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Port-based Buffering:</strong> Každý port má svou vlastní vyhrazenou frontu. Nevýhoda: jeden zablokovaný paket zdrží všechny ostatní za ním (Head-of-Line blocking).</li>
+                <li><strong>Shared Memory Buffering:</strong> Jedna společná dynamická paměť pro všechny porty. Porty si alokují přesně tolik paměti, kolik právě potřebují.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Zabezpečení: Port Security
+              </h3>
+              <p>
+                <strong>Útok MAC Flooding:</strong> Útočník zaplaví switch miliony falešných MAC adres, přeplní CAM tabulku a switch přejde do režimu <em>Fail-Open</em> (chová se jako Hub a útočník vidí veškerý cizí provoz).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                <strong>Obrana (Port Security):</strong> Omezí maximální počet naučených MAC adres na portu (např. max 1) a při porušení port okamžitě vypne (režim <code>Shutdown / err-disabled</code>).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Most k dalším tématům (ARP, VLAN, STP)
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Návaznost: Proč potřebujeme ARP, VLAN a STP?">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Návaznost učiva</span>
+            <h2>Co ještě chybí k dokonalé přepínané síti?</h2>
+          </div>
+
+          <p class="slide-lead">
+            Poznali jsme základní operace switche. V reálné síti však okamžitě narazíme na 3 zásadní otázky:
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <span class="badge" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">Téma 034</span>
+              <h4 style="margin-top: 0.5rem; color: #60a5fa;">Protokol ARP</h4>
+              <p>„Vím, že chci poslat data na IP 192.168.1.50, ale switch vyžaduje cílovou MAC adresu. Kde ji vzít?“</p>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.5rem;">
+                Řeší <strong>Address Resolution Protocol (ARP)</strong> – mapování mezi IP a MAC adresami.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">Téma 035</span>
+              <h4 style="margin-top: 0.5rem; color: #06b6d4;">Segmentace: VLAN</h4>
+              <p>„Máme ve škole 300 počítačů. Broadcasty zahlcují síť a studenti vidí provoz učitelů!“</p>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.5rem;">
+                Řeší <strong>virtuální sítě VLAN (IEEE 802.1Q)</strong> – logické rozdělení jednoho switche na více nezávislých sítí.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <span class="badge" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">Téma 035</span>
+              <h4 style="margin-top: 0.5rem; color: #fb7185;">Redundance: STP</h4>
+              <p>„Zapojili jsme mezi dva switche druhý kabel jako zálohu a celá síť do 3 sekund zkolabovala!“</p>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.5rem;">
+                Řeší <strong>Spanning Tree Protocol (STP)</strong> – zamezení broadcastovým bouřím a likvidace smyček.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Shrnutí a otázky
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Shrnutí tématu a kontrolní otázky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Závěrečné shrnutí</span>
+            <h2>Shrnutí klíčových poznatků a kontrolní otázky</h2>
+          </div>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                1. Mikro-segmentace
+              </h4>
+              <p>Switch rozděluje kolizní domény (každý port = 1 doména), ale celá L2 síť tvoří 1 broadcastovou doménu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                2. CAM Tabulka
+              </h4>
+              <p>Učí se zdrojové MAC adresy ze vstupujících rámců a používá je pro přesné směrování bez zaplavování sítě.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                3. Metody přepínání
+              </h4>
+              <p>Store-and-Forward kontroluje FCS celého rámce, Cut-Through čte pouze prvních 6 bajtů pro minimální latenci.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: #f1f5f9;">Ověření znalostí (Kliknutím zobrazte vysvětlení):</h3>
+
+          <div class="questions-grid">
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Z které části příchozího ethernetového rámce se switch učí záznamy do své CAM tabulky?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Switch se učí výhradně ze <strong>zdrojové MAC adresy (Source MAC)</strong> příchozího rámce a čísla portu, na který rámec fyzicky dorazil. Cílovou adresu (Destination MAC) používá pouze pro rozhodnutí, kam má rámec odeslat.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Co přesně udělá switch, pokud obdrží rámec pro cílovou MAC adresu, která se v jeho CAM tabulce nenachází?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Provede operaci zvanou <strong>Unknown Unicast Flooding</strong>: rozešle rámec na všechny aktivní porty v dané VLAN kromě toho portu, ze kterého rámec přišel. Jakmile cílová stanice odpoví, switch se z její odpovědi okamžitě naučí její port a příští komunikace již bude probíhat výhradně jako Unicast.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jaký je hlavní rozdíl a kompromis mezi metodami přepínání Store-and-Forward a Cut-Through?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                <strong>Store-and-Forward</strong> zaručuje 100% integritu dat – přijme celý rámec a ověří FCS součet; poškozené rámce zahodí a nešíří dál do sítě, ale má vyšší latenci závisející na velikosti rámce. <strong>Cut-Through</strong> naopak dosahuje extrémně nízké latence tím, že začne vysílat hned po přečtení prvních 6 bajtů cílové MAC, ale nedokáže detekovat poškozené rámce a propouští je do sítě.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../032-Wifi/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 032 Wi-Fi (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../034-Protokol-ARP/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 034 Protokol ARP (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 11</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: L2 Switch
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro simulátor switche, CAM tabulku a latenci -->
+  <script src="switch-playground.js"></script>
+</body>
+
+</html>

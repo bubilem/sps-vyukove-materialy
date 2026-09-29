@@ -94,6 +94,7 @@
     bindTouchEvents();
     bindModalEvents();
     bindCopyCodeButtons();
+    bindQuestionHintButtons();
 
     // 6. Automatické vykreslení matematických vzorců ($...$ a $$...$$)
     renderMathFormulas();
@@ -652,6 +653,31 @@
           console.error('Chyba při kopírování do schránky:', err);
         }
       });
+    });
+  }
+
+  /**
+   * Interaktivní otázky s nápovědou (.question-answer-btn, .question-btn)
+   */
+  function bindQuestionHintButtons() {
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.question-answer-btn, .question-btn');
+      if (!btn) return;
+      const card = btn.closest('.question-card, .question-item, .content-card, .card');
+      if (!card) return;
+      const hint = card.querySelector('.question-hint');
+      if (!hint) return;
+
+      const isVisible = hint.classList.toggle('visible');
+      btn.classList.toggle('open', isVisible);
+      const textSpan = btn.querySelector('span:not(.icon)');
+      if (textSpan) {
+        textSpan.textContent = isVisible ? 'Skrýt odpověď' : 'Zobrazit odpověď';
+      } else {
+        const svg = btn.querySelector('svg');
+        btn.textContent = isVisible ? 'Skrýt odpověď' : 'Zobrazit odpověď';
+        if (svg) btn.prepend(svg);
+      }
     });
   }
 

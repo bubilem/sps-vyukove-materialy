@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 031: Ethernet (IEEE 802.3) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Ethernet (IEEE 802.3), historie, kabeláž a konektory, pipeline přenosu (IFG), minimální a maximální rámce, algoritmus CSMA/CD a moderní přepínaný Ethernet.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 031 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">031 Ethernet</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">IEEE 802.3 &bull; Ethernet &amp; CSMA/CD</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Ethernet (IEEE 802.3)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 031</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Layer 2</span>
+          </div>
+          <h1 class="hero-title">Ethernet (IEEE 802.3)</h1>
+          <p class="hero-subtitle">
+            Král kabelových lokálních sítí &bull; Od koaxiální sběrnice v Xerox PARC přes rozbočovače s CSMA/CD až po moderní full-duplex gigabitové přepínání.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Evoluce rychlostí
+              </h4>
+              <p>Zrod standardu od 10 Mb/s (10BASE5/T) přes Fast Ethernet (100 Mb/s) a Gigabit až po 10G/400G v datacentrech.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Konektory &amp; Auto-MDIX
+              </h4>
+              <p>Konektor RJ-45 (8P8C), kroucená dvoulinka Cat5e/6/6a, přímé vs. křížené kabely a automatické párování.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                CSMA/CD Simulátor
+              </h4>
+              <p>Snímání nosné, detekce kolize, Jam signál a binární exponenciální algoritmus zpoždění (Backoff).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Pipeline &amp; IFG
+              </h4>
+              <p>Interframe Spacing (96 bitů), slot time, minimální rámec 64 B pro záchyt kolize a limity propustnosti FPS.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Historie a evoluce
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Historie a evoluce Ethernetu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Historie technologií</span>
+            <h2>Historie a milníky Ethernetu</h2>
+          </div>
+
+          <p class="slide-lead">
+            Od prvních experimentů s koaxiálním kabelem v Xerox PARC přes konsorcium DIX až po celosvětový standard IEEE 802.3 definující rychlostní třídy lokálních sítí.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Xerox PARC a Robert Metcalfe (1973)
+              </h3>
+              <p>
+                Ethernet byl vyvinut v roce 1973 v laboratořích <strong>Xerox PARC</strong> pod vedením Roberta Metcalfa. Původní myšlenka byla inspirována radiovou sítí ALOHAnet na Havaji: přenášet data přes společný koaxiální kabel (éter – <em>ether</em>).
+              </p>
+              <ul class="feature-list" style="margin-top: 1rem;">
+                <li><strong>DIX Ethernet (1980):</strong> Konsorcium společností DEC, Intel a Xerox definovalo komerční standard 10 Mb/s.</li>
+                <li><strong>IEEE 802.3 (1983):</strong> Standardizace mezinárodní komisí IEEE.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Generace standardů Ethernetu
+              </h3>
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Označení</th>
+                    <th>Rychlost</th>
+                    <th>Fyzické médium</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>10BASE5 / 10BASE2</strong></td>
+                    <td>10 Mb/s</td>
+                    <td>Tlustý / tenký koaxiální kabel (sběrnice)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>10BASE-T</strong></td>
+                    <td>10 Mb/s</td>
+                    <td>UTP Cat3 kabel (hvězda s rozbočovačem Hub)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>100BASE-TX (Fast)</strong></td>
+                    <td>100 Mb/s</td>
+                    <td>UTP Cat5 kabel, 2 kroucené páry</td>
+                  </tr>
+                  <tr>
+                    <td><strong>1000BASE-T (Gigabit)</strong></td>
+                    <td>1 Gb/s</td>
+                    <td>UTP Cat5e/6, všechny 4 kroucené páry</td>
+                  </tr>
+                  <tr>
+                    <td><strong>10GBASE-T / 40G / 100G</strong></td>
+                    <td>10 – 100 Gb/s</td>
+                    <td>Cat6A / Optická vlákna SMF a MMF</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Kabely, konektory a pinout
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Konektory a kabeláž">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Infrastruktura</span>
+            <h2>Kabeláž, konektory RJ-45 a zapojení pinů</h2>
+          </div>
+
+          <p class="slide-lead">
+            Strukturovaná kabeláž s kroucenou dvoulinkou (UTP/STP), konektory RJ-45 (8P8C) a standardizované pořadí párů T568A a T568B.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="7" width="20" height="14" rx="2"></rect><line x1="6" y1="21" x2="6" y2="7"></line><line x1="10" y1="21" x2="10" y2="7"></line><line x1="14" y1="21" x2="14" y2="7"></line><line x1="18" y1="21" x2="18" y2="7"></line></svg>
+                Konektor RJ-45 (8P8C)
+              </h3>
+              <p>
+                Standardní konektor pro metalický Ethernet má 8 pozic a 8 kontaktů. Využití pinů se liší podle rychlosti:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.75rem;">
+                <li><strong>10/100 Mb/s (Fast Ethernet):</strong> Využívá pouze <strong>2 páry (4 vodiče)</strong>: piny 1 a 2 pro vysílání (TX) a piny 3 a 6 pro příjem (RX). Zbylé piny (4, 5, 7, 8) jsou nevyužité.</li>
+                <li><strong>1 Gb/s (Gigabit Ethernet) a výše:</strong> Využívá <strong>všechny 4 páry (8 vodičů)</strong> současně v obou směrech (Full-Duplex) s pokročilým potlačením ozvěn (Echo Cancellation).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Barevné schéma T568B (8 vodičů)
+              </h3>
+              <div class="pinout-card">
+                <div class="cable-wire-row"><span class="wire-color-dot dot-wo"></span> <strong>Pin 1:</strong> Bílo-oranžová (TX+)</div>
+                <div class="cable-wire-row"><span class="wire-color-dot dot-o"></span> <strong>Pin 2:</strong> Oranžová (TX-)</div>
+                <div class="cable-wire-row"><span class="wire-color-dot dot-wg"></span> <strong>Pin 3:</strong> Bílo-zelená (RX+)</div>
+                <div class="cable-wire-row"><span class="wire-color-dot dot-bl"></span> <strong>Pin 4:</strong> Modrá</div>
+                <div class="cable-wire-row"><span class="wire-color-dot dot-wbl"></span> <strong>Pin 5:</strong> Bílo-modrá</div>
+                <div class="cable-wire-row"><span class="wire-color-dot dot-g"></span> <strong>Pin 6:</strong> Zelená (RX-)</div>
+                <div class="cable-wire-row"><span class="wire-color-dot dot-wbr"></span> <strong>Pin 7:</strong> Bílo-hnědá</div>
+                <div class="cable-wire-row"><span class="wire-color-dot dot-br"></span> <strong>Pin 8:</strong> Hnědá</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: MDI vs. MDIX a Auto-MDIX
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="MDI, MDIX a funkce Auto-MDIX">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Přímý vs. křížený kabel a technologie Auto-MDIX</h2>
+          </div>
+
+          <p class="slide-lead">
+            Dříve musel síťový technik přesně vědět, která zařízení propojuje. Zvolte dvojici zařízení pro zjištění tradičního požadavku:
+          </p>
+
+          <div class="csmacd-box">
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap;">
+              <label for="devicePairSelect" style="font-weight: 700; color: #f1f5f9;">Propojovaná zařízení:</label>
+              <select id="devicePairSelect" class="mac-input" style="min-width: 320px;">
+                <option value="pc-switch">Počítač (PC) &harr; Přepínač (Switch)</option>
+                <option value="pc-pc">Počítač (PC) &harr; Počítač (PC)</option>
+                <option value="switch-switch">Přepínač (Switch) &harr; Přepínač (Switch)</option>
+                <option value="router-switch">Směrovač (Router) &harr; Přepínač (Switch)</option>
+              </select>
+            </div>
+
+            <div class="split-layout">
+              <div class="mac-half-card">
+                <div class="mac-half-title">Požadovaný typ kabelu (Standard 10/100M)</div>
+                <div id="cableReqType" style="font-size: 1.15rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">
+                  Přímý kabel (Straight-Through)
+                </div>
+                <p id="cableReqDesc" style="font-size: 0.85rem; color: #cbd5e1; margin: 0;">
+                  Různorodá zařízení (Hostitel MDI &harr; Přepínač MDI-X). Pin 1 (TX+) z PC putuje přímo na Pin 1 (RX+) switche.
+                </p>
+              </div>
+
+              <div class="mac-half-card">
+                <div class="mac-half-title">Chování v moderních sítích (Auto-MDIX)</div>
+                <div style="font-size: 1.15rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">
+                  Automatické rozpoznání
+                </div>
+                <p id="autoMdixStatus" style="font-size: 0.85rem; color: #cbd5e1; margin: 0;">
+                  Aktivní: Pokud použijete křížený kabel, Auto-MDIX port sám přepne piny.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-box" style="margin-top: 1rem; border-left: 4px solid #10b981;">
+            <strong>Konec křížených kabelů:</strong> Standard IEEE 802.3ab (Gigabit Ethernet) zavedl Auto-MDIX jako povinnou součást. Dnes můžete použít běžný přímý patch kabel pro jakékoliv propojení!
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Pipeline a časování (IFG)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Pipeline přenosu a Interframe Spacing">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Fyzikální časování</span>
+            <h2>Časování na lince: Interframe Gap (IFG / IPG)</h2>
+          </div>
+
+          <p class="slide-lead">
+            Ethernet nevysílá rámce nalepené přímo na sobě. Mezi každými dvěma rámci musí být povinná minimální pauza:
+          </p>
+
+          <div class="pipeline-box">
+            <div class="speed-selector">
+              <button class="speed-chip active" data-speed="10m">10 Mb/s (Ethernet)</button>
+              <button class="speed-chip" data-speed="100m">100 Mb/s (Fast Ethernet)</button>
+              <button class="speed-chip" data-speed="1g">1 Gb/s (Gigabit)</button>
+              <button class="speed-chip" data-speed="10g">10 Gb/s (10G Ethernet)</button>
+            </div>
+
+            <div class="timing-grid">
+              <div class="timing-card">
+                <div class="timing-label">Doba 1 bitu (Bit Time)</div>
+                <div class="timing-val" id="timeBit">100 ns</div>
+              </div>
+              <div class="timing-card">
+                <div class="timing-label">Pauza IFG (96 bit times)</div>
+                <div class="timing-val" id="timeIfg">9 600 ns (9,6 µs)</div>
+              </div>
+              <div class="timing-card">
+                <div class="timing-label">Slot Time (512 bit times)</div>
+                <div class="timing-val" id="timeSlot">51 200 ns (51,2 µs)</div>
+              </div>
+              <div class="timing-card">
+                <div class="timing-label">Max. propustnost (64 B rámce)</div>
+                <div class="timing-val" id="timeFps64" style="color: #10b981;">14 880 fps</div>
+              </div>
+            </div>
+
+            <div class="pipeline-visual-bar">
+              <div class="pipe-segment pipe-preamble">Preamble (8 B)</div>
+              <div class="pipe-segment pipe-frame">Ethernet Frame (64 – 1518 B)</div>
+              <div class="pipe-segment pipe-ifg">IFG Pauza (96 bitů)</div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.85rem; color: #94a3b8; text-align: center;">
+            <strong>Účel IFG:</strong> Poskytuje přijímači čas na obnovu synchronizace hodin a zpracování předešlého rámce ve vyrovnávací paměti.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Limity velikosti rámce (Min/Max MTU)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Limity velikosti rámce">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Standard IEEE 802.3</span>
+            <h2>Limity velikosti rámce: Od Runt po Jumbo frames</h2>
+          </div>
+
+          <p class="slide-lead">
+            Ethernet striktně specifikuje minimální i maximální povolenou délku L2 rámce s ohledem na fyzikální vlastnosti sběrnice a efektivitu přenosu.
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <span class="badge" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">Minimální velikost</span>
+              <h3 style="margin-top: 0.75rem;">64 bajtů (512 bitů)</h3>
+              <p>
+                Rámec nesmí být menší než 64 bajtů. Pokud je užitečný náklad menší než 46 B, je doplněn <strong>výplňovými nulami (Padding)</strong>.
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem; font-size: 0.8rem;">
+                <strong>Proč přesně 64 B?</strong> Doba vysílání 64 bajtů (tzv. <em>Slot Time</em>) odpovídá maximálnímu času oběhu signálu po sběrnici (Round Trip Time) pro zaručenou detekci kolize v CSMA/CD. Rámce kratší než 64 B se nazývají <strong>Runt frames</strong> a jsou zahazovány.
+              </div>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #3b82f6;">
+              <span class="badge" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">Standardní MTU</span>
+              <h3 style="margin-top: 0.75rem;">1518 bajtů</h3>
+              <p>
+                Maximální standardní velikost rámce Ethernet II (bez Preamble): 14 B záhlaví + 1500 B payload (MTU) + 4 B FCS.
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem; font-size: 0.8rem;">
+                Při použití virtuálních sítí <strong>VLAN (IEEE 802.1Q)</strong> se vkládá 4bajtový tag a maximální velikost vzroste na <strong>1522 bajtů</strong>. Rámce větší než limit bez povolení se nazývají <strong>Giant frames</strong>.
+              </div>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">Datacentra &amp; SAN</span>
+              <h3 style="margin-top: 0.75rem;">Jumbo Frames (9000 B)</h3>
+              <p>
+                Speciální nestandardizované rámce s payloadem až 9000 bajtů používané v moderních serverovnách a diskových polích (iSCSI, NFS).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem; font-size: 0.8rem;">
+                Dramaticky snižují zatížení procesoru serveru (méně přerušení a méně záhlaví na gigabajt přenesených dat), ale musí je podporovat <em>všechny aktivní prvky na trase</em>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Algoritmus CSMA/CD
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Princip algoritmu CSMA/CD">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Řízení přístupu</span>
+            <h2>Algoritmus CSMA/CD krok za krokem</h2>
+          </div>
+
+          <p class="slide-lead">
+            V původním Ethernetu se sdíleným kabelem (koaxiál nebo hub) musely stanice dodržovat protokol <strong>CSMA/CD (Carrier Sense Multiple Access with Collision Detection)</strong>:
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                1. Carrier Sense (CS)
+              </h4>
+              <p><strong>Snímání nosné:</strong> Před odesláním rámce stanice nejprve naslouchá na lince. Pokud detekuje napětí (někdo jiný vysílá), čeká na uvolnění média a dodrží mezeru IFG.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                2. Multiple Access (MA)
+              </h4>
+              <p><strong>Vícenásobný přístup:</strong> Všechny stanice v síti mají rovnocenný přístup ke sdílenému médiu. Nikdo nemá předem vyhrazený časový slot.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                3. Collision Detection (CD)
+              </h4>
+              <p><strong>Detekce kolize:</strong> Pokud dvě stanice vyhodnotí linku jako volnou a začnou vysílat ve stejný okamžik, jejich signály se na kabelu sečtou. Zvýšené napětí signalizuje kolizi!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: CSMA/CD Interaktivní Simulátor
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Simulátor CSMA/CD na sběrnici">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Živý simulátor kolizí CSMA/CD na sdílené sběrnici</h2>
+          </div>
+
+          <p class="slide-lead">
+            Sledujte šíření signálu po koaxiální lince, střet dvou signálů, vyslání Jam signálu a odpočet náhodného zpoždění:
+          </p>
+
+          <div class="csmacd-box">
+            <div class="bus-canvas-container">
+              <canvas id="csmaCanvas"></canvas>
+            </div>
+
+            <div class="csmacd-controls">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="csmacd-btn" id="btnCsmaSingle">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  Vyslat z PC 1 (Bez kolize)
+                </button>
+                <button class="csmacd-btn btn-collide" id="btnCsmaCollide">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  Simulovat současné vysílání (Kolize!)
+                </button>
+              </div>
+              <button class="mac-preset-btn" id="btnCsmaReset">Reset stavu</button>
+            </div>
+
+            <div style="margin-top: 1rem;" class="csmacd-log" id="csmaLog">
+              Připraveno. Zvolte režim přenosu pro spuštění animace na sběrnici.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Jam signál a Exponential Backoff
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Jam signál a algoritmus Backoff">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Matematika protokolu</span>
+            <h2>Zpracování kolize: Jam signál a Exponential Backoff</h2>
+          </div>
+
+          <p class="slide-lead">
+            Postup stanice po zjištění kolizního stavu na sběrnici: aktivní vyslání rušicího signálu a výpočet náhodné čekací doby.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                1. Jam signál (32 bitů)
+              </h3>
+              <p>
+                Jakmile vysílající stanice detekuje kolizi, okamžitě přeruší běžný přenos a odvysílá speciální <strong>32bitový signál JAM</strong> (střídající se vzor).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                <strong>Proč Jam signál?</strong> Zaručuje, že kolizi spolehlivě zaznamenají <em>všechny</em> stanice na sběrnici, i ty nejvzdálenější, jejichž přijímače by slabý odraz nemusely zachytit.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                2. Binární exponenciální zpoždění
+              </h3>
+              <p>
+                Pokud by obě stanice zkusily vysílat hned znovu, srazily by se okamžitě znovu. Proto si každá stanice vylosuje náhodné celé číslo $r$:
+              </p>
+              <div style="padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: 8px; font-family: ui-monospace, monospace; margin: 0.75rem 0;">
+                Čas čekání = $r \times \text{Slot Time}$<br>
+                kde $r \in [0, 2^k - 1]$, přičemž $k = \min(\text{počet kolizí}, 10)$
+              </div>
+              <ul class="feature-list" style="font-size: 0.85rem;">
+                <li>1. kolize: $r \in \{0, 1\}$</li>
+                <li>2. kolize: $r \in \{0, 1, 2, 3\}$</li>
+                <li>3. kolize: $r \in \{0, 1, \dots, 7\}$</li>
+                <li>Při 16 neúspěšných pokusech je rámec definitivně zahozen (chyba přenosu).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Proč je CSMA/CD dnes minulostí?
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Moderní přepínaný Ethernet">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Současnost sítí</span>
+            <h2>Proč je CSMA/CD v moderním Ethernetu mrtvé?</h2>
+          </div>
+
+          <p class="slide-lead">
+            Přechod od sdíleného média k mikrosegmentaci pomocí přepínačů s vyhrazeným Full-Duplex kanálem pro každé koncové zařízení.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #f43f5e;">
+              <h3 style="color: #fb7185;">Starý svět: Sdílené médium (Hub)</h3>
+              <ul class="feature-list">
+                <li>Všechny stanice sdílely jednu linku (Half-Duplex).</li>
+                <li>Hrozily kolize &rarr; povinný CSMA/CD.</li>
+                <li>Délka kabeláže byla přísně omezena dobou šíření signálu (Round Trip Time), aby bylo možné detekovat kolizi před dokončením vysílání 64 B rámce.</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h3 style="color: #34d399;">Moderní svět: Mikro-segmentace (Switch)</h3>
+              <ul class="feature-list">
+                <li>Každé zařízení má dedikovaný kabel do přepínače (Switch).</li>
+                <li><strong>Plný duplex (Full-Duplex):</strong> Současné vysílání i příjem po oddělených párech / vláknech.</li>
+                <li><strong>Žádné kolize!</strong> CSMA/CD je v duplexním režimu zcela deaktivováno.</li>
+                <li>Délka optického spoje může dosahovat desítek kilometrů bez omezení slot timem.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="info-box" style="margin-top: 1.5rem; text-align: center; border: 1px solid rgba(59, 130, 246, 0.4);">
+            Všechny moderní standardy (Fast Ethernet, Gigabit, 10G a výše) na přepínačích fungují <strong>výhradně ve Full-Duplex režimu s nulovými kolizemi</strong>.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Shrnutí a otázky
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Shrnutí tématu a kontrolní otázky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Závěrečné shrnutí</span>
+            <h2>Shrnutí klíčových poznatků a kontrolní otázky</h2>
+          </div>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                1. Standard IEEE 802.3
+              </h4>
+              <p>Základ lokálních sítí LAN. Konektor RJ-45 (8P8C), kabeláž Cat5e/6/6a a automatické rozpoznání zapojení Auto-MDIX.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                2. Velikosti rámce &amp; IFG
+              </h4>
+              <p>Minimální velikost 64 B (slot time), MTU 1500 B (celkem 1518 B) a povinná minimální mezera IFG 96 bitových časů.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                3. Zánik CSMA/CD
+              </h4>
+              <p>CSMA/CD řešilo kolize na sdílené sběrnici (Jam + Backoff). Dnešní L2 switche pracují ve Full-Duplexu zcela bez kolizí.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: #f1f5f9;">Ověření znalostí (Kliknutím zobrazte vysvětlení):</h3>
+
+          <div class="questions-grid">
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč je v Ethernetu stanovena minimální velikost rámce na 64 bajtů?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Minimální velikost 64 bajtů zaručuje, že vysílání rámce trvá dostatečně dlouho (tzv. Slot Time 512 bitů), aby signál stihl dorazit na nejvzdálenější konec sítě a případný kolizní signál se stihl vrátit k vysílající stanici ještě před tím, než dokončí vysílání. Kdyby byl rámec kratší, stanice by si myslela, že data byla úspěšně odeslána, a kolizi by nezaznamenala (vznikl by tzv. late collision).
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>K čemu slouží Jam signál v algoritmu CSMA/CD?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Když stanice zjistí kolizi, vyšle 32bitový signál JAM, který spolehlivě prodlouží trvání kolize na sběrnici. Tím je zaručeno, že kolizi zaznamenají všechny ostatní stanice připojené ke sběrnici a okamžitě zastaví vysílání.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Proč dnes při propojování dvou počítačů přímo mezi sebou nepotřebujeme křížený kabel?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Díky technologii Auto-MDIX (která je od Gigabit Ethernetu 1000BASE-T povinná). Fyzická vrstva síťového čipu automaticky detekuje, na kterých párech přichází signál, a podle potřeby elektronicky prohodí vysílací (TX) a přijímací (RX) obvody.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../030-Linkova-vrstva/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 030 Linková vrstva (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../032-Wifi/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 032 Wi-Fi (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 11</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Ethernet
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro simulátor CSMA/CD, časování IFG a kabelový trenažér -->
+  <script src="ethernet-playground.js"></script>
+</body>
+
+</html>
