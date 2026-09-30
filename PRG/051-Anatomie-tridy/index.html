@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>051 Anatomie třídy | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Anatomie třídy v programování. Konstrukce a možnosti třídy, atributy, metody, self/this, konstruktor, řízení přístupu, gettery a settery, statické prvky a správa paměti v Pythonu, JavaScriptu a PHP.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Sdílené styly pro vícejazyčné přepínače kódu -->
+  <link rel="stylesheet" href="../../assets/css/syntax/code.css">
+  <!-- Dedikované lokální styly pro téma 051 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">051 Anatomie třídy</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #38bdf8; border-color: rgba(6, 182, 212, 0.35); background: rgba(6, 182, 212, 0.12);">OOP &amp; Konstrukce tříd</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Anatomie třídy">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Předmět PRG &bull; Téma 051 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title" style="font-size: 2.85rem; margin-bottom: 1rem;">
+            Anatomie třídy <br><span class="gradient-text">&amp; Stav objektu</span>
+          </h1>
+          <p class="hero-description">
+            Od deklarace třídy a práce s ukazatelem na instanci přes konstruktory, gettery, settery a řízení přístupu až po správu paměti a statické členy v Pythonu, JavaScriptu a PHP.
+          </p>
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag cyan">Členy</span>
+              <span>Atributy &bull; Metody &bull; self / this</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag emerald">Inicializace</span>
+              <span>Konstruktor &bull; Validace &bull; Životní cyklus</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">Zapouzdření</span>
+              <span>Public &bull; Private &bull; Gettery &amp; Settery</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag amber">Paměť</span>
+              <span>Reference &bull; Statika &bull; Klonování</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Základní konstrukce třídy: Py vs. JS vs. PHP
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Základní konstrukce třídy">
+        <div class="slide-header">
+          <h2 class="slide-title">Základní konstrukce třídy ve 3 jazycích</h2>
+          <p class="slide-subtitle">Klíčové slovo class, tělo třídy a vytvoření první živé instance v paměti.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card" style="border-left: 4px solid var(--accent);">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 1rem; color: var(--accent-cyan);">Jak jazyky definují třídu?</h3>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+                Všechny tři moderní jazyky používají klíčové slovo <code>class</code> a konvenci <strong>PascalCase</strong> (např. <code>UserProfile</code>, <code>BankAccount</code>).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.4rem 0; font-size: 0.92rem; color: var(--text-primary);">Instanciace: Zrození objektu</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.6;">
+                <li><strong>Python:</strong> Volá se přímo název třídy jako funkce: <code>u = User()</code>.</li>
+                <li><strong>JavaScript &amp; PHP:</strong> Vyžadují operátor <code>new</code>: <code>const u = new User();</code> resp. <code>$u = new User();</code>.</li>
+              </ul>
+            </div>
+
+            <div class="compare-box bad">
+              <div class="compare-title">Častá chyba v JS/PHP: Vynechání "new"</div>
+              <p style="margin: 0; font-size: 0.82rem; color: var(--text-secondary);">
+                V JavaScriptu vyvolá volání <code>User()</code> bez <code>new</code> chybu <em>TypeError: Class constructor cannot be invoked without 'new'</em>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">První třída</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-cmt"># 1. Definice prázdné třídy</span>
+<span class="token-kw">class</span> <span class="token-fn">Hrac</span>:
+    <span class="token-kw">pass</span>
+
+<span class="token-cmt"># 2. Vytvoření instance (voláním třídy)</span>
+hrac1 = <span class="token-fn">Hrac</span>()
+hrac2 = <span class="token-fn">Hrac</span>()
+
+<span class="token-kw">print</span>(<span class="token-fn">type</span>(hrac1))  <span class="token-cmt"># &lt;class '__main__.Hrac'&gt;</span>
+<span class="token-kw">print</span>(hrac1 == hrac2) <span class="token-cmt"># False (jsou to dvě různé instance!)</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-cmt">// 1. Definice prázdné třídy</span>
+<span class="token-kw">class</span> <span class="token-fn">Hrac</span> {
+  <span class="token-cmt">// tělo třídy</span>
+}
+
+<span class="token-cmt">// 2. Vytvoření instance operátorem 'new'</span>
+<span class="token-kw">const</span> hrac1 = <span class="token-kw">new</span> <span class="token-fn">Hrac</span>();
+<span class="token-kw">const</span> hrac2 = <span class="token-kw">new</span> <span class="token-fn">Hrac</span>();
+
+console.<span class="token-fn">log</span>(hrac1 <span class="token-kw">instanceof</span> <span class="token-fn">Hrac</span>); <span class="token-cmt">// true</span>
+console.<span class="token-fn">log</span>(hrac1 === hrac2);         <span class="token-cmt">// false (různé adresy)</span></div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-cmt">// 1. Definice prázdné třídy</span>
+<span class="token-kw">class</span> <span class="token-fn">Hrac</span> {
+    <span class="token-cmt">// tělo třídy</span>
+}
+
+<span class="token-cmt">// 2. Vytvoření instance operátorem 'new'</span>
+$hrac1 = <span class="token-kw">new</span> <span class="token-fn">Hrac</span>();
+$hrac2 = <span class="token-kw">new</span> <span class="token-fn">Hrac</span>();
+
+var_dump($hrac1 <span class="token-kw">instanceof</span> <span class="token-fn">Hrac</span>); <span class="token-cmt">// bool(true)</span>
+var_dump($hrac1 === $hrac2);        <span class="token-cmt">// bool(false)</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Členy třídy: Atributy & Metody (self / this)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Členy třídy & self/this">
+        <div class="slide-header">
+          <h2 class="slide-title">Členy třídy: Datový stav &amp; Ukazatel na instanci</h2>
+          <p class="slide-subtitle">Jak objekt přistupuje ke svým vlastním datům pomocí self, this a $this.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">
+              Metoda je funkce svázaná s třídou. Aby metoda věděla, <strong>se kterým konkrétním objektem</strong> právě pracuje, dostává odkaz na aktuální instanci:
+            </p>
+
+            <div class="content-card" style="display: flex; flex-direction: column; gap: 0.6rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span class="pointer-badge py">Python: self</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Explicitní 1. parametr každé metody</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span class="pointer-badge js">JavaScript: this</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Implicitní kontext volání metody</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span class="pointer-badge php">PHP: $this</span>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Automatická pseudo-proměnná</span>
+              </div>
+            </div>
+
+            <div class="compare-box bad">
+              <div class="compare-title">Typická chyba v Pythonu</div>
+              <p style="margin: 0; font-size: 0.82rem; color: var(--text-secondary);">
+                Napsat <code>def pozdrav():</code> místo <code>def pozdrav(self):</code> způsobí při volání <code>obj.pozdrav()</code> chybu: <em>takes 0 positional arguments but 1 was given</em>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">self / this v akci</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">Hrac</span>:
+    <span class="token-kw">def</span> <span class="token-fn">nastav_jmeno</span>(<span class="token-self">self</span>, jmeno):
+        <span class="token-self">self</span>.jmeno = jmeno  <span class="token-cmt"># Atribut instance</span>
+
+    <span class="token-kw">def</span> <span class="token-fn">pozdrav</span>(<span class="token-self">self</span>):
+        <span class="token-cmt"># Čtení vlastního stavu přes self</span>
+        <span class="token-kw">return</span> f<span class="token-str">"Ahoj, já jsem {self.jmeno}!"</span>
+
+h = <span class="token-fn">Hrac</span>()
+h.<span class="token-fn">nastav_jmeno</span>(<span class="token-str">"Karel"</span>)
+<span class="token-kw">print</span>(h.<span class="token-fn">pozdrav</span>())</div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Hrac</span> {
+  <span class="token-fn">nastavJmeno</span>(jmeno) {
+    <span class="token-self">this</span>.jmeno = jmeno; <span class="token-cmt">// Přiřazení instanci</span>
+  }
+
+  <span class="token-fn">pozdrav</span>() {
+    <span class="token-cmt">// Přístup k instančnímu atributu</span>
+    <span class="token-kw">return</span> <span class="token-str">`Ahoj, já jsem <span class="token-self">${this.jmeno}</span>!`</span>;
+  }
+}
+
+<span class="token-kw">const</span> h = <span class="token-kw">new</span> <span class="token-fn">Hrac</span>();
+h.<span class="token-fn">nastavJmeno</span>(<span class="token-str">"Karel"</span>);
+console.<span class="token-fn">log</span>(h.<span class="token-fn">pozdrav</span>());</div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Hrac</span> {
+    <span class="token-kw">public</span> <span class="token-type">string</span> $jmeno;
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">nastavJmeno</span>(<span class="token-type">string</span> $jmeno): <span class="token-type">void</span> {
+        <span class="token-self">$this</span>->jmeno = $jmeno;
+    }
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">pozdrav</span>(): <span class="token-type">string</span> {
+        <span class="token-kw">return</span> <span class="token-str">"Ahoj, já jsem "</span> . <span class="token-self">$this</span>->jmeno . <span class="token-str">"!"</span>;
+    }
+}
+
+$h = <span class="token-kw">new</span> <span class="token-fn">Hrac</span>();
+$h-><span class="token-fn">nastavJmeno</span>(<span class="token-str">"Karel"</span>);
+<span class="token-kw">echo</span> $h-><span class="token-fn">pozdrav</span>();</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Konstruktor: Zrození instance
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Konstruktor: Zrození instance">
+        <div class="slide-header">
+          <h2 class="slide-title">Konstruktor: Zrození a inicializace instance</h2>
+          <p class="slide-subtitle">Speciální metoda, která se automaticky spustí při vytváření objektu a zajistí jeho platný počáteční stav.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card" style="border-left: 4px solid #10b981;">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 1rem; color: #34d399;">K čemu slouží konstruktor?</h3>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+                Bez konstruktoru by mohl vzniknout objekt v neúplném stavu (např. uživatel bez jména a e-mailu). Konstruktor <strong>vynutí předání povinných údajů</strong> a rovnou je zvaliduje.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: var(--text-primary);">Názvy konstruktoru v jazycích:</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.6;">
+                <li><strong>Python:</strong> <code>def __init__(self, ...)</code> (tzv. dunder metoda).</li>
+                <li><strong>JavaScript:</strong> <code>constructor(...)</code> uvnitř těla třídy.</li>
+                <li><strong>PHP:</strong> <code>public function __construct(...)</code>. V PHP 8+ podporuje tzv. <em>Constructor Property Promotion</em> (přímou deklaraci atributů v parametrech).</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Konstruktor</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">Produkt</span>:
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>, nazev, cena, na_sklade=<span class="token-num">0</span>):
+        <span class="token-kw">if</span> cena < <span class="token-num">0</span>:
+            <span class="token-kw">raise</span> <span class="token-fn">ValueError</span>(<span class="token-str">"Cena nesmí být záporná!"</span>)
+        <span class="token-self">self</span>.nazev = nazev
+        <span class="token-self">self</span>.cena = cena
+        <span class="token-self">self</span>.na_sklade = na_sklade
+
+<span class="token-cmt"># Vytvoření s validací</span>
+p1 = <span class="token-fn">Produkt</span>(<span class="token-str">"Myš"</span>, <span class="token-num">499.0</span>, <span class="token-num">10</span>)
+<span class="token-cmt"># p2 = Produkt("Klávesnice", -100) -> Vyvolá ValueError!</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Produkt</span> {
+  <span class="token-fn">constructor</span>(nazev, cena, naSklade = <span class="token-num">0</span>) {
+    <span class="token-kw">if</span> (cena < <span class="token-num">0</span>) {
+      <span class="token-kw">throw</span> <span class="token-kw">new</span> <span class="token-fn">Error</span>(<span class="token-str">"Cena nesmí být záporná!"</span>);
+    }
+    <span class="token-self">this</span>.nazev = nazev;
+    <span class="token-self">this</span>.cena = cena;
+    <span class="token-self">this</span>.naSklade = naSklade;
+  }
+}
+
+<span class="token-kw">const</span> p1 = <span class="token-kw">new</span> <span class="token-fn">Produkt</span>(<span class="token-str">"Myš"</span>, <span class="token-num">499.0</span>, <span class="token-num">10</span>);</div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Produkt</span> {
+    <span class="token-cmt">// PHP 8 Constructor Promotion (šetří kód)</span>
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">__construct</span>(
+        <span class="token-kw">public</span> <span class="token-type">string</span> $nazev,
+        <span class="token-kw">public</span> <span class="token-type">float</span> $cena,
+        <span class="token-kw">public</span> <span class="token-type">int</span> $naSklade = <span class="token-num">0</span>
+    ) {
+        <span class="token-kw">if</span> ($cena < <span class="token-num">0</span>) {
+            <span class="token-kw">throw</span> <span class="token-kw">new</span> <span class="token-fn">InvalidArgumentException</span>(<span class="token-str">"Záporná cena!"</span>);
+        }
+    }
+}
+
+$p1 = <span class="token-kw">new</span> <span class="token-fn">Produkt</span>(<span class="token-str">"Myš"</span>, <span class="token-num">499.0</span>, <span class="token-num">10</span>);</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Životní cyklus a paměť: Stack vs. Heap
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Paměť & Garbage Collector">
+        <div class="slide-header">
+          <h2 class="slide-title">Životní cyklus objektu: Paměť a Garbage Collector</h2>
+          <p class="slide-subtitle">Jak počítač spravuje objekty na haldě (Heap) a jak uvolňuje paměť po jejich zániku.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Textový popis paměti -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card" style="border-left: 4px solid #38bdf8;">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: #38bdf8;">Zásobník (Stack) vs. Halda (Heap)</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+                Proměnná (např. <code>u1</code>) leží na rychlém <strong>zásobníku</strong>, ale neobsahuje celý objekt! Obsahuje pouze <strong>paměťovou referenci (ukazatel)</strong> na dynamicky přidělený prostor na <strong>haldě (Heap)</strong>, kde žijí reálná data objektu.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-left: 4px solid #10b981;">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: #34d399;">Garbage Collection (Automatický úklid)</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+                Když na objekt na haldě přestane odkazovat jakákoli proměnná (počet referencí klesne na 0), objekt se stává nedosažitelným a <strong>Garbage Collector (GC)</strong> jeho paměť automaticky vrátí operačnímu systému.
+              </p>
+            </div>
+
+            <div class="hero-feature-item">
+              <span style="font-size: 0.82rem; color: var(--text-muted);">
+                <strong>Destruktory:</strong> Python nabízí <code>__del__</code> a PHP <code>__destruct</code> pro uzavření souborů či databázových spojení před smazáním objektu. V JavaScriptu se destruktory nepoužívají.
+              </span>
+            </div>
+          </div>
+
+          <!-- Grafické SVG schéma Stack vs Heap -->
+          <div class="content-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.45);">
+            <svg viewBox="0 0 400 240" style="width: 100%; max-width: 380px; height: auto;" aria-label="Schéma zásobníku Stack a haldy Heap">
+              <!-- Stack box -->
+              <rect x="20" y="30" width="130" height="180" rx="8" fill="rgba(56, 189, 248, 0.08)" stroke="#38bdf8" stroke-width="1.8"></rect>
+              <rect x="20" y="30" width="130" height="28" rx="8" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="1.8"></rect>
+              <text x="85" y="49" text-anchor="middle" font-size="11" font-weight="700" fill="#38bdf8">STACK (Zásobník)</text>
+
+              <!-- Stack proměnné -->
+              <rect x="30" y="70" width="110" height="35" rx="5" fill="rgba(15, 23, 42, 0.8)" stroke="rgba(255, 255, 255, 0.15)"></rect>
+              <text x="40" y="86" font-size="10" font-weight="700" fill="#ffffff" font-family="monospace">u1: ref</text>
+              <text x="40" y="98" font-size="9" fill="#38bdf8" font-family="monospace">&rarr; 0x7FFE20</text>
+
+              <rect x="30" y="115" width="110" height="35" rx="5" fill="rgba(15, 23, 42, 0.8)" stroke="rgba(255, 255, 255, 0.15)"></rect>
+              <text x="40" y="131" font-size="10" font-weight="700" fill="#ffffff" font-family="monospace">u2: ref</text>
+              <text x="40" y="143" font-size="9" fill="#38bdf8" font-family="monospace">&rarr; 0x7FFE20</text>
+
+              <text x="85" y="180" text-anchor="middle" font-size="9.5" fill="#f87171" font-weight="600">u1 i u2 míří na tentýž objekt!</text>
+
+              <!-- Šipky -->
+              <path d="M 140 88 C 180 88, 190 100, 220 100" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowCyan)"></path>
+              <path d="M 140 133 C 180 133, 190 115, 220 115" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowCyan)"></path>
+
+              <!-- Heap box -->
+              <rect x="230" y="30" width="150" height="180" rx="8" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" stroke-width="1.8"></rect>
+              <rect x="230" y="30" width="150" height="28" rx="8" fill="rgba(16, 185, 129, 0.2)" stroke="#10b981" stroke-width="1.8"></rect>
+              <text x="305" y="49" text-anchor="middle" font-size="11" font-weight="700" fill="#34d399">HEAP (Halda)</text>
+
+              <!-- Objekt na haldě -->
+              <rect x="240" y="75" width="130" height="75" rx="6" fill="rgba(15, 23, 42, 0.9)" stroke="#10b981" stroke-width="1.2"></rect>
+              <text x="248" y="93" font-size="9.5" font-weight="700" fill="#34d399" font-family="monospace">User @ 0x7FFE20</text>
+              <text x="248" y="112" font-size="9" fill="#e2e8f0" font-family="monospace">jmeno = "Adam"</text>
+              <text x="248" y="128" font-size="9" fill="#e2e8f0" font-family="monospace">role = "admin"</text>
+
+              <text x="305" y="180" text-anchor="middle" font-size="9" fill="#64748b">RefCount: 2 reference</text>
+
+              <defs>
+                <marker id="arrowCyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#38bdf8"></path>
+                </marker>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Řízení přístupu (Public, Private, Protected)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Řízení přístupu (Viditelnost)">
+        <div class="slide-header">
+          <h2 class="slide-title">Řízení přístupu: Public, Private a Protected</h2>
+          <p class="slide-subtitle">Proč a jak zamykat vnitřní stav třídy před neoprávněným přímým zápisem.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: #34d399;">1. Public (Veřejný)</h4>
+              <p style="margin: 0; font-size: 0.83rem; color: var(--text-secondary);">
+                Přístupný z libovolného místa v programu. Typicky se používá pro metody tvořící veřejné API objektu.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: #f87171;">2. Private (Soukromý)</h4>
+              <p style="margin: 0; font-size: 0.83rem; color: var(--text-secondary);">
+                Přístupný <strong>výhradně uvnitř těla dané třídy</strong>. Vnější kód ani odvozený potomek k němu nemá přímý přístup.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: #fbbf24;">3. Protected (Chráněný)</h4>
+              <p style="margin: 0; font-size: 0.83rem; color: var(--text-secondary);">
+                Přístupný ve třídě a ve všech jejích <strong>dědických potomcích</strong>, ale nepřístupný pro okolní svět.
+              </p>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Viditelnost</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">Bankomat</span>:
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>):
+        <span class="token-self">self</span>.lokace = <span class="token-str">"Praha"</span>      <span class="token-cmt"># Public</span>
+        <span class="token-self">self</span>._servisni_pin = <span class="token-num">1234</span>  <span class="token-cmt"># Protected (konvence _)</span>
+        <span class="token-self">self</span>.__trezor = <span class="token-num">500000</span>     <span class="token-cmt"># Private (name mangling __)</span>
+
+    <span class="token-kw">def</span> <span class="token-fn">vyber</span>(<span class="token-self">self</span>, pin, castka):
+        <span class="token-kw">if</span> <span class="token-self">self</span>.__over_pin(pin): <span class="token-cmt"># Volání privátní metody</span>
+            <span class="token-self">self</span>.__trezor -= castka
+            <span class="token-kw">return</span> castka
+
+    <span class="token-kw">def</span> <span class="token-fn">__over_pin</span>(<span class="token-self">self</span>, pin):   <span class="token-cmt"># Privátní metoda</span>
+        <span class="token-kw">return</span> pin == <span class="token-num">9876</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Bankomat</span> {
+  lokace = <span class="token-str">"Praha"</span>; <span class="token-cmt">// Public</span>
+  #trezor = <span class="token-num">500000</span>; <span class="token-cmt">// Skutečně Private (# znak)</span>
+
+  <span class="token-fn">vyber</span>(pin, castka) {
+    <span class="token-kw">if</span> (<span class="token-self">this</span>.#overPin(pin)) {
+      <span class="token-self">this</span>.#trezor -= castka;
+      <span class="token-kw">return</span> castka;
+    }
+  }
+
+  #overPin(pin) {   <span class="token-cmt">// Privátní metoda</span>
+    <span class="token-kw">return</span> pin === <span class="token-num">9876</span>;
+  }
+}
+
+<span class="token-kw">const</span> b = <span class="token-kw">new</span> <span class="token-fn">Bankomat</span>();
+<span class="token-cmt">// b.#trezor -> Způsobí SyntaxError: Private field!</span></div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Bankomat</span> {
+    <span class="token-kw">public</span> <span class="token-type">string</span> $lokace = <span class="token-str">"Praha"</span>;
+    <span class="token-kw">protected</span> <span class="token-type">int</span> $servisniPin = <span class="token-num">1234</span>;
+    <span class="token-kw">private</span> <span class="token-type">float</span> $trezor = <span class="token-num">500000</span>;
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">vyber</span>($pin, $castka) {
+        <span class="token-kw">if</span> (<span class="token-self">$this</span>->overPin($pin)) {
+            <span class="token-self">$this</span>->trezor -= $castka;
+            <span class="token-kw">return</span> $castka;
+        }
+    }
+
+    <span class="token-kw">private</span> <span class="token-kw">function</span> <span class="token-fn">overPin</span>($pin): <span class="token-type">bool</span> {
+        <span class="token-kw">return</span> $pin === <span class="token-num">9876</span>;
+    }
+}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Gettery a Settery (Properties)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Gettery a Settery">
+        <div class="slide-header">
+          <h2 class="slide-title">Gettery a Settery: Kontrolovaný přístup k datům</h2>
+          <p class="slide-subtitle">Jak číst a měnit skrytý stav elegantně, bezpečně a s automatickou validací pravidel.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card" style="border-left: 4px solid var(--accent);">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: var(--accent-cyan);">Proč nepoužívat veřejné proměnné?</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+                Pokud napíšete <code>student.vek = -25</code>, bez getteru/setteru systém nezasáhne a uloží nesmysl. <strong>Setter</strong> zajistí, že záporný věk bude okamžitě odmítnut. <strong>Getter</strong> může hodnotu před vrácením zformátovat (např. jméno s velkým písmenem).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: var(--text-primary);">Syntaxe v jazycích:</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.6;">
+                <li><strong>Python:</strong> Dekorátory <code>@property</code> (pro čtení) a <code>@vek.setter</code> (pro zápis). Volá se přirozeně jako atribut: <code>s.vek = 18</code>.</li>
+                <li><strong>JavaScript:</strong> Klíčová slova <code>get vek()</code> a <code>set vek(v)</code>.</li>
+                <li><strong>PHP:</strong> Metody <code>getVek()</code> a <code>setVek($v)</code>, v PHP 8.4 také nativní property hooks.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Gettery &amp; Settery</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">Student</span>:
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>, jmeno, vek):
+        <span class="token-self">self</span>.jmeno = jmeno
+        <span class="token-self">self</span>.vek = vek <span class="token-cmt"># Použije setter níže!</span>
+
+    <span class="token-mod">@property</span>
+    <span class="token-kw">def</span> <span class="token-fn">vek</span>(<span class="token-self">self</span>):
+        <span class="token-kw">return</span> <span class="token-self">self</span>._vek
+
+    <span class="token-mod">@vek.setter</span>
+    <span class="token-kw">def</span> <span class="token-fn">vek</span>(<span class="token-self">self</span>, hodnota):
+        <span class="token-kw">if</span> hodnota < <span class="token-num">0</span> <span class="token-kw">or</span> hodnota > <span class="token-num">120</span>:
+            <span class="token-kw">raise</span> <span class="token-fn">ValueError</span>(<span class="token-str">"Neplatný věk studenta!"</span>)
+        <span class="token-self">self</span>._vek = hodnota
+
+s = <span class="token-fn">Student</span>(<span class="token-str">"Petr"</span>, <span class="token-num">17</span>)
+s.vek = <span class="token-num">18</span>   <span class="token-cmt"># Volá setter</span>
+<span class="token-kw">print</span>(s.vek) <span class="token-cmt"># Volá getter -> 18</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Student</span> {
+  #vek;
+
+  <span class="token-fn">constructor</span>(jmeno, vek) {
+    <span class="token-self">this</span>.jmeno = jmeno;
+    <span class="token-self">this</span>.vek = vek; <span class="token-cmt">// Aktivuje setter</span>
+  }
+
+  <span class="token-kw">get</span> <span class="token-fn">vek</span>() {
+    <span class="token-kw">return</span> <span class="token-self">this</span>.#vek;
+  }
+
+  <span class="token-kw">set</span> <span class="token-fn">vek</span>(hodnota) {
+    <span class="token-kw">if</span> (hodnota < <span class="token-num">0</span> || hodnota > <span class="token-num">120</span>) {
+      <span class="token-kw">throw</span> <span class="token-kw">new</span> <span class="token-fn">RangeError</span>(<span class="token-str">"Neplatný věk!"</span>);
+    }
+    <span class="token-self">this</span>.#vek = hodnota;
+  }
+}
+
+<span class="token-kw">const</span> s = <span class="token-kw">new</span> <span class="token-fn">Student</span>(<span class="token-str">"Petr"</span>, <span class="token-num">17</span>);
+s.vek = <span class="token-num">18</span>; <span class="token-cmt">// Zápis přes setter</span></div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Student</span> {
+    <span class="token-kw">private</span> <span class="token-type">int</span> $vek;
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">__construct</span>(
+        <span class="token-kw">public</span> <span class="token-type">string</span> $jmeno,
+        <span class="token-type">int</span> $vek
+    ) {
+        <span class="token-self">$this</span>->setVek($vek);
+    }
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">getVek</span>(): <span class="token-type">int</span> {
+        <span class="token-kw">return</span> <span class="token-self">$this</span>->vek;
+    }
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">setVek</span>(<span class="token-type">int</span> $hodnota): <span class="token-type">void</span> {
+        <span class="token-kw">if</span> ($hodnota < <span class="token-num">0</span> || $hodnota > <span class="token-num">120</span>) {
+            <span class="token-kw">throw</span> <span class="token-kw">new</span> <span class="token-fn">InvalidArgumentException</span>(<span class="token-str">"Neplatný věk!"</span>);
+        }
+        <span class="token-self">$this</span>->vek = $hodnota;
+    }
+}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Statické atributy a metody
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Statické členy (Třída vs. Instance)">
+        <div class="slide-header">
+          <h2 class="slide-title">Statické členy: Třída vs. Instance</h2>
+          <p class="slide-subtitle">Kdy data a funkce nepatří jedné konkrétní instanci, ale sdílí je celá třída globálně.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card" style="border-left: 4px solid #a855f7;">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: #c084fc;">Statický atribut (Static property)</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+                Existuje v paměti <strong>pouze jednou pro celou třídu</strong>. Změna provedená jednou instancí se projeví pro všechny ostatní. Skvělé například pro <em>počítadlo vytvořených instancí</em>.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-left: 4px solid #38bdf8;">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: #38bdf8;">Statická metoda (Static method)</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55;">
+                Lze ji zavolat <strong>bez vytváření instance</strong> (např. <code>Math.sqrt()</code>, <code>Kalkulator.secti(5, 3)</code>). Nemá přístup k <code>this</code> / <code>self</code>, protože žádná instance nemusí existovat.
+              </p>
+            </div>
+
+            <div class="compare-box bad">
+              <div class="compare-title">Pozor na zneužití statiky!</div>
+              <p style="margin: 0; font-size: 0.82rem; color: var(--text-secondary);">
+                Příliš mnoho statických proměnných mění OOP zpět v procedurální kód s globálními proměnnými a znemožňuje psaní jednotkových testů.
+              </p>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Statické členy</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">Uzivatel</span>:
+    pocitadlo = <span class="token-num">0</span>  <span class="token-cmt"># Statický (třídní) atribut</span>
+
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>, jmeno):
+        <span class="token-self">self</span>.jmeno = jmeno
+        <span class="token-fn">Uzivatel</span>.pocitadlo += <span class="token-num">1</span>
+
+    <span class="token-mod">@staticmethod</span>
+    <span class="token-kw">def</span> <span class="token-fn">je_platny_email</span>(email):
+        <span class="token-kw">return</span> <span class="token-str">"@"</span> <span class="token-kw">in</span> email
+
+u1 = <span class="token-fn">Uzivatel</span>(<span class="token-str">"Jan"</span>)
+u2 = <span class="token-fn">Uzivatel</span>(<span class="token-str">"Eva"</span>)
+<span class="token-kw">print</span>(<span class="token-fn">Uzivatel</span>.pocitadlo) <span class="token-cmt"># Vytvořeni 2 uživatelé</span>
+<span class="token-kw">print</span>(<span class="token-fn">Uzivatel</span>.<span class="token-fn">je_platny_email</span>(<span class="token-str">"a@sps.cz"</span>))</div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Uzivatel</span> {
+  <span class="token-mod">static</span> pocitadlo = <span class="token-num">0</span>; <span class="token-cmt">// Statický atribut</span>
+
+  <span class="token-fn">constructor</span>(jmeno) {
+    <span class="token-self">this</span>.jmeno = jmeno;
+    <span class="token-fn">Uzivatel</span>.pocitadlo++;
+  }
+
+  <span class="token-mod">static</span> <span class="token-fn">jePlatnyEmail</span>(email) {
+    <span class="token-kw">return</span> email.<span class="token-fn">includes</span>(<span class="token-str">"@"</span>);
+  }
+}
+
+<span class="token-kw">const</span> u1 = <span class="token-kw">new</span> <span class="token-fn">Uzivatel</span>(<span class="token-str">"Jan"</span>);
+<span class="token-kw">const</span> u2 = <span class="token-kw">new</span> <span class="token-fn">Uzivatel</span>(<span class="token-str">"Eva"</span>);
+console.<span class="token-fn">log</span>(<span class="token-fn">Uzivatel</span>.pocitadlo); <span class="token-cmt">// 2</span>
+console.<span class="token-fn">log</span>(<span class="token-fn">Uzivatel</span>.<span class="token-fn">jePlatnyEmail</span>(<span class="token-str">"a@sps.cz"</span>));</div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Uzivatel</span> {
+    <span class="token-kw">public</span> <span class="token-mod">static</span> <span class="token-type">int</span> $pocitadlo = <span class="token-num">0</span>;
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">__construct</span>(<span class="token-kw">public</span> <span class="token-type">string</span> $jmeno) {
+        <span class="token-mod">self</span>::$pocitadlo++;
+    }
+
+    <span class="token-kw">public</span> <span class="token-mod">static</span> <span class="token-kw">function</span> <span class="token-fn">jePlatnyEmail</span>(<span class="token-type">string</span> $email): <span class="token-type">bool</span> {
+        <span class="token-kw">return</span> str_contains($email, <span class="token-str">"@"</span>);
+    }
+}
+
+$u1 = <span class="token-kw">new</span> <span class="token-fn">Uzivatel</span>(<span class="token-str">"Jan"</span>);
+$u2 = <span class="token-kw">new</span> <span class="token-fn">Uzivatel</span>(<span class="token-str">"Eva"</span>);
+<span class="token-kw">echo</span> <span class="token-fn">Uzivatel</span>::$pocitadlo; <span class="token-cmt">// 2</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Objekty v paměti: Hodnota vs. Reference
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Hodnota vs. Reference a Klonování">
+        <div class="slide-header">
+          <h2 class="slide-title">Objekty v paměti: Hodnota vs. Reference &amp; Klonování</h2>
+          <p class="slide-subtitle">Proč pouhé přiřazení proměnné nevytvoří nový objekt a jak provést skutečnou nezávislou kopii.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="compare-box bad">
+              <div class="compare-title">Nebezpečí: b = a zkopíruje pouze odkaz!</div>
+              <p style="margin: 0; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.5;">
+                Primitivní datové typy (čísla, boolean) se předávají <strong>hodnotou</strong> (vznikne kopie). Objekty se však vždy předávají <strong>referencí</strong>. Pokud změníte vlastnost v <code>b</code>, změní se i v <code>a</code>, protože obě proměnné ukazují na stejné místo na haldě!
+              </p>
+            </div>
+
+            <div class="compare-box good">
+              <div class="compare-title">Řešení: Explicitní klonování objektu</div>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55;">
+                <li><strong>Python:</strong> Modul <code>copy.copy()</code> (mělká) nebo <code>copy.deepcopy()</code> (hluboká kopie včetně vnořených objektů).</li>
+                <li><strong>JavaScript:</strong> Moderní funkce <code>structuredClone(obj)</code> nebo <code>Object.assign({}, obj)</code>.</li>
+                <li><strong>PHP:</strong> Klíčové slovo <code>clone $obj</code> (spustí magickou metodu <code>__clone</code>).</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Klonování vs. Reference</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">import</span> copy
+
+<span class="token-kw">class</span> <span class="token-fn">Bod</span>:
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>, x, y):
+        <span class="token-self">self</span>.x, <span class="token-self">self</span>.y = x, y
+
+a = <span class="token-fn">Bod</span>(<span class="token-num">10</span>, <span class="token-num">20</span>)
+b = a              <span class="token-cmt"># Pouze nová reference!</span>
+b.x = <span class="token-num">999</span>          <span class="token-cmt"># Změní i a.x!</span>
+<span class="token-kw">print</span>(a.x)         <span class="token-cmt"># Vypíše 999!</span>
+
+<span class="token-cmt"># Správné vytvoření nezávislé kopie:</span>
+c = copy.<span class="token-fn">deepcopy</span>(a)
+c.x = <span class="token-num">55</span>
+<span class="token-kw">print</span>(a.x)         <span class="token-cmt"># Zůstává 999 (c je nezávislé)</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Bod</span> {
+  <span class="token-fn">constructor</span>(x, y) { <span class="token-self">this</span>.x = x; <span class="token-self">this</span>.y = y; }
+}
+
+<span class="token-kw">const</span> a = <span class="token-kw">new</span> <span class="token-fn">Bod</span>(<span class="token-num">10</span>, <span class="token-num">20</span>);
+<span class="token-kw">const</span> b = a;         <span class="token-cmt">// Stejná reference v paměti</span>
+b.x = <span class="token-num">999</span>;
+console.<span class="token-fn">log</span>(a.x);    <span class="token-cmt">// 999!</span>
+
+<span class="token-cmt">// Správné hluboké naklonování:</span>
+<span class="token-kw">const</span> c = <span class="token-fn">structuredClone</span>(a);
+c.x = <span class="token-num">55</span>;
+console.<span class="token-fn">log</span>(a.x);    <span class="token-cmt">// 999 (původní objekt neovlivněn)</span></div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Bod</span> {
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">__construct</span>(<span class="token-kw">public</span> <span class="token-type">int</span> $x, <span class="token-kw">public</span> <span class="token-type">int</span> $y) {}
+}
+
+$a = <span class="token-kw">new</span> <span class="token-fn">Bod</span>(<span class="token-num">10</span>, <span class="token-num">20</span>);
+$b = $a;             <span class="token-cmt">// Stejná reference</span>
+$b->x = <span class="token-num">999</span>;
+<span class="token-kw">echo</span> $a->x;          <span class="token-cmt">// 999!</span>
+
+<span class="token-cmt">// Správné klonování v PHP:</span>
+$c = <span class="token-kw">clone</span> $a;
+$c->x = <span class="token-num">55</span>;
+<span class="token-kw">echo</span> $a->x;          <span class="token-cmt">// Zůstává 999</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí tématu & Kódovací výzvy
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí a Kódovací výzvy">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kódovací výzvy pro SPŠ</h2>
+          <p class="slide-subtitle">Vyzkoušejte si nabyté znalosti na 4 praktických úlohách ze školní i firemní praxe.</p>
+        </div>
+
+        <div class="challenge-grid">
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <h3 class="challenge-title">Výzva 1: Třída Bankomat</h3>
+              <span class="challenge-badge">Zapouzdření</span>
+            </div>
+            <p class="challenge-desc">
+              Vytvořte třídu <code>Bankomat</code> s privátním zůstatkem hotovosti a metodami <code>vloz(castka)</code> a <code>vyber(castka)</code>. Zajistěte, aby bankomat neumožnil výběr do mínusu ani vložení záporné částky.
+            </p>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <h3 class="challenge-title">Výzva 2: Bezpečný Student</h3>
+              <span class="challenge-badge">Gettery &amp; Settery</span>
+            </div>
+            <p class="challenge-desc">
+              Navrhněte třídu <code>Student</code> se jménem a ročníkem (1 až 4). Pomocí setteru ošetřete, aby při pokusu o nastavení ročníku mimo rozsah 1–4 kód vyhodil srozumitelnou výjimku.
+            </p>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <h3 class="challenge-title">Výzva 3: Globální ID generátor</h3>
+              <span class="challenge-badge">Statické členy</span>
+            </div>
+            <p class="challenge-desc">
+              Vytvořte třídu <code>Faktura</code>, která pomocí statického počitadla <code>pocetFaktur</code> automaticky přidělí každé nové instanci unikátní evidenční číslo (např. <em>FA-2026-0001</em>, <em>FA-2026-0002</em>).
+            </p>
+          </div>
+
+          <div class="challenge-card">
+            <div class="challenge-header">
+              <h3 class="challenge-title">Výzva 4: Herní Inventář</h3>
+              <span class="challenge-badge">Reference &amp; Klon</span>
+            </div>
+            <p class="challenge-desc">
+              Vytvořte hráče s batohem předmětů. Vyzkoušejte, co se stane, když předáte batoh druhému hráči přiřazením <code>hrac2.batoh = hrac1.batoh</code>, a opravte to pomocí klonování.
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+          <div class="quiz-card" style="flex: 1;" onclick="this.classList.toggle('open')">
+            <div class="quiz-question">
+              <span>Kontrolní otázka: Co se stane, když v konstruktoru neprovedeme validaci?</span>
+              <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="quiz-answer">
+              Objekt může vzniknout s neplatnými daty (např. záporný věk, prázdné heslo) a způsobit neošetřené pády v pozdějších fázích běhu programu.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../050-Objektove-orientovane-programovani/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 050 OOP Paradigma (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../052-Pokrocile-OOP/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 052 Pokročilé OOP (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Společný modul pro synchronizované přepínání jazyků kódu -->
+  <script src="../../assets/js/code-switcher.js"></script>
+</body>
+
+</html>

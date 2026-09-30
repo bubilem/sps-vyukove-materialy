@@ -1,0 +1,503 @@
+/* ==========================================================================
+   Téma 050: Objektově orientované programování – Lokální styly
+   Předmět: PRG (Programování) • SPŠ
+   ========================================================================== */
+
+:root {
+  --accent: #3b82f6;
+  --accent-glow: rgba(59, 130, 246, 0.3);
+  --accent-blue: #60a5fa;
+  --accent-cyan: #06b6d4;
+  --accent-purple: #a855f7;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+
+  --gradient-main: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #a855f7 100%);
+  --gradient-text: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #c084fc 100%);
+}
+
+/* Ambientní orby na pozadí */
+.ambient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+  animation: floatOrb 26s infinite alternate ease-in-out;
+}
+
+.ambient-orb-1 {
+  width: 580px;
+  height: 580px;
+  background: var(--accent);
+  top: -120px;
+  left: -120px;
+}
+
+.ambient-orb-2 {
+  width: 640px;
+  height: 640px;
+  background: var(--accent-purple);
+  bottom: -160px;
+  right: -160px;
+  animation-duration: 30s;
+  animation-direction: alternate-reverse;
+}
+
+.ambient-orb-3 {
+  width: 450px;
+  height: 450px;
+  background: var(--accent-cyan);
+  top: 40%;
+  left: 55%;
+  opacity: 0.12;
+  animation-duration: 34s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 35px) scale(1.05); }
+  100% { transform: translate(-35px, 45px) scale(0.95); }
+}
+
+[data-theme="light"] .ambient-orb {
+  opacity: 0.08;
+  filter: blur(100px);
+}
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] .grid-overlay {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Titulní odznak */
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 9999px;
+  margin-bottom: 1.25rem;
+}
+
+.hero-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="light"] .hero-feature-item {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+/* Timeline evoluce programování */
+.history-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.timeline-card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.timeline-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+
+[data-theme="light"] .timeline-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.timeline-year {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  background: rgba(59, 130, 246, 0.12);
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.timeline-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.timeline-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 4 Pilíře karty */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+  margin: 1rem 0;
+}
+
+.pillar-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--pillar-color, var(--accent));
+}
+
+.pillar-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  border-color: var(--pillar-color, var(--accent));
+}
+
+[data-theme="light"] .pillar-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.pillar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.pillar-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--pillar-color, var(--accent));
+}
+
+.pillar-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.pillar-desc {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.pillar-example {
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.pillar-example strong {
+  color: var(--text-primary);
+}
+
+/* UML Class Box styl */
+.uml-class-box {
+  background: rgba(15, 23, 42, 0.9);
+  border: 2px solid #38bdf8;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+[data-theme="light"] .uml-class-box {
+  background: #f8fafc;
+  border-color: #0284c7;
+}
+
+.uml-header {
+  background: rgba(56, 189, 248, 0.15);
+  border-bottom: 2px solid #38bdf8;
+  padding: 0.6rem 1rem;
+  text-align: center;
+}
+
+[data-theme="light"] .uml-header {
+  background: rgba(56, 189, 248, 0.12);
+  border-bottom-color: #0284c7;
+}
+
+.uml-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+}
+
+[data-theme="light"] .uml-title {
+  color: #0f172a;
+}
+
+.uml-stereotype {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  display: block;
+}
+
+.uml-section {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  line-height: 1.45;
+}
+
+.uml-section:last-child {
+  border-bottom: none;
+}
+
+.uml-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.uml-vis {
+  font-weight: 800;
+  width: 14px;
+  display: inline-block;
+}
+
+.uml-vis.pub { color: #34d399; } /* + public */
+.uml-vis.priv { color: #f87171; } /* - private */
+.uml-vis.prot { color: #fbbf24; } /* # protected */
+
+.uml-type {
+  color: #38bdf8;
+}
+
+/* Srovnávací grid pro Procedurální vs OOP */
+.paradigm-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.paradigm-box {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+[data-theme="light"] .paradigm-box {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.paradigm-box.procedural {
+  border-top: 4px solid #f59e0b;
+}
+
+.paradigm-box.oop {
+  border-top: 4px solid #10b981;
+}
+
+.paradigm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.paradigm-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+}
+
+.paradigm-tag.proc {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.paradigm-tag.obj {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Diagram vztahů UML */
+.uml-relationships-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+
+.uml-relationships-table th {
+  background: rgba(15, 23, 42, 0.9);
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-blue);
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .uml-relationships-table th {
+  background: #f1f5f9;
+}
+
+.uml-relationships-table td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.uml-relationships-table tr:last-child td {
+  border-bottom: none;
+}
+
+.uml-symbol-cell {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Interaktivní kvízové karty */
+.quiz-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-card:hover {
+  border-color: var(--accent);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+[data-theme="light"] .quiz-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.quiz-question {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quiz-answer {
+  display: none;
+  font-size: 0.85rem;
+  color: var(--accent-emerald);
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.quiz-card.open .quiz-answer {
+  display: block;
+}

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>050 Objektově orientované programování | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Objektově orientované programování. Historie a evoluce paradigmatu, procedurální vs. objektový svět, 4 pilíře OOP a UML class diagramy s ukázkami v Pythonu, JavaScriptu a PHP.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Sdílené styly pro vícejazyčné přepínače kódu -->
+  <link rel="stylesheet" href="../../assets/css/syntax/code.css">
+  <!-- Dedikované lokální styly pro téma 050 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">050 OOP Paradigma</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">OOP &amp; Softwarová architektura</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do OOP">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            Předmět PRG &bull; Téma 050 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title" style="font-size: 2.85rem; margin-bottom: 1rem;">
+            Objektově orientované <br><span class="gradient-text">programování</span>
+          </h1>
+          <p class="hero-description">
+            Od nestrukturovaného kódu přes krizi softwaru až k modernímu objektovému myšlení. Poznejte 4 pilíře OOP, mentální model třída vs. instance a standardizované vizuální modelování v UML.
+          </p>
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag cyan">Evoluce</span>
+              <span>Procedurální kód &bull; Proč OOP</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">4 Pilíře</span>
+              <span>Abstrakce &bull; Zapouzdření &bull; Dědičnost &bull; Polymorfismus</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag emerald">Model</span>
+              <span>Třída &bull; Instance &bull; Paměť</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag amber">UML</span>
+              <span>Class diagram &bull; Vztahy &bull; Viditelnost</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Evoluce programování: Proč vzniklo OOP?
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Evoluce: Proč vzniklo OOP?">
+        <div class="slide-header">
+          <h2 class="slide-title">Evoluce programování: Cesta k objektům</h2>
+          <p class="slide-subtitle">Jak vývojáři řešili rostoucí složitost programů od strojového kódu až po rozsáhlé podnikové architektury.</p>
+        </div>
+
+        <div class="history-timeline">
+          <div class="timeline-card">
+            <span class="timeline-year">1950s – 1960s</span>
+            <h3 class="timeline-title">Nestrukturovaný kód</h3>
+            <p class="timeline-desc">
+              Příkazy <code>GOTO</code> a lineární skoky v paměti. Kód se při překročení stovek řádků měnil v nepřehledný <strong>špagetový kód</strong>, kde jakákoli změna rozbila zbytek programu.
+            </p>
+          </div>
+
+          <div class="timeline-card">
+            <span class="timeline-year">1970s</span>
+            <h3 class="timeline-title">Strukturované &amp; Procedurální</h3>
+            <p class="timeline-desc">
+              Funkce, procedury a bloky kódu (C, Pascal). Program se dělí na podprogramy, ale <strong>data a funkce existují odděleně</strong>. Globální proměnné jsou zranitelné vůči nechtěnému přepisu.
+            </p>
+          </div>
+
+          <div class="timeline-card" style="border-color: rgba(59, 130, 246, 0.4);">
+            <span class="timeline-year" style="background: rgba(59, 130, 246, 0.2); color: #38bdf8;">1980s – 1990s</span>
+            <h3 class="timeline-title">Nástup OOP paradigmatu</h3>
+            <p class="timeline-desc">
+              Jazyky <strong>Simula 67</strong>, <strong>Smalltalk</strong>, <strong>C++</strong> a následně <strong>Java</strong>. Zabalení dat a souvisejících operací do jednoho samostatného celku – <strong>objektu</strong>.
+            </p>
+          </div>
+
+          <div class="timeline-card">
+            <span class="timeline-year">2000s – Dnes</span>
+            <h3 class="timeline-title">Multiparadigmatický svět</h3>
+            <p class="timeline-desc">
+              Moderní jazyky (Python, JavaScript/TypeScript, PHP 8+, C#, Rust) kombinují OOP s funkcionálním programováním a asynchronním zpracováním událostí.
+            </p>
+          </div>
+        </div>
+
+        <div class="content-card" style="margin-top: 1rem; border-left: 4px solid var(--accent);">
+          <h4 style="margin: 0 0 0.35rem 0; font-size: 0.95rem; color: var(--accent-blue);">Krize softwaru (Software Crisis)</h4>
+          <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">
+            S rostoucím výkonem počítačů začaly vznikat aplikace s miliony řádků kódu (letectví, bankovnictví, operační systémy). Procedurální styl selhával v udržovatelnosti a znovupoužitelnosti. OOP přineslo <strong>přirozený model reálného světa</strong>: systém se skládá ze spolupracujících entit posílajících si zprávy.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Procedurální vs. Objektový přístup
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Procedurální vs. Objektový přístup">
+        <div class="slide-header">
+          <h2 class="slide-title">Procedurální vs. Objektový svět v kódu</h2>
+          <p class="slide-subtitle">Porovnání na reálném problému: Správa bankovního účtu a ochrana zůstatku před nepovolenou manipulací.</p>
+        </div>
+
+        <div class="paradigm-comparison">
+          <!-- Procedurální přístup -->
+          <div class="paradigm-box procedural">
+            <div class="paradigm-header">
+              <h3 style="margin: 0; font-size: 1rem; color: #fbbf24;">Procedurální přístup: Data &ne; Funkce</h3>
+              <span class="paradigm-tag proc">Oddělený stav</span>
+            </div>
+            <p style="font-size: 0.83rem; margin: 0; color: var(--text-secondary);">
+              Data leží ve volném slovníku nebo poli. Jakákoli funkce či řádek v kódu může přímo změnit zůstatek bez kontroly a validace pravidel.
+            </p>
+
+            <div class="code-tabs-container">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Procedurální</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-cmt"># Data jsou volný slovník</span>
+ucet = {<span class="token-str">"majitel"</span>: <span class="token-str">"Jan"</span>, <span class="token-str">"zustatek"</span>: <span class="token-num">1000</span>}
+
+<span class="token-kw">def</span> <span class="token-fn">vyber_penize</span>(u, castka):
+    <span class="token-kw">if</span> u[<span class="token-str">"zustatek"</span>] >= castka:
+        u[<span class="token-str">"zustatek"</span>] -= castka
+
+<span class="token-cmt"># Riziko: Kdokoli může data kdykoli pokazit!</span>
+ucet[<span class="token-str">"zustatek"</span>] = -<span class="token-num">999999</span>  <span class="token-cmt"># Žádná ochrana!</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-cmt">// Data jsou obyčejný objekt bez ochrany</span>
+<span class="token-kw">let</span> ucet = { majitel: <span class="token-str">"Jan"</span>, zustatek: <span class="token-num">1000</span> };
+
+<span class="token-kw">function</span> <span class="token-fn">vyberPenize</span>(u, castka) {
+  <span class="token-kw">if</span> (u.zustatek >= castka) {
+    u.zustatek -= castka;
+  }
+}
+
+<span class="token-cmt">// Riziko: Přímý a nekontrolovaný přepis</span>
+ucet.zustatek = -<span class="token-num">999999</span>; <span class="token-cmt">// Žádná validace!</span></div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-cmt">// Data leží v asociativním poli</span>
+$ucet = [<span class="token-str">"majitel"</span> => <span class="token-str">"Jan"</span>, <span class="token-str">"zustatek"</span> => <span class="token-num">1000</span>];
+
+<span class="token-kw">function</span> <span class="token-fn">vyberPenize</span>(&amp;$u, $castka) {
+    <span class="token-kw">if</span> ($u[<span class="token-str">"zustatek"</span>] >= $castka) {
+        $u[<span class="token-str">"zustatek"</span>] -= $castka;
+    }
+}
+
+<span class="token-cmt">// Nebezpečí: Přímé poškození stavu aplikace</span>
+$ucet[<span class="token-str">"zustatek"</span>] = -<span class="token-num">999999</span>;</div>
+            </div>
+          </div>
+
+          <!-- Objektový přístup -->
+          <div class="paradigm-box oop">
+            <div class="paradigm-header">
+              <h3 style="margin: 0; font-size: 1rem; color: #34d399;">Objektový přístup: Zapouzdřený stav</h3>
+              <span class="paradigm-tag obj">Stav + Chování</span>
+            </div>
+            <p style="font-size: 0.83rem; margin: 0; color: var(--text-secondary);">
+              Objekt si chrání svůj vnitřní stav. Změna zůstatku probíhá výhradně přes veřejné rozhraní (metody), které garantuje obchodní pravidla.
+            </p>
+
+            <div class="code-tabs-container">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Objektové OOP</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">BankAccount</span>:
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>, majitel, zustatek):
+        <span class="token-self">self</span>.majitel = majitel
+        <span class="token-self">self</span>._zustatek = zustatek  <span class="token-cmt"># Chráněný atribut</span>
+
+    <span class="token-kw">def</span> <span class="token-fn">vyber</span>(<span class="token-self">self</span>, castka):
+        <span class="token-kw">if</span> <span class="token-num">0</span> < castka <= <span class="token-self">self</span>._zustatek:
+            <span class="token-self">self</span>._zustatek -= castka
+            <span class="token-kw">return</span> <span class="token-kw">True</span>
+        <span class="token-kw">return</span> <span class="token-kw">False</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">BankAccount</span> {
+  #zustatek; <span class="token-cmt">// Skutečně privátní pole (od ES2022)</span>
+
+  <span class="token-fn">constructor</span>(majitel, zustatek) {
+    <span class="token-self">this</span>.majitel = majitel;
+    <span class="token-self">this</span>.#zustatek = zustatek;
+  }
+
+  <span class="token-fn">vyber</span>(castka) {
+    <span class="token-kw">if</span> (castka > <span class="token-num">0</span> &amp;&amp; castka <= <span class="token-self">this</span>.#zustatek) {
+      <span class="token-self">this</span>.#zustatek -= castka;
+      <span class="token-kw">return</span> <span class="token-kw">true</span>;
+    }
+    <span class="token-kw">return</span> <span class="token-kw">false</span>;
+  }
+}</div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">BankAccount</span> {
+    <span class="token-kw">public</span> <span class="token-type">string</span> $majitel;
+    <span class="token-kw">private</span> <span class="token-type">float</span> $zustatek; <span class="token-cmt">// Privátní atribut</span>
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">__construct</span>($majitel, $zustatek) {
+        <span class="token-self">$this</span>->majitel = $majitel;
+        <span class="token-self">$this</span>->zustatek = $zustatek;
+    }
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">vyber</span>($castka): <span class="token-type">bool</span> {
+        <span class="token-kw">if</span> ($castka > <span class="token-num">0</span> &amp;&amp; $castka <= <span class="token-self">$this</span>->zustatek) {
+            <span class="token-self">$this</span>->zustatek -= $castka;
+            <span class="token-kw">return</span> <span class="token-kw">true</span>;
+        }
+        <span class="token-kw">return</span> <span class="token-kw">false</span>;
+    }
+}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Mentální model: Třída vs. Objekt
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Třída vs. Objekt (Instance)">
+        <div class="slide-header">
+          <h2 class="slide-title">Mentální model: Třída (Předpis) vs. Objekt (Instance)</h2>
+          <p class="slide-subtitle">Základní koncept OOP: Třída existuje pouze jednou jako vzor, instancí může vzniknout nekonečně mnoho.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Levé vysvětlení s metaforami -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card" style="border-left: 4px solid #38bdf8;">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 1.05rem; color: #38bdf8;">Třída (Class) &bull; Typ a Předpis</h3>
+              <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">
+                Třída je <strong>šablona, architektonický plán nebo razítko</strong>. Definuje, jaká data budou budoucí objekty uchovávat (atributy) a jaké akce s nimi bude možné provádět (metody). Třída sama o sobě nemá konkrétní osobní údaje.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-left: 4px solid #10b981;">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 1.05rem; color: #34d399;">Objekt / Instance (Object) &bull; Reálné Bytí</h3>
+              <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">
+                Objekt je <strong>konkrétní postavený dům, otisk razítka na papíře nebo upečený dort</strong>. Vzniká procesem zvaným <em>instanciace</em> (obvykle klíčovým slovem <code>new</code> nebo voláním třídy). Žije v operační paměti a má svůj vlastní unikátní stav.
+              </p>
+            </div>
+
+            <div class="hero-feature-item" style="margin-top: 0.5rem;">
+              <svg class="icon" viewBox="0 0 24 24" style="color: #fbbf24;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span style="font-size: 0.83rem;">
+                <strong>Zlaté pravidlo:</strong> Z jedné třídy <code>User</code> vytvoříte instance <code>user1 (Petr)</code> i <code>user2 (Eva)</code>. Každý má své jméno i heslo, ale oba sdílejí stejné metody <code>prihlasSe()</code> a <code>zmenHeslo()</code>.
+              </span>
+            </div>
+          </div>
+
+          <!-- Pravé grafické schéma paměti -->
+          <div class="content-card" style="display: flex; flex-direction: column; gap: 0.85rem; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.45);">
+            <svg viewBox="0 0 420 250" style="width: 100%; max-width: 400px; height: auto;" aria-label="Schéma: Třída jako šablona vytvářející instance na haldě">
+              <!-- Třída jako matrice vlevo -->
+              <rect x="20" y="45" width="130" height="160" rx="8" fill="rgba(56, 189, 248, 0.12)" stroke="#38bdf8" stroke-width="2"></rect>
+              <rect x="20" y="45" width="130" height="32" rx="8" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="2"></rect>
+              <text x="85" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff" font-family="monospace">class Auto</text>
+              <text x="32" y="102" font-size="10.5" fill="#94a3b8" font-family="monospace">+ barva</text>
+              <text x="32" y="122" font-size="10.5" fill="#94a3b8" font-family="monospace">+ rychlost</text>
+              <line x1="20" y1="135" x2="150" y2="135" stroke="rgba(56, 189, 248, 0.4)" stroke-dasharray="2,2"></line>
+              <text x="32" y="155" font-size="10.5" fill="#38bdf8" font-family="monospace">+ zrychli()</text>
+              <text x="32" y="175" font-size="10.5" fill="#38bdf8" font-family="monospace">+ zabrzdi()</text>
+              <text x="85" y="222" text-anchor="middle" font-size="10" fill="#64748b" font-weight="600">Šablona v kódu</text>
+
+              <!-- Šipky instanciace -->
+              <path d="M 155 90 C 190 90, 195 70, 230 70" fill="none" stroke="#a855f7" stroke-width="2" marker-end="url(#arrowPurple)"></path>
+              <text x="195" y="70" text-anchor="middle" font-size="9" fill="#c084fc" font-weight="700">new Auto()</text>
+
+              <path d="M 155 155 C 190 155, 195 175, 230 175" fill="none" stroke="#a855f7" stroke-width="2" marker-end="url(#arrowPurple)"></path>
+              <text x="195" y="185" text-anchor="middle" font-size="9" fill="#c084fc" font-weight="700">new Auto()</text>
+
+              <!-- Instance 1 -->
+              <rect x="235" y="25" width="165" height="85" rx="8" fill="rgba(16, 185, 129, 0.12)" stroke="#10b981" stroke-width="1.8"></rect>
+              <text x="247" y="46" font-size="11" font-weight="700" fill="#34d399" font-family="monospace">auto1: Auto</text>
+              <text x="247" y="68" font-size="10" fill="#e2e8f0" font-family="monospace">barva = "Červená"</text>
+              <text x="247" y="86" font-size="10" fill="#e2e8f0" font-family="monospace">rychlost = 0 km/h</text>
+              <text x="375" y="46" font-size="9" fill="#64748b" font-family="monospace">#0x1A4F</text>
+
+              <!-- Instance 2 -->
+              <rect x="235" y="135" width="165" height="85" rx="8" fill="rgba(245, 158, 11, 0.12)" stroke="#f59e0b" stroke-width="1.8"></rect>
+              <text x="247" y="156" font-size="11" font-weight="700" fill="#fbbf24" font-family="monospace">auto2: Auto</text>
+              <text x="247" y="178" font-size="10" fill="#e2e8f0" font-family="monospace">barva = "Modrá"</text>
+              <text x="247" y="196" font-size="10" fill="#e2e8f0" font-family="monospace">rychlost = 90 km/h</text>
+              <text x="375" y="156" font-size="9" fill="#64748b" font-family="monospace">#0x2B9C</text>
+
+              <defs>
+                <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#a855f7"></path>
+                </marker>
+              </defs>
+            </svg>
+            <span style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+              Instance žijí na haldě (Heap) a každá má vlastní paměťovou adresu i hodnoty atributů.
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: 4 pilíře OOP – Přehledový rozcestník
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="4 pilíře OOP">
+        <div class="slide-header">
+          <h2 class="slide-title">4 základní pilíře objektově orientovaného programování</h2>
+          <p class="slide-subtitle">Základní stavební kameny, na kterých stojí spolehlivý, rozšiřitelný a bezpečný software.</p>
+        </div>
+
+        <div class="pillars-grid">
+          <!-- 1. Abstrakce -->
+          <div class="pillar-card" style="--pillar-color: #38bdf8;">
+            <div class="pillar-header">
+              <div class="pillar-icon-box">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              </div>
+              <h3 class="pillar-title">1. Abstrakce</h3>
+            </div>
+            <p class="pillar-desc">
+              Výběr <strong>pouze podstatných vlastností</strong> pro daný kontext a zanedbání nepodstatných detailů.
+            </p>
+            <div class="pillar-example">
+              <strong>Příklad:</strong> U studenta v IS řešíme <code>ročník</code> a <code>známky</code>, ne barvu jeho bot či oblíbený film.
+            </div>
+          </div>
+
+          <!-- 2. Zapouzdření -->
+          <div class="pillar-card" style="--pillar-color: #10b981;">
+            <div class="pillar-header">
+              <div class="pillar-icon-box">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              </div>
+              <h3 class="pillar-title">2. Zapouzdření</h3>
+            </div>
+            <p class="pillar-desc">
+              Skrytí vnitřního stavu objektu (Private) a poskytnutí bezpečného <strong>veřejného rozhraní</strong> (Public API).
+            </p>
+            <div class="pillar-example">
+              <strong>Příklad:</strong> Rychlost auta zvyšujeme plynovým pedálem, nemanipulujeme rukou přímo se vstřikovací tryskou.
+            </div>
+          </div>
+
+          <!-- 3. Dědičnost -->
+          <div class="pillar-card" style="--pillar-color: #a855f7;">
+            <div class="pillar-header">
+              <div class="pillar-icon-box">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+              </div>
+              <h3 class="pillar-title">3. Dědičnost</h3>
+            </div>
+            <p class="pillar-desc">
+              Vytvoření nové třídy na základě již existující. Potomek <strong>přebírá vlastnosti předka</strong> a přidává své specifické.
+            </p>
+            <div class="pillar-example">
+              <strong>Příklad:</strong> <code>Elektromobil</code> dědí z <code>Auto</code>, ale navíc přidává atribut <code>kapacitaBaterie</code>.
+            </div>
+          </div>
+
+          <!-- 4. Polymorfismus -->
+          <div class="pillar-card" style="--pillar-color: #f59e0b;">
+            <div class="pillar-header">
+              <div class="pillar-icon-box">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+              </div>
+              <h3 class="pillar-title">4. Polymorfismus</h3>
+            </div>
+            <p class="pillar-desc">
+              Mnohotvárnost: <strong>stejné volání metody</strong> vyvolá různé specifické chování podle typu konkrétního objektu.
+            </p>
+            <div class="pillar-example">
+              <strong>Příklad:</strong> Voláme <code>zvire.vydejZvuk()</code> &ndash; Pes zaštěká, Kočka zamňouká, Kráva zabučí.
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-feature-item" style="justify-content: center; margin-top: 1.25rem;">
+          <span style="color: var(--text-secondary); font-size: 0.88rem;">
+            Všechny 4 pilíře spolupracují: <strong>Abstrakce</strong> navrhne model &bull; <strong>Zapouzdření</strong> ochrání data &bull; <strong>Dědičnost</strong> ušetří kód &bull; <strong>Polymorfismus</strong> umožní čisté rozšíření systému.
+          </span>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Pilíře 1 & 2: Abstrakce a Zapouzdření
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Abstrakce a Zapouzdření">
+        <div class="slide-header">
+          <h2 class="slide-title">Pilíře 1 &amp; 2: Abstrakce &amp; Zapouzdření v akci</h2>
+          <p class="slide-subtitle">Jak navrhnout čisté veřejné rozhraní a ochránit vnitřní stav před chybami uživatele či okolního kódu.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="content-card" style="border-left: 4px solid #38bdf8;">
+              <h4 style="margin: 0 0 0.3rem 0; font-size: 0.95rem; color: #38bdf8;">Abstrakce: Oddělení CO od JAK</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary);">
+                Uživatel třídy <code>Termostat</code> volá metodu <code>nastavTeplotu(22)</code>. Nemusí vědět, jaké relé sepne nebo jaký PWM signál mikrokontrolér vygeneruje. Zná pouze <strong>veřejný kontrakt</strong>.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-left: 4px solid #10b981;">
+              <h4 style="margin: 0 0 0.3rem 0; font-size: 0.95rem; color: #34d399;">Zapouzdření (Encapsulation): Black Box</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary);">
+                Data jsou uzamčena uvnitř objektu. Zápis je možný pouze přes metody, které ověří podmínky (např. teplota musí být mezi 5&nbsp;&deg;C a 35&nbsp;&deg;C). Tím je zaručeno, že objekt nikdy neskončí v <strong>neplatném nebo poškozeném stavu</strong>.
+              </p>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; margin-top: 0.25rem;">
+              <div class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">
+                + Public API
+              </div>
+              <div class="badge" style="background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3);">
+                - Private State
+              </div>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Zapouzdření</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">Termostat</span>:
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>, vychozi_teplota=<span class="token-num">20.0</span>):
+        <span class="token-self">self</span>.__teplota = vychozi_teplota <span class="token-cmt"># Privátní</span>
+
+    <span class="token-kw">def</span> <span class="token-fn">nastav_teplotu</span>(<span class="token-self">self</span>, nova_teplota):
+        <span class="token-kw">if</span> <span class="token-num">5.0</span> <= nova_teplota <= <span class="token-num">35.0</span>:
+            <span class="token-self">self</span>.__teplota = nova_teplota
+            <span class="token-kw">return</span> <span class="token-kw">True</span>
+        <span class="token-kw">print</span>(<span class="token-str">"Chyba: Teplota mimo bezpečný rozsah!"</span>)
+        <span class="token-kw">return</span> <span class="token-kw">False</span>
+
+    <span class="token-kw">def</span> <span class="token-fn">ziskej_teplotu</span>(<span class="token-self">self</span>):
+        <span class="token-kw">return</span> <span class="token-self">self</span>.__teplota
+
+t = <span class="token-fn">Termostat</span>()
+t.<span class="token-fn">nastav_teplotu</span>(<span class="token-num">22.5</span>)  <span class="token-cmt"># OK</span>
+t.<span class="token-fn">nastav_teplotu</span>(<span class="token-num">120.0</span>) <span class="token-cmt"># Odmítnuto validací!</span></div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Termostat</span> {
+  #teplota; <span class="token-cmt">// Privátní proměnná</span>
+
+  <span class="token-fn">constructor</span>(vychozi = <span class="token-num">20.0</span>) {
+    <span class="token-self">this</span>.#teplota = vychozi;
+  }
+
+  <span class="token-fn">nastavTeplotu</span>(nova) {
+    <span class="token-kw">if</span> (nova >= <span class="token-num">5.0</span> &amp;&amp; nova <= <span class="token-num">35.0</span>) {
+      <span class="token-self">this</span>.#teplota = nova;
+      <span class="token-kw">return</span> <span class="token-kw">true</span>;
+    }
+    console.<span class="token-fn">warn</span>(<span class="token-str">"Chyba: Neplatná teplota!"</span>);
+    <span class="token-kw">return</span> <span class="token-kw">false</span>;
+  }
+
+  <span class="token-fn">ziskejTeplotu</span>() {
+    <span class="token-kw">return</span> <span class="token-self">this</span>.#teplota;
+  }
+}
+
+<span class="token-kw">const</span> t = <span class="token-kw">new</span> <span class="token-fn">Termostat</span>();
+t.<span class="token-fn">nastavTeplotu</span>(<span class="token-num">22.5</span>);</div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Termostat</span> {
+    <span class="token-kw">private</span> <span class="token-type">float</span> $teplota; <span class="token-cmt">// Skrytý stav</span>
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">__construct</span>(<span class="token-type">float</span> $vychozi = <span class="token-num">20.0</span>) {
+        <span class="token-self">$this</span>->teplota = $vychozi;
+    }
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">nastavTeplotu</span>(<span class="token-type">float</span> $nova): <span class="token-type">bool</span> {
+        <span class="token-kw">if</span> ($nova >= <span class="token-num">5.0</span> &amp;&amp; $nova <= <span class="token-num">35.0</span>) {
+            <span class="token-self">$this</span>->teplota = $nova;
+            <span class="token-kw">return</span> <span class="token-kw">true</span>;
+        }
+        <span class="token-kw">return</span> <span class="token-kw">false</span>;
+    }
+
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">ziskejTeplotu</span>(): <span class="token-type">float</span> {
+        <span class="token-kw">return</span> <span class="token-self">$this</span>->teplota;
+    }
+}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Pilíře 3 & 4: Dědičnost a Polymorfismus
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Dědičnost a Polymorfismus">
+        <div class="slide-header">
+          <h2 class="slide-title">Pilíře 3 &amp; 4: Dědičnost &amp; Polymorfismus</h2>
+          <p class="slide-subtitle">Znovupoužití kódu a jednotné rozhraní pro různorodé objekty bez zbytečných if-else větví.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="content-card" style="border-left: 4px solid #a855f7;">
+              <h4 style="margin: 0 0 0.3rem 0; font-size: 0.95rem; color: #c084fc;">Dědičnost (Inheritance): Vztah IS-A</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary);">
+                Třída <code>Pes</code> <em>je specializací</em> třídy <code>Zvire</code>. Nemusíme znovu psát atributy <code>jmeno</code> a <code>vek</code> &ndash; potomek je zdědí od rodiče a pouze doplní specifické chování (štěkání).
+              </p>
+            </div>
+
+            <div class="content-card" style="border-left: 4px solid #f59e0b;">
+              <h4 style="margin: 0 0 0.3rem 0; font-size: 0.95rem; color: #fbbf24;">Polymorfismus (Mnoho forem)</h4>
+              <p style="margin: 0; font-size: 0.84rem; color: var(--text-secondary);">
+                Máme pole různých zvířat <code>[pes, kocka, krava]</code>. Projdeme je jediným cyklem a zavoláme <code>zvire.vydej_zvuk()</code>. Každý objekt zareaguje po svém, aniž bychom museli zjišťovat jeho typ podmínkami <code>if-else</code>!
+              </p>
+            </div>
+
+            <div class="compare-box good" style="margin-top: 0.2rem;">
+              <div class="compare-title">Výhoda pro architekturu</div>
+              <p style="margin: 0; font-size: 0.82rem; color: var(--text-secondary);">
+                Když do hry za měsíc přidáte novou třídu <code>Kacena</code>, existující kód pro vykreslení či ozvučení zvířat <strong>nemusíte vůbec měnit</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Kódový blok -->
+          <div>
+            <div class="code-tabs-container" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Polymorfismus</span>
+              </div>
+              <div class="code-tab-pane active" data-lang="python"><span class="token-kw">class</span> <span class="token-fn">Zvire</span>:
+    <span class="token-kw">def</span> <span class="token-fn">__init__</span>(<span class="token-self">self</span>, jmeno):
+        <span class="token-self">self</span>.jmeno = jmeno
+    <span class="token-kw">def</span> <span class="token-fn">vydej_zvuk</span>(<span class="token-self">self</span>):
+        <span class="token-kw">pass</span>
+
+<span class="token-kw">class</span> <span class="token-fn">Pes</span>(<span class="token-fn">Zvire</span>):
+    <span class="token-kw">def</span> <span class="token-fn">vydej_zvuk</span>(<span class="token-self">self</span>):
+        <span class="token-kw">return</span> f<span class="token-str">"{self.jmeno} štěká: Haf haf!"</span>
+
+<span class="token-kw">class</span> <span class="token-fn">Kocka</span>(<span class="token-fn">Zvire</span>):
+    <span class="token-kw">def</span> <span class="token-fn">vydej_zvuk</span>(<span class="token-self">self</span>):
+        <span class="token-kw">return</span> f<span class="token-str">"{self.jmeno} mňouká: Mňau!"</span>
+
+<span class="token-cmt"># Polymorfní zpracování seznamu</span>
+zvirata = [<span class="token-fn">Pes</span>(<span class="token-str">"Alík"</span>), <span class="token-fn">Kocka</span>(<span class="token-str">"Micka"</span>)]
+<span class="token-kw">for</span> z <span class="token-kw">in</span> zvirata:
+    <span class="token-kw">print</span>(z.<span class="token-fn">vydej_zvuk</span>())</div>
+              <div class="code-tab-pane" data-lang="javascript"><span class="token-kw">class</span> <span class="token-fn">Zvire</span> {
+  <span class="token-fn">constructor</span>(jmeno) { <span class="token-self">this</span>.jmeno = jmeno; }
+  <span class="token-fn">vydejZvuk</span>() { <span class="token-kw">return</span> <span class="token-str">"..."</span>; }
+}
+
+<span class="token-kw">class</span> <span class="token-fn">Pes</span> <span class="token-kw">extends</span> <span class="token-fn">Zvire</span> {
+  <span class="token-fn">vydejZvuk</span>() { <span class="token-kw">return</span> <span class="token-str">`<span class="token-self">${this.jmeno}</span> štěká: Haf haf!`</span>; }
+}
+
+<span class="token-kw">class</span> <span class="token-fn">Kocka</span> <span class="token-kw">extends</span> <span class="token-fn">Zvire</span> {
+  <span class="token-fn">vydejZvuk</span>() { <span class="token-kw">return</span> <span class="token-str">`<span class="token-self">${this.jmeno}</span> mňouká: Mňau!`</span>; }
+}
+
+<span class="token-cmt">// Polymorfní cyklus</span>
+<span class="token-kw">const</span> zvirata = [<span class="token-kw">new</span> <span class="token-fn">Pes</span>(<span class="token-str">"Alík"</span>), <span class="token-kw">new</span> <span class="token-fn">Kocka</span>(<span class="token-str">"Micka"</span>)];
+zvirata.<span class="token-fn">forEach</span>(z => console.<span class="token-fn">log</span>(z.<span class="token-fn">vydejZvuk</span>()));</div>
+              <div class="code-tab-pane" data-lang="php"><span class="token-kw">class</span> <span class="token-fn">Zvire</span> {
+    <span class="token-kw">public</span> <span class="token-type">string</span> $jmeno;
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">__construct</span>($jmeno) { <span class="token-self">$this</span>->jmeno = $jmeno; }
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">vydejZvuk</span>(): <span class="token-type">string</span> { <span class="token-kw">return</span> <span class="token-str">"..."</span>; }
+}
+
+<span class="token-kw">class</span> <span class="token-fn">Pes</span> <span class="token-kw">extends</span> <span class="token-fn">Zvire</span> {
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">vydejZvuk</span>(): <span class="token-type">string</span> {
+        <span class="token-kw">return</span> <span class="token-self">$this</span>->jmeno . <span class="token-str">" štěká: Haf!"</span>;
+    }
+}
+
+<span class="token-kw">class</span> <span class="token-fn">Kocka</span> <span class="token-kw">extends</span> <span class="token-fn">Zvire</span> {
+    <span class="token-kw">public</span> <span class="token-kw">function</span> <span class="token-fn">vydejZvuk</span>(): <span class="token-type">string</span> {
+        <span class="token-kw">return</span> <span class="token-self">$this</span>->jmeno . <span class="token-str">" mňouká: Mňau!"</span>;
+    }
+}
+
+$zvirata = [<span class="token-kw">new</span> <span class="token-fn">Pes</span>(<span class="token-str">"Alík"</span>), <span class="token-kw">new</span> <span class="token-fn">Kocka</span>(<span class="token-str">"Micka"</span>)];
+<span class="token-kw">foreach</span> ($zvirata <span class="token-kw">as</span> $z) {
+    <span class="token-kw">echo</span> $z-><span class="token-fn">vydejZvuk</span>() . <span class="token-str">"\n"</span>;
+}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Vizuální modelování: UML Class Diagram
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="UML Class Diagram">
+        <div class="slide-header">
+          <h2 class="slide-title">Vizuální modelování: UML Class Diagram</h2>
+          <p class="slide-subtitle">Unified Modeling Language &ndash; celosvětový standard pro grafický návrh a dokumentaci tříd a systémů.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Anatomie UML boxu -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">
+              V diagramu tříd je každá třída znázorněna obdélníkem rozděleným na <strong>3 horizontální oddíly</strong>:
+            </p>
+
+            <div class="uml-class-box">
+              <div class="uml-header">
+                <span class="uml-stereotype">&laquo;entity&raquo;</span>
+                <div class="uml-title">Uzivatel</div>
+              </div>
+              <div class="uml-section">
+                <div class="uml-item">
+                  <span class="uml-vis priv">-</span>
+                  <span>id : <span class="uml-type">int</span></span>
+                </div>
+                <div class="uml-item">
+                  <span class="uml-vis pub">+</span>
+                  <span>jmeno : <span class="uml-type">string</span></span>
+                </div>
+                <div class="uml-item">
+                  <span class="uml-vis priv">-</span>
+                  <span>hesloHash : <span class="uml-type">string</span></span>
+                </div>
+                <div class="uml-item">
+                  <span class="uml-vis prot">#</span>
+                  <span>role : <span class="uml-type">string</span> = "student"</span>
+                </div>
+              </div>
+              <div class="uml-section">
+                <div class="uml-item">
+                  <span class="uml-vis pub">+</span>
+                  <span>prihlasSe(heslo: <span class="uml-type">string</span>) : <span class="uml-type">bool</span></span>
+                </div>
+                <div class="uml-item">
+                  <span class="uml-vis pub">+</span>
+                  <span>zmenHeslo(stare: <span class="uml-type">string</span>, nove: <span class="uml-type">string</span>) : <span class="uml-type">void</span></span>
+                </div>
+                <div class="uml-item">
+                  <span class="uml-vis priv">-</span>
+                  <span>overHesloHash(heslo: <span class="uml-type">string</span>) : <span class="uml-type">bool</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+              1. Název třídy &bull; 2. Atributy (stav) &bull; 3. Metody (operace)
+            </div>
+          </div>
+
+          <!-- Modifikátory přístupu v UML -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card">
+              <h3 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; color: var(--accent-blue);">Značení viditelnosti (Visibility)</h3>
+              <table class="table-compact" style="width: 100%; font-size: 0.84rem;">
+                <thead>
+                  <tr>
+                    <th>Znak</th>
+                    <th>Modifikátor</th>
+                    <th>Význam a dosah</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong style="color: #34d399; font-size: 1.1rem;">+</strong></td>
+                    <td><strong>public</strong></td>
+                    <td>Veřejný člen &ndash; přístupný odkudkoli z celého programu.</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #f87171; font-size: 1.1rem;">-</strong></td>
+                    <td><strong>private</strong></td>
+                    <td>Soukromý člen &ndash; přístupný pouze uvnitř těla této konkrétní třídy.</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #fbbf24; font-size: 1.1rem;">#</strong></td>
+                    <td><strong>protected</strong></td>
+                    <td>Chráněný člen &ndash; přístupný ve třídě a ve všech jejích odvozených potomcích.</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: #a855f7; font-size: 1.1rem;">~</strong></td>
+                    <td><strong>package</strong></td>
+                    <td>Balíčkový přístup &ndash; v rámci stejného namespace / modulu.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content-card" style="border-left: 4px solid #a855f7;">
+              <h4 style="margin: 0 0 0.3rem 0; font-size: 0.9rem; color: #c084fc;">Formát zápisu členů v UML:</h4>
+              <p style="font-family: var(--font-mono); font-size: 0.82rem; margin: 0 0 0.3rem 0; color: #e2e8f0;">
+                [viditelnost] [nazev] : [datový typ] = [výchozí hodnota]<br>
+                [viditelnost] [nazev]([parametr]: [typ]) : [návratový typ]
+              </p>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">
+                Podtržený text v UML značí <u>statický člen</u> (patřící celé třídě, nikoli instanci).
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Vztahy mezi třídami v UML
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Vztahy mezi třídami v UML">
+        <div class="slide-header">
+          <h2 class="slide-title">Vztahy mezi třídami v UML diagramech</h2>
+          <p class="slide-subtitle">Objekty v softwaru nežijí izolovaně &ndash; spolupracují, skládají se do větších celků a dědí své vlastnosti.</p>
+        </div>
+
+        <table class="uml-relationships-table">
+          <thead>
+            <tr>
+              <th style="width: 20%;">Typ vztahu</th>
+              <th style="width: 22%;">UML grafický symbol</th>
+              <th style="width: 25%;">Význam &amp; vazba</th>
+              <th style="width: 33%;">Reálný příklad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Generalizace (Dědičnost)</strong></td>
+              <td>
+                <div class="uml-symbol-cell">
+                  <span style="font-size: 1.1rem; color: #38bdf8;">&HorizontalLine;&HorizontalLine;&triangleright;</span>
+                  <span>Plná čára s prázdným trojúhelníkem</span>
+                </div>
+              </td>
+              <td>Vztah <strong>IS-A</strong> (je druhem). Potomek dědí stav a chování rodiče.</td>
+              <td><code>Pes</code> je <code>Zvíře</code> &bull; <code>Kruh</code> je <code>Tvar</code></td>
+            </tr>
+
+            <tr>
+              <td><strong>Realizace (Rozhraní)</strong></td>
+              <td>
+                <div class="uml-symbol-cell">
+                  <span style="font-size: 1.1rem; color: #34d399;">- - - &triangleright;</span>
+                  <span>Čárkovaná čára s trojúhelníkem</span>
+                </div>
+              </td>
+              <td>Třída implementuje formální kontrakt definovaný v rozhraní (interface).</td>
+              <td><code>UzivatelService</code> implementuje <code>AuthInterface</code></td>
+            </tr>
+
+            <tr>
+              <td><strong>Kompozice (Pevné složení)</strong></td>
+              <td>
+                <div class="uml-symbol-cell">
+                  <span style="font-size: 1.1rem; color: #f43f5e;">&diams;&HorizontalLine;&HorizontalLine;</span>
+                  <span>Plný černý kosočtverec</span>
+                </div>
+              </td>
+              <td>Silná vazba <strong>HAS-A</strong>. Část nemůže existovat bez celku. Zánik celku zničí i součást.</td>
+              <td><code>Auto</code> vlastní <code>Motor</code> &bull; <code>Faktura</code> vlastní <code>PolozkyFaktury</code></td>
+            </tr>
+
+            <tr>
+              <td><strong>Agregace (Volné složení)</strong></td>
+              <td>
+                <div class="uml-symbol-cell">
+                  <span style="font-size: 1.1rem; color: #fbbf24;">&diamond;&HorizontalLine;&HorizontalLine;</span>
+                  <span>Prázdný bílý kosočtverec</span>
+                </div>
+              </td>
+              <td>Volná vazba <strong>HAS-A</strong>. Prvek může existovat samostatně i po zániku celku.</td>
+              <td><code>TridaSPŠ</code> má <code>Zaky</code> (po zrušení třídy žáci dál existují)</td>
+            </tr>
+
+            <tr>
+              <td><strong>Asociace (Spolupráce)</strong></td>
+              <td>
+                <div class="uml-symbol-cell">
+                  <span style="font-size: 1.1rem; color: #a855f7;">&HorizontalLine;&HorizontalLine;&gt;</span>
+                  <span>Jednoduchá šipka se směrem</span>
+                </div>
+              </td>
+              <td>Vztah <strong>USES-A</strong> (využívá). Objekt posílá zprávy jinému objektu.</td>
+              <td><code>Objednavka</code> posílá notifikaci přes <code>EmailSender</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="hero-feature-item" style="margin-top: 1rem;">
+          <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+          <span style="font-size: 0.85rem;">
+            <strong>Násobení (Multiplicity):</strong> U vztahů se v UML často uvádí početnost vazby: <code>1</code> (právě jeden), <code>0..1</code> (žádný nebo jeden), <code>*</code> nebo <code>0..*</code> (mnoho), <code>1..*</code> (jeden a více).
+          </span>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí tématu & Kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí a Ověření znalostí">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Zopakujte si základní principy objektového paradigmatu před přechodem k detailní anatomii třídy.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Shrnutí bodů -->
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="content-card" style="border-left: 4px solid #10b981;">
+              <h3 style="margin: 0 0 0.4rem 0; font-size: 0.95rem; color: #34d399;">Rychlý přehled pro vývojáře SPŠ</h3>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6;">
+                <li><strong>OOP</strong> sdružuje související data (atributy) a logiku (metody) do jednoho celku &ndash; objektu.</li>
+                <li><strong>Třída</strong> je vzor/plán v kódu, <strong>objekt</strong> je konkrétní živá instance v paměti haldy.</li>
+                <li><strong>4 pilíře:</strong> Abstrakce (vyber to podstatné), Zapouzdření (zamkni stav za metody), Dědičnost (znovupoužij předka), Polymorfismus (reaguj různě na stejný signál).</li>
+                <li><strong>UML Class Diagram</strong> znázorňuje třídy v obdélníku se 3 oddíly a viditelností: <code>+</code> public, <code>-</code> private, <code>#</code> protected.</li>
+                <li><strong>Vztahy:</strong> Kompozice (silné spojení), Agregace (volné spojení), Generalizace (dědičnost).</li>
+              </ul>
+            </div>
+
+            <div class="compare-box bad">
+              <div class="compare-title">Častý omyl: Vytvoření třídy pro každou triviální funkci</div>
+              <p style="margin: 0; font-size: 0.82rem; color: var(--text-secondary);">
+                OOP není cíl, ale nástroj. Pro jednoduché výpočty stačí čistá funkce. Objektový model dává smysl tam, kde existuje <strong>stav, který se v čase mění</strong>, a soubor pravidel pro manipulaci s ním.
+              </p>
+            </div>
+          </div>
+
+          <!-- Interaktivní otázky -->
+          <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+            <h3 style="margin: 0; font-size: 0.95rem; color: var(--accent-blue);">Ověřte své znalosti (Kliknutím zobrazte řešení):</h3>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Jaký je rozdíl mezi třídou a instancí?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Třída je předpis v kódu (architektonický plán), zatímco instance je konkrétní objekt vytvořený v paměti RAM se svými vlastními hodnotami.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. Proč děláme atributy soukromé (Private)?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Abychom zabránili neoprávněné manipulaci a zajistili, že jakákoli změna stavu projde přes validační logiku našich metod (Zapouzdření).
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. Co vyjadřuje polymorfismus v praxi?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Možnost volat metodu se stejným názvem na různých typech objektů, přičemž každý objekt vykoná svou specifickou implementaci.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. Jaký je rozdíl mezi kompozicí a agregací v UML?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                U kompozice (černý kosočtverec) je součást existenčně závislá na celku (auto &rarr; motor). U agregace (bílý kosočtverec) může prvek existovat samostatně (třída &rarr; žák).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="#" class="control-btn disabled" id="prevLessonBtn" aria-disabled="true" tabindex="-1" title="Předchozí téma (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../051-Anatomie-tridy/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 051 Anatomie třídy (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Společný modul pro synchronizované přepínání jazyků kódu -->
+  <script src="../../assets/js/code-switcher.js"></script>
+</body>
+
+</html>

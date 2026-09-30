@@ -1,0 +1,272 @@
+/* ==========================================================================
+   Téma 051: Anatomie třídy – Lokální styly
+   Předmět: PRG (Programování) • SPŠ
+   ========================================================================== */
+
+:root {
+  --accent: #06b6d4;
+  --accent-glow: rgba(6, 182, 212, 0.28);
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #10b981;
+  --accent-purple: #a855f7;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+
+  --gradient-main: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  --gradient-text: linear-gradient(135deg, #38bdf8 0%, #2dd4bf 50%, #a78bfa 100%);
+}
+
+/* Ambientní orby */
+.ambient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+  animation: floatOrb 26s infinite alternate ease-in-out;
+}
+
+.ambient-orb-1 {
+  width: 580px;
+  height: 580px;
+  background: var(--accent);
+  top: -120px;
+  left: -100px;
+}
+
+.ambient-orb-2 {
+  width: 620px;
+  height: 620px;
+  background: #3b82f6;
+  bottom: -150px;
+  right: -150px;
+  animation-duration: 32s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(45px, 30px) scale(1.06); }
+  100% { transform: translate(-30px, 45px) scale(0.96); }
+}
+
+[data-theme="light"] .ambient-orb {
+  opacity: 0.08;
+  filter: blur(100px);
+}
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] .grid-overlay {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 9999px;
+  margin-bottom: 1.25rem;
+}
+
+.hero-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="light"] .hero-feature-item {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+/* Anatomický diagram třídy */
+.anatomy-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+[data-theme="light"] .anatomy-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.pointer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.pointer-badge.py {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.pointer-badge.js {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.pointer-badge.php {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+/* Kódovací výzvy */
+.challenge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.challenge-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-left: 4px solid var(--accent);
+}
+
+[data-theme="light"] .challenge-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.challenge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.challenge-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.challenge-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(6, 182, 212, 0.15);
+  color: #38bdf8;
+}
+
+.challenge-desc {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Interaktivní kvízy */
+.quiz-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-card:hover {
+  border-color: var(--accent);
+  background: rgba(6, 182, 212, 0.08);
+}
+
+[data-theme="light"] .quiz-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.quiz-question {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quiz-answer {
+  display: none;
+  font-size: 0.84rem;
+  color: var(--accent-emerald);
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.quiz-card.open .quiz-answer {
+  display: block;
+}

@@ -1,0 +1,264 @@
+/* ==========================================================================
+   Téma 052: Pokročilé OOP – Lokální styly
+   Předmět: PRG (Programování) • SPŠ
+   ========================================================================== */
+
+:root {
+  --accent: #a855f7;
+  --accent-glow: rgba(168, 85, 247, 0.3);
+  --accent-purple: #c084fc;
+  --accent-pink: #ec4899;
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+
+  --gradient-main: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #f43f5e 100%);
+  --gradient-text: linear-gradient(135deg, #c084fc 0%, #f472b6 50%, #38bdf8 100%);
+}
+
+/* Ambientní orby */
+.ambient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(95px);
+  opacity: 0.18;
+  animation: floatOrb 28s infinite alternate ease-in-out;
+}
+
+.ambient-orb-1 {
+  width: 580px;
+  height: 580px;
+  background: var(--accent);
+  top: -120px;
+  left: -100px;
+}
+
+.ambient-orb-2 {
+  width: 620px;
+  height: 620px;
+  background: #ec4899;
+  bottom: -150px;
+  right: -150px;
+  animation-duration: 32s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(45px, 35px) scale(1.05); }
+  100% { transform: translate(-35px, 45px) scale(0.95); }
+}
+
+[data-theme="light"] .ambient-orb {
+  opacity: 0.08;
+  filter: blur(100px);
+}
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] .grid-overlay {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c084fc;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 9999px;
+  margin-bottom: 1.25rem;
+}
+
+.hero-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="light"] .hero-feature-item {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+/* Antipattern karty */
+.antipattern-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.antipattern-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem 1.15rem;
+  border-left: 4px solid #f43f5e;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+[data-theme="light"] .antipattern-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.antipattern-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f87171;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.antipattern-desc {
+  font-size: 0.83rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.antipattern-fix {
+  font-size: 0.8rem;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.08);
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+}
+
+/* Magické metody přehled */
+.magic-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 0.84rem;
+}
+
+.magic-table th {
+  background: rgba(15, 23, 42, 0.9);
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  font-weight: 700;
+  color: #c084fc;
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .magic-table th {
+  background: #f1f5f9;
+}
+
+.magic-table td {
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.magic-table tr:last-child td {
+  border-bottom: none;
+}
+
+.magic-code {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* Kvízy */
+.quiz-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-card:hover {
+  border-color: var(--accent);
+  background: rgba(168, 85, 247, 0.08);
+}
+
+[data-theme="light"] .quiz-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.quiz-question {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.quiz-answer {
+  display: none;
+  font-size: 0.84rem;
+  color: var(--accent-emerald);
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.quiz-card.open .quiz-answer {
+  display: block;
+}
