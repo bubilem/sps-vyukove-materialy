@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 040: Herní enginy a softwarová architektura | PHR &bull; SPŠ</title>
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #8b5cf6;
+      --accent-glow: rgba(139, 92, 246, 0.25);
+    }
+
+    /* Specifické doplňkové styly pro téma 040 Herní enginy */
+    .engine-brand-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .engine-brand-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .engine-brand-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .engine-brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .engine-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-color);
+    }
+
+    .engine-pill-ue {
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.3);
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    .engine-pill-unity {
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .engine-pill-godot {
+      color: #478cbf;
+      border-color: rgba(71, 140, 191, 0.3);
+      background: rgba(71, 140, 191, 0.12);
+    }
+
+    .engine-pill-other {
+      color: #a855f7;
+      border-color: rgba(168, 85, 247, 0.3);
+      background: rgba(168, 85, 247, 0.1);
+    }
+
+    /* Systémová anatomie enginu */
+    .anatomy-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+
+    .anatomy-layer-row {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      display: grid;
+      grid-template-columns: 180px 1fr 200px;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .layer-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .layer-desc {
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .layer-examples {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    /* Interaktivní porovnávač enginů */
+    .comparator-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      align-items: stretch;
+    }
+
+    .comparator-controls {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .comp-select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .comp-select-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .comp-select-group select {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.88rem;
+      outline: none;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .comp-select-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .comparator-result {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: var(--accent);
+      width: fit-content;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      margin-top: 0.75rem;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .matrix-table th {
+      color: var(--text-secondary);
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .matrix-table td {
+      color: var(--text-primary);
+    }
+
+    .matrix-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Mimoherní aplikace */
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .industry-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: var(--transition);
+    }
+
+    .industry-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .industry-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: var(--accent);
+    }
+
+    /* FAQ akordeon */
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.65rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-question {
+      padding: 0.85rem 1.15rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .faq-question .icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question .icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.15rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: -0.25rem;
+      padding-top: 0.75rem;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+      .engine-brand-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .anatomy-layer-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+      .layer-examples {
+        text-align: left;
+      }
+      .comparator-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .industry-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Ambientní pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(139, 92, 246, 0.16) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Indikátor průchodu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ standardu -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PHR">PHR</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">040 Herní enginy</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Snímky prezentace (Slide Viewport) -->
+    <main class="slide-viewport">
+
+      <!-- SNÍMEK 1: Titulní snímek -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do herních enginů">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět PHR &bull; Téma 040</span>
+            <span class="badge">Výukový modul SPŠ</span>
+          </div>
+          <h1 class="hero-title">Herní enginy a softwarová architektura</h1>
+          <p class="hero-subtitle">
+            Srdce moderních videoher: softwarové vrstvy, renderovací a fyzikální potrubí, globální enginy Unreal, Unity, Godot a průmyslové využití v simulacích a filmu.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 0.35rem; width: 18px; height: 18px; color: var(--accent);"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Anatomie a subsystémy
+              </h4>
+              <p>Co vše engine za vývojáře řeší: Game loop, renderování geometrie, kolize, 3D audio, paměťový management, vstupní vrstva a skriptování.</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 0.35rem; width: 18px; height: 18px; color: #38bdf8;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Světové giganty i FOSS
+              </h4>
+              <p>Hloubkový rozbor Unreal Engine (AAA fotorealismus), Unity (multiplatformní všestrannost) a Godot Engine (open-source volba našich žáků).</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 0.35rem; width: 18px; height: 18px; color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                Využití mimo hry
+              </h4>
+              <p>Virtuální filmová produkce (The Volume), digitální dvojčata v průmyslu 4.0, architektura (ArchViz) a automobilové infotainmenty.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 2: Co je herní engine a proč vznikl -->
+      <section class="slide" id="slide-2" data-title="Definice a vznik enginů">
+        <div class="slide-content">
+          <h2>Co je herní engine a proč vznikl?</h2>
+          <p class="slide-lead">
+            Herní engine (Game Engine) je komplexní softwarový rámec poskytující vývojářům sadu předpřipravených knihoven, subsystémů a editorů, díky kterým nemusí každou hru programovat od nuly.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: #f43f5e; display: flex; align-items: center; gap: 0.5rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                Éra před enginy (do poloviny 90. let)
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Každá hra se psala téměř od holého křemíku v assembleru nebo C. Herní kód byl pevně svázán s grafickým rasterizérem a přímým přístupem ke zvukové kartě.
+              </p>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li>Nemožnost znovupoužít kód pro další titul – obrovská časová i finanční režie.</li>
+                <li>Změna grafické karty nebo procesoru znamenala přepsat desítky tisíc řádků kódu.</li>
+                <li>Hry tvořili výhradně programátoři; grafici a designéři neměli k dispozici vizuální editory.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #10b981; display: flex; align-items: center; gap: 0.5rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                Zlom: id Tech a znovupoužitelný engine
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                John Carmack při vývoji <em>DOOM (1993)</em> a <em>Quake (1996)</em> poprvé striktně oddělil herní engine (jádro) od herního obsahu (mapy, textury, modely ve formátu WAD/PAK).
+              </p>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li>Engine bylo možné licencovat jiným studiím (např. Half-Life vznikl na modifikovaném Quake enginu GoldSrc).</li>
+                <li>Dramatické zkrácení doby vývoje – vývojáři se soustředí na herní mechaniky, umění a příběh.</li>
+                <li>Nezávislost na hardwaru: engine abstrahuje rozdíly mezi PC, konzolemi i telefony přes jednotná API.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; padding: 0.85rem 1.25rem; background: rgba(139, 92, 246, 0.08); border-left: 3px solid var(--accent); border-radius: var(--radius-sm);">
+            <strong style="color: var(--accent);">Základní poučka softwarové architektury:</strong>
+            <span style="font-size: 0.88rem; color: var(--text-secondary); margin-left: 0.4rem;">
+              Herní engine je most mezi surovým hardwarem (GPU, CPU, RAM, vstupy) a samotným herním zážitkem vytvořeným designéry.
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 3: Anatomie enginu - co vše engine řeší -->
+      <section class="slide" id="slide-3" data-title="Anatomie subsystémů">
+        <div class="slide-content">
+          <h2>Anatomie herního enginu: Klíčové subsystémy</h2>
+          <p class="slide-lead">
+            Herní engine není jeden monolytický program, ale symfonie úzce spolupracujících specializovaných subsystémů.
+          </p>
+
+          <div class="anatomy-layers">
+            <div class="anatomy-layer-row">
+              <div class="layer-title">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                1. Renderovací jádro
+              </div>
+              <div class="layer-desc">
+                Transformace 3D geometrie, aplikace materiálů (PBR), stínů, globálního osvětlení a post-processingu přes grafická API.
+              </div>
+              <div class="layer-examples">DirectX 12, Vulkan, Metal</div>
+            </div>
+
+            <div class="anatomy-layer-row">
+              <div class="layer-title">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                2. Fyzika a kolize
+              </div>
+              <div class="layer-desc">
+                Pohyb tuhých těles (Rigidbodies), detekce kolizí, ragdoll postavy, simulace kapalin, vozidel a paprskové dotazy (Raycasting).
+              </div>
+              <div class="layer-examples">PhysX, Havok, Chaos, Jolt</div>
+            </div>
+
+            <div class="anatomy-layer-row">
+              <div class="layer-title">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                3. Zvukový systém
+              </div>
+              <div class="layer-desc">
+                Prostorový 3D zvuk (Spatial Audio), Dopplerův jev, dynamická okluze překážkami a interaktivní adaptivní hudba.
+              </div>
+              <div class="layer-examples">FMOD, Wwise, OpenAL</div>
+            </div>
+
+            <div class="anatomy-layer-row">
+              <div class="layer-title">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                4. Skriptování & Logika
+              </div>
+              <div class="layer-desc">
+                Definice chování herních objektů, zbraní, questů a pravidel hry. Zpřístupňuje C++ jádro pro rychlou tvorbu bez rekompilace celého enginu.
+              </div>
+              <div class="layer-examples">C#, C++, GDScript, Lua, Blueprints</div>
+            </div>
+
+            <div class="anatomy-layer-row">
+              <div class="layer-title">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                5. Vstup a Uživatelské UI
+              </div>
+              <div class="layer-desc">
+                Abstrakce vstupních zařízení (gamepad, klávesnice, dotyk, gyroskop) a renderování rozhraní (HUD, menu, inventáře).
+              </div>
+              <div class="layer-examples">Input Action Map, Canvas UI</div>
+            </div>
+
+            <div class="anatomy-layer-row">
+              <div class="layer-title">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                6. Síťová architektura
+              </div>
+              <div class="layer-desc">
+                Multiplayer synchronizace, autoritativní server, predikce na klientovi (Client-side prediction) a vyrovnávání zpoždění (Lag compensation).
+              </div>
+              <div class="layer-examples">UDP, Rollback netcode, RPC</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 4: Herní smyčka a synchronizace -->
+      <section class="slide" id="slide-4" data-title="Game Loop a časování">
+        <div class="slide-content">
+          <h2>Herní smyčka: Game Loop a časování (Delta Time)</h2>
+          <p class="slide-lead">
+            Jak počítač zpracovává interaktivní svět: Nekonečný cyklus, který v každém taktu přijme vstup, spočítá logiku, posune fyziku a vykreslí snímek.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Struktura jednoho snímku herní smyčky</h3>
+              <ol class="styled-list" style="margin-top: 0.5rem; font-size: 0.86rem;">
+                <li><strong>Process Input:</strong> Přečtení stavu tlačítek, joysticků, myši z vyrovnávací paměti OS.</li>
+                <li><strong>Fixed Update (Fyzikální krok):</strong> Spočtení gravitačních sil a kolizí s konstantním časovým krokem $\Delta t_{\text{fixed}}$ (např. přesně 60 Hz / 16.66 ms).</li>
+                <li><strong>Update (Herní logika):</strong> Spuštění žákovských skriptů, pohyb nepřátel, časovače a AI chování.</li>
+                <li><strong>Audio & Animations:</strong> Výpočet kosterních póz (skeletal blend) a 3D pozic zvuku.</li>
+                <li><strong>Render:</strong> Předání geometrie a shaderů grafické kartě a odeslání do frame bufferu.</li>
+              </ol>
+            </div>
+
+            <div class="content-card">
+              <h3>Kritický koncept: Proč potřebujeme Delta Time?</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Pokud hráč hraje při 30 FPS a druhý při 240 FPS, nesmí se postava při vyšším počtu snímků pohybovat 8&times; rychleji!
+              </p>
+
+              <div style="background: var(--code-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.82rem;">
+                <span style="color: #f43f5e;">// ŠPATNĚ: Rychlost závisí na snímkové frekvenci</span><br>
+                position.x += speed;<br><br>
+                <span style="color: #10b981;">// SPRÁVNĚ: Rychlost je normalizována reálným časem</span><br>
+                position.x += speed * delta;
+              </div>
+
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.75rem;">
+                <strong>Delta ($\Delta t$):</strong> Doba v sekundách, kterou zabral předchozí snímek (např. při 60 FPS je $\Delta t \approx 0.0166\text{ s}$).
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+            <div class="metric-pill-item" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Update()</div>
+              <div style="font-weight: 700; color: #38bdf8;">Proměnlivý čas</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem;">Řídí se rychlostí GPU a monitory. Vhodné pro kameru a UI.</div>
+            </div>
+            <div class="metric-pill-item" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">FixedUpdate() / _physics_process()</div>
+              <div style="font-weight: 700; color: #10b981;">Konstantní krok</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem;">Deterministická fyzika, brání propadávání těles stěnami při lagu.</div>
+            </div>
+            <div class="metric-pill-item" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.75rem; border-radius: var(--radius-sm);">
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">V-Sync & Frame Pacing</div>
+              <div style="font-weight: 700; color: var(--accent);">Plynulost obrazu</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem;">Zamezení trhání obrazu (tearing) sladěním s obnovovací frekvencí (Hz).</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 5: Unreal Engine v detailu -->
+      <section class="slide" id="slide-5" data-title="Unreal Engine">
+        <div class="slide-content">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h2>Unreal Engine: Špička grafického fotorealismu</h2>
+            <span class="engine-badge engine-pill-ue">Epic Games &bull; C++ & Blueprints</span>
+          </div>
+          <p class="slide-lead">
+            Průmyslový standard pro AAA tituly, filmové vizuální efekty a technologie nové generace.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Historie a evoluce</h3>
+              <ul class="styled-list" style="font-size: 0.86rem;">
+                <li><strong>1998 – Unreal:</strong> Vytvořen Timem Sweeneym jako konkurent pro Quake II. Přinesl revoluční dynamické barevné osvětlení a 3D editor UnrealEd.</li>
+                <li><strong>Unreal Engine 3 (2006):</strong> Definoval celou generaci Xbox 360 / PS3 (Gears of War, Mass Effect, Batman: Arkham, Bioshock).</li>
+                <li><strong>Unreal Engine 4 (2014):</strong> Zrušení drahých licencí za miliony dolarů, otevření zdrojového kódu všem vývojářům za 5% podíl z tržeb.</li>
+                <li><strong>Unreal Engine 5 (2022+):</strong> Průlomové technologie Nanite a Lumen odstraňují potřebu ruční tvorby LOD a pečení světel.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Klíčové technologické pilíře UE5</h3>
+              <ul class="styled-list" style="font-size: 0.86rem;">
+                <li><strong>Nanite (Virtualized Geometry):</strong> Umožňuje importovat filmové modely se stovkami milionů polygonů přímo do hry bez ruční optimalizace.</li>
+                <li><strong>Lumen (Global Illumination):</strong> Plně dynamické osvětlení v reálném čase reagující na změnu polohy slunce či zničení zdi.</li>
+                <li><strong>Blueprints Visual Scripting:</strong> Umožňuje designérům naprogramovat kompletní hru spojováním vizuálních uzlů bez jediného řádku C++.</li>
+                <li><strong>Chaos Physics & Niagara:</strong> Pokročilá destrukce terénu, simulace látek, vlasů a částicových efektů.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 1rem;">
+            <h4 style="color: var(--accent); margin-bottom: 0.4rem;">Ikonické hry vytvořené v Unreal Enginu</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              <strong>Fortnite</strong> (globální megahit s více než 500 mil. hráči), <strong>Gears of War</strong>, <strong>BioShock</strong>, <strong>Star Wars Jedi: Survivor</strong>, <strong>Black Myth: Wukong</strong>, <strong>Tekken 8</strong>, <strong>The Witcher 4</strong> (přechod studia CD Projekt RED z interního enginu na UE5).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 6: Unity v detailu -->
+      <section class="slide" id="slide-6" data-title="Unity Engine">
+        <div class="slide-content">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h2>Unity: Multiplatformní král indie i mobilních her</h2>
+            <span class="engine-badge engine-pill-unity">Unity Technologies &bull; C#</span>
+          </div>
+          <p class="slide-lead">
+            Nejrozšířenější herní engine světa z hlediska počtu vydaných titulů a podporovaných platforem.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Historie a demokratizace vývoje</h3>
+              <ul class="styled-list" style="font-size: 0.86rem;">
+                <li><strong>2005 – Vznik v Dánsku:</strong> Založeno Davidem Helgasonem, Joachimem Ante a Nicholasem Francisem s mottem „Demokratizovat vývoj her“. Původně pouze pro macOS.</li>
+                <li><strong>Mobilní boom (2008+):</strong> Včasná podpora iPhonu a Androidu zajistila Unity absolutní dominanci na mobilním trhu (více než 60 % mobilních her).</li>
+                <li><strong>Unity Asset Store (2010):</strong> Revoluční tržiště hotových modelů, shaderů a skriptů umožnilo malým týmům konkurovat velkým studiím.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Architektura a technické vlastnosti</h3>
+              <ul class="styled-list" style="font-size: 0.86rem;">
+                <li><strong>C# a .NET runtime:</strong> Skriptování v jazyce C# nabízí ideální balanc mezi vysokým výkonem a bezpečnou pamětí bez pádů na ukazatelích.</li>
+                <li><strong>GameObject & Component:</strong> Kompoziční architektura, kde se funkčnost (Renderer, Collider, Skript) skládá na herní objekt.</li>
+                <li><strong>Modulární renderery (URP & HDRP):</strong> Universal Render Pipeline pro mobily a Switch vs. High Definition Render Pipeline pro PC a PS5.</li>
+                <li><strong>DOTS (Data-Oriented Technology Stack):</strong> Nízkoúrovňový ECS systém pro simulaci desítek tisíc jednotek současně.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 1rem;">
+            <h4 style="color: #f59e0b; margin-bottom: 0.4rem;">Ikonické hry vytvořené v Unity</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              <strong>Hollow Knight</strong>, <strong>Cuphead</strong>, <strong>Ori and the Blind Forest</strong>, <strong>Subnautica</strong>, <strong>Beat Saber</strong> (nejúspěšnější VR titul), <strong>Pokémon GO</strong>, <strong>Genshin Impact</strong>, <strong>Cities: Skylines</strong>, <strong>Escape from Tarkov</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 7: Godot Engine v detailu -->
+      <section class="slide" id="slide-7" data-title="Godot Engine">
+        <div class="slide-content">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h2>Godot Engine: Šampion svobody a open-source</h2>
+            <span class="engine-badge engine-pill-godot">Godot Community &bull; GDScript & C# &bull; MIT</span>
+          </div>
+          <p class="slide-lead">
+            Nezávislý open-source engine, který si získal srdce komunity i našich žáků díky své lehkosti, čistotě a nulovým poplatkům.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Proč je Godot v centru pozornosti na SPŠ?</h3>
+              <ul class="styled-list" style="font-size: 0.86rem;">
+                <li><strong>100% Free & Open-Source (MIT licence):</strong> Hra je navždy vaše. Žádné procentní poplatky z obratu, žádná registrace ani licence.</li>
+                <li><strong>Extrémní lehkost (~60 MB):</strong> Celý engine je jeden spustitelný soubor bez instalátoru, který se spustí do 1 vteřiny i ze školního USB disku.</li>
+                <li><strong>Nativní 2D i moderní 3D:</strong> Skutečný pixel-perfect 2D engine (ne pouhá projekce 3D prostoru jako v Unity).</li>
+                <li><strong>Jednoduché a rychlé skriptování:</strong> GDScript je syntakticky příbuzný Pythonu, který žáci znají z výuky programování.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Architektura: Vše je scéna a uzel</h3>
+              <ul class="styled-list" style="font-size: 0.86rem;">
+                <li><strong>Node & Scene Tree:</strong> Žádný rozdíl mezi prefabem a úrovní. Hráč je scéna, nepřítel je scéna a úroveň je scéna složená z ostatních scén.</li>
+                <li><strong>Reaktivní signály (Signals):</strong> Čisté rozpojení herní logiky (Observer pattern) – objekty vysílají události bez natvrdo zapsaných vazeb.</li>
+                <li><strong>Godot 4.x revoluce:</strong> Nový grafický renderer Vulkan (Forward+ a Mobile), nový fyzikální subsystém a staticky typovaný GDScript 2.0.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; padding: 1rem; background: rgba(71, 140, 191, 0.1); border: 1px solid rgba(71, 140, 191, 0.3); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <h4 style="color: #478cbf; margin-bottom: 0.2rem;">Detailní seznámení s Godotem</h4>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+                Praktickým postupům, rozhraní editoru a kódu v GDScriptu se detailně věnuje následující <strong>Téma 041: Engine Godot</strong>.
+              </p>
+            </div>
+            <a href="../041-Godot/index.html" class="btn-applet-link" style="background: linear-gradient(135deg, #478cbf 0%, #2563eb 100%); color: #fff; padding: 0.5rem 1rem; border-radius: 9999px; text-decoration: none; font-size: 0.82rem; font-weight: 700; flex-shrink: 0; margin-left: 1rem;">
+              Přejít na Téma 041
+              <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px; display: inline-block; vertical-align: middle; margin-left: 0.25rem;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 8: CryEngine, Source 2 a interní proprietární enginy -->
+      <section class="slide" id="slide-8" data-title="Další klíčové enginy">
+        <div class="slide-content">
+          <h2>CryEngine, Source 2 a proprietární studiové enginy</h2>
+          <p class="slide-lead">
+            Ne všechny velké hry vznikají ve třech nejznámějších enginech. Mnoho špičkových studií investuje stamiliony do vlastního křemíkového zázemí.
+          </p>
+
+          <div class="engine-brand-grid">
+            <div class="engine-brand-card">
+              <div class="engine-brand-header">
+                <h4 style="color: #38bdf8;">CryEngine</h4>
+                <span class="engine-badge engine-pill-other">Crytek</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+                Průkopník fotorealistické vegetace a dynamického nasvícení otevřených světů (slavná věta <em>„Can it run Crysis?“</em>). Využit v českém hitu <strong>Kingdom Come: Deliverance</strong> a <strong>Hunt: Showdown</strong>.
+              </p>
+            </div>
+
+            <div class="engine-brand-card">
+              <div class="engine-brand-header">
+                <h4 style="color: #f59e0b;">Source 2</h4>
+                <span class="engine-badge engine-pill-other">Valve</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+                Engine společnosti Valve optimalizovaný pro extrémně nízkou latenci sítě a dokonalou fyziku Rubikon. Pohání <strong>Counter-Strike 2</strong>, <strong>Dota 2</strong> a revoluční VR klenot <strong>Half-Life: Alyx</strong>.
+              </p>
+            </div>
+
+            <div class="engine-brand-card">
+              <div class="engine-brand-header">
+                <h4 style="color: #f43f5e;">RE Engine</h4>
+                <span class="engine-badge engine-pill-other">Capcom</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+                Japonský zázrak zaměřený na fotogrammetrii, realistickou lidskou pokožku a stabilních 60 FPS i na konzolích. Pohání <strong>Resident Evil Village</strong>, <strong>Street Fighter 6</strong> a <strong>Monster Hunter Wilds</strong>.
+              </p>
+            </div>
+
+            <div class="engine-brand-card">
+              <div class="engine-brand-header">
+                <h4 style="color: #10b981;">Decima</h4>
+                <span class="engine-badge engine-pill-other">Guerrilla</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+                Exkluzivní engine společnosti Sony specializovaný na obrovská otevřená post-apokalyptická prostředí, hustou vegetaci a umělou inteligenci strojů (<strong>Horizon Zero Dawn/Forbidden West</strong>, <strong>Death Stranding</strong>).
+              </p>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 1.25rem;">
+            <h3>Dilema studií: Vlastní proprietární engine, nebo komerční řešení?</h3>
+            <div class="grid-2" style="margin-top: 0.5rem; font-size: 0.84rem;">
+              <div>
+                <strong style="color: #10b981;">Výhody vlastního enginu:</strong> Absolutní kontrola nad kódem, možnost optimalizace na míru konkrétnímu žánru, žádné licenční poplatky cizím firmám a nezávislost na rozhodnutích třetích stran.
+              </div>
+              <div>
+                <strong style="color: #f43f5e;">Nevýhody a rizika:</strong> Enormní náklady na tým engine programátorů (desítky milionů Kč ročně), zdlouhavé zaškolování nových zaměstnanců a riziko technologického zaostávání.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 9: Softwarové architektonické vzory (OOP vs ECS) -->
+      <section class="slide" id="slide-9" data-title="Architektury OOP vs ECS">
+        <div class="slide-content">
+          <h2>Softwarové architektury: OOP komponenty vs. Data-Oriented ECS</h2>
+          <p class="slide-lead">
+            Jak herní engine organizuje data v operační paměti a jak to ovlivňuje rychlost procesoru a cache.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 style="color: #38bdf8;">1. Klasické OOP & Komponentový model</h3>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Tradiční přístup (Unity, Godot)</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Herní svět se skládá z objektů (Entities/GameObjects), na které se věší komponenty (Transform, Health, SpriteRenderer, AIController).
+              </p>
+              <ul class="styled-list" style="font-size: 0.83rem;">
+                <li><strong>Výhody:</strong> Extrémně intuitivní pro člověka a rychlé na prototypování. Snadno pochopitelné pro začínající studenty.</li>
+                <li><strong>Nevýhody (Cache Miss):</strong> Každý objekt je alokován na jiné adrese v haldě (Heap). Procesor neustále čeká na data z pomalé RAM, což drasticky snižuje výkon při desítkách tisíc jednotek.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 style="color: #10b981;">2. Entity-Component-System (ECS)</h3>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Data-Oriented Design (DOTS, Flecs)</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Striktní oddělení surových dat od funkční logiky podle zásad datově orientovaného návrhu:
+              </p>
+              <ul class="styled-list" style="font-size: 0.83rem;">
+                <li><strong>Entity:</strong> Pouhé celočíselné ID (např. <code>ID 421</code>).</li>
+                <li><strong>Component:</strong> Čistá data bez metod (např. <code>struct Position { float x, y, z; }</code>) uložená v souvislém poli v paměti.</li>
+                <li><strong>System:</strong> Logika běžící paralelně v jednom vlákně nad celým polem (např. <code>MovementSystem</code> pohne se všemi pozicemi najednou).</li>
+                <li><strong>Výsledek:</strong> Masivní využití L1/L2/L3 cache CPU a podpora statisíců entit současně při 60 FPS.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; background: var(--code-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">
+              <strong>Srovnání pro praxi:</strong> Pro 90 % běžných indie a školních her bohatě stačí komponentové OOP v Godotu či Unity. ECS se nasazuje v masivních strategiích a simulacích (např. desítky tisíc zombií v simulaci).
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 10: Využití herních enginů mimo herní průmysl -->
+      <section class="slide" id="slide-10" data-title="Využití enginů mimo hry">
+        <div class="slide-content">
+          <h2>Herní technologie mimo hry: Filmy, architektura a průmysl</h2>
+          <p class="slide-lead">
+            Dnešní herní enginy již dávno nejsou určeny pouze pro videohry. Staly se globální platformou pro real-time 3D simulace napříč celou moderní ekonomikou.
+          </p>
+
+          <div class="industry-grid">
+            <div class="industry-card">
+              <div class="industry-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Virtuální filmová produkce</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Konec zeleného plátna. Herci hrají uvnitř obří arény z LED obrazovek (technologie <em>The Volume</em>, seriál <em>The Mandalorian</em>). Unreal Engine v reálném čase posouvá perspektivu pozadí přesně podle pohybu fyzické kamery.
+              </p>
+            </div>
+
+            <div class="industry-card">
+              <div class="industry-icon">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Architektura a BIM (ArchViz)</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Interaktivní virtuální prohlídky budov dříve, než se položí první cihla. Klienti a developeři procházejí fotorealistické modely ve VR, mění materiály podlah za běhu a testují dopad denního slunce v různých ročních obdobích.
+              </p>
+            </div>
+
+            <div class="industry-card">
+              <div class="industry-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Automotive a digitální kokpity</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Automobilky (Porsche, Volvo, Lotus) integrují Unreal Engine a Unity přímo do palubních počítačů vozidel pro renderování 3D přístrojových štítů, zobrazení senzorů asistentů jízdy a aerodynamické testy v aerotunelu.
+              </p>
+            </div>
+
+            <div class="industry-card">
+              <div class="industry-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Průmyslová digitální dvojčata</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                <em>Digital Twins</em>: Virtuální 1:1 replika celé továrny, logistického centra nebo mechatronické linky. V enginu se simuluje pohyb robotických ramen a toky materiálu před investicí do fyzických strojů.
+              </p>
+            </div>
+
+            <div class="industry-card">
+              <div class="industry-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Letecké a vojenské simulátory</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Trénink pilotů civilních i vojenských letadel na certifikovaných simulátorech s přesnou fyzikou proudění vzduchu, satelitním zemským terénem a dynamickými povětrnostními podmínkami (bouře, turbulence).
+              </p>
+            </div>
+
+            <div class="industry-card">
+              <div class="industry-icon">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Medicína a chirurgie</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Simulace operací ve virtuální realitě s haptickou zpětnou vazbou. Chirurgové si nanečisto vyzkoušejí náročný zákrok na digitálním orgánu vytvořeném z CT a magnetické rezonance konkrétního pacienta.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 11: Interaktivní rádce výběru enginu -->
+      <section class="slide" id="slide-11" data-title="Výběr správného enginu">
+        <div class="slide-content">
+          <h2>Interaktivní průvodce: Jak vybrat správný herní engine?</h2>
+          <p class="slide-lead">
+            Neexistuje „nejlepší“ herní engine pro všechno. Volba vždy závisí na cílové platformě, žánru hry a velikosti vývojářského týmu.
+          </p>
+
+          <div class="comparator-wrapper">
+            <!-- Nastavení kritérií -->
+            <div class="comparator-controls">
+              <h4 style="color: var(--accent); margin-bottom: 0.25rem;">Zadejte parametry vašeho projektu:</h4>
+
+              <div class="comp-select-group">
+                <label for="selDimension">Dimenze grafiky:</label>
+                <select id="selDimension" onchange="runEngineAdvisor()">
+                  <option value="2d">Čistá 2D grafika (plošinovka, pixel art, top-down)</option>
+                  <option value="3d-indie">3D hra středního rozsahu (stylizovaná / indie)</option>
+                  <option value="3d-aaa">3D fotorealistická AAA hra (otevřený svět, Next-Gen)</option>
+                </select>
+              </div>
+
+              <div class="comp-select-group">
+                <label for="selTarget">Cílová platforma:</label>
+                <select id="selTarget" onchange="runEngineAdvisor()">
+                  <option value="pc">PC (Windows / Linux / Steam Deck)</option>
+                  <option value="mobile">Mobilní telefony (Android / iOS)</option>
+                  <option value="web">Webový prohlížeč (HTML5 / WebAssembly)</option>
+                  <option value="all">Všechny platformy současně (Multiplatform)</option>
+                </select>
+              </div>
+
+              <div class="comp-select-group">
+                <label for="selTeam">Tým a zkušenosti:</label>
+                <select id="selTeam" onchange="runEngineAdvisor()">
+                  <option value="solo-student">Student SPŠ / Začátečník (Sólo vývoj)</option>
+                  <option value="indie">Malý nezávislý tým (2–5 lidí)</option>
+                  <option value="studio">Velké profesionální studio (desítky vývojářů)</option>
+                </select>
+              </div>
+
+              <div class="comp-select-group">
+                <label for="selLicence">Licenční preference:</label>
+                <select id="selLicence" onchange="runEngineAdvisor()">
+                  <option value="foss">100% Free & Open-Source (žádné poplatky ani účty)</option>
+                  <option value="commercial">Komerční s velkým tržištěm hotových assetů</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Doporučený výsledek -->
+            <div class="comparator-result">
+              <span class="result-badge" id="advBadge">DOPORUČENÝ ENGINE</span>
+              <h3 id="advTitle" style="font-size: 1.35rem; color: #fff;">Godot Engine</h3>
+              <p id="advDesc" style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;">
+                Ideální volba pro studenty a 2D projekty. Běží bez instalace, nabízí skvělý GDScript a nulové poplatky.
+              </p>
+
+              <table class="matrix-table">
+                <tr>
+                  <th style="width: 35%;">Doporučený jazyk</th>
+                  <td id="advLang" style="font-family: var(--font-mono); font-weight: 700; color: var(--accent);">GDScript / C#</td>
+                </tr>
+                <tr>
+                  <th>Vhodné žánry</th>
+                  <td id="advGenres">2D plošinovky, puzzle, roguelike, stylizované 3D</td>
+                </tr>
+                <tr>
+                  <th>Hlavní přednost</th>
+                  <td id="advPros" style="color: #10b981;">Nulové licenční poplatky, okamžitý start, velikost pod 100 MB</td>
+                </tr>
+                <tr>
+                  <th>Na co dát pozor</th>
+                  <td id="advCons" style="color: #f59e0b;">Menší nabídka hotových assetů než v komerčních storech</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 12: Shrnutí, checklist a kontrolní otázky -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <h2>Didaktické shrnutí a kontrolní otázky</h2>
+          <p class="slide-lead">
+            Upevnění klíčových pojmů z herních enginů pro studenty střední průmyslové školy.
+          </p>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>1. Jaký je principiální rozdíl mezi herním enginem a hotovou hrou?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Herní engine je znovupoužitelný softwarový rámec poskytující subsystémy pro renderování, fyziku, zvuk a vstupy. Hra je konkrétní dílo vytvořené nad tímto enginem složené z konkrétních herních pravidel, 3D modelů, animací, textur, hudby a příběhu.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>2. K čemu slouží proměnná Delta Time a co by se stalo, kdybychom ji nepoužili?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Delta Time vyjadřuje časový úsek mezi dvěma po sobě jdoucími snímky. Slouží k normalizaci pohybu podle reálného fyzikálního času. Bez Delta Time by se postavy a objekty pohybovaly na rychlém monitoru (144 Hz) mnohonásobně rychleji než na pomalejším hardwaru (30 Hz).
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>3. Proč velká studia jako CD Projekt RED opustila vlastní engine a přešla na Unreal Engine 5?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Udržování špičkového vlastního enginu (jako byl REDengine) vyžaduje dedikovaný tým desítek specializovaných programátorů a obrovské finance. Přechod na UE5 umožňuje studiu soustředit 100 % energie na design a herní obsah, využít hotové revoluční technologie (Nanite, Lumen) a snadněji najímat nové vývojáře z celého světa, kteří UE5 již perfektně znají.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>4. Jaké jsou hlavní důvody, proč se na SPŠ učíte právě engine Godot?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Godot je 100% open-source s licencí MIT bez jakýchkoli poplatků či registrací. Je extrémně nenáročný na hardware, běží i z USB klíčenky a má přehlednou architekturu uzlů (Node Tree). Jazyk GDScript je čistý a podobný Pythonu, což umožňuje žákům snadno přejít od základů programování k reálnému vývoji vlastních her.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>5. Uveďte alespoň 3 příklady využití herních enginů mimo zábavní průmysl.</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              1. Virtuální filmová produkce na LED stěnách (The Mandalorian). 2. Architektonické interaktivní procházky a simulace osvětlení budov (ArchViz). 3. Automobilové digitální kokpity a asistenční systémy. 4. Průmyslová digitální dvojčata robotických továren (Industry 4.0).
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: center; display: flex; justify-content: center; gap: 1rem;">
+            <a href="../index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.65rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Katalog předmětu PHR
+            </a>
+            <a href="../041-Godot/index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #478cbf 0%, #2563eb 100%); color: #fff; padding: 0.65rem 1.4rem; border-radius: 8px; text-decoration: none; font-weight: 700;">
+              Pokračovat na Téma 041: Godot
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Spodní ovládací lišta prezentace (Standard SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../030-Herni-platformy/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 030 Herní platformy (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PHR">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../041-Godot/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 041 Engine Godot (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Fullscreen (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <!-- 4. Postranní panel osnovy -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Herní enginy
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Jádro frameworku prezentací -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Interaktivní rozhodovací logika pro výběr enginu -->
+  <script>
+    (function () {
+      'use strict';
+
+      window.runEngineAdvisor = function () {
+        const dim = document.getElementById('selDimension').value;
+        const target = document.getElementById('selTarget').value;
+        const team = document.getElementById('selTeam').value;
+        const licence = document.getElementById('selLicence').value;
+
+        let res = {
+          title: 'Godot Engine',
+          badge: 'DOPORUČENO PRO ŠKOLU & INDIE',
+          desc: 'Absolutní jednička pro žáky střední školy, 2D vývoj a nezávislé projekty. 100% open-source pod licencí MIT, bez instalace a licenčních poplatků.',
+          lang: 'GDScript / C#',
+          genres: '2D plošinovky, pixel art, top-down hry, lehčí a stylizované 3D',
+          pros: 'Okamžitý start, velikost do 100 MB, vynikající podpora 2D, žádné poplatky.',
+          cons: 'Méně hotových 3D assetů na komunitním tržišti v porovnání s Unity Store.'
+        };
+
+        if (dim === '3d-aaa' || team === 'studio') {
+          res.title = 'Unreal Engine 5';
+          res.badge = 'NEJVYŠŠÍ GRAFICKÝ VÝKON';
+          res.desc = 'Průmyslový standard pro AAA fotorealismus, otevřené 3D světy a filmovou virtuální produkci. Technologie Nanite a Lumen odstraňují omezení geometrie a světel.';
+          res.lang = 'C++ a Blueprints (vizuální skriptování)';
+          res.genres = 'AAA RPG, FPS střílečky, akční adventury, ArchViz, filmové VFX';
+          res.pros = 'Grafický vrchol současnosti, bezkonkurenční nasvícení, bezplatná knihovna Megascans.';
+          res.cons = 'Extrémní hardwarové nároky na vývojové PC, velikost instalace přes 100 GB, 5% licenční poplatek při zisku nad 1 mil. USD.';
+        } else if (target === 'mobile' || (licence === 'commercial' && dim !== '2d') || team === 'indie') {
+          res.title = 'Unity Engine';
+          res.badge = 'MULTI-PLATFORMNÍ UNIVERZÁL';
+          res.desc = 'Skvělá volba pro multiplatformní hry a mobilní tituly. Obrovská komunita a gigantické tržiště hotových assetů, které výrazně zrychluje produkci.';
+          res.lang = 'C# (.NET framework)';
+          res.genres = 'Mobilní hry, VR tituly, 3D indie hry, multiplatformní arkády';
+          res.pros = 'Nepřekonatelný Asset Store, skvělá podpora VR a mobilních platforem, silný jazyk C#.';
+          res.cons = 'Roztříštěné renderovací pipeliny (URP vs HDRP), komerční licenční model.';
+        } else if (dim === '2d' || licence === 'foss' || team === 'solo-student') {
+          res.title = 'Godot Engine';
+          res.badge = 'OPTIMÁLNÍ VOLBA PRO STUDENTY';
+          res.desc = 'Čistá a logická architektura uzlů a scén. Skvělý pro rychlé prototypování nápadů a školní projekty bez zbytečné režie a registrací.';
+          res.lang = 'GDScript / C#';
+          res.genres = '2D akční hry, metroidvanie, game jam projekty, logické hry';
+          res.pros = 'Běží skvěle i na starších školních noteboocích, 100% svoboda, skvělý pro výuku.';
+          res.cons = 'Pro masivní fotorealistické 3D světy zaostává za možnostmi UE5.';
+        }
+
+        document.getElementById('advTitle').textContent = res.title;
+        document.getElementById('advBadge').textContent = res.badge;
+        document.getElementById('advDesc').textContent = res.desc;
+        document.getElementById('advLang').textContent = res.lang;
+        document.getElementById('advGenres').textContent = res.genres;
+        document.getElementById('advPros').textContent = res.pros;
+        document.getElementById('advCons').textContent = res.cons;
+      };
+
+      // Spustit jednou při načtení
+      runEngineAdvisor();
+    })();
+  </script>
+</body>
+
+</html>

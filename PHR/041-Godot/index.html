@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 041: Seznámení s herním enginem Godot | PHR &bull; SPŠ</title>
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <style>
+    :root {
+      --accent: #478cbf;
+      --accent-glow: rgba(71, 140, 191, 0.28);
+    }
+
+    /* Specifické doplňkové styly pro téma 041 Godot */
+    .godot-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.15rem;
+      margin-top: 1rem;
+    }
+
+    .godot-feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: var(--transition);
+    }
+
+    .godot-feature-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .godot-feature-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(71, 140, 191, 0.15);
+      border: 1px solid rgba(71, 140, 191, 0.3);
+      color: var(--accent);
+    }
+
+    /* Interaktivní Node & Scene Tree Explorer */
+    .tree-explorer-container {
+      display: grid;
+      grid-template-columns: 1.1fr 1.35fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+      align-items: stretch;
+    }
+
+    .tree-pane {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .tree-node-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .tree-node-item:hover {
+      background: rgba(71, 140, 191, 0.12);
+      border-color: rgba(71, 140, 191, 0.3);
+    }
+
+    .tree-node-item.active {
+      background: rgba(71, 140, 191, 0.22);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .tree-indent-1 {
+      margin-left: 1.5rem;
+    }
+
+    .tree-indent-2 {
+      margin-left: 3rem;
+    }
+
+    .node-type-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .detail-pane {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .code-snippet {
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      overflow-x: auto;
+    }
+
+    /* UI Panely editoru */
+    .editor-layout-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr 260px;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      background: #090e17;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+    }
+
+    .editor-mock-dock {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .editor-dock-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .editor-viewport-mock {
+      background: #111827;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    /* FAQ akordeon */
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.65rem;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-question {
+      padding: 0.85rem 1.15rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .faq-question .icon {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-question .icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.15rem 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: -0.25rem;
+      padding-top: 0.75rem;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+      .godot-feature-grid {
+        grid-template-columns: 1fr;
+      }
+      .tree-explorer-container {
+        grid-template-columns: 1fr;
+      }
+      .editor-layout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Ambientní pozadí -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(71, 140, 191, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Indikátor průchodu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ standardu -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PHR">PHR</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">041 Godot</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Snímky prezentace (Slide Viewport) -->
+    <main class="slide-viewport">
+
+      <!-- SNÍMEK 1: Titulní snímek -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do Godot Enginu">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět PHR &bull; Téma 041</span>
+            <span class="badge">Praktický vývoj na SPŠ</span>
+          </div>
+          <h1 class="hero-title">Herní engine Godot: Praktický průvodce</h1>
+          <p class="hero-subtitle">
+            Seznámení s primárním herním enginem naší školy: architektura scén a uzlů, reaktivní signály, programování v GDScriptu a rozhraní editoru.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 0.35rem; width: 18px; height: 18px; color: var(--accent);"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                100% Free & Open-Source
+              </h4>
+              <p>Licence MIT, nulové poplatky ze zisku, žádná telemetrie a kompletní nezávislost na korporátních účtech.</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 0.35rem; width: 18px; height: 18px; color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Architektura uzlů a scén
+              </h4>
+              <p>Koncept <em>Scene Tree</em> a <em>Nodes</em>. Všechno je scéna: hráč, zbraň, protivník i celá herní úroveň.</p>
+            </div>
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 0.35rem; width: 18px; height: 18px; color: #10b981;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Jazyk GDScript
+              </h4>
+              <p>Rychlý a čistý herní skriptovací jazyk s Python syntaxí, statickým typováním a přímou C++ vazbou.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 2: Proč právě Godot a jeho filozofie -->
+      <section class="slide" id="slide-2" data-title="Filozofie a licence">
+        <div class="slide-content">
+          <h2>Proč právě Godot? Filozofie a školní přednosti</h2>
+          <p class="slide-lead">
+            V naší školní laboratoři pracujeme s Godotem ze zcela konkrétních didaktických a technologických důvodů.
+          </p>
+
+          <div class="godot-feature-grid">
+            <div class="godot-feature-card">
+              <div class="godot-feature-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Licence MIT (Absolutní svoboda)</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Engine i vámi vytvořené hry jsou na 100 % vaše. Žádné procentní poplatky z prodejů na Steamu, žádné „Runtime Fee“ a žádné licenční audity.
+              </p>
+            </div>
+
+            <div class="godot-feature-card">
+              <div class="godot-feature-icon">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Lehkost a okamžitý start (~60 MB)</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Žádný instalační balík o velikosti 40 GB. Godot je jeden soubor .exe, který se spustí během vteřiny i ze staré USB klíčenky na libovolném PC v učebně.
+              </p>
+            </div>
+
+            <div class="godot-feature-card">
+              <div class="godot-feature-icon">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Přívětivá výuka programování</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                GDScript má stejné odsazení a čitelnost jako Python. Žáci neztrácí čas složitou konfigurací kompilátorů a okamžitě vidí výsledky svého kódu na obrazovce.
+              </p>
+            </div>
+
+            <div class="godot-feature-card">
+              <div class="godot-feature-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Skutečný 2D engine (Pixel-Perfect)</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                2D grafika neprobíhá v „zploštělém 3D prostoru“, ale v nativním 2D pixelovém renderéru s integrovanými vrstvami TileMap a YSortem.
+              </p>
+            </div>
+
+            <div class="godot-feature-card">
+              <div class="godot-feature-icon">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Moderní 3D s Vulkanem (Godot 4)</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Verze Godot 4 přinesla špičkový Vulkan renderer (Forward+ a Mobile), dynamické stíny, SDFGI globální osvětlení a GPU částice.
+              </p>
+            </div>
+
+            <div class="godot-feature-card">
+              <div class="godot-feature-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <h3 style="font-size: 1rem;">Nezávislost na cloudu a telemetrii</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+                Godot funguje 100% offline bez nutnosti internetového připojení, registrací či přihlašování. Žádná data neodchází na cizí servery.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 3: Historie a evoluce (od OKAM studia po Godot 4) -->
+      <section class="slide" id="slide-3" data-title="Historie a vývoj">
+        <div class="slide-content">
+          <h2>Historie Godotu: Od interního nástroje ke globálnímu fenoménu</h2>
+          <p class="slide-lead">
+            Příběh open-source revoluce, za kterou stojí argentinští vývojáři Juan Linietsky a Ariel Manzur.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Časová osa vývoje</h3>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>2007–2014 (Studio OKAM):</strong> Vznik jako interní proprietární engine argentinského studia OKAM pro mobilní a konzolové zakázky.</li>
+                <li><strong>Únor 2014 (Open-Source zlom):</strong> Kód byl kompletně uvolněn veřejnosti pod benevolentní licencí MIT na GitHubu.</li>
+                <li><strong>Godot 2.0 & 3.0 (2016–2018):</strong> Příchod nového uživatelského rozhraní, vylepšeného 3D renderéru a oficiální podpory C# (.NET).</li>
+                <li><strong>Godot 4.0 (2023):</strong> Zásadní přepracování jádra: grafické rozhraní Vulkan, nový fyzikální engine, nový GDScript 2.0 s typovou kontrolou.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Masivní příliv vývojářů z Unity (2023+)</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Na podzim 2023 oznámila společnost Unity sporné poplatky za každou instalaci hry („Runtime Fee“). To vyvolalo bezprecedentní exodus tisíců indie vývojářů a herních studií přímo ke Godotu.
+              </p>
+              <div style="background: rgba(71, 140, 191, 0.1); border: 1px solid rgba(71, 140, 191, 0.3); border-radius: var(--radius-sm); padding: 0.75rem;">
+                <strong style="color: var(--accent);">Zlaté pravidlo open-source:</strong>
+                <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.3rem 0 0 0;">
+                  Projekt pod licencí MIT nemůže žádná korporace odkoupit, zpoplatnit ani zrušit. Kód je trvale svobodný pro celé lidstvo.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 1rem;">
+            <h4 style="color: var(--accent); margin-bottom: 0.35rem;">Slavné hry vytvořené v Godotu</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              <strong>Brotato</strong> (extrémně úspěšný survival hit s miliony prodaných kusů), <strong>Buckshot Roulette</strong> (virální megahit roku 2024), <strong>Dome Keeper</strong>, <strong>Cassette Beasts</strong>, <strong>Halls of Torment</strong>, <strong>Until Then</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 4: Architektura Nodes (Uzly) -->
+      <section class="slide" id="slide-4" data-title="Uzly (Nodes)">
+        <div class="slide-content">
+          <h2>Základní stavební kámen: Uzly (Nodes)</h2>
+          <p class="slide-lead">
+            V Godotu je uzel (Node) elementární jednotka funkcionality. Každý uzel má právě jednu specializovanou úlohu a své vlastnosti.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Dědičnost uzlů v Godotu</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Všechny uzly dědí ze základní třídy <code>Node</code> a tvoří přehledný strom objektů:
+              </p>
+              <ul class="styled-list" style="font-size: 0.83rem;">
+                <li><strong>Node:</strong> Čistá logika bez vizuálu a pozice (např. <code>Timer</code>, <code>AudioStreamPlayer</code>).</li>
+                <li><strong>Node2D:</strong> Přidává 2D transformaci v ploše: pozice (x, y), rotace a měřítko (scale).</li>
+                <li><strong>Node3D (dříve Spatial):</strong> Přidává 3D transformaci v prostoru: pozice (x, y, z), orientace a matice.</li>
+                <li><strong>Control:</strong> Prvky uživatelského rozhraní (tlačítka, textová pole, panely s kotvami).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Klíčové uzly pro 2D hry na SPŠ</h3>
+              <ul class="styled-list" style="font-size: 0.83rem;">
+                <li><strong>CharacterBody2D:</strong> Postava hráče nebo nepřítele ovládaná kódem s podporou gravitace a <code>move_and_slide()</code>.</li>
+                <li><strong>Sprite2D / AnimatedSprite2D:</strong> Vykreslení statického obrázku nebo snímkové animace postavy.</li>
+                <li><strong>CollisionShape2D:</strong> Fyzikální obálka (obdélník, kruh, kapsle) určující, kde postava naráží do zdí.</li>
+                <li><strong>Area2D:</strong> Detekční zóna bez pevné fyziky (sbírání mincí, zóna poškození lávou, checkpointy).</li>
+                <li><strong>Camera2D:</strong> Kamera, která plynule sleduje hráče v úrovni s podporou limitů a zoomu.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; padding: 0.85rem 1.25rem; background: rgba(71, 140, 191, 0.08); border-left: 3px solid var(--accent); border-radius: var(--radius-sm);">
+            <strong style="color: var(--accent);">Zásada jedné odpovědnosti:</strong>
+            <span style="font-size: 0.88rem; color: var(--text-secondary); margin-left: 0.4rem;">
+              Nehledejte jeden obří uzel „Hráč“. Hráč vznikne složením: <code>CharacterBody2D</code> (pohyb) + <code>Sprite2D</code> (vzhled) + <code>CollisionShape2D</code> (tělo) + <code>Camera2D</code> (pohled).
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 5: Architektura Scén (Scenes & Tree) -->
+      <section class="slide" id="slide-5" data-title="Scény a hierarchie">
+        <div class="slide-content">
+          <h2>Geniální koncept Godotu: Všechno je scéna (Scenes)</h2>
+          <p class="slide-lead">
+            V jiných enginech existuje složitý rozdíl mezi scénou (úrovní), prefabem a herním objektem. V Godotu existuje pouze jediný koncept: <strong>Scéna</strong>.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Vnořování scén (Scene Instancing)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Scéna je strom uzlů uložený do souboru s příponou <code>.tscn</code>. Scénu můžete vložit do jiné scény jako instanci:
+              </p>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li>Vytvoříte a otestujete samostatnou scénu <code>Player.tscn</code> (hráč).</li>
+                <li>Vytvoříte a otestujete samostatnou scénu <code>Coin.tscn</code> (mince).</li>
+                <li>Vytvoříte a otestujete samostatnou scénu <code>Enemy.tscn</code> (protivník).</li>
+                <li>Ve scéně <code>Level_01.tscn</code> pak pouze naklikáte 1&times; Player, 20&times; Coin a 3&times; Enemy!</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Proč je to pro žáky a týmy revoluční?</h3>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li><strong>Izolované testování (Klávesa F6):</strong> Můžete spustit a otestovat pouze samotného hráče nebo zbraň bez nutnosti spouštět celou hru.</li>
+                <li><strong>Skvělé pro týmovou práci (Git):</strong> Jeden žák pracuje na <code>Player.tscn</code>, druhý na <code>Enemy.tscn</code> a třetí staví mapu <code>Level.tscn</code>. Nedochází k žádným konfliktům v gitu!</li>
+                <li><strong>Jednotná změna na jednom místě:</strong> Upravíte-li rychlost v <code>Coin.tscn</code>, projeví se to okamžitě u všech 200 mincí ve všech levelech.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; display: flex; align-items: center; justify-content: space-around; background: var(--code-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+            <div style="text-align: center;">
+              <div style="font-family: var(--font-mono); color: var(--accent); font-weight: 700;">Player.tscn</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Scéna postavy</div>
+            </div>
+            <div style="color: var(--text-muted);">&rarr; vložen do &rarr;</div>
+            <div style="text-align: center;">
+              <div style="font-family: var(--font-mono); color: #10b981; font-weight: 700;">Level1.tscn</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Scéna herního světa</div>
+            </div>
+            <div style="color: var(--text-muted);">&rarr; vložen do &rarr;</div>
+            <div style="text-align: center;">
+              <div style="font-family: var(--font-mono); color: #f59e0b; font-weight: 700;">MainGame.tscn</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Globální scéna s GUI</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 6: Reaktivní signály (Signals) -->
+      <section class="slide" id="slide-6" data-title="Reaktivní signály (Signals)">
+        <div class="slide-content">
+          <h2>Reaktivní signály: Komunikace bez provázanosti</h2>
+          <p class="slide-lead">
+            Signály (Signals) jsou implementací návrhového vzoru <em>Observer</em>. Umožňují uzlům vysílat události, aniž by věděly, kdo je poslouchá.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">Zlaté pravidlo Godotu</h3>
+              <div style="font-size: 1.15rem; font-weight: 700; color: #fff; margin: 0.6rem 0; padding: 0.6rem 1rem; background: rgba(56, 189, 248, 0.12); border-left: 3px solid #38bdf8; border-radius: 4px;">
+                „Call down, signal up“
+              </div>
+              <ul class="styled-list" style="font-size: 0.84rem;">
+                <li><strong>Rodič volá potomky dolů přímo:</strong> Rodič ví, jaké uzly má pod sebou, takže může bezpečně zavolat <code>$Sprite2D.play("jump")</code>.</li>
+                <li><strong>Potomek posílá událost nahoru signálem:</strong> Tlačítko neví, co má otevřít; pouze vyšle signál <code>pressed</code>. Hráč neví, kde je HUD se životy; pouze vyšle signál <code>health_changed(new_hp)</code>.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Jak se signál definuje a propojuje</h3>
+              <div class="code-snippet">
+                <span style="color: #94a3b8;"># 1. Definice vlastního signálu v GDScriptu</span><br>
+                <span style="color: #38bdf8;">signal</span> player_died<br>
+                <span style="color: #38bdf8;">signal</span> health_updated(new_health: <span style="color: #10b981;">int</span>)<br><br>
+                <span style="color: #94a3b8;"># 2. Vyslání signálu při zásahu</span><br>
+                <span style="color: #f59e0b;">func</span> take_damage(amount: <span style="color: #10b981;">int</span>) -> <span style="color: #10b981;">void</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;current_hp -= amount<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;health_updated.<span style="color: #38bdf8;">emit</span>(current_hp)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f59e0b;">if</span> current_hp <= 0:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;player_died.<span style="color: #38bdf8;">emit</span>()
+              </div>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 1rem;">
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+              <strong>Propojení signálu:</strong> V editoru stačí označit uzel, přejít do záložky <em>Node &rarr; Signals</em> a dvakrát kliknout (např. na <code>body_entered</code> u Area2D). Godot automaticky vygeneruje obslužnou funkci v kódu.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 7: Uživatelské rozhraní editoru -->
+      <section class="slide" id="slide-7" data-title="Rozhraní editoru">
+        <div class="slide-content">
+          <h2>Uživatelské rozhraní editoru: Kde co najdeme</h2>
+          <p class="slide-lead">
+            Editor Godotu je navržen tak, aby byl maximálně čistý, intuitivní a nezahlcoval studenty stovkami tlačítek.
+          </p>
+
+          <div class="editor-layout-grid">
+            <!-- Levý dock: Scene & FileSystem -->
+            <div class="editor-mock-dock">
+              <div class="editor-dock-title">Scene Dock (Strom uzlů)</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Zobrazuje hierarchii uzlů aktuálně otevřené scény. Zde přidáváte nové uzly přes tlačítko <code>+</code>.
+              </div>
+              <div class="editor-dock-title" style="margin-top: 0.5rem;">FileSystem Dock</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Skutečná složka projektu (<code>res://</code>). Zde jsou vaše obrázky, zvuky, fonty a skripty <code>.gd</code>.
+              </div>
+            </div>
+
+            <!-- Střed: Hlavní viewport -->
+            <div class="editor-viewport-mock">
+              <div style="display: flex; gap: 0.5rem; position: absolute; top: 8px; left: 8px;">
+                <span style="font-size: 0.72rem; padding: 0.2rem 0.6rem; background: var(--accent); color: #fff; border-radius: 4px; font-weight: 700;">2D</span>
+                <span style="font-size: 0.72rem; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.06); color: var(--text-muted); border-radius: 4px;">3D</span>
+                <span style="font-size: 0.72rem; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.06); color: var(--text-muted); border-radius: 4px;">Script</span>
+                <span style="font-size: 0.72rem; padding: 0.2rem 0.6rem; background: rgba(255,255,255,0.06); color: var(--text-muted); border-radius: 4px;">AssetLib</span>
+              </div>
+
+              <div style="margin-top: 1.5rem;">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 48px; height: 48px; color: var(--accent);"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <div style="font-weight: 700; margin-top: 0.5rem;">Centrální pracovní plocha (Viewport)</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); max-width: 320px;">
+                  Vizuální stavba herní úrovně, manipulace s objekty nebo vestavěný editor zdrojového kódu GDScript.
+                </div>
+              </div>
+            </div>
+
+            <!-- Pravý dock: Inspector & Node -->
+            <div class="editor-mock-dock">
+              <div class="editor-dock-title">Inspector Dock</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Vlastnosti označeného uzlu: Pozice (Transform), Textury, Fyzikální vrstvy, a proměnné označené <code>@export</code>.
+              </div>
+              <div class="editor-dock-title" style="margin-top: 0.5rem;">Node Dock (Signály)</div>
+              <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+                Seznam signálů uzlu a skupiny (Groups), do kterých uzel patří (např. skupina <code>"enemies"</code>).
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem; display: flex; justify-content: space-around; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.65rem;">
+            <span style="font-size: 0.84rem;"><strong>F5:</strong> Spustit celý projekt</span>
+            <span style="font-size: 0.84rem; color: var(--accent);"><strong>F6:</strong> Spustit aktuální scénu</span>
+            <span style="font-size: 0.84rem;"><strong>F8:</strong> Zastavit běžící hru</span>
+            <span style="font-size: 0.84rem;"><strong>Ctrl+S:</strong> Uložit scénu</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 8: GDScript - Jazyk navržený pro hry -->
+      <section class="slide" id="slide-8" data-title="Jazyk GDScript">
+        <div class="slide-content">
+          <h2>GDScript: Programovací jazyk přímo pro hry</h2>
+          <p class="slide-lead">
+            GDScript je skriptovací jazyk vytvořený speciálně pro Godot. Syntakticky vychází z Pythonu, ale je optimalizován pro herní cyklus a těsnou integraci s C++ jádrem.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Hlavní rysy GDScriptu 2.0 (Godot 4)</h3>
+              <ul class="styled-list" style="font-size: 0.83rem;">
+                <li><strong>Odsazení bloků (Indentation):</strong> Žádné složené závorky <code>{}</code> ani středníky <code>;</code> na konci řádků. Kód je mimořádně čitelný.</li>
+                <li><strong>Volitelné statické typování:</strong> Můžete určit datový typ (<code>var rychlost: float = 200.0</code>). Editor vám díky tomu napovídá a odhalí chyby už při psaní.</li>
+                <li><strong>Export proměnných do inspektoru:</strong> Zápis <code>@export var zivoty: int = 100</code> zobrazí políčko přímo v grafickém editoru Godotu!</li>
+                <li><strong>Nativní podpora herních typů:</strong> <code>Vector2</code>, <code>Vector3</code>, <code>Color</code>, <code>Transform2D</code> jsou součástí jazyka.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Životní cyklus uzlu (Klíčové metody)</h3>
+              <ul class="styled-list" style="font-size: 0.83rem;">
+                <li><code>_ready() -> void:</code> Zavolá se právě jednou, když uzel a všichni jeho potomci vstoupí do stromu scény (inicializace).</li>
+                <li><code>_process(delta: float) -> void:</code> Volá se v každém vykresleném snímku. Doba $\Delta t$ je proměnlivá podle FPS. Vhodné pro rotaci kamery a UI.</li>
+                <li><code>_physics_process(delta: float) -> void:</code> Volá se v pevných časových intervalech (typicky přesně 60&times; za sekundu). <strong>Zde se počítá pohyb a kolize postav!</strong></li>
+                <li><code>_input(event) -> void:</code> Reakce na události vstupu (stisk klávesy, myš).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 9: Praktický kód: Ovládání postavy (CharacterBody2D) -->
+      <section class="slide" id="slide-9" data-title="Kód pohybu v GDScriptu">
+        <div class="slide-content">
+          <h2>Praktický kód: Skript hráče (CharacterBody2D)</h2>
+          <p class="slide-lead">
+            Kompletní skript pro 2D plošinovku v Godotu 4 s pohybem, gravitací a skákáním na 15 řádcích kódu.
+          </p>
+
+          <div class="code-snippet" style="margin-top: 1rem; font-size: 0.84rem; max-height: 380px;">
+            <span style="color: #38bdf8;">extends</span> CharacterBody2D<br><br>
+            <span style="color: #94a3b8;"># Parametry vystavené do grafického Inspektoru</span><br>
+            <span style="color: #f43f5e;">@export</span> <span style="color: #38bdf8;">var</span> speed: <span style="color: #10b981;">float</span> = 300.0<br>
+            <span style="color: #f43f5e;">@export</span> <span style="color: #38bdf8;">var</span> jump_velocity: <span style="color: #10b981;">float</span> = -400.0<br><br>
+            <span style="color: #94a3b8;"># Získání hodnoty gravitačního zrychlení z nastavení projektu</span><br>
+            <span style="color: #38bdf8;">var</span> gravity: <span style="color: #10b981;">float</span> = ProjectSettings.get_setting(<span style="color: #a855f7;">"physics/2d/default_gravity"</span>)<br><br>
+            <span style="color: #f59e0b;">func</span> _physics_process(delta: <span style="color: #10b981;">float</span>) -> <span style="color: #10b981;">void</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #94a3b8;"># 1. Aplikace gravitace, pokud postava nestojí na zemi</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f59e0b;">if not</span> is_on_floor():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;velocity.y += gravity * delta<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #94a3b8;"># 2. Skok při stisku klávesy mezerník ("ui_accept")</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f59e0b;">if</span> Input.is_action_just_pressed(<span style="color: #a855f7;">"ui_accept"</span>) <span style="color: #f59e0b;">and</span> is_on_floor():<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;velocity.y = jump_velocity<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #94a3b8;"># 3. Získání směru v ose X (šipky vlevo / vpravo -> vrací -1, 0, nebo 1)</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #38bdf8;">var</span> direction: <span style="color: #10b981;">float</span> = Input.get_axis(<span style="color: #a855f7;">"ui_left"</span>, <span style="color: #a855f7;">"ui_right"</span>)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f59e0b;">if</span> direction != 0:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;velocity.x = direction * speed<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #f59e0b;">else</span>:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;velocity.x = move_toward(velocity.x, 0, speed)<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #94a3b8;"># 4. Pohyb tělesa a automatické vyřešení skluzu po stěnách a zemi</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;move_and_slide()
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 10: Interaktivní Node & Scene Simulator -->
+      <section class="slide" id="slide-10" data-title="Interaktivní Node Tree">
+        <div class="slide-content">
+          <h2>Interaktivní průzkumník stromu uzlů (Scene Tree)</h2>
+          <p class="slide-lead">
+            Klikněte na jednotlivé uzly ve scéně hráče a prozkoumejte jejich roli, vlastnosti a související kód v GDScriptu.
+          </p>
+
+          <div class="tree-explorer-container">
+            <!-- Strom uzlů -->
+            <div class="tree-pane">
+              <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.25rem;">
+                Scéna: Player.tscn
+              </div>
+
+              <div class="tree-node-item active" onclick="selectNode('root')">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Player</span>
+                <span class="node-type-tag">CharacterBody2D</span>
+              </div>
+
+              <div class="tree-node-item tree-indent-1" onclick="selectNode('sprite')">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span>Sprite2D</span>
+                <span class="node-type-tag">Sprite2D</span>
+              </div>
+
+              <div class="tree-node-item tree-indent-1" onclick="selectNode('col')">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle></svg>
+                <span>CollisionShape2D</span>
+                <span class="node-type-tag">CollisionShape2D</span>
+              </div>
+
+              <div class="tree-node-item tree-indent-1" onclick="selectNode('cam')">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                <span>Camera2D</span>
+                <span class="node-type-tag">Camera2D</span>
+              </div>
+
+              <div class="tree-node-item tree-indent-1" onclick="selectNode('hitbox')">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>Hurtbox</span>
+                <span class="node-type-tag">Area2D</span>
+              </div>
+            </div>
+
+            <!-- Detail uzlu -->
+            <div class="detail-pane">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="nodeTitle" style="color: var(--accent); margin: 0;">Player (CharacterBody2D)</h3>
+                <span id="nodeBadge" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; background: rgba(71, 140, 191, 0.15); border: 1px solid var(--accent); border-radius: 9999px; color: var(--accent); font-weight: 700;">KOŘENOVÝ UZEL</span>
+              </div>
+              <p id="nodeDesc" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                Kořen celé scény hráče. Obsahuje fyzikální logiku pohybu, rychlost, skákání a řešení kolizí s terénem.
+              </p>
+
+              <div>
+                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 0.35rem;">
+                  Ukázka kódu / vazby v GDScriptu:
+                </div>
+                <div class="code-snippet" id="nodeCode" style="margin: 0; font-size: 0.78rem;">
+                  extends CharacterBody2D<br>
+                  velocity.x = speed * direction<br>
+                  move_and_slide()
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 11: Export a multiplatformní distribuce -->
+      <section class="slide" id="slide-11" data-title="Export a distribuce">
+        <div class="slide-content">
+          <h2>Export hry: Z editoru přímo k hráčům</h2>
+          <p class="slide-lead">
+            Vytvořenou hru můžete z Godotu snadno vyexportovat pro různé platformy na jedno kliknutí.
+          </p>
+
+          <div class="grid-2" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h3>Podporované cílové platformy</h3>
+              <ul class="styled-list" style="font-size: 0.85rem;">
+                <li><strong>PC (Windows, Linux, macOS):</strong> Vygeneruje spustitelný soubor <code>.exe</code> nebo binárku pro Linux / Steam Deck. Žádná instalace není nutná.</li>
+                <li><strong>Web (HTML5 / WebAssembly):</strong> Export hry pro prohlížeč. Hru můžete okamžitě nahrát na studentský portál itch.io a poslat kamarádům pouhý odkaz!</li>
+                <li><strong>Mobilní telefony (Android & iOS):</strong> Vytvoření instalačního balíčku <code>.apk</code> s podporou dotykového ovládání a akcelerometru.</li>
+                <li><strong>Herní konzole:</strong> Přes specializované portovací partnery (W4 Games) lze hry z Godotu vydat i na Nintendo Switch, PS5 a Xbox.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>Jak funguje exportní proces</h3>
+              <ol class="styled-list" style="font-size: 0.85rem;">
+                <li>V menu zvolíte <em>Project &rarr; Export</em>.</li>
+                <li>Stáhnete oficiální bezplatné exportní šablony (Export Templates).</li>
+                <li>Godot zabalí všechny vaše scény, obrázky a skripty do kompaktního archivu <code>.pck</code>.</li>
+                <li>Propojí archiv se zkompilovaným C++ spouštěčem a vytvoří finální spustitelnou hru bez jakéhokoli vodoznaku.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; padding: 0.85rem 1.25rem; background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981; border-radius: var(--radius-sm);">
+            <strong style="color: #10b981;">Tip pro školní projekty a Game Jamy:</strong>
+            <span style="font-size: 0.88rem; color: var(--text-secondary); margin-left: 0.4rem;">
+              Při účasti na herních soutěžích (např. Ludum Dare, GMTK Game Jam) vždy exportujte na <strong>Web (HTML5)</strong>. Porotci a hráči si vaši hru zahrají ihned v prohlížeči bez stahování cizích souborů do počítače!
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SNÍMEK 12: Shrnutí a kontrolní otázky -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <h2>Didaktické shrnutí a kontrolní otázky</h2>
+          <p class="slide-lead">
+            Závěrečné ověření znalostí z enginu Godot pro výuku předmětu Počítačové hry.
+          </p>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>1. Jaký je rozdíl mezi metodami _process(delta) a _physics_process(delta)?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Metoda <code>_process</code> se volá v každém vykresleném grafickém snímku a její parametr delta závisí na aktuální snímkové frekvenci monitoru. Metoda <code>_physics_process</code> se volá s přísně konstantním krokem (obvykle 60× za sekundu) nezávisle na grafice, což zaručuje stabilní a deterministický výpočet fyziky a zamezuje propadávání těles terénem.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>2. Co vyjadřuje pravidlo „Call down, signal up“?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Rodičovský uzel může volat metody svých dceřiných uzlů napřímo (směrem dolů), protože je zná. Dceřiný uzel by naopak neměl volat rodiče napřímo; místo toho vyšle nahoru signál (událost). Tím zůstává dceřiný uzel univerzální a znovupoužitelný v jakékoli jiné scéně bez těsné závislosti.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>3. Proč v Godotu nepotřebujeme oddělený koncept tzv. „prefabů“?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              V Godotu je každá scéna sama o sobě prefabem. Libovolný strom uzlů uložený do souboru .tscn (např. mince, střela, nepřítel) lze donekonečna vkládat do jiných scén jako instanci.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>4. K čemu slouží klíčové slovo @export před proměnnou v GDScriptu?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Klíčové slovo <code>@export</code> zpřístupní danou proměnnou v panelu Inspector v grafickém editoru Godotu. Herní designér tak může ladit rychlost, barvu či počet životů přímo klikáním v editoru, aniž by musel otevírat zdrojový kód.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>5. Jaký je rozdíl mezi klávesami F5 a F6 při vývoji v Godotu?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Klávesa <strong>F5</strong> spustí celou hru od hlavní výchozí scény projektu (např. hlavní menu). Klávesa <strong>F6</strong> spustí pouze aktuálně otevřenou scénu v editoru, což umožňuje bleskově otestovat chování samostatného hráče nebo zbraně v izolaci.
+            </div>
+          </div>
+
+          <div style="margin-top: 1.5rem; text-align: center; display: flex; justify-content: center; gap: 1rem;">
+            <a href="../040-Herni-enginy/index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.65rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Zpět na Téma 040: Herní enginy
+            </a>
+            <a href="../index.html" class="btn-applet-link" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #478cbf 0%, #2563eb 100%); color: #fff; padding: 0.65rem 1.4rem; border-radius: 8px; text-decoration: none; font-weight: 700;">
+              Katalog předmětu PHR
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Spodní ovládací lišta prezentace (Standard SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../040-Herni-enginy/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 040 Herní enginy (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PHR">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (v přípravě)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Fullscreen (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+    <!-- 4. Postranní panel osnovy -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Engine Godot
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Jádro frameworku prezentací -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Interaktivní přepínání detailu uzlů -->
+  <script>
+    (function () {
+      'use strict';
+
+      const nodesData = {
+        root: {
+          title: 'Player (CharacterBody2D)',
+          badge: 'KOŘENOVÝ FYZIKÁLNÍ UZEL',
+          desc: 'Kořen celé scény hráče. Dědí z Node2D a CollisionObject2D. Obsahuje skript v GDScriptu řídící pohyb, vstupy, gravitaci a volání move_and_slide().',
+          code: 'extends CharacterBody2D\n\nfunc _physics_process(delta):\n    velocity.y += gravity * delta\n    move_and_slide()'
+        },
+        sprite: {
+          title: 'Sprite2D (Vizuál hráče)',
+          badge: 'GRAFICKÝ UZEL',
+          desc: 'Vykresluje 2D texturu postavy (např. player.png). Umožňuje nastavit offset, zrcadlení pohledu vlevo/vpravo (flip_h) a modulaci barev.',
+          code: '# Zrcadlení postavy podle směru chůze\nif direction < 0:\n    $Sprite2D.flip_h = true\nelif direction > 0:\n    $Sprite2D.flip_h = false'
+        },
+        col: {
+          title: 'CollisionShape2D (Fyzikální tělo)',
+          badge: 'KOLIZNÍ GEOMETRIE',
+          desc: 'Definuje geometrický tvar kolizní obálky (např. CapsuleShape2D nebo RectangleShape2D). Zabraňuje propadnutí postavy podlahou a průchodu stěnami.',
+          code: '# Tvar se nastavuje přímo v Inspektoru\n# Např. CapsuleShape2D: Radius = 12, Height = 32'
+        },
+        cam: {
+          title: 'Camera2D (Virtuální kamera)',
+          badge: 'POHLED A OBRAZOVKA',
+          desc: 'Kamera, která sleduje hráče při pohybu světem. Podporuje vyhlazení pohybu (Position Smoothing), přiblížení (Zoom) a limity okrajů mapy.',
+          code: '# Zapnutí vyhlazeného sledování hráče\n$Camera2D.position_smoothing_enabled = true\n$Camera2D.position_smoothing_speed = 5.0'
+        },
+        hitbox: {
+          title: 'Hurtbox (Area2D)',
+          badge: 'DETEKČNÍ ZÓNA',
+          desc: 'Nefyzikální detekční zóna. Slouží k zaznamenání dotyku s nepřítelem, střelou nebo pastí a vyslání reaktivního signálu.',
+          code: 'func _on_hurtbox_area_entered(area):\n    if area.is_in_group("hazards"):\n        take_damage(20)'
+        }
+      };
+
+      window.selectNode = function (key) {
+        const item = nodesData[key];
+        if (!item) return;
+
+        document.querySelectorAll('.tree-node-item').forEach(el => el.classList.remove('active'));
+        if (event && event.currentTarget) {
+          event.currentTarget.classList.add('active');
+        }
+
+        document.getElementById('nodeTitle').textContent = item.title;
+        document.getElementById('nodeBadge').textContent = item.badge;
+        document.getElementById('nodeDesc').textContent = item.desc;
+        document.getElementById('nodeCode').innerHTML = item.code.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+      };
+    })();
+  </script>
+</body>
+
+</html>
