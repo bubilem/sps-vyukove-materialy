@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 043: Fuzzy logika | KYME &bull; SPŠ</title>
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css?v=sps3">
+  <!-- Dedikované styly pro téma Fuzzy logika -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní pozadí s mechatronickým gradientem -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(20, 184, 166, 0.16) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní lišta průběhu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Hlavní kontejner prezentace -->
+  <div class="presentation-container">
+
+    <!-- Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">043 Fuzzy logika</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Snímky prezentace -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: TITULNÍ SNÍMEK
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Úvod do fuzzy logiky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět KYME &bull; Téma 043</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="background: rgba(20, 184, 166, 0.15); border-color: rgba(20, 184, 166, 0.35); color: #2dd4bf;">Kybernetika a umělá inteligence</span>
+          </div>
+          <h1 class="hero-title">Fuzzy logika a neostré řízení</h1>
+          <p class="hero-subtitle">
+            Modelování lidského myšlení v mechatronických a číslicových systémech. Od černobílých nul a jedniček k plynulým stupňům pravdivosti, funkcím příslušnosti a adaptivním fuzzy regulátorům.
+          </p>
+          <div class="summary-grid" style="margin-top: 2rem;">
+            <div class="content-card">
+              <h4>1. Svět není jen černobílý</h4>
+              <p>Reálný svět nezná ostré skoky. Veličiny jako teplota, rychlost nebo vzdálenost popisujeme vágními výrazy <em>„trochu teplý“</em>, <em>„velmi rychlý“</em>.</p>
+            </div>
+            <div class="content-card">
+              <h4>2. Zadehova algebra a pravidla</h4>
+              <p>Matematika neostrých množin s funkcí příslušnosti $\mu \in [0, 1]$ a operacemi $\min$, $\max$ a doplňkem $1 - \mu$.</p>
+            </div>
+            <div class="content-card">
+              <h4>3. Průmyslová mechatronika</h4>
+              <p>Plynulé řízení klimatizací, automatických praček, brzdových asistentů ABS a robotických ramen bez složitých diferenciálních rovnic.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: PROČ POTŘEBUJEME FUZZY LOGIKU?
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Klasická vs. Fuzzy logika">
+        <div class="slide-content">
+          <h2 class="slide-title">Klasická dvouhodnotová vs. Neostrá fuzzy logika</h2>
+          <p class="slide-subtitle">
+            Proč binární Booleova logika naráží na limity při popisu reálných fyzikálních dějů a lidského vnímání.
+          </p>
+
+          <div class="fuzzy-grid-2">
+            <!-- Klasická logika -->
+            <div class="compare-box crisp">
+              <span class="term-tag" style="background: rgba(100, 116, 139, 0.2); color: #94a3b8; border-color: #64748b;">Klasická (Booleova / Ostrá) logika</span>
+              <h3 style="margin-top: 0.75rem; color: #cbd5e1;">Pouze 2 stavy: 0 nebo 1 (Pravda / Nepravda)</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">
+                Prvek buď do množiny <strong>patří na 100 %</strong>, nebo <strong>vůbec nepatří (0 %)</strong>. Žádný mezistav neexistuje (Aristotelův zákon vyloučeného třetího).
+              </p>
+              
+              <div class="truth-indicator-crisp"></div>
+              <div class="spectrum-labels">
+                <span>0 = NEPRAVDA</span>
+                <span>Ostrý skok</span>
+                <span>1 = PRAVDA</span>
+              </div>
+
+              <div class="statement-box warning" style="margin-top: 1rem;">
+                <strong>Problém ostré hranice (Sorites paradox):</strong><br>
+                Definujeme-li „vysoký člověk“ jako výšku nad 180&nbsp;cm:
+                <ul style="margin: 0.4rem 0 0 1.2rem; font-size: 0.86rem;">
+                  <li>Člověk s výškou 180,1&nbsp;cm je <strong>VYSOKÝ (1)</strong>.</li>
+                  <li>Člověk s výškou 179,9&nbsp;cm je <strong>NÍZKÝ (0)</strong>.</li>
+                </ul>
+                Rozdíl pouhých 2&nbsp;mm způsobí skokový pád pravdivosti ze <strong>100&nbsp;% na 0&nbsp;%</strong>, což v praxi nedává smysl.
+              </div>
+            </div>
+
+            <!-- Fuzzy logika -->
+            <div class="compare-box fuzzy">
+              <span class="term-tag term-opt">Fuzzy (Neostrá) logika</span>
+              <h3 style="margin-top: 0.75rem; color: var(--accent);">Spojité spektrum pravdivosti: $\mu \in [0, 1]$</h3>
+              <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">
+                Tvrzení může být <strong>částečně pravdivé</strong>. Stupeň příslušnosti $\mu$ nabývá libovolné hodnoty od $0.0$ (zcela nepravda) do $1.0$ (zcela pravda).
+              </p>
+
+              <div class="truth-indicator-spectrum"></div>
+              <div class="spectrum-labels">
+                <span>$\mu = 0.0$</span>
+                <span>$\mu = 0.5$ (napůl)</span>
+                <span>$\mu = 1.0$</span>
+              </div>
+
+              <div class="statement-box positive" style="margin-top: 1rem;">
+                <strong>Přirozené řešení ve fuzzy logice:</strong><br>
+                Člověk s výškou 178&nbsp;cm patří do množiny „Vysoký“ se stupněm příslušnosti $\mu = 0.75$ a současně do množiny „Střední“ se stupněm $\mu = 0.35$.
+                <div style="margin-top: 0.4rem; font-size: 0.84rem; color: var(--text-muted);">
+                  Zavedl v roce <strong>1965 Lotfi A. Zadeh</strong> (profesor na univerzitě UC Berkeley v Kalifornii).
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: ZÁKLADNÍ POJMY: FUNKCE PŘÍSLUŠNOSTI
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Neostré množiny a funkce příslušnosti">
+        <div class="slide-content">
+          <h2 class="slide-title">Fuzzy množina a funkce příslušnosti ($\mu$)</h2>
+          <p class="slide-subtitle">
+            Jak matematicky převést slovní vjem do číslicového tvaru, kterému rozumí mechatronický mikrokontrolér.
+          </p>
+
+          <div class="fuzzy-grid-3">
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                Lingvistická proměnná
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                Proměnná, jejíž hodnoty nejsou vyjádřeny pouze čísly, ale <strong>slovy přirozeného jazyka</strong> (lingvistické termy).
+              </p>
+              <div style="margin-top: 0.75rem; background: rgba(0,0,0,0.25); padding: 0.6rem; border-radius: 6px; font-size: 0.84rem;">
+                <strong>Příklad:</strong> Teplota $T$<br>
+                <div style="display: flex; gap: 0.35rem; margin-top: 0.4rem; flex-wrap: wrap;">
+                  <span class="term-tag term-cold">Studená</span>
+                  <span class="term-tag term-opt">Příjemná</span>
+                  <span class="term-tag term-hot">Horká</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Funkce příslušnosti $\mu(x)$
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                Přiřazuje každé hodnotě z univerza $U$ reálné číslo z intervalu $[0, 1]$.
+              </p>
+              <div class="math-badge" style="width: 100%; text-align: center; margin-top: 0.6rem;">
+                $$\mu_A(x): U \to [0, 1]$$
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); margin: 0.5rem 0 0 1.1rem; line-height: 1.4;">
+                <li>$\mu = 1$: plný člen množiny</li>
+                <li>$0 < \mu < 1$: částečný člen</li>
+                <li>$\mu = 0$: vůbec nepatří</li>
+              </ul>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 22 22 22 12 2"></polygon></svg>
+                Tvary funkcí v praxi
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                V technické praxi a mechatronice volíme tvary jednoduché na výpočet:
+              </p>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); margin: 0.5rem 0 0 1.1rem; line-height: 1.4;">
+                <li><strong>Trojúhelníková (trimf):</strong> 3 parametry $(a, b, c)$, nejrychlejší výpočet v mikrokontroléru.</li>
+                <li><strong>Lichoběžníková (trapmf):</strong> 4 parametry, má ploché pásmo saturace ($\mu = 1$).</li>
+                <li><strong>Gaussova:</strong> hladká nelineární křivka.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="statement-box positive" style="margin-top: 1.25rem;">
+            <strong>Zásadní vlastnost fuzzy množin:</strong>
+            Prvek může patřit do <strong>několika fuzzy množin současně</strong>! Pokud je v místnosti $24^\circ\text{C}$, tato teplota patří s mírou $0.6$ do množiny <em>Příjemná</em> a současně s mírou $0.3$ do množiny <em>Horká</em>.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: INTERAKTIVNÍ TRENAŽÉR 1 (FUNKCE PŘÍSLUŠNOSTI)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Trenažér: Křivky příslušnosti">
+        <div class="slide-content">
+          <h2 class="slide-title">Interaktivní trenažér: Zkoumání funkcí příslušnosti</h2>
+          <p class="slide-subtitle">
+            Hýbejte posuvníkem teploty nebo zvolte předvolbu a sledujte, jak se v reálném čase mění stupně příslušnosti $\mu$.
+          </p>
+
+          <div class="playground-box">
+            <!-- Ovládací lišta slideru a předvoleb -->
+            <div class="playground-controls">
+              <div class="slider-group">
+                <label for="tempSlider">Vstupní teplota ($T$):</label>
+                <input type="range" id="tempSlider" class="custom-range" min="-10" max="45" step="0.5" value="22.0">
+                <span class="slider-val-badge" id="tempValBadge">22.0 °C</span>
+              </div>
+              <div class="preset-buttons">
+                <button class="btn-preset" onclick="setTempPreset(-5)">Mrazák (-5 °C)</button>
+                <button class="btn-preset" onclick="setTempPreset(14)">Jaro (14 °C)</button>
+                <button class="btn-preset" onclick="setTempPreset(22)">Pokoj (22 °C)</button>
+                <button class="btn-preset" onclick="setTempPreset(31)">Horko (31 °C)</button>
+                <button class="btn-preset" onclick="setTempPreset(42)">Extrém (42 °C)</button>
+              </div>
+            </div>
+
+            <!-- Vizuální plocha grafu a odečtů -->
+            <div class="membership-display-grid">
+              <!-- SVG Graf křivek -->
+              <div class="chart-svg-container">
+                <svg class="chart-svg" viewBox="0 0 500 180">
+                  <!-- Mřížka a osy -->
+                  <line x1="40" y1="150" x2="470" y2="150" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+                  <line x1="40" y1="30" x2="470" y2="30" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4,4" />
+                  <line x1="40" y1="90" x2="470" y2="90" stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,2" />
+                  <line x1="40" y1="20" x2="40" y2="150" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+
+                  <!-- Popisky os -->
+                  <text x="32" y="34" fill="#94a3b8" font-size="11" text-anchor="end" font-family="monospace">1.0</text>
+                  <text x="32" y="94" fill="#64748b" font-size="11" text-anchor="end" font-family="monospace">0.5</text>
+                  <text x="32" y="154" fill="#94a3b8" font-size="11" text-anchor="end" font-family="monospace">0.0</text>
+
+                  <text x="40" y="168" fill="#64748b" font-size="11" text-anchor="middle" font-family="monospace">-10°</text>
+                  <text x="193" y="168" fill="#64748b" font-size="11" text-anchor="middle" font-family="monospace">10°</text>
+                  <text x="277" y="168" fill="#64748b" font-size="11" text-anchor="middle" font-family="monospace">21°</text>
+                  <text x="361" y="168" fill="#64748b" font-size="11" text-anchor="middle" font-family="monospace">32°</text>
+                  <text x="460" y="168" fill="#64748b" font-size="11" text-anchor="middle" font-family="monospace">45°C</text>
+
+                  <!-- 1. Křivka STUDENÁ (Cold) - modrá: [-10, 10, 20] -->
+                  <!-- x(-10)=40, x(10)=193, x(20)=269 -->
+                  <polygon points="40,150 40,30 193,30 269,150" fill="rgba(56, 189, 248, 0.12)" />
+                  <polyline points="40,30 193,30 269,150" fill="none" stroke="#38bdf8" stroke-width="2.5" />
+                  <text x="120" y="55" fill="#38bdf8" font-size="12" font-weight="700">STUDENÁ</text>
+
+                  <!-- 2. Křivka PŘÍJEMNÁ (Opt) - zelená: [12, 21, 30] -->
+                  <!-- x(12)=208, x(21)=277, x(30)=345 -->
+                  <polygon points="208,150 277,30 345,150" fill="rgba(16, 185, 129, 0.15)" />
+                  <polyline points="208,150 277,30 345,150" fill="none" stroke="#10b981" stroke-width="2.5" />
+                  <text x="277" y="24" fill="#10b981" font-size="12" font-weight="700" text-anchor="middle">PŘÍJEMNÁ</text>
+
+                  <!-- 3. Křivka HORKÁ (Hot) - červená: [22, 32, 45] -->
+                  <!-- x(22)=284, x(32)=361, x(45)=460 -->
+                  <polygon points="284,150 361,30 460,30 460,150" fill="rgba(244, 63, 94, 0.12)" />
+                  <polyline points="284,150 361,30 460,30" fill="none" stroke="#f43f5e" stroke-width="2.5" />
+                  <text x="395" y="55" fill="#f43f5e" font-size="12" font-weight="700">HORKÁ</text>
+
+                  <!-- Svislý posuvný kurzor s průsečíky -->
+                  <line id="cursorLine" x1="284" y1="20" x2="284" y2="150" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,3" />
+                  <circle id="dotCold" cx="284" cy="150" r="5" fill="#38bdf8" stroke="#fff" stroke-width="1.5" />
+                  <circle id="dotOpt" cx="284" cy="42" r="5" fill="#10b981" stroke="#fff" stroke-width="1.5" />
+                  <circle id="dotHot" cx="284" cy="138" r="5" fill="#f43f5e" stroke="#fff" stroke-width="1.5" />
+                </svg>
+              </div>
+
+              <!-- Odečty stupňů příslušnosti -->
+              <div class="degrees-readout">
+                <div class="degree-card">
+                  <div class="degree-header">
+                    <span class="term-tag term-cold">Studená $\mu_{\text{Studená}}$</span>
+                    <span class="math-badge" id="valCold">0.00</span>
+                  </div>
+                  <div class="degree-bar-track">
+                    <div class="degree-bar-fill" id="barCold" style="width: 0%; background: #38bdf8;"></div>
+                  </div>
+                </div>
+
+                <div class="degree-card">
+                  <div class="degree-header">
+                    <span class="term-tag term-opt">Příjemná $\mu_{\text{Příjemná}}$</span>
+                    <span class="math-badge" id="valOpt">0.89</span>
+                  </div>
+                  <div class="degree-bar-track">
+                    <div class="degree-bar-fill" id="barOpt" style="width: 89%; background: #10b981;"></div>
+                  </div>
+                </div>
+
+                <div class="degree-card">
+                  <div class="degree-header">
+                    <span class="term-tag term-hot">Horká $\mu_{\text{Horká}}$</span>
+                    <span class="math-badge" id="valHot">0.00</span>
+                  </div>
+                  <div class="degree-bar-track">
+                    <div class="degree-bar-fill" id="barHot" style="width: 0%; background: #f43f5e;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: ZÁKLADNÍ ALGEBRA A OPERACE
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Zadehova fuzzy algebra">
+        <div class="slide-content">
+          <h2 class="slide-title">Fuzzy algebra: Operace AND, OR a NOT</h2>
+          <p class="slide-subtitle">
+            Jak Lotfi Zadeh zobecnil Booleovu algebru pro neostré stupně pravdivosti $\mu \in [0, 1]$.
+          </p>
+
+          <div class="fuzzy-grid-2">
+            <!-- 1. NOT -->
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"></line></svg>
+                Fuzzy negace (NOT / Doplněk)
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                Odečtení stupně příslušnosti od jedničky.
+              </p>
+              <div class="math-badge" style="width: 100%; text-align: center; margin: 0.6rem 0;">
+                $$\mu_{\neg A}(x) = 1 - \mu_A(x)$$
+              </div>
+              <div class="statement-box" style="font-size: 0.84rem; margin-top: 0.5rem;">
+                <strong>Příklad:</strong> Je-li polévka horká z $\mu = 0.8$, pak „polévka NENÍ horká“ platí se stupněm $1 - 0.8 = 0.2$.
+              </div>
+            </div>
+
+            <!-- 2. AND -->
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+                Fuzzy průnik (AND / Konjunkce)
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                Standardní operátor je <strong>minimum (min)</strong>. Výsledek nemůže být pravdivější než nejslabší podmínka.
+              </p>
+              <div class="math-badge" style="width: 100%; text-align: center; margin: 0.6rem 0;">
+                $$\mu_{A \cap B}(x) = \min(\mu_A(x), \mu_B(x))$$
+              </div>
+              <div class="statement-box" style="font-size: 0.84rem; margin-top: 0.5rem;">
+                <strong>Příklad:</strong> Je horko ($0.8$) A současně dusno ($0.4$) $\to$ $\min(0.8, 0.4) = 0.4$.
+              </div>
+            </div>
+
+            <!-- 3. OR -->
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                Fuzzy sjednocení (OR / Disjunkce)
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                Standardní operátor je <strong>maximum (max)</strong>. Výsledek přebírá sílu nejsilnější podmínky.
+              </p>
+              <div class="math-badge" style="width: 100%; text-align: center; margin: 0.6rem 0;">
+                $$\mu_{A \cup B}(x) = \max(\mu_A(x), \mu_B(x))$$
+              </div>
+              <div class="statement-box" style="font-size: 0.84rem; margin-top: 0.5rem;">
+                <strong>Příklad:</strong> Je horko ($0.8$) NEBO dusno ($0.4$) $\to$ $\max(0.8, 0.4) = 0.8$.
+              </div>
+            </div>
+
+            <!-- 4. Vlastnosti a srovnání -->
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Vlastnosti a srovnání s Booleovou logikou
+              </h4>
+              <div style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.25rem;">
+                <p style="margin: 0;">
+                  <strong>Zpětná kompatibilita:</strong> Pro krajní hodnoty $\{0, 1\}$ operace přesně odpovídají číslicovým hradlům AND ($\min(1,1)=1$, $\min(1,0)=0$) a OR ($\max(0,1)=1$). Fuzzy logika je obecnějším nadmnožinovým rámcem.
+                </p>
+                <p style="margin: 0;">
+                  <strong>Neplatnost zákona sporu:</strong> V klasické logice je $A \wedge \neg A = 0$. Ve fuzzy logice pro $\mu = 0.6$ je $\min(0.6, 0.4) = 0.4 \neq 0$. Systém připouští částečnou míru rozporu.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: INTERAKTIVNÍ KALKULÁTOR FUZZY OPERACÍ
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Kalkulátor fuzzy operací">
+        <div class="slide-content">
+          <h2 class="slide-title">Interaktivní kalkulátor: Porovnání fuzzy operátorů</h2>
+          <p class="slide-subtitle">
+            Nastavte stupně pravdivosti podmínek $A$ a $B$ a sledujte chování operátorů $\text{NOT}$, $\text{AND} (\min)$, $\text{OR} (\max)$ i algebraického součinu.
+          </p>
+
+          <div class="playground-box">
+            <div class="fuzzy-grid-2" style="margin-top: 0; align-items: center;">
+              <!-- Slidery A a B -->
+              <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="slider-group">
+                  <label for="sliderMuA" style="width: 140px;">Příslušnost $\mu_A$:</label>
+                  <input type="range" id="sliderMuA" class="custom-range" min="0" max="1" step="0.05" value="0.70">
+                  <span class="slider-val-badge" id="badgeMuA">0.70</span>
+                </div>
+                <div class="slider-group">
+                  <label for="sliderMuB" style="width: 140px;">Příslušnost $\mu_B$:</label>
+                  <input type="range" id="sliderMuB" class="custom-range" min="0" max="1" step="0.05" value="0.40">
+                  <span class="slider-val-badge" id="badgeMuB">0.40</span>
+                </div>
+                <div class="preset-buttons">
+                  <button class="btn-preset" onclick="setOpsPreset(1, 0)">Booleovo (1, 0)</button>
+                  <button class="btn-preset" onclick="setOpsPreset(0.5, 0.5)">Nerozhodné (0.5, 0.5)</button>
+                  <button class="btn-preset" onclick="setOpsPreset(0.8, 0.3)">Typické (0.8, 0.3)</button>
+                  <button class="btn-preset" onclick="setOpsPreset(0.9, 0.85)">Oba silné (0.9, 0.85)</button>
+                </div>
+              </div>
+
+              <!-- Výsledkové karty operací -->
+              <div class="calc-grid" style="margin-top: 0;">
+                <div class="degree-card">
+                  <div class="degree-header">
+                    <span>Negace $\text{NOT } A$ ($1 - \mu_A$)</span>
+                    <span class="calc-result-badge" id="resNotA">0.30</span>
+                  </div>
+                  <div class="degree-bar-track">
+                    <div class="degree-bar-fill" id="barNotA" style="width: 30%; background: #94a3b8;"></div>
+                  </div>
+                </div>
+
+                <div class="degree-card">
+                  <div class="degree-header">
+                    <span>Negace $\text{NOT } B$ ($1 - \mu_B$)</span>
+                    <span class="calc-result-badge" id="resNotB">0.60</span>
+                  </div>
+                  <div class="degree-bar-track">
+                    <div class="degree-bar-fill" id="barNotB" style="width: 60%; background: #94a3b8;"></div>
+                  </div>
+                </div>
+
+                <div class="degree-card">
+                  <div class="degree-header">
+                    <span style="color: var(--accent-cyan); font-weight: 700;">Průnik $A \text{ AND } B$ ($\min$)</span>
+                    <span class="calc-result-badge" id="resAnd" style="color: #38bdf8; border-color: #38bdf8; background: rgba(56, 189, 248, 0.15);">0.40</span>
+                  </div>
+                  <div class="degree-bar-track">
+                    <div class="degree-bar-fill" id="barAnd" style="width: 40%; background: #38bdf8;"></div>
+                  </div>
+                </div>
+
+                <div class="degree-card">
+                  <div class="degree-header">
+                    <span style="color: var(--accent-amber); font-weight: 700;">Sjednocení $A \text{ OR } B$ ($\max$)</span>
+                    <span class="calc-result-badge" id="resOr" style="color: #fbbf24; border-color: #fbbf24; background: rgba(245, 158, 11, 0.15);">0.70</span>
+                  </div>
+                  <div class="degree-bar-track">
+                    <div class="degree-bar-fill" id="barOr" style="width: 70%; background: #f59e0b;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doplňkové algebraické operátory (T-normy) -->
+            <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); flex-wrap: wrap; gap: 0.75rem;">
+              <div>Algebraický součin (soft AND): $\mu_A \cdot \mu_B = $ <strong id="resProd" style="color: var(--text-primary); font-family: var(--font-mono);">0.28</strong></div>
+              <div>Algebraický součet (soft OR): $\mu_A + \mu_B - \mu_A \mu_B = $ <strong id="resSum" style="color: var(--text-primary); font-family: var(--font-mono);">0.82</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: ARCHITEKTURA FUZZY REGULÁTORU
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Architektura Fuzzy regulátoru">
+        <div class="slide-content">
+          <h2 class="slide-title">Architektura mechatronického Fuzzy regulátoru</h2>
+          <p class="slide-subtitle">
+            Čtyři klíčové kroky zpracování signálu: od analogového senzoru k přesnému PWM povelu pro akční člen.
+          </p>
+
+          <div class="controller-pipeline">
+            <div class="pipeline-step">
+              <div class="pipeline-step-num">1</div>
+              <h4>Ostrý vstup (Senzory)</h4>
+              <p>Senzory měří reálné fyzikální veličiny v číslech: teplota ve °C, vzdálenost v cm, tlak v kPa nebo otáčky hřídele v ot./min.</p>
+            </div>
+
+            <div class="pipeline-step" style="border-top: 3px solid #38bdf8;">
+              <div class="pipeline-step-num" style="background: #38bdf8; color: #082f49;">2</div>
+              <h4 style="color: #38bdf8;">Fuzzifikace</h4>
+              <p>Převod naměřeného čísla na stupně příslušnosti $\mu$ k jednotlivým slovním pojmům (např. $24^\circ\text{C}$ znamená: <em>Příjemná</em> ze 60&nbsp;% a současně <em>Horká</em> ze 30&nbsp;%).</p>
+            </div>
+
+            <div class="pipeline-step" style="border-top: 3px solid var(--accent);">
+              <div class="pipeline-step-num">3</div>
+              <h4 style="color: var(--accent);">Vyhodnocení pravidel</h4>
+              <p>Řídicí jednotka vyhodnotí pravidla typu <code>IF ... THEN</code>. Síla zásahu odpovídá tomu, jak moc je podmínka splněna (při spojce AND se uplatní menší hodnota $\min$).</p>
+            </div>
+
+            <div class="pipeline-step" style="border-top: 3px solid #f59e0b;">
+              <div class="pipeline-step-num" style="background: #f59e0b; color: #451a03;">4</div>
+              <h4 style="color: #f59e0b;">Defuzzifikace</h4>
+              <p>Sloučení doporučení ze všech aktivních pravidel do jednoho konkrétního čísla pro akční člen (např. nastavit výkon ventilátoru na 68&nbsp;% PWM nebo napětí serva na 3,4&nbsp;V).</p>
+            </div>
+          </div>
+
+          <div class="fuzzy-grid-2">
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Báze pravidel – selský rozum místo složité matematiky
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                Pravidla sestavuje technik na základě zkušenosti s chováním stroje v běžné lidské řeči. Nemusíme znát složité diferenciální rovnice soustavy:
+              </p>
+              <div class="code-box" style="margin-top: 0.5rem; padding: 0.6rem; font-size: 0.82rem; background: rgba(0,0,0,0.3); border-radius: 6px;">
+                <code><strong>KDYŽ</strong> (Teplota je VYSOKÁ) <strong>A SOUČASNĚ</strong> (Tlak ROSTE)<br>
+                <strong>PAK</strong> (Ventilátor = MAXIMÁLNÍ VÝKON, Ventil = OTEVŘÍT)</code>
+              </div>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Proč je to v mechatronice tak výhodné?
+              </h4>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45;">
+                Klasické regulátory počítají s ideálním strojem. V praxi se však mění zátěž, ložiska se zahřívají a mechanismy stárnou. Fuzzy regulátor funguje spolehlivě, pružně a bez neustálého ručního přelaďování parametrů.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: METODY DEFUZZIFIKACE (TEORIE A GRAF)
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Metody defuzzifikace: Teorie a grafy">
+        <div class="slide-content">
+          <h2 class="slide-title">Metody defuzzifikace: Převod na ostrý akční povel</h2>
+          <p class="slide-subtitle">
+            Jak sloučit doporučení všech aktivovaných pravidel do jednoho konkrétního čísla pro motor, topení nebo ventil.
+          </p>
+
+          <!-- Didaktická tabulka veličin v technické praxi -->
+          <div class="statement-box" style="margin-top: 0.5rem; font-size: 0.85rem; background: rgba(0,0,0,0.28); border-left: 3px solid var(--accent); padding: 0.65rem 0.95rem; line-height: 1.55;">
+            <strong style="color: var(--accent); font-size: 0.92rem;">Proč je nutná defuzzifikace a co znamenají veličiny ve vzorcích?</strong><br>
+            Po vyhodnocení pravidel máme neostrý výsledek (např. <em>„trochu chladit ze 40 %“</em> a <em>„hodně chladit ze 70 %“</em>). Výkonový tranzistor (MOSFET) motoru ale nemůže běžet na dvě střídy současně. Řídicí procesor potřebuje <strong>jediné přesné číslo $0-100\,\%$ střídy PWM</strong>.
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.5rem; margin-top: 0.5rem; font-size: 0.82rem;">
+              <div><strong>$y$ (Akční veličina):</strong> Fyzický výstup (střída PWM $0-100\,\%$, otáčky RPM, napětí $0-10\text{ V}$).</div>
+              <div><strong>$y_i$ (Doporučení pravidla):</strong> Výstupní hodnota $i$-tého pravidla ($y_1 = 30\,\%$, $y_2 = 80\,\%$).</div>
+              <div><strong>$\mu_i$ (Stupeň aktivace):</strong> Váha pravidla ($0{,}0$ až $1{,}0$) podle aktuální teploty ze snímače.</div>
+              <div><strong>$S_i$ (Plocha množiny):</strong> Geometrický obsah oříznuté plochy výstupu $i$-tého pravidla v Mamdani.</div>
+              <div><strong>$y^*$ (Ostrý výstup):</strong> Výsledné jedno číslo (Crisp output), které regulátor pošle do motoru.</div>
+            </div>
+          </div>
+
+          <!-- 3 karty se vzorci -->
+          <div class="fuzzy-grid-3" style="margin-top: 0.65rem;">
+            <div class="fuzzy-card" style="padding: 0.85rem 1rem;">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path></svg>
+                1. Mamdani COG (Těžiště ploch)
+              </h4>
+              <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.4;">
+                Center of Gravity. Hledá těžiště <strong>geometrických ploch</strong> $S_i$ oříznutých fuzzy množin.
+              </p>
+              <div class="math-badge" style="width: 100%; text-align: center; margin: 0.4rem 0; font-size: 0.88rem;">
+                $$y^*_{\text{COG}} = \frac{\sum y_i \cdot S_i}{\sum S_i}$$
+              </div>
+              <p style="font-size: 0.78rem; color: var(--fuzzy-opt);">
+                <strong>V praxi:</strong> Dokonale plynulý chod serv a motorů bez mechanických rázů. Širší množiny mají větší plochu a silnější váhu.
+              </p>
+            </div>
+
+            <div class="fuzzy-card" style="padding: 0.85rem 1rem;">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                2. Metoda maxima (MOM)
+              </h4>
+              <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.4;">
+                Mean of Maxima vybere hodnotu pravidla s nejvyšší dosaženou vahou $\mu_i = \max$.
+              </p>
+              <div class="math-badge" style="width: 100%; text-align: center; margin: 0.4rem 0; font-size: 0.88rem;">
+                $$y^*_{\text{MOM}} = y \mid \mu(y) = \max$$
+              </div>
+              <p style="font-size: 0.78rem; color: var(--accent-amber);">
+                <strong>V praxi:</strong> Vítěz bere vše. Způsobuje skokové přepínání mezi režimy (riziko cukání stroje, vhodné spíše pro alarmy).
+              </p>
+            </div>
+
+            <div class="fuzzy-card" style="padding: 0.85rem 1rem;">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect></svg>
+                3. Metoda Sugeno (Singleton)
+              </h4>
+              <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.4;">
+                Výstupem pravidla není plocha, ale přímo pevná čísla (<strong>singletony</strong>, např. $30\,\%$ a $80\,\%$).
+              </p>
+              <div class="math-badge" style="width: 100%; text-align: center; margin: 0.4rem 0; font-size: 0.88rem;">
+                $$y^*_{\text{Sugeno}} = \frac{\sum \mu_i \cdot y_i}{\sum \mu_i}$$
+              </div>
+              <p style="font-size: 0.78rem; color: var(--fuzzy-cold);">
+                <strong>V praxi:</strong> Bleskový aritmetický vážený průměr. Ideální pro levné mikrokontroléry (Arduino, STM32), které nepočítají integrály.
+              </p>
+            </div>
+          </div>
+
+          <!-- Názorný graf Mamdani a Sugeno pro studenty -->
+          <div class="playground-box" style="margin-top: 0.75rem; padding: 0.85rem 1.1rem;">
+            <div style="font-weight: 700; font-size: 0.92rem; color: var(--accent); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.5rem;">
+              <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              Názorný graf defuzzifikace: Oříznuté plochy Mamdani ($S_1, S_2$) vs. Singletony Sugeno na výstupu PWM
+            </div>
+
+            <div class="chart-svg-container" style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 0.5rem;">
+              <svg class="chart-svg chart-svg-defuzz" viewBox="0 0 600 200">
+                <!-- Mřížka a osy -->
+                <line x1="55" y1="160" x2="575" y2="160" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" />
+                <line x1="55" y1="25" x2="55" y2="160" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" />
+                <line x1="55" y1="25" x2="575" y2="25" stroke="rgba(255,255,255,0.08)" stroke-dasharray="4,4" />
+                <line x1="55" y1="79" x2="575" y2="79" stroke="rgba(244,63,94,0.25)" stroke-dasharray="2,2" />
+                <line x1="55" y1="106" x2="575" y2="106" stroke="rgba(56,189,248,0.25)" stroke-dasharray="2,2" />
+
+                <!-- Popisky osy Y (Stupeň příslušnosti mu) -->
+                <text x="48" y="29" fill="#94a3b8" font-size="10" text-anchor="end" font-family="monospace">1.0</text>
+                <text x="48" y="83" fill="#f43f5e" font-size="10" text-anchor="end" font-family="monospace">0.7 (μ₂)</text>
+                <text x="48" y="110" fill="#38bdf8" font-size="10" text-anchor="end" font-family="monospace">0.4 (μ₁)</text>
+                <text x="48" y="164" fill="#94a3b8" font-size="10" text-anchor="end" font-family="monospace">0.0</text>
+
+                <!-- 1. Plocha S1 (Pravidlo 1: Nízký výkon 30 %, základna 10 % až 50 %) -->
+                <!-- x0=55, x100=565, dx=5.1 px per % -->
+                <!-- 10% = 106, 30% = 208, 50% = 310 -->
+                <!-- Ořez v mu1 = 0.40 (y=106): xL = 208 - 0.6*102 = 146.8, xR = 208 + 0.6*102 = 269.2 -->
+                <polygon points="106,160 146.8,106 269.2,106 310,160" fill="rgba(56, 189, 248, 0.25)" stroke="#38bdf8" stroke-width="2" />
+                <!-- Původní špička trojúhelníku (neaktivní část) -->
+                <polyline points="146.8,106 208,25 269.2,106" fill="none" stroke="rgba(56, 189, 248, 0.35)" stroke-width="1.5" stroke-dasharray="3,3" />
+                <text x="208" y="138" fill="#38bdf8" font-size="11" font-weight="700" text-anchor="middle">Plocha S₁ (12.8)</text>
+
+                <!-- 2. Plocha S2 (Pravidlo 2: Vysoký výkon 80 %, základna 50 % až 110 %) -->
+                <!-- 50% = 310, 80% = 463, 100% = 565 -->
+                <!-- Ořez v mu2 = 0.70 (y=79): xL = 463 - 0.3*153 = 417.1, xR = 463 + 0.3*153 = 508.9 -->
+                <polygon points="310,160 417.1,79 508.9,79 565,124 565,160" fill="rgba(244, 63, 94, 0.22)" stroke="#f43f5e" stroke-width="2" />
+                <!-- Původní špička trojúhelníku 2 -->
+                <polyline points="417.1,79 463,25 508.9,79" fill="none" stroke="rgba(244, 63, 94, 0.35)" stroke-width="1.5" stroke-dasharray="3,3" />
+                <text x="463" y="125" fill="#f43f5e" font-size="11" font-weight="700" text-anchor="middle">Plocha S₂ (27.3)</text>
+
+                <!-- Sugeno singletony (bodové šipky na ose) -->
+                <line x1="208" y1="160" x2="208" y2="70" stroke="#06b6d4" stroke-width="2" stroke-dasharray="4,2" />
+                <circle cx="208" cy="70" r="4" fill="#06b6d4" />
+                <text x="208" y="62" fill="#06b6d4" font-size="10" font-weight="700" text-anchor="middle">Singleton 30 %</text>
+
+                <line x1="463" y1="160" x2="463" y2="55" stroke="#06b6d4" stroke-width="2" stroke-dasharray="4,2" />
+                <circle cx="463" cy="55" r="4" fill="#06b6d4" />
+                <text x="463" y="47" fill="#06b6d4" font-size="10" font-weight="700" text-anchor="middle">Singleton 80 %</text>
+
+                <!-- Výsledky 3 metod: svislé čáry -->
+                <!-- Sugeno: 61.8 % -> x = 370 -->
+                <line x1="370" y1="25" x2="370" y2="160" stroke="#06b6d4" stroke-width="2" stroke-dasharray="3,3" />
+                <text x="362" y="18" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="end">Sugeno: 61.8 %</text>
+
+                <!-- Mamdani COG: 64.0 % -> x = 381 -->
+                <line x1="381" y1="15" x2="381" y2="160" stroke="#10b981" stroke-width="2.5" />
+                <circle cx="381" cy="115" r="5" fill="#10b981" stroke="#fff" stroke-width="1.5" />
+                <text x="387" y="32" fill="#34d399" font-size="11" font-weight="700">COG: 64.0 % (těžiště)</text>
+
+                <!-- MOM: x = 463 (80 %) -->
+                <line x1="463" y1="22" x2="463" y2="160" stroke="#f59e0b" stroke-width="2.5" />
+                <text x="463" y="16" fill="#fbbf24" font-size="11" font-weight="700" text-anchor="middle">MOM: 80 % (vrchol)</text>
+
+                <!-- Popisky osy X (Výkon PWM v %) -->
+                <text x="55" y="176" fill="#64748b" font-size="10" text-anchor="middle" font-family="monospace">0 %</text>
+                <text x="106" y="176" fill="#64748b" font-size="10" text-anchor="middle" font-family="monospace">10 %</text>
+                <text x="208" y="176" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">30 % (P1)</text>
+                <text x="310" y="176" fill="#64748b" font-size="10" text-anchor="middle" font-family="monospace">50 %</text>
+                <text x="463" y="176" fill="#f43f5e" font-size="10" font-weight="700" text-anchor="middle" font-family="monospace">80 % (P2)</text>
+                <text x="565" y="176" fill="#64748b" font-size="10" text-anchor="middle" font-family="monospace">100 % PWM</text>
+              </svg>
+            </div>
+
+            <div style="margin-top: 0.5rem; font-size: 0.81rem; color: var(--text-secondary); line-height: 1.45;">
+              <strong style="color: var(--text-primary);">Klíčové postřehy z grafu pro žáka:</strong>
+              Metoda <strong>MOM</strong> ignoruje kompromis a skočí rovnou na $80\,\%$ (vrchol $\mu_2$). 
+              Metoda <strong>Sugeno</strong> spočte vážený aritmetický průměr mezi body $30\,\%$ a $80\,\%$ ($61{,}8\,\%$). 
+              Metoda <strong>Mamdani COG</strong> počítá plochy: protože chladicí zóna $S_2$ má širší základnu ($60\,\%$ vs $40\,\%$) s plochou $27{,}3 > 12{,}8$, má v těžišti větší vliv a táhne výsledek více k bezpečnějšímu chlazení ($64{,}0\,\%$).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: INTERAKTIVNÍ TRENAŽÉR DEFUZZIFIKACE
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Trenažér: Porovnání defuzzifikace">
+        <div class="slide-content">
+          <h2 class="slide-title">Interaktivní trenažér: Porovnání defuzzifikace v praxi</h2>
+          <p class="slide-subtitle">
+            Vyzkoušejte si, jak se mění akční zásah chlazení při různých vahách pravidel a jak se liší chování všech tří metod v reálném čase.
+          </p>
+
+          <!-- Praktické zadání v rozváděči -->
+          <div class="statement-box" style="margin-top: 0.5rem; font-size: 0.85rem; background: rgba(0,0,0,0.28); border-left: 3px solid var(--accent); padding: 0.65rem 0.95rem; line-height: 1.5;">
+            <strong style="color: var(--accent); font-size: 0.92rem;">Praktické zadání: Řízení otáček chladicího ventilátoru podle teploty</strong><br>
+            Teplotní snímač v elektrorozváděči naměřil $27{,}5\,{}^\circ\text{C}$ (mírné oteplení). Řídicí procesor aktivoval dvě protichůdná pravidla:
+            <ul style="margin: 0.35rem 0 0.35rem 1.25rem;">
+              <li><strong>Pravidlo 1 (tichý nízký výkon 30 % PWM):</strong> aktivováno se stupněm příslušnosti $\mu_1$. V Mamdani tvoří výstup trojúhelník o základně $40\,\%$.</li>
+              <li><strong>Pravidlo 2 (intenzivní vysoký výkon 80 % PWM):</strong> aktivováno se stupněm příslušnosti $\mu_2$. V Mamdani tvoří výstup širší trojúhelník o základně $60\,\%$ (bezpečnostní chlazení).</li>
+            </ul>
+            <strong>Co z toho mikrokontrolér dostane?</strong> Jediné přesné číslo $0-100\,\%$ střídy PWM pro buzení motoru. Měňte posuvníky $\mu_1$ a $\mu_2$ a sledujte reakci všech tří metod:
+          </div>
+
+          <!-- Trenažér -->
+          <div class="defuzz-sim-box">
+            <div class="defuzz-controls-row">
+              <div class="slider-group" style="min-width: 200px;">
+                <label for="sliderDefuzzMu1">Váha pravidla 1 ($\mu_1$):</label>
+                <input type="range" id="sliderDefuzzMu1" class="custom-range" min="0.05" max="1" step="0.05" value="0.40">
+                <span class="slider-val-badge" id="badgeDefuzzMu1">0.40</span>
+              </div>
+              <div class="slider-group" style="min-width: 200px;">
+                <label for="sliderDefuzzMu2">Váha pravidla 2 ($\mu_2$):</label>
+                <input type="range" id="sliderDefuzzMu2" class="custom-range" min="0.05" max="1" step="0.05" value="0.70">
+                <span class="slider-val-badge" id="badgeDefuzzMu2">0.70</span>
+              </div>
+              <div class="preset-buttons">
+                <button class="btn-preset" onclick="setDefuzzPreset(0.5, 0.5)">Rovnováha (0.5 vs 0.5)</button>
+                <button class="btn-preset" onclick="setDefuzzPreset(0.2, 0.8)">Převaha chlazení (0.2 vs 0.8)</button>
+                <button class="btn-preset" onclick="setDefuzzPreset(0.8, 0.3)">Převaha ticha (0.8 vs 0.3)</button>
+              </div>
+            </div>
+
+            <!-- Třípruhová vizuální stupnice (3-lane track) -->
+            <div class="defuzz-multitrack">
+              <!-- Dráha 1: COG -->
+              <div class="defuzz-lane lane-cog">
+                <div class="defuzz-lane-info">
+                  <span class="defuzz-lane-badge badge-cog">1. Mamdani COG (Těžiště ploch)</span>
+                  <span class="defuzz-lane-val" id="valDefuzzCog">64.0 % PWM</span>
+                </div>
+                <div class="defuzz-lane-bar-bg">
+                  <div class="defuzz-lane-marker marker-cog" id="markerCog" style="left: 64.0%;">
+                    <div class="defuzz-marker-pin"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dráha 2: MOM -->
+              <div class="defuzz-lane lane-mom">
+                <div class="defuzz-lane-info">
+                  <span class="defuzz-lane-badge badge-mom">2. MOM (Metoda maxima)</span>
+                  <span class="defuzz-lane-val" id="valDefuzzMom">80 % PWM</span>
+                </div>
+                <div class="defuzz-lane-bar-bg">
+                  <div class="defuzz-lane-marker marker-mom" id="markerMom" style="left: 80%;">
+                    <div class="defuzz-marker-pin"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dráha 3: Sugeno -->
+              <div class="defuzz-lane lane-sugeno">
+                <div class="defuzz-lane-info">
+                  <span class="defuzz-lane-badge badge-sugeno">3. Sugeno (Vážený průměr)</span>
+                  <span class="defuzz-lane-val" id="valDefuzzSugeno">61.8 % PWM</span>
+                </div>
+                <div class="defuzz-lane-bar-bg">
+                  <div class="defuzz-lane-marker marker-sugeno" id="markerSugeno" style="left: 61.8%;">
+                    <div class="defuzz-marker-pin"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kalibrovaná osa dole -->
+              <div class="defuzz-axis-ticks">
+                <span style="left: 0%;">0 % (STOP)</span>
+                <span style="left: 30%;">P1: 30 % (Nízký)</span>
+                <span style="left: 50%;">50 % (Střed)</span>
+                <span style="left: 80%;">P2: 80 % (Vysoký)</span>
+                <span style="left: 100%;">100 % (MAX)</span>
+              </div>
+            </div>
+
+            <!-- Detailní výpočetní karty -->
+            <div class="defuzz-results-grid">
+              <div class="degree-card" style="border-top: 3px solid #10b981;">
+                <div style="font-weight: 700; color: #10b981; font-size: 0.85rem;">1. Výpočet COG (Těžiště ploch):</div>
+                <div style="font-family: var(--font-mono); font-size: 0.82rem; margin: 0.25rem 0;" id="calcFormulaCog">
+                  (30 · 12.8 + 80 · 27.3) / (12.8 + 27.3) = 64.0 % PWM
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">
+                  Váží skutečné obsahy ploch $S_1, S_2$. Dokonale plynulý chod ventilátoru bez opotřebení ložisek.
+                </div>
+              </div>
+
+              <div class="degree-card" style="border-top: 3px solid #f59e0b;">
+                <div style="font-weight: 700; color: #f59e0b; font-size: 0.85rem;">2. Výpočet MOM (Maximum):</div>
+                <div style="font-size: 0.82rem; margin: 0.25rem 0; color: var(--text-primary);" id="calcFormulaMom">
+                  Pravidlo 2 dominuje (0.70 &gt; 0.40) &rarr; skok na 80 % PWM
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">
+                  Vítěz bere vše. Ventilátor skokově zařve na plný výkon (riziko rázů a hluku).
+                </div>
+              </div>
+
+              <div class="degree-card" style="border-top: 3px solid #06b6d4;">
+                <div style="font-weight: 700; color: #06b6d4; font-size: 0.85rem;">3. Výpočet Sugeno (Singleton):</div>
+                <div style="font-family: var(--font-mono); font-size: 0.82rem; margin: 0.25rem 0;" id="calcFormulaSugeno">
+                  (0.40 · 30 + 0.70 · 80) / (0.40 + 0.70) = 61.8 % PWM
+                </div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">
+                  Přímý aritmetický vážený průměr. Rychlý nenáročný výpočet v mikrokontroléru.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: PŘÍKLADY REÁLNÉHO UŽITÍ
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Příklady reálného užití v praxi">
+        <div class="slide-content">
+          <h2 class="slide-title">Reálné užití fuzzy logiky v průmyslu a mechatronice</h2>
+          <p class="slide-subtitle">
+            Kde se s fuzzy řízením setkáváme každý den od spotřební elektroniky po špičkový automotive.
+          </p>
+
+          <div class="fuzzy-grid-3">
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                Invertorové klimatizace
+              </h4>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45;">
+                Místo neustálého cvakání ON/OFF relé řídí fuzzy logika plynulou frekvenci kompresoru. Úspora energie až 35 %, nehlučný chod a stálá teplota bez průvanu.
+              </p>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12a4 4 0 1 0 8 0 4 4 0 1 0-8 0"></path></svg>
+                Automatické pračky
+              </h4>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45;">
+                Optický senzor měří zakalení vody a akcelerometr setrvačnost bubnu (hmotnost prádla). Fuzzy logika sama určí dávkování vody, prací dobu a počet máchání.
+              </p>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 10.9 2 11.2 2 11.5V16c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>
+                Automobilové ABS a ESP
+              </h4>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45;">
+                Vyhodnocení prokluzu kol na suchu, vodě či ledu. Fuzzy brzdný asistent dávkuje hydraulický tlak tak, aby kolo neztratilo adhezi a vůz byl řiditelný.
+              </p>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                Stabilizace obrazu fotoaparátů
+              </h4>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45;">
+                Gyroskopické snímače detekují pohyb. Fuzzy algoritmus odliší nechtěný třes ruky od záměrného panoramatického švenkování kamerou.
+              </p>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8.01" y2="16"></line><line x1="16" y1="16" x2="16.01" y2="16"></line></svg>
+                Robotické manipulátory
+              </h4>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45;">
+                Plynulý úchop křehkých předmětů (např. vejce, skleněná ampule) pomocí tenzometrických senzorů síly, aby nedošlo k jejich rozdrcení ani vyklouznutí.
+              </p>
+            </div>
+
+            <div class="fuzzy-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Chytré budovy (HVAC)
+              </h4>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.45;">
+                Kombinace měření vnitřní teploty, oslunění fasády, rychlosti větru a přítomnosti osob v místnosti pro optimální nastavení ventilace a žaluzií.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: NÁVRH REGULÁTORU (1/2: VSTUPY A FUZZIFIKACE)
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Příklad 1/2: Vstupy a fuzzifikace">
+        <div class="slide-content">
+          <h2 class="slide-title">Krok za krokem (1/2): Vstupy a funkce příslušnosti</h2>
+          <p class="slide-subtitle">
+            Proč vzniká matice 3&times;3 a jak přesně z grafů funkcí příslušnosti určíme hodnoty $\mu$.
+          </p>
+
+          <!-- Rámec praktického zadání -->
+          <div class="statement-box" style="margin-top: 0.35rem; font-size: 0.84rem; background: rgba(0,0,0,0.28); border-left: 3px solid var(--accent); padding: 0.55rem 0.85rem; line-height: 1.5;">
+            <strong>Fyzikální situace v elektrorozváděči:</strong> Cílová teplota je $w = 22^\circ\text{C}$. Snímače právě naměřily skutečnou teplotu $T = 25^\circ\text{C}$ (odchylka <strong>$e = +3^\circ\text{C}$</strong>, je přetopeno) a rychlost jejího růstu <strong>$\Delta e = +0{,}8^\circ\text{C/min}$</strong> (teplota navíc dál strmě stoupá). Otázka: <em>Jak z těchto čísel řídicí procesor určí střídu PWM pro ventilátor?</em>
+          </div>
+
+          <div class="fuzzy-grid-2" style="margin-top: 0.6rem;">
+            <!-- Otázka 1: Proč matice 3x3 -->
+            <div class="fuzzy-card" style="padding: 0.75rem 0.9rem;">
+              <h4 style="font-size: 0.9rem;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                1. Kde se vzala matice pravidel 3&times;3?
+              </h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.4rem;">
+                Technik vyhodnocuje <strong>2 nezávislé fyzikální veličiny</strong> ze snímačů. Každou z nich rozdělil do 3 slovních pásem:
+              </p>
+              <ul style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; margin: 0 0 0.5rem 1.15rem;">
+                <li><strong>Vstup 1 (Odchylka $e$):</strong> Záporná (Z), Nulová (N), Kladná (K) &ndash; <em>3 stavy</em></li>
+                <li><strong>Vstup 2 (Rychlost $\Delta e$):</strong> Klesá (KL), Stabilní (ST), Roste (RO) &ndash; <em>3 stavy</em></li>
+              </ul>
+              <div style="background: rgba(0,0,0,0.25); border-left: 3px solid var(--fuzzy-cold); padding: 0.5rem 0.75rem; border-radius: 4px; font-size: 0.8rem; line-height: 1.4;">
+                <strong>Proč přesně 9 pravidel?</strong><br>
+                Počet možných situací v rozváděči je:
+                $$3 \text{ stavy } e \times 3 \text{ stavy } \Delta e = \mathbf{9\text{ kombinací}}$$
+                Pro každou z 9 situací technik určil selským rozumem výkon ventilátoru (např. <em>Kladná odchylka</em> A <em>Roste</em> = <em>MAX 100 %</em>).
+              </div>
+            </div>
+
+            <!-- Otázka 2: Kde se vzaly hodnoty mu (0.3, 0.7) -->
+            <div class="fuzzy-card" style="padding: 0.75rem 0.9rem;">
+              <h4 style="font-size: 0.9rem;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                2. Odkud se vzaly hodnoty $\mu$ (0.3, 0.7 atd.)?
+              </h4>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.4rem;">
+                Hodnoty $\mu$ nespadly z nebe &ndash; jde o <strong>přesný grafický odečet z funkcí příslušnosti</strong> pro naměřené fyzikální hodnoty:
+              </p>
+
+              <!-- Graf 1: Odchylka e = +3 °C -->
+              <div style="margin-bottom: 0.5rem;">
+                <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem;">
+                  A) Graf odchylky $e$: pro naměřených <span style="color: var(--accent-amber); font-family: var(--font-mono);">+3 °C</span>
+                </div>
+                <div style="background: rgba(0,0,0,0.35); border-radius: 6px; padding: 0.25rem 0.5rem;">
+                  <svg viewBox="0 0 340 95" style="width: 100%; height: 85px; display: block;">
+                    <!-- Osy -->
+                    <line x1="35" y1="75" x2="315" y2="75" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" />
+                    <line x1="35" y1="15" x2="35" y2="75" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" />
+                    <text x="30" y="19" fill="#94a3b8" font-size="9" text-anchor="end" font-family="monospace">1.0</text>
+                    <text x="30" y="77" fill="#94a3b8" font-size="9" text-anchor="end" font-family="monospace">0.0</text>
+                    <!-- Křivky -->
+                    <polyline points="35,15 35,15 175,75" fill="none" stroke="#38bdf8" stroke-width="1.8" />
+                    <text x="80" y="35" fill="#38bdf8" font-size="9" font-weight="700">Záporná</text>
+                    <polyline points="55,75 175,15 295,75" fill="none" stroke="#10b981" stroke-width="1.8" />
+                    <text x="175" y="12" fill="#10b981" font-size="9" font-weight="700" text-anchor="middle">Nulová</text>
+                    <polyline points="175,75 295,15 315,15" fill="none" stroke="#f43f5e" stroke-width="1.8" />
+                    <text x="270" y="35" fill="#f43f5e" font-size="9" font-weight="700">Kladná</text>
+                    <!-- Značky na ose X -->
+                    <text x="35" y="87" fill="#64748b" font-size="9" text-anchor="middle" font-family="monospace">-5°</text>
+                    <text x="175" y="87" fill="#64748b" font-size="9" text-anchor="middle" font-family="monospace">0°C</text>
+                    <text x="315" y="87" fill="#64748b" font-size="9" text-anchor="middle" font-family="monospace">+5°</text>
+                    <!-- Řez na +3 °C -->
+                    <line x1="259" y1="12" x2="259" y2="75" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="3,2" />
+                    <circle cx="259" cy="57" r="3.5" fill="#10b981" stroke="#fff" stroke-width="1" />
+                    <text x="254" y="60" fill="#10b981" font-size="9" font-weight="700" text-anchor="end">&mu;_N = 0.3</text>
+                    <circle cx="259" cy="33" r="3.5" fill="#f43f5e" stroke="#fff" stroke-width="1" />
+                    <text x="265" y="32" fill="#f43f5e" font-size="9" font-weight="700">&mu;_K = 0.7</text>
+                    <text x="259" y="89" fill="#f59e0b" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">+3°C</text>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Graf 2: Rychlost de = +0.8 °C/min -->
+              <div>
+                <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.15rem;">
+                  B) Graf rychlosti $\Delta e$: pro naměřených <span style="color: var(--accent-amber); font-family: var(--font-mono);">+0.8 °C/min</span>
+                </div>
+                <div style="background: rgba(0,0,0,0.35); border-radius: 6px; padding: 0.25rem 0.5rem;">
+                  <svg viewBox="0 0 340 95" style="width: 100%; height: 85px; display: block;">
+                    <!-- Osy -->
+                    <line x1="35" y1="75" x2="315" y2="75" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" />
+                    <line x1="35" y1="15" x2="35" y2="75" stroke="rgba(255,255,255,0.2)" stroke-width="1.2" />
+                    <text x="30" y="19" fill="#94a3b8" font-size="9" text-anchor="end" font-family="monospace">1.0</text>
+                    <text x="30" y="77" fill="#94a3b8" font-size="9" text-anchor="end" font-family="monospace">0.0</text>
+                    <!-- Křivky -->
+                    <polyline points="35,15 35,15 175,75" fill="none" stroke="#38bdf8" stroke-width="1.8" />
+                    <text x="75" y="35" fill="#38bdf8" font-size="9" font-weight="700">Klesá</text>
+                    <polyline points="55,75 175,15 295,75" fill="none" stroke="#10b981" stroke-width="1.8" />
+                    <text x="175" y="12" fill="#10b981" font-size="9" font-weight="700" text-anchor="middle">Stabilní</text>
+                    <polyline points="175,75 295,15 315,15" fill="none" stroke="#fb923c" stroke-width="1.8" />
+                    <text x="270" y="35" fill="#fb923c" font-size="9" font-weight="700">Roste</text>
+                    <!-- Značky na ose X -->
+                    <text x="35" y="87" fill="#64748b" font-size="9" text-anchor="middle" font-family="monospace">-1.5</text>
+                    <text x="175" y="87" fill="#64748b" font-size="9" text-anchor="middle" font-family="monospace">0.0</text>
+                    <text x="315" y="87" fill="#64748b" font-size="9" text-anchor="middle" font-family="monospace">+1.5</text>
+                    <!-- Řez na +0.8 °C/min -->
+                    <line x1="250" y1="12" x2="250" y2="75" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="3,2" />
+                    <circle cx="250" cy="51" r="3.5" fill="#10b981" stroke="#fff" stroke-width="1" />
+                    <text x="244" y="55" fill="#10b981" font-size="9" font-weight="700" text-anchor="end">&mu;_ST = 0.4</text>
+                    <circle cx="250" cy="39" r="3.5" fill="#fb923c" stroke="#fff" stroke-width="1" />
+                    <text x="256" y="38" fill="#fb923c" font-size="9" font-weight="700">&mu;_RO = 0.6</text>
+                    <text x="250" y="89" fill="#f59e0b" font-size="9" font-weight="700" text-anchor="middle" font-family="monospace">+0.8</text>
+                  </svg>
+                </div>
+              </div>
+
+              <div style="margin-top: 0.35rem; font-size: 0.76rem; color: var(--accent); line-height: 1.35;">
+                <strong>Závěr kroku 1:</strong> Známe přesné stupně příslušnosti: $\mu_N = 0{,}3$, $\mu_K = 0{,}7$ a $\mu_{ST} = 0{,}4$, $\mu_{RO} = 0{,}6$. Nyní je dosadíme do matice pravidel.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: NÁVRH REGULÁTORU (2/2: INFERENCE A VÝPOČET PWM)
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Příklad 2/2: Vyhodnocení matice a výpočet PWM">
+        <div class="slide-content">
+          <h2 class="slide-title">Krok za krokem (2/2): Vyhodnocení pravidel a výpočet PWM</h2>
+          <p class="slide-subtitle">
+            Jak procesor propojí získané stupně příslušnosti $\mu$ s bází pravidel a vypočítá ostré akční číslo.
+          </p>
+
+          <div class="fuzzy-grid-2">
+            <!-- Vstupy a báze pravidel -->
+            <div class="fuzzy-card" style="padding: 0.75rem 0.9rem;">
+              <h4 style="font-size: 0.9rem;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                3. Matice pravidel 3&times;3 a aktivované buňky
+              </h4>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.35rem; line-height: 1.4;">
+                Naše měření zasáhlo 2 řádky a 2 sloupce &ndash; v matici se aktivují přesně <strong>4 buňky na průniku (P1 až P4)</strong>:
+              </p>
+
+              <table class="rules-live-table" style="margin-top: 0.3rem;">
+                <thead>
+                  <tr>
+                    <th style="font-size: 0.78rem;">Odchylka $e$ \ $\Delta e$</th>
+                    <th class="cell-dimmed" style="font-size: 0.76rem;">Klesá (KL)</th>
+                    <th class="th-active" style="font-size: 0.76rem;">Stabilní ($\mu=0{,}4$)</th>
+                    <th class="th-active" style="font-size: 0.76rem;">Roste ($\mu=0{,}6$)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="cell-dimmed">
+                    <td style="font-size: 0.76rem;"><strong>Záporná (Z)</strong></td>
+                    <td>STOP (0%)</td>
+                    <td>STOP (0%)</td>
+                    <td>NÍZKÉ (25%)</td>
+                  </tr>
+                  <tr>
+                    <td class="td-header-active" style="font-size: 0.76rem;">Nulová ($\mu=0{,}3$)</td>
+                    <td class="cell-dimmed">STOP (0%)</td>
+                    <td class="cell-active"><span class="cell-p-tag">P1</span>50%</td>
+                    <td class="cell-active"><span class="cell-p-tag">P2</span>75%</td>
+                  </tr>
+                  <tr>
+                    <td class="td-header-active" style="font-size: 0.76rem;">Kladná ($\mu=0{,}7$)</td>
+                    <td class="cell-dimmed">STŘEDNÍ (50%)</td>
+                    <td class="cell-active"><span class="cell-p-tag">P3</span>100%</td>
+                    <td class="cell-active"><span class="cell-p-tag">P4</span>100%</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div style="margin-top: 0.45rem; padding: 0.35rem 0.55rem; background: rgba(0,0,0,0.22); border-left: 2px solid var(--accent); border-radius: 4px; font-size: 0.74rem; color: var(--text-secondary); line-height: 1.35;">
+                <strong>Proč spojka AND v pravidlech?</strong> Pravidlo popisuje specifický stav: chladit na MAX chceme jen tehdy, když je v rozváděči horko <em>A ZÁROVEŇ</em> teplota roste. Kdybychom použili OR (nebo), ventilátor by sepnul na 100 % i v mrazu při $-10^\circ\text{C}$ jen proto, že teplota mírně stoupá.
+              </div>
+            </div>
+
+            <!-- Konkrétní výpočet -->
+            <div class="fuzzy-card" style="padding: 0.75rem 0.9rem;">
+              <h4 style="font-size: 0.9rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                4. Inference a defuzzifikace Sugeno
+              </h4>
+              <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;">
+                <div style="margin-bottom: 0.35rem;">
+                  <strong>Krok A &ndash; Vyhodnocení pravidel (Proč AND = minimum?):</strong>
+                  <p style="font-size: 0.74rem; color: var(--text-muted); margin: 0.15rem 0 0.25rem 0; line-height: 1.35;">
+                    Řetěz je jen tak silný jako jeho nejslabší článek. Pokud je teplota kladná ze $70\,\%$ ($\mu=0{,}7$), ale stabilita platí jen ze $40\,\%$ ($\mu=0{,}4$), celé složené tvrzení je pravdivé jen do míry své slabší části: $\min(0{,}7;\, 0{,}4) = \mathbf{0{,}4}$.
+                  </p>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; font-size: 0.76rem; font-family: var(--font-mono); margin-top: 0.2rem;">
+                    <div style="background: rgba(0,0,0,0.25); padding: 0.25rem 0.4rem; border-radius: 4px;">
+                      <strong>P1:</strong> $\min(0{,}3; 0{,}4) = \mathbf{0{,}3} \to 50\,\%$
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); padding: 0.25rem 0.4rem; border-radius: 4px;">
+                      <strong>P2:</strong> $\min(0{,}3; 0{,}6) = \mathbf{0{,}3} \to 75\,\%$
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); padding: 0.25rem 0.4rem; border-radius: 4px;">
+                      <strong>P3:</strong> $\min(0{,}7; 0{,}4) = \mathbf{0{,}4} \to 100\,\%$
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); padding: 0.25rem 0.4rem; border-radius: 4px;">
+                      <strong>P4:</strong> $\min(0{,}7; 0{,}6) = \mathbf{0{,}6} \to 100\,\%$
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <strong>Krok B &ndash; Defuzzifikace Sugeno (Vážený průměr):</strong>
+                  <div class="math-badge" style="width: 100%; text-align: center; margin: 0.35rem 0; font-size: 0.82rem; padding: 0.35rem 0.5rem;">
+                    $$PWM = \frac{0{,}3 \cdot 50 + 0{,}3 \cdot 75 + 0{,}4 \cdot 100 + 0{,}6 \cdot 100}{0{,}3 + 0{,}3 + 0{,}4 + 0{,}6} = \frac{137{,}5}{1{,}6} \approx \mathbf{86\,\%}\text{ PWM}$$
+                  </div>
+                </div>
+
+                <div style="margin-top: 0.35rem; font-size: 0.76rem; color: var(--accent); line-height: 1.35; border-top: 1px solid var(--border-subtle); padding-top: 0.35rem;">
+                  <strong>Selský rozum pro technika:</strong> Běžný regulátor by při $+3^\circ\text{C}$ chladil jen na cca $60–70\,\%$. Protože však teplota <em>prudce roste</em>, fuzzy regulátor předvídá problém a vytočí ventilátor až na <strong>$86\,\%$</strong>, aby ohřev včas zarazil.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: INTERAKTIVNÍ SIMULÁTOR MECHATRONICKÉHO CHLAZENÍ
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Simulátor: Fuzzy regulátor v akci">
+        <div class="slide-content">
+          <h2 class="slide-title">Interaktivní simulátor: Fuzzy regulace vs. ON/OFF relé</h2>
+          <p class="slide-subtitle">
+            Vyzkoušejte si chování chladicího systému při proměnlivé tepelné zátěži a porovnejte plynulost fuzzy řízení s hysterezním spínáním.
+          </p>
+
+          <div class="simulator-wrapper">
+            <!-- Ovládací panel -->
+            <div class="simulator-side-panel">
+              <div>
+                <label style="font-weight: 600; font-size: 0.88rem; color: var(--text-primary);">Režim regulátoru:</label>
+                <div class="mode-selector" style="margin-top: 0.4rem;">
+                  <button class="mode-btn active" data-mode="fuzzy" onclick="setSimMode('fuzzy')">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    Fuzzy regulátor
+                  </button>
+                  <button class="mode-btn" data-mode="onoff" onclick="setSimMode('onoff')">
+                    <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8" cy="12" r="2"></circle><circle cx="16" cy="12" r="2"></circle></svg>
+                    ON/OFF termostat
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                  <label for="simLoadSlider" style="font-weight: 600; font-size: 0.88rem;">Tepelná ztráta rozváděče:</label>
+                  <span class="math-badge" id="simLoadBadge">45 W</span>
+                </div>
+                <input type="range" id="simLoadSlider" class="custom-range" style="width: 100%;" min="0" max="100" step="5" value="45">
+              </div>
+
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn-preset" style="flex: 1; padding: 0.55rem; text-align: center; border-color: var(--fuzzy-cold); color: var(--fuzzy-cold);" onclick="simCoolPulse()" title="Skokové zchlazení rozváděče">
+                  Zchladit (-6 °C)
+                </button>
+                <button class="btn-preset" style="flex: 1; padding: 0.55rem; text-align: center; border-color: var(--accent); color: var(--accent);" onclick="simHeatPulse()" title="Skokové oteplení rozváděče">
+                  Oteplit (+6 °C)
+                </button>
+              </div>
+
+              <div id="simStatusBadge" style="font-size: 0.82rem; font-weight: 600; color: var(--accent); background: rgba(0,0,0,0.25); padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border-subtle);">
+                Fuzzy regulace aktivní: Plynulý tichý chod a stabilní teplota.
+              </div>
+            </div>
+
+            <!-- Vizualizace ventilátoru a fyziky -->
+            <div class="simulator-side-panel">
+              <div class="fan-visual-box">
+                <div class="fan-graphic">
+                  <svg id="simFanBlades" class="fan-blades" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="14" fill="#334155" />
+                    <!-- Lopatky vrtule -->
+                    <path d="M50 36 C42 15, 58 15, 50 36" fill="var(--accent)" stroke="#0f766e" stroke-width="1.5" />
+                    <path d="M64 50 C85 42, 85 58, 64 50" fill="var(--accent)" stroke="#0f766e" stroke-width="1.5" />
+                    <path d="M50 64 C58 85, 42 85, 50 64" fill="var(--accent)" stroke="#0f766e" stroke-width="1.5" />
+                    <path d="M36 50 C15 58, 15 42, 36 50" fill="var(--accent)" stroke="#0f766e" stroke-width="1.5" />
+                    <circle cx="50" cy="50" r="5" fill="#f8fafc" />
+                  </svg>
+                </div>
+
+                <div class="fan-metrics">
+                  <div style="font-size: 0.82rem; color: var(--text-muted);">Aktuální teplota:</div>
+                  <div id="simTempDisplay" class="fan-speed-badge">24.5 °C</div>
+                  <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;">Výkon ventilátoru (PWM):</div>
+                  <div id="simFanDisplay" style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono);">50 %</div>
+                </div>
+              </div>
+
+              <!-- Živá tabulka aktivovaných pravidel -->
+              <div>
+                <div style="font-size: 0.84rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem;">Stav pravidel v regulátoru:</div>
+                <table class="rules-live-table">
+                  <tbody>
+                    <tr id="ruleRowCold">
+                      <td>IF Teplota je STUDENÁ</td>
+                      <td>THEN Výkon = 15 %</td>
+                      <td>Váha: <span class="rule-weight-pill" id="weightCold">0.00</span></td>
+                    </tr>
+                    <tr id="ruleRowOpt">
+                      <td>IF Teplota je OPTIMÁLNÍ</td>
+                      <td>THEN Výkon = 45 %</td>
+                      <td>Váha: <span class="rule-weight-pill" id="weightOpt">0.72</span></td>
+                    </tr>
+                    <tr id="ruleRowHot">
+                      <td>IF Teplota je HORKÁ</td>
+                      <td>THEN Výkon = 100 %</td>
+                      <td>Váha: <span class="rule-weight-pill" id="weightHot">0.18</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 14: SROVNÁNÍ REGULACÍ (ON/OFF vs PID vs FUZZY)
+           ========================================== -->
+      <section class="slide" id="slide-14" data-title="Srovnání: ON/OFF vs. PID vs. Fuzzy">
+        <div class="slide-content">
+          <h2 class="slide-title">Technické srovnání: ON/OFF vs. PID vs. Fuzzy</h2>
+          <p class="slide-subtitle">
+            Přehledné porovnání tří základních způsobů řízení v mechatronice a vodítko, kdy kterou metodu zvolit.
+          </p>
+
+          <!-- 1. Hlavní těžiště: Srovnávací inženýrská tabulka -->
+          <table class="tech-compare-table">
+            <thead>
+              <tr>
+                <th style="width: 22%;">Kritérium</th>
+                <th style="width: 26%;">Dvoupolohová (ON/OFF)</th>
+                <th style="width: 26%;">Klasická PID regulace</th>
+                <th style="width: 26%;" class="highlight-col">Fuzzy regulace</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Princip výpočtu</strong></td>
+                <td>Hysterezní spínání relé (0 % nebo 100 %)</td>
+                <td>Pevný lineární součet vzorce: $u = P + I + D$</td>
+                <td class="highlight-col"><strong>Znalostní báze pravidel IF&ndash;THEN</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Matematický model</strong></td>
+                <td>Není nutný</td>
+                <td>Vyžaduje lineární model soustavy a ladění $K_p, K_i, K_d$</td>
+                <td class="highlight-col"><strong>Není nutný</strong> (vychází ze zkušeností technika)</td>
+              </tr>
+              <tr>
+                <td><strong>Nelinearity a zpoždění</strong></td>
+                <td>Trvalé kolísání a překmity</td>
+                <td>Při změně zátěže/stárnutí stroje může kmitat</td>
+                <td class="highlight-col"><strong>Vynikající stabilita</strong> a přizpůsobivost</td>
+              </tr>
+              <tr>
+                <td><strong>Typické nasazení</strong></td>
+                <td>Bojlery, jednoduché přímotopy</td>
+                <td>Přesná serva CNC, otáčky DC motorů</td>
+                <td class="highlight-col"><strong>Klimatizace, robotika, ABS, automobilový průmysl</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 2. Dvě didaktické karty pod tabulkou: Detail PID vs. Detail Fuzzy -->
+          <div class="fuzzy-grid-2" style="margin-top: 0.75rem;">
+            <!-- Karta 1: Klasická PID regulace -->
+            <div class="fuzzy-card" style="padding: 0.75rem 0.95rem;">
+              <h4 style="font-size: 0.9rem; color: #38bdf8;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Klasická PID regulace v kontextu
+              </h4>
+              <div class="math-badge" style="width: 100%; text-align: center; margin: 0.3rem 0; font-size: 0.78rem; padding: 0.25rem 0.4rem;">
+                $$u(t) = K_p \cdot e(t) + K_i \int e(t)\,dt + K_d \cdot \frac{de(t)}{dt}$$
+              </div>
+              <ul style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; margin: 0 0 0.4rem 1.1rem;">
+                <li><strong>P (Současnost):</strong> reaguje na okamžitou odchylku $e = T - w$.</li>
+                <li><strong>I (Minulost):</strong> sčítá odchylku v čase a odstraní trvalou chybu na nulu.</li>
+                <li><strong>D (Budoucnost):</strong> sleduje rychlost změny $\frac{de}{dt}$ a brzdí překmity.</li>
+              </ul>
+              <div style="font-size: 0.76rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.35rem; line-height: 1.35;">
+                <strong style="color: #38bdf8;">Kdy nasadit PID:</strong> Pro rychlé lineární soustavy se známým modelem (CNC osy, polohová serva), kde se nemění zátěž a vyžaduje se exaktní matematický důkaz stability.
+              </div>
+            </div>
+
+            <!-- Karta 2: Fuzzy regulace -->
+            <div class="fuzzy-card" style="padding: 0.75rem 0.95rem;">
+              <h4 style="font-size: 0.9rem; color: var(--accent);">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Fuzzy regulace jako adaptivní inteligence
+              </h4>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.35rem;">
+                <strong>Propojení s PID:</strong> Náš fuzzy regulátor ze snímků 11&ndash;13 má na vstupu odchylku $e$ (složka P) a rychlost $\Delta e$ (složka D). Je to v podstatě <strong>inteligentní nelineární PD regulátor</strong>.
+              </p>
+              <ul style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; margin: 0 0 0.4rem 1.1rem;">
+                <li>Nepotřebuje diferenciální rovnice &ndash; vystačí si s pravidly technika.</li>
+                <li>Plynule přizpůsobuje zisk podle toho, kde na křivce se zrovna nachází.</li>
+                <li>Zůstává stabilní i při stárnutí mechanismu či kolísání napájecího napětí.</li>
+              </ul>
+              <div style="font-size: 0.76rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.35rem; line-height: 1.35;">
+                <strong style="color: var(--accent);">Kdy nasadit Fuzzy:</strong> Pro složité, nelineární procesy s proměnlivou zátěží a zpožděním (chlazení, klimatizace, ABS, autonomní robotika).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 15: SHRNUTÍ A OPAKOVACÍ KVÍZ
+           ========================================== -->
+      <section class="slide" id="slide-15" data-title="Shrnutí a opakovací kvíz">
+        <div class="slide-content">
+          <h2 class="slide-title">Shrnutí tématu a opakovací otázky SPŠ</h2>
+          <p class="slide-subtitle">
+            Ověřte si pochopení fuzzy logiky a neostrých regulátorů před praktickými laboratorními měřeními.
+          </p>
+
+          <div class="faq-list">
+            <!-- Otázka 1 -->
+            <div class="faq-card">
+              <div class="faq-header">
+                <span class="faq-q">1. Jaký je zásadní rozdíl mezi stupněm příslušnosti $\mu_A(x)$ a pravděpodobností $P(A)$?</span>
+                <button class="btn-answer-toggle" onclick="toggleFaqAnswer(this)">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  Zobrazit odpověď
+                </button>
+              </div>
+              <div class="faq-a">
+                <strong>Vysvětlení:</strong> Pravděpodobnost vyjadřuje míru nejistoty před proběhnutím náhodného jevu (např. „s pravděpodobností 50&nbsp;% padne orel“ – ale jakmile mince dopadne, je to $1$ nebo $0$).<br>
+                Fuzzy příslušnost vyjadřuje <strong>vágnost a neostrost reálného stavu</strong> (např. člověk měřící 178&nbsp;cm je v daném okamžiku vysoký na $0.75$ a střední na $0.35$ – nejde o žádnou náhodu, ale o stupeň pravdivosti pojmu).
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="faq-card">
+              <div class="faq-header">
+                <span class="faq-q">2. Jak vypočteme pravdivost podmínky $A \text{ AND } B$ ve fuzzy logice, je-li $\mu_A = 0.8$ a $\mu_B = 0.35$?</span>
+                <button class="btn-answer-toggle" onclick="toggleFaqAnswer(this)">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  Zobrazit odpověď
+                </button>
+              </div>
+              <div class="faq-a">
+                <strong>Vysvětlení:</strong> Standardním Zadehovým operátorem pro konjunkci (AND) je <strong>funkce minimum ($\min$)</strong>. Výsledný stupeň pravdivosti je proto $\min(0.8, 0.35) = \mathbf{0.35}$. Složená podmínka nemůže být silnější než její nejslabší článek.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="faq-card">
+              <div class="faq-header">
+                <span class="faq-q">3. Co znamenají pojmy fuzzifikace a defuzzifikace a k čemu slouží?</span>
+                <button class="btn-answer-toggle" onclick="toggleFaqAnswer(this)">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  Zobrazit odpověď
+                </button>
+              </div>
+              <div class="faq-a">
+                <strong>Vysvětlení:</strong><br>
+                <div style="margin-top: 0.35rem;">
+                  <strong>Fuzzifikace:</strong> Převádí přesná čísla naměřená senzory (např. $26.4^\circ\text{C}$) na stupně příslušnosti k lingvistickým pojmům (např. $\mu_{\text{Příjemná}} = 0.4$, $\mu_{\text{Horká}} = 0.6$).
+                </div>
+                <div style="margin-top: 0.35rem;">
+                  <strong>Defuzzifikace:</strong> Zpětný proces, který z aktivovaných fuzzy pravidel spočítá jediné konkrétní číslo (např. metodou těžiště COG či Sugeno) pro akční člen (např. střída PWM 78&nbsp;% pro otáčky ventilátoru).
+                </div>
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="faq-card">
+              <div class="faq-header">
+                <span class="faq-q">4. Proč moderní invertorová tepelná čerpadla a klimatizace používají fuzzy řízení místo ON/OFF spínání?</span>
+                <button class="btn-answer-toggle" onclick="toggleFaqAnswer(this)">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  Zobrazit odpověď
+                </button>
+              </div>
+              <div class="faq-a">
+                <strong>Vysvětlení:</strong> Dvoupolohový termostat neustále kompresor spíná na 100&nbsp;% a vypíná na 0&nbsp;%, což vede ke kolísání teploty v místnosti, vysokým proudovým špičkám při rozběhu a opotřebení kontaktů. Fuzzy regulátor plynule dávkuje otáčky motoru přesně podle tepelných ztrát, čímž ušetří až 35&nbsp;% elektřiny a zajistí stálý tichý chod.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Plovoucí spodní controls bar SPŠ -->
+      <nav class="controls-bar" aria-label="Ovládání prezentace">
+        <a href="../042-Vyrokova-logika/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 042 Výroková logika (Ctrl+Šipka vlevo)">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+        </a>
+        <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu KYME">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        </a>
+        <a href="../050-Hradla/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 050 Logická hradla (Ctrl+Šipka vpravo)">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+        </a>
+
+        <div class="controls-divider"></div>
+
+        <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 15</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova prezentace (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Fuzzy logika
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js?v=sps6"></script>
+  <!-- Dedikovaná interaktivní logika pro fuzzy trenažér a simulátor regulace -->
+  <script src="fuzzy-playground.js"></script>
+</body>
+
+</html>

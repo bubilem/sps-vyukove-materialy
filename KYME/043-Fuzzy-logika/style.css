@@ -1,0 +1,875 @@
+/* ==========================================================================
+   Téma 043: Fuzzy logika - Dedikované styly a interaktivní komponenty
+   Předmět: Kybernetika a mechatronika (KYME) - SPŠ
+   ========================================================================== */
+
+:root {
+  --accent: #14b8a6;
+  --accent-glow: rgba(20, 184, 166, 0.25);
+  --accent-teal: #14b8a6;
+  --accent-cyan: #06b6d4;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --accent-indigo: #6366f1;
+  --fuzzy-cold: #38bdf8;
+  --fuzzy-opt: #10b981;
+  --fuzzy-hot: #f43f5e;
+  --fuzzy-mid: #f59e0b;
+}
+
+/* Karty a mřížky */
+.fuzzy-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.fuzzy-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .fuzzy-grid-2,
+  .fuzzy-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fuzzy-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+}
+
+.fuzzy-card h3,
+.fuzzy-card h4 {
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Srovnání Klasická vs Fuzzy logika */
+.compare-box {
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.compare-box.crisp {
+  border-top: 4px solid #64748b;
+}
+
+.compare-box.fuzzy {
+  border-top: 4px solid var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.truth-indicator-spectrum {
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #1e293b 0%, #0369a1 25%, #0d9488 50%, #eab308 75%, #e11d48 100%);
+  position: relative;
+  margin: 1rem 0 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.truth-indicator-crisp {
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #1e293b 0%, #1e293b 50%, #38bdf8 50%, #38bdf8 100%);
+  position: relative;
+  margin: 1rem 0 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.spectrum-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* Matematické a lingvistické odznaky */
+.math-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(20, 184, 166, 0.12);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: var(--text-primary);
+  margin: 0.25rem 0;
+}
+
+.term-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.term-cold {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.term-opt {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.term-hot {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+}
+
+.term-mid {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+/* Interaktivní pracoviště (Playground 1: Funkce příslušnosti) */
+.playground-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.playground-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 1rem;
+}
+
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 250px;
+}
+
+.slider-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.slider-val-badge {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--accent);
+  background: rgba(20, 184, 166, 0.15);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  min-width: 65px;
+  text-align: center;
+}
+
+.custom-range {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  cursor: pointer;
+}
+
+.preset-buttons {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.btn-preset {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-preset:hover {
+  background: rgba(20, 184, 166, 0.15);
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.membership-display-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .membership-display-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-svg-container {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-svg {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  aspect-ratio: 500 / 180;
+  display: block;
+  margin: 0 auto;
+}
+
+.chart-svg-defuzz {
+  max-width: 580px;
+  max-height: 185px;
+  aspect-ratio: 600 / 200;
+}
+
+.degrees-readout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.degree-card {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.degree-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+}
+
+.degree-bar-track {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.degree-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.15s ease-out;
+}
+
+/* Interaktivní kalkulátor fuzzy operací (Playground 2: Operace AND, OR, NOT) */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 850px) {
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.calc-result-badge {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(20, 184, 166, 0.15);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  display: inline-block;
+}
+
+/* Blokové schéma regulátoru */
+.controller-pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.25rem 0;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .controller-pipeline {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pipeline-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  position: relative;
+  text-align: center;
+}
+
+.pipeline-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #042f2e;
+  font-weight: 800;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.pipeline-step h4 {
+  font-size: 0.98rem;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.pipeline-step p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Interaktivní simulátor mechatronického regulátoru (Simulator 3) */
+.simulator-wrapper {
+  display: grid;
+  grid-template-columns: 1.15fr 1.35fr;
+  gap: 1.25rem;
+  margin-top: 0.85rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1050px) {
+  .simulator-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+.simulator-side-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.35rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.mode-btn.active {
+  background: var(--accent);
+  color: #042f2e;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.fan-visual-box {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.fan-graphic {
+  width: 90px;
+  height: 90px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fan-blades {
+  width: 80px;
+  height: 80px;
+  transform-origin: center;
+  transition: transform 0.1s linear;
+}
+
+.fan-blades.spinning {
+  animation: spin 0.4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.fan-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fan-speed-badge {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.rules-live-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
+}
+
+.rules-live-table th {
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--text-secondary);
+  padding: 0.4rem 0.6rem;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.rules-live-table td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: background 0.2s, color 0.2s;
+}
+
+.rules-live-table tr.active-rule {
+  background: rgba(20, 184, 166, 0.18);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.rules-live-table tr.active-rule td:first-child {
+  border-left: 3px solid var(--accent);
+}
+
+.rule-weight-pill {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.active-rule .rule-weight-pill {
+  background: rgba(20, 184, 166, 0.3);
+  color: #2dd4bf;
+  border: 1px solid rgba(20, 184, 166, 0.5);
+}
+
+.cell-dimmed {
+  opacity: 0.4;
+}
+
+.cell-active {
+  background: rgba(20, 184, 166, 0.15) !important;
+  border: 1px solid rgba(20, 184, 166, 0.5) !important;
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+.th-active {
+  color: var(--accent) !important;
+  border-bottom: 2px solid var(--accent) !important;
+}
+
+.td-header-active {
+  color: var(--accent) !important;
+  font-weight: 700;
+  border-left: 3px solid var(--accent);
+}
+
+.cell-p-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  background: var(--accent);
+  color: #042f2e;
+  margin-right: 0.25rem;
+}
+
+/* Srovnávací tabulka PID vs Fuzzy vs ON/OFF */
+.tech-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.65rem;
+  font-size: 0.8rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.tech-compare-table th {
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--text-primary);
+  padding: 0.45rem 0.75rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.78rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.tech-compare-table td {
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.77rem;
+  line-height: 1.35;
+}
+
+.tech-compare-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.highlight-col {
+  background: rgba(20, 184, 166, 0.08);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Opakovací kvíz SPŠ */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.faq-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  transition: border-color 0.2s;
+}
+
+.faq-card:hover {
+  border-color: var(--accent);
+}
+
+.faq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.faq-q {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.btn-answer-toggle {
+  background: rgba(20, 184, 166, 0.12);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: var(--accent);
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.btn-answer-toggle:hover {
+  background: var(--accent);
+  color: #042f2e;
+}
+
+.faq-a {
+  display: none;
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.faq-card.open .faq-a {
+  display: block;
+}
+
+/* Interaktivní porovnání metod defuzzifikace (Slide 8) */
+.defuzz-sim-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.1rem;
+  margin-top: 0.65rem;
+}
+
+.defuzz-controls-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0.45rem 0.75rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 0.65rem;
+}
+
+/* Třípruhová vizuální dráha pro 3 metody defuzzifikace */
+.defuzz-multitrack {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.75rem 1.1rem 2.2rem;
+  position: relative;
+  margin: 0.65rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.defuzz-lane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.defuzz-lane-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.defuzz-lane-badge {
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+}
+
+.badge-cog {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.badge-mom {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.badge-sugeno {
+  background: rgba(6, 182, 212, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+}
+
+.defuzz-lane-val {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.lane-cog .defuzz-lane-val { color: #34d399; }
+.lane-mom .defuzz-lane-val { color: #fbbf24; }
+.lane-sugeno .defuzz-lane-val { color: #38bdf8; }
+
+.defuzz-lane-bar-bg {
+  height: 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  position: relative;
+  overflow: visible;
+}
+
+.lane-cog .defuzz-lane-bar-bg {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.18) 100%);
+}
+
+.lane-mom .defuzz-lane-bar-bg {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.18) 100%);
+}
+
+.lane-sugeno .defuzz-lane-bar-bg {
+  background: linear-gradient(90deg, rgba(6, 182, 212, 0.05) 0%, rgba(6, 182, 212, 0.18) 100%);
+}
+
+/* Jezdce v jednotlivých pruzích */
+.defuzz-lane-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  transition: left 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.defuzz-lane-marker .defuzz-marker-pin {
+  width: 12px;
+  height: 22px;
+  border-radius: 5px;
+  border: 2px solid #ffffff;
+}
+
+.marker-cog .defuzz-marker-pin {
+  background: #10b981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.9);
+}
+
+.marker-mom .defuzz-marker-pin {
+  background: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.9);
+}
+
+.marker-sugeno .defuzz-marker-pin {
+  background: #06b6d4;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.9);
+}
+
+/* Společná kalibrovaná osa */
+.defuzz-axis-ticks {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  height: 18px;
+}
+
+.defuzz-axis-ticks span {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.defuzz-axis-ticks span::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.defuzz-results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .defuzz-results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

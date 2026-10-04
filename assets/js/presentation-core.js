@@ -767,15 +767,15 @@
     // Úhly a stupně (0^\circ, 180^\circ apod.)
     if (/^\d+(\.\d+)?\s*\^?\s*\\circ$/.test(str) || (str.includes('\\circ') && /[\d,\s]/.test(str))) return true;
     // LaTeX značky a funkce
-    if (/\\(text|mathbf|frac|sqrt|wedge|vee|neg|varepsilon|alpha|beta|gamma|delta|Delta|lambda|Lambda|theta|omega|Omega|vec|mu|pi|approx|times|cdot|le|ge|ne|to|rightarrow|leftarrow|in|pm|circ|log|ln|sin|cos|tan|oplus|bar|overline|Rightarrow|Leftrightarrow|implies|iff|equiv|infty)\b/.test(str)) return true;
+    if (/\\(text|mathbf|frac|sqrt|wedge|vee|neg|varepsilon|alpha|beta|gamma|delta|Delta|lambda|Lambda|theta|omega|Omega|vec|mu|pi|approx|times|cdot|le|ge|ne|to|rightarrow|leftarrow|in|pm|circ|log|ln|sin|cos|tan|min|max|sum|int|cap|cup|mid|oplus|bar|overline|Rightarrow|Leftrightarrow|implies|iff|equiv|infty)\b/.test(str) || /\\%|\\,|\\\{|\\\}/.test(str)) return true;
     // Operátory a relace
     if (/(=|<|>|&lt;|&gt;|\+|-|\/|\*|&times;|&approx;|&le;|&ge;|\^|_|\[|\])/.test(str)) return true;
-    // Výpočetní složitost O(1), O(log N)
-    if (/^O\(.+\)$/.test(str)) return true;
+    // Výpočetní složitost O(1), O(log N) nebo funkce P(A), f(x)
+    if (/^[a-zA-Z]\([a-zA-Z0-9,\s\.\-]+\)$/.test(str)) return true;
     // Indexy nebo mocniny (P_0, C^0 apod.)
     if (/\^\{?[0-9a-zA-Z]+\}?|_{?[0-9a-zA-Z]+\}?/.test(str)) return true;
-    // Samostatné proměnné, čísla nebo seznamy proměnných ($f$, $t$, $n$, $X$, $Y$, $0$, $1$, $X, Y$)
-    if (/^[a-zA-Z0-9,\s\-]+$/.test(str) && str.length <= 12) return true;
+    // Samostatné proměnné, čísla, n-tice nebo seznamy ($f$, $t$, $0.3$, $(a, b, c)$, $\{0, 1\}$)
+    if (/^[a-zA-Z0-9,\s\.\-\(\)\[\]\{\}]+$/.test(str) && str.length <= 20) return true;
     return false;
   }
 
@@ -793,20 +793,23 @@
   function renderLatexExpression(latex) {
     let s = latex.trim();
 
-    // 0. Odstranění escape u složených závorek \{ \} a české desetinné čárky {,}
+    // 0. Odstranění escape u složených závorek \{ \} a symbolů %
     s = s.replace(/\\\{/g, '{').replace(/\\\}/g, '}');
     s = s.replace(/\{,\}/g, ',');
+    s = s.replace(/\\%/g, '%');
 
     // 1. Textové bloky: \text{...} a tučné \mathbf{...}
     const textStore = [];
     s = s.replace(/\\mathbf\{([^}]*)\}/g, (_, txt) => {
       const idx = textStore.length;
-      textStore.push('<strong class="formula-text">' + escapeHtml(txt) + '</strong>');
+      const cleanTxt = escapeHtml(txt).replace(/\\,/g, '&thinsp;').replace(/\\%/g, '%');
+      textStore.push('<strong class="formula-text">' + cleanTxt + '</strong>');
       return 'XXTXT' + idx + 'XX';
     });
     s = s.replace(/\\text\{([^}]*)\}/g, (_, txt) => {
       const idx = textStore.length;
-      textStore.push('<span class="formula-text">' + escapeHtml(txt) + '</span>');
+      const cleanTxt = escapeHtml(txt).replace(/\\,/g, '&thinsp;').replace(/\\%/g, '%');
+      textStore.push('<span class="formula-text">' + cleanTxt + '</span>');
       return 'XXTXT' + idx + 'XX';
     });
 
@@ -862,7 +865,15 @@
       [/\\in\b/g, '&isin;'],
       [/\\pm\b/g, '&plusmn;'],
       [/\\circ/g, '&deg;'],
+      [/\\cap\b/g, '&cap;'],
+      [/\\cup\b/g, '&cup;'],
+      [/\\sum\b/g, '&sum;'],
+      [/\\int\b/g, '&int;'],
+      [/\\mid\b/g, '|'],
+      [/\\min\b/g, '<span class="formula-fn">min</span>'],
+      [/\\max\b/g, '<span class="formula-fn">max</span>'],
       [/\\,/g, '&thinsp;'],
+      [/\\%/g, '%'],
       [/\\log\b/g, '<span class="formula-fn">log</span>'],
       [/\\ln\b/g, '<span class="formula-fn">ln</span>'],
       [/\\sin\b/g, '<span class="formula-fn">sin</span>'],
@@ -880,7 +891,7 @@
 
     // Horní a dolní indexy
     s = s.replace(/\^\{([^}]+)\}/g, '<sup>$1</sup>');
-    s = s.replace(/\^([0-9a-zA-Z&;]+)/g, '<sup>$1</sup>');
+    s = s.replace(/\^([0-9a-zA-Z&;\*]+)/g, '<sup>$1</sup>');
     s = s.replace(/_\{([^}]+)\}/g, '<sub>$1</sub>');
     s = s.replace(/_([0-9a-zA-Z&;]+)/g, '<sub>$1</sub>');
 
