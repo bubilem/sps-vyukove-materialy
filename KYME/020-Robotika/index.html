@@ -334,24 +334,133 @@
       color: var(--accent);
     }
 
-    /* Harmonická převodovka a kloub */
+    /* Harmonická převodovka a mechanika kloubu robota (Slide 8) */
     .hd-visualizer-wrap {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.25fr 1fr;
       gap: 1.25rem;
-      margin-top: 0.75rem;
+      margin-top: 0.6rem;
     }
 
     .hd-canvas-box {
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid var(--border-color);
+      background: #090d16;
+      border: 1px solid rgba(56, 189, 248, 0.25);
       border-radius: var(--radius-md);
-      padding: 1rem;
+      padding: 0.85rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
+      min-height: 415px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 0 50px rgba(6, 182, 212, 0.04);
+    }
+
+    .hd-mode-selector {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .hd-telemetry-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      min-height: 26px;
+      margin-bottom: 0.4rem;
+      padding: 0 0.2rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      overflow-x: auto;
+      gap: 0.5rem;
+    }
+
+    .hd-telemetry-badge {
+      background: rgba(56, 189, 248, 0.1);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      font-size: 0.74rem;
+    }
+
+    .hd-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.45rem;
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      z-index: 2;
+    }
+
+    .hd-slider-container {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.65rem;
+      margin-top: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+    }
+
+    .hd-slider-container input[type="range"] {
+      flex: 1;
+    }
+
+    .hd-component-pills {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      margin-top: 0.45rem;
+      width: 100%;
       justify-content: center;
-      min-height: 290px;
+    }
+
+    .hd-pill-btn {
+      padding: 0.28rem 0.55rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .hd-pill-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .hd-pill-btn.active {
+      background: rgba(6, 182, 212, 0.18);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .cutaway-part {
+      cursor: pointer;
+      transition: opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    .cutaway-part:hover {
+      filter: brightness(1.3) drop-shadow(0 0 8px rgba(6, 182, 212, 0.6));
+    }
+
+    .cutaway-part.active {
+      filter: brightness(1.4) drop-shadow(0 0 12px rgba(6, 182, 212, 0.85));
     }
 
     /* Koncové efektory a chapadla */
@@ -1033,43 +1142,237 @@
            ================================================================== -->
       <section class="slide" id="slide-8" data-title="Pohony a mechanika kloubu">
         <div class="slide-content">
-          <h2>Pohonné jednotky a mechanika kloubu robota</h2>
-          <p class="slide-lead">Každý kloub průmyslového manipulátoru integruje synchronní servomotor, absolutní enkodér, elektromagnetickou brzdu a bezvůlovou převodovku Harmonic Drive.</p>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <div>
+              <h2>Pohonné jednotky a mechanika kloubu robota</h2>
+              <p class="slide-lead" style="margin-bottom: 0;">Od rychlého střídavého servomotoru a bezpečnostní brzdy až po bezvůlovou převodovku Harmonic Drive s obrovským točivým momentem.</p>
+            </div>
+            <!-- Přepínač didaktických režimů -->
+            <div class="hd-mode-selector">
+              <button class="action-btn active" id="btnHdViewKinematics" title="Dynamická čelní kinematika ozubení">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+                1. Kinematika Harmonic Drive
+              </button>
+              <button class="action-btn" id="btnHdViewCutaway" title="Kompletní podélný řez integrovanou kloubovou jednotkou">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line></svg>
+                2. Řez celým kloubem
+              </button>
+              <button class="action-btn" id="btnHdViewCalculator" title="Interaktivní výpočet převodu, otáček a momentu">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+                3. Výpočet převodu &amp; síly
+              </button>
+            </div>
+          </div>
           
           <div class="hd-visualizer-wrap">
+            <!-- LEVÝ SLOUPEC: INTERAKTIVNÍ PLÁTNO A OVLÁDÁNÍ -->
             <div class="hd-canvas-box">
-              <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; text-transform: uppercase;">
-                Řez kloubem: Harmonická převodovka (Harmonic Drive)
-              </div>
-              <svg id="harmonicDriveSvg" viewBox="0 0 300 240" style="width: 100%; height: 210px;"></svg>
-              <div style="display: flex; gap: 0.4rem; margin-top: 0.5rem;">
-                <button class="action-btn active" id="btnHdCompWave">1. Wave Generator</button>
-                <button class="action-btn" id="btnHdCompFlex">2. Flexspline</button>
-                <button class="action-btn" id="btnHdCompCirc">3. Circular Spline</button>
-              </div>
-            </div>
 
-            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-              <div>
-                <span class="badge badge-accent" id="hdPartBadge">Komponenta č. 1 kloubu</span>
-                <h3 id="hdPartTitle" style="color: var(--accent); font-size: 1.2rem; margin-top: 0.4rem;">Vlnový generátor (Wave Generator)</h3>
-                <p id="hdPartDesc" style="font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); margin-top: 0.4rem;">
-                  Eliptické jádro s tenkostěnným pružným kuličkovým ložiskem na vnějším obvodu. Je nasazeno přímo na výstupní hřídel střídavého servomotoru a svou rotací deformuje pružné kolo Flexspline.
-                </p>
+              <!-- ================= POHLED 1: KINEMATIKA HARMONIC DRIVE ================= -->
+              <div id="hdViewKinematicsBox" class="hd-view-panel" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%;">
+                <div class="hd-telemetry-bar">
+                  <span style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap;">
+                    <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #22c55e;"></span>
+                    Kinematický stav
+                  </span>
+                  <div style="display: flex; gap: 0.4rem; flex-wrap: nowrap; overflow-x: auto;">
+                    <span class="hd-telemetry-badge" id="hdTeleMotor">Motor: 0.0° (0.0 ot)</span>
+                    <span class="hd-telemetry-badge" style="color: #4ade80; border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.1);" id="hdTeleArm">Kloub: 0.0°</span>
+                    <span class="hd-telemetry-badge" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.1);" id="hdTeleRatio">Převod i = -19 : 1</span>
+                    <span class="hd-telemetry-badge" style="color: #38bdf8;" id="hdTeleMesh">Záběr: 2 body (100 %)</span>
+                  </div>
+                </div>
 
-                <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.75rem;">
-                  <strong style="color: #38bdf8; font-size: 0.88rem;">Proč je Harmonic Drive klíčem robotiky?</strong>
-                  <ul class="styled-list" style="margin-top: 0.35rem; font-size: 0.84rem;">
-                    <li><strong>Nulová vůle v zubech (Zero Backlash):</strong> Pružný věnec je v trvalém předepnutí, což zaručuje opakovatelnou přesnost polohování až $\pm 0{,}02\,\text{mm}$.</li>
-                    <li><strong>Obrovský převodový poměr v jediném stupni:</strong> Typicky $i = 50:1$ až $160:1$ při minimální hmotnosti a rozměrech.</li>
-                    <li><strong>Bezpečnostní pružinová brzda:</strong> Při výpadku 24 V okamžitě mechanicky sevře hřídel a rameno nespadne gravitační silou.</li>
-                  </ul>
+                <svg id="harmonicDriveSvg" viewBox="0 0 460 280" style="width: 100%; height: 265px; display: block;"></svg>
+
+                <!-- Posuvník ručního natáčení úhlu motoru -->
+                <div class="hd-slider-container">
+                  <span style="font-weight: 700; color: var(--text-secondary); white-space: nowrap; font-size: 0.78rem;">
+                    Natočení motoru:
+                  </span>
+                  <input type="range" id="hdSliderMotor" min="0" max="360" value="0" step="1" title="Otáčení hřídele servomotoru">
+                  <span id="hdValMotorAngle" style="font-family: var(--font-mono); font-weight: 700; color: var(--accent); min-width: 48px; text-align: right; font-size: 0.8rem;">0°</span>
+                </div>
+
+                <!-- Ovládací tlačítka animace a krokování -->
+                <div class="hd-controls-row">
+                  <div style="display: flex; gap: 0.4rem; align-items: center;">
+                    <button class="action-btn" id="btnHdPlay" style="padding: 0.32rem 0.75rem; font-size: 0.8rem;">
+                      <svg class="icon" id="hdPlayIcon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                      <span id="hdPlayText">Spustit rotaci</span>
+                    </button>
+                    <button class="action-btn" id="btnHdStepTurn" title="Otočit motor přesně o 1 celou otáčku (360°) a sledovat posun o 2 zuby" style="padding: 0.32rem 0.75rem; font-size: 0.8rem;">
+                      <svg class="icon" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                      <span>Krok: 1 otočka (360°)</span>
+                    </button>
+                    <button class="action-btn" id="btnHdReset" title="Vrátit motor do nulové polohy" style="padding: 0.32rem 0.65rem; font-size: 0.8rem;">
+                      Reset
+                    </button>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; color: var(--text-muted);">
+                    <span>Rychlost:</span>
+                    <button class="kin-speed-btn active" id="btnHdSpeedSlow" data-speed="0.016" title="Zpomalená rychlost pro sledování zubů">Výuková</button>
+                    <button class="kin-speed-btn" id="btnHdSpeedFast" data-speed="0.045" title="Běžná rychlost otáčení">Rychlejší</button>
+                  </div>
                 </div>
               </div>
 
-              <div style="font-size: 0.82rem; color: var(--text-muted); border-top: 1px dashed var(--border-subtle); padding-top: 0.5rem; margin-top: 0.5rem;">
-                Poznámka: Pro největší zatížení v základně se alternativně používají <strong>cykloidní převodovky (RV / Nabtesco)</strong>.
+              <!-- ================= POHLED 2: PODÉLNÝ ŘEZ KLOUBEM ================= -->
+              <div id="hdViewCutawayBox" class="hd-view-panel" style="width: 100%; display: none; flex-direction: column; align-items: center; justify-content: space-between; height: 100%;">
+                <div class="hd-telemetry-bar">
+                  <span style="font-size: 0.74rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Podélný osový řez kloubovou jednotkou
+                  </span>
+                  <span class="hd-telemetry-badge">Dutá hřídel pro vnitřní kabeláž</span>
+                </div>
+
+                <svg id="hdCutawaySvg" viewBox="0 0 460 270" style="width: 100%; height: 260px; display: block;"></svg>
+
+                <!-- Tlačítka komponent řezu -->
+                <div class="hd-component-pills" id="cutawayPills">
+                  <button class="hd-pill-btn active" data-part="motor">1. BLDC Servomotor</button>
+                  <button class="hd-pill-btn" data-part="encoder">2. Absolutní enkodér</button>
+                  <button class="hd-pill-btn" data-part="brake">3. Bezpečnostní brzda</button>
+                  <button class="hd-pill-btn" data-part="harmonic">4. Harmonic Drive</button>
+                  <button class="hd-pill-btn" data-part="bearing">5. Křížové ložisko</button>
+                  <button class="hd-pill-btn" data-part="hollow">6. Dutá hřídel</button>
+                  <button class="hd-pill-btn" data-part="flange">7. Výstupní příruba</button>
+                </div>
               </div>
+
+              <!-- ================= POHLED 3: VÝPOČET PŘEVODU A MOMENTU ================= -->
+              <div id="hdViewCalcBox" class="hd-view-panel" style="width: 100%; display: none; flex-direction: column; align-items: center; justify-content: space-between; height: 100%;">
+                <div class="hd-telemetry-bar">
+                  <span style="font-size: 0.74rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Kalkulátor redukce otáček a multiplikace točivého momentu
+                  </span>
+                  <span class="hd-telemetry-badge" style="color: #22c55e;">Účinnost &eta; = 85 %</span>
+                </div>
+
+                <svg id="hdPowerFlowSvg" viewBox="0 0 460 190" style="width: 100%; height: 180px; display: block; margin: 0.35rem 0;"></svg>
+
+                <div style="width: 100%; display: flex; flex-direction: column; gap: 0.45rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.65rem;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; flex-wrap: wrap; gap: 0.3rem;">
+                    <span style="font-weight: 700; color: var(--text-secondary);">Aplikace (Převodový poměr i):</span>
+                    <div style="display: flex; gap: 0.3rem;">
+                      <button class="action-btn active" id="btnPresetUr5" style="padding: 0.2rem 0.5rem; font-size: 0.74rem;">Cobot UR5 (i = -50)</button>
+                      <button class="action-btn" id="btnPresetKuka" style="padding: 0.2rem 0.5rem; font-size: 0.74rem;">Průmyslový (i = -80)</button>
+                      <button class="action-btn" id="btnPresetHeavy" style="padding: 0.2rem 0.5rem; font-size: 0.74rem;">Těžká osa (i = -100)</button>
+                    </div>
+                  </div>
+
+                  <div class="slider-row" style="margin-top: 0.15rem;">
+                    <span class="slider-label" style="font-size: 0.76rem;">Otáčky motoru:</span>
+                    <input type="range" id="sliderCalcSpeed" min="600" max="4500" value="3000" step="100">
+                    <span class="slider-val" id="valCalcSpeed" style="font-size: 0.8rem;">3000 RPM</span>
+                  </div>
+
+                  <div class="slider-row">
+                    <span class="slider-label" style="font-size: 0.76rem;">Moment motoru:</span>
+                    <input type="range" id="sliderCalcTorque" min="0.2" max="3.0" value="1.2" step="0.1">
+                    <span class="slider-val" id="valCalcTorque" style="font-size: 0.8rem;">1.2 Nm</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- PRAVÝ SLOUPEC: DIDAKTICKÉ KARTY PODLE REŽIMU -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              
+              <!-- === PRAVÝ PANEL 1: KINEMATIKA HARMONIC DRIVE === -->
+              <div id="hdRightPanelKinematics" style="display: flex; flex-direction: column; height: 100%; justify-content: space-between;">
+                <div>
+                  <div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem; flex-wrap: wrap;">
+                    <button class="action-btn active" id="btnHdCompWave">1. Wave Generator (Vstup)</button>
+                    <button class="action-btn" id="btnHdCompFlex">2. Flexspline (Výstup)</button>
+                    <button class="action-btn" id="btnHdCompCirc">3. Circular Spline (Pevný)</button>
+                  </div>
+
+                  <span class="badge badge-accent" id="hdPartBadge">Komponenta č. 1: Vstupní pohon</span>
+                  <h3 id="hdPartTitle" style="color: var(--accent); font-size: 1.15rem; margin-top: 0.35rem;">Vlnový generátor (Wave Generator)</h3>
+                  <p id="hdPartDesc" style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.35rem;">
+                    Eliptické ocelové jádro s tenkostěnným pružným kuličkovým ložiskem na vnějším obvodu. Je nasazeno přímo na výstupní hřídel střídavého servomotoru a svou rotací plynule vlnovitě deformuje pružné kolo Flexspline.
+                  </p>
+
+                  <div style="background: rgba(0,0,0,0.22); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.7rem;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
+                      <strong style="color: #38bdf8; font-size: 0.85rem;">Jak kinematika funguje – princip 2 zubů:</strong>
+                      <span class="badge" style="font-family: var(--font-mono); font-size: 0.75rem; background: rgba(56, 189, 248, 0.12); color: #38bdf8;">Z_c - Z_f = 2</span>
+                    </div>
+                    <ul class="styled-list" style="margin-top: 0.25rem; font-size: 0.82rem; line-height: 1.45;">
+                      <li><strong>Eliptický záběr:</strong> Zuby zapadají do pevného věnce výhradně na koncích velké poloosy elipsy ($180^\circ$ naproti sobě). Na kolmé ose je vůle a zuby se zcela minou.</li>
+                      <li><strong>Pootočení o 2 zuby vzad:</strong> Pružné kolo má $Z_f$ zubů, zatímco pevný věnec $Z_c = Z_f + 2$. Po 1 celé otáčce motoru ($360^\circ$ CW) oběhne vlna celý obvod, ale protože pružnému kolu chybí 2 zuby, pootočí se o 2 zuby pozpátku (CCW)!</li>
+                      <li><strong>Kinematický vzorec:</strong> $i = -\frac{Z_f}{Z_c - Z_f} = -\frac{Z_f}{2}$. Záporné znaménko značí reverzní směr rotace výstupu.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div style="font-size: 0.8rem; color: var(--text-muted); border-top: 1px dashed var(--border-subtle); padding-top: 0.45rem; margin-top: 0.6rem; display: flex; justify-content: space-between; align-items: center;">
+                  <span><strong>Zero Backlash:</strong> Trvalé radiální předepnutí = nulová mrtvá vůle ($\pm 0{,}02\,\text{mm}$).</span>
+                  <span style="color: var(--accent); font-weight: 700;">Patent C. Musser</span>
+                </div>
+              </div>
+
+              <!-- === PRAVÝ PANEL 2: ŘEZ CELÝM KLOUBEM === -->
+              <div id="hdRightPanelCutaway" style="display: none; flex-direction: column; height: 100%; justify-content: space-between;">
+                <div>
+                  <span class="badge badge-accent" id="cutawayPartBadge">Komponenta kloubu</span>
+                  <h3 id="cutawayPartTitle" style="color: var(--accent); font-size: 1.15rem; margin-top: 0.35rem;">Synchronní BLDC Servomotor</h3>
+                  <p id="cutawayPartDesc" style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.35rem;">
+                    Vysokorychlostní střídavý motor s permanentními neodymovými magnety (NdFeB) na rotoru a třífázovým vinutím ve statoru. Poskytuje precizní regulaci polohy a momentu s frekvenční odezvou pod 1 ms.
+                  </p>
+
+                  <div style="background: rgba(0,0,0,0.22); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.7rem;">
+                    <strong style="color: #38bdf8; font-size: 0.85rem;" id="cutawayDetailTitle">Proč je v kloubu nezbytný:</strong>
+                    <div id="cutawayDetailText" style="font-size: 0.82rem; line-height: 1.45; color: var(--text-secondary); margin-top: 0.3rem;">
+                      Poskytuje hnací výkon v kompaktním válcovém těle integrovaném přímo do trubkového ramene manipulátoru. Chlazení obstarává vnější hliníkový plášť kloubu.
+                    </div>
+                    <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); font-family: var(--font-mono); font-size: 0.76rem; color: #94a3b8;" id="cutawaySpecs">
+                      Parametry: 48 V / 320 VDC &bull; Max. 4000 RPM &bull; Izolace třídy F &bull; Krytí IP65
+                    </div>
+                  </div>
+                </div>
+
+                <div style="font-size: 0.8rem; color: var(--text-muted); border-top: 1px dashed var(--border-subtle); padding-top: 0.45rem; margin-top: 0.6rem;">
+                  <strong style="color: #f59e0b;">Bezpečnostní architektura:</strong> Při nouzovém zastavení (E-STOP) brzda mechanicky sevře hřídel dříve, než rameno poklesne o více než $0{,}1\,\text{mm}$.
+                </div>
+              </div>
+
+              <!-- === PRAVÝ PANEL 3: VÝPOČET PŘEVODU A MOMENTU === -->
+              <div id="hdRightPanelCalc" style="display: none; flex-direction: column; height: 100%; justify-content: space-between;">
+                <div>
+                  <span class="badge badge-accent">Kinematické vyčíslení</span>
+                  <h3 style="color: var(--accent); font-size: 1.15rem; margin-top: 0.35rem;">Fyzikální přenos výkonu na rameno robota</h3>
+                  
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 0.6rem;">
+                    <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: var(--radius-sm); padding: 0.6rem; text-align: center;">
+                      <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Výstupní otáčky kloubu</div>
+                      <div id="calcOutRpm" style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: #38bdf8; margin: 0.15rem 0;">60.0 RPM</div>
+                      <div id="calcOutDeg" style="font-size: 0.75rem; color: var(--text-secondary);">360.0 &deg;/s</div>
+                    </div>
+
+                    <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: var(--radius-sm); padding: 0.6rem; text-align: center;">
+                      <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Výstupní moment kloubu</div>
+                      <div id="calcOutTorque" style="font-family: var(--font-mono); font-size: 1.25rem; font-weight: 700; color: #4ade80; margin: 0.15rem 0;">51.0 Nm</div>
+                      <div id="calcGain" style="font-size: 0.75rem; color: var(--text-secondary);">Zesílení momentu: 42.5&times;</div>
+                    </div>
+                  </div>
+
+                  <div style="background: rgba(0,0,0,0.22); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.7rem;">
+                    <strong style="color: #fbbf24; font-size: 0.85rem;">Zvedací schopnost manipulátoru:</strong>
+                    <div id="calcPayloadText" style="font-size: 0.82rem; line-height: 1.5; color: var(--text-secondary); margin-top: 0.3rem;">
+                      Při vyložení ramene o délce $r = 0{,}7\,\text{m}$ vyvine tento malý servomotor na konci ramene zdvihací sílu $F \approx 72{,}8\,\text{N}$, což bezpečně zvedne břemeno o hmotnosti až <strong>7,4 kg</strong>!
+                    </div>
+                  </div>
+                </div>
+
+                <div style="font-size: 0.8rem; color: var(--text-muted); border-top: 1px dashed var(--border-subtle); padding-top: 0.45rem; margin-top: 0.6rem;">
+                  Zákon zachování energie: $P_{mech} = M \cdot \omega$. Převodovka snižuje úhlovou rychlost $\omega$ a úměrně násobí točivý moment $M$.
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -2258,66 +2561,662 @@
       updateDofDisplay();
 
       /* ====================================================================
-         5. Harmonická převodovka (Slide 8)
+         5. Pohonné jednotky, kinematika Harmonic Drive a mechanika kloubu (Slide 8)
          ==================================================================== */
-      const hdSvg = document.getElementById('harmonicDriveSvg');
-      let hdPart = 'wave';
+      let hdViewMode = 'kinematics'; // 'kinematics' | 'cutaway' | 'calculator'
+      let hdPart = 'wave'; // 'wave' | 'flex' | 'circ'
+      let cutawayPart = 'motor';
+      let motorAngleDeg = 0;
+      let isHdPlaying = false;
+      let hdAnimSpeed = 0.016; // rad/frame
+      let hdAnimReqId = null;
+      let isSteppingTurn = false;
+      let stepTurnTarget = 0;
+
+      // Kalkulátor parametry
+      let calcRatio = 50;
+      let calcSpeed = 3000;
+      let calcTorque = 1.2;
+      const calcArmLen = 0.7; // metrů
+      const calcEta = 0.85; // 85% účinnost
 
       const hdPartsInfo = {
         wave: {
-          badge: 'Komponenta č. 1: Pohon',
+          badge: 'Komponenta č. 1: Vstupní pohon',
           title: 'Vlnový generátor (Wave Generator)',
-          desc: 'Oválné (eliptické) ocelové jádro s tenkostěnným pružným kuličkovým ložiskem na vnějším obvodu. Je přímo nasazeno na hřídel servomotoru a otáčí se motorovou rychlostí.'
+          desc: 'Eliptické ocelové jádro s tenkostěnným pružným kuličkovým ložiskem na vnějším obvodu. Je nasazeno přímo na výstupní hřídel střídavého servomotoru a svou rotací plynule vlnovitě deformuje pružné kolo Flexspline.'
         },
         flex: {
-          badge: 'Komponenta č. 2: Pružný člen',
+          badge: 'Komponenta č. 2: Výstupní pružný člen',
           title: 'Pružné ozubené kolo (Flexspline)',
-          desc: 'Tenkostěnná pružná ocelová miska s vnějším ozubením. Eliptický tvar ložiska ji deformuje tak, že zabírá do vnějšího věnce jen ve dvou protilehlých bodech velké poloosy elipsy.'
+          desc: 'Tenkostěnná pružná ocelová miska s vnějším ozubením. Eliptický tvar ložiska ji deformuje tak, že zabírá do vnějšího věnce jen ve dvou protilehlých bodech velké poloosy elipsy. Při každé otočce motoru se pootočí přesně o 2 zuby vzad!'
         },
         circ: {
-          badge: 'Komponenta č. 3: Výstupní věnec',
+          badge: 'Komponenta č. 3: Pevný statorový věnec',
           title: 'Pevné prstencové kolo (Circular Spline)',
-          desc: 'Masivní kruhový věnec s vnitřním ozubením spojený s výstupní přírubou robota. Má o 2 zuby více než Flexspline ($Z_c = Z_f + 2$). Při každé otáčce motoru se rameno pootočí právě o tyto 2 zuby zpět!'
+          desc: 'Masivní kruhový věnec s vnitřním ozubením pevně sešroubovaný se skříní kloubu (stator). Má o 2 zuby více než Flexspline (Z_c = Z_f + 2). Přebírá reakční točivý moment a drží pevnou referenci vůči tělu robota.'
         }
       };
 
-      function renderHdSvg() {
-        if (!hdSvg) return;
-        hdSvg.innerHTML = `
-          <!-- Vnější pevný věnec Circular Spline -->
-          <circle cx="150" cy="115" r="95" fill="none" stroke="${hdPart === 'circ' ? '#38bdf8' : 'rgba(56,189,248,0.2)'}" stroke-width="${hdPart === 'circ' ? '12' : '8'}"/>
-          <circle cx="150" cy="115" r="88" fill="none" stroke="#64748b" stroke-dasharray="3 2" stroke-width="2"/>
-          
-          <!-- Pružné kolo Flexspline (elipticky deformované) -->
-          <ellipse cx="150" cy="115" rx="88" ry="76" fill="${hdPart === 'flex' ? 'rgba(6,182,212,0.25)' : 'none'}" stroke="${hdPart === 'flex' ? 'var(--accent)' : 'rgba(6,182,212,0.5)'}" stroke-width="${hdPart === 'flex' ? '6' : '3'}"/>
-          
-          <!-- Vlnový generátor (Wave Generator - eliptické ložisko) -->
-          <ellipse cx="150" cy="115" rx="72" ry="60" fill="${hdPart === 'wave' ? 'rgba(234,179,8,0.2)' : '#1e293b'}" stroke="${hdPart === 'wave' ? '#eab308' : '#475569'}" stroke-width="4"/>
-          
-          <!-- Kuličky ložiska -->
-          <circle cx="78" cy="115" r="6" fill="#cbd5e1"/>
-          <circle cx="222" cy="115" r="6" fill="#cbd5e1"/>
-          <circle cx="150" cy="55" r="5" fill="#94a3b8"/>
-          <circle cx="150" cy="175" r="5" fill="#94a3b8"/>
-          
-          <!-- Hřídel motoru střed -->
-          <circle cx="150" cy="115" r="22" fill="#0f172a" stroke="#cbd5e1" stroke-width="2"/>
-          <rect x="146" y="100" width="8" height="15" fill="#eab308"/>
-          <text x="150" y="119" fill="#cbd5e1" font-size="9" font-family="monospace" text-anchor="middle">Motor</text>
-          
-          <!-- Body záběru zubů -->
-          <circle cx="62" cy="115" r="4" fill="#ef4444"/>
-          <circle cx="238" cy="115" r="4" fill="#ef4444"/>
-          <text x="150" y="228" fill="var(--text-muted)" font-size="10" text-anchor="middle">Záběr nastává výhradně ve 2 protilehlých bodech</text>
-        `;
-      }
-      renderHdSvg();
+      const cutawayData = {
+        motor: {
+          badge: '1. Pohon',
+          title: 'Synchronní BLDC Servomotor',
+          desc: 'Vysokorychlostní střídavý motor s permanentními neodymovými magnety (NdFeB) na rotoru a třífázovým vinutím ve statoru. Poskytuje precizní regulaci polohy a momentu s frekvenční odezvou pod 1 ms.',
+          detailTitle: 'Proč je v kloubu nezbytný:',
+          detailText: 'Poskytuje hnací výkon v kompaktním válcovém těle integrovaném přímo do trubkového ramene manipulátoru. Chlazení obstarává vnější hliníkový plášť kloubu.',
+          specs: 'Parametry: 48 V / 320 VDC • Max. 4000 RPM • Izolace třídy F • Krytí IP65'
+        },
+        encoder: {
+          badge: '2. Zpětná vazba',
+          title: 'Optický absolutní víceotáčkový enkodér',
+          desc: 'Vysoce přesný snímač úhlu natočení s kódovým kotoučem a optoelektronickou čtecí hlavou. Pracuje s rozlišením 19 až 23 bitů (přes 2 miliony poloh na jednu otáčku).',
+          detailTitle: 'Výhoda absolutního snímání:',
+          detailText: 'Robot ihned po zapnutí napájení přesně zná svou prostorovou konfiguraci. Není vyžadováno žádné nebezpečné najíždění do referenčních bodů (tzv. houmování).',
+          specs: 'Protokol: SSI / BiSS-C / EnDat 2.2 • Rozlišení: 20 bitů • Záloha baterií'
+        },
+        brake: {
+          badge: '3. Bezpečnost (Fail-Safe)',
+          title: 'Elektromagnetická bezpečnostní brzda',
+          desc: 'Pružinová třecí brzda, která je v klidu trvale sepnuta mechanickými pružinami. K jejímu odbrzdění dojde teprve přivedením napětí 24 VDC na elektromagnetickou cívku.',
+          detailTitle: 'Zajištění proti pádu ramene:',
+          detailText: 'Při jakémkoli výpadku proudu, stisku E-STOP tlačítka nebo přetržení kabelu pružiny okamžitě mechanicky sevřou hřídel za méně než 15 ms. Rameno se nezřítí vlastní vahou!',
+          specs: 'Napájení: 24 VDC • Brzdný moment: 4 až 25 Nm • Doba sepnutí: < 15 ms'
+        },
+        harmonic: {
+          badge: '4. Redukce a moment',
+          title: 'Převodovka Harmonic Drive (HD)',
+          desc: 'Kompaktní bezvůlová vlnová převodovka s obrovským redukčním poměrem (i = 50:1 až 160:1). Skládá se z Wave Generatoru, pružné misky Flexspline a pevného prstence Circular Spline.',
+          detailTitle: 'Nulová vůle v ozubení (Zero Backlash):',
+          detailText: 'Pružný věnec je v trvalém předepnutí a současně zabírá až 30 % zubů. Díky tomu nemá kloub žádnou mrtvou vůli a rameno robota při změně směru nepruží.',
+          specs: 'Převod: i = 50:1 až 160:1 • Opakovatelnost: ±0,02 mm • Životnost: 15 000 h'
+        },
+        bearing: {
+          badge: '5. Mechanické uložení',
+          title: 'Křížové válečkové ložisko (Cross-Roller)',
+          desc: 'Vysoce tuhé ložisko s válcovými tělísky uspořádanými střídavě v úhlu 90° do tvaru písmene X. Nahrazuje dvě standardní ložiska v jediném kompaktním prstenci.',
+          detailTitle: 'Schopnost nést klopné momenty:',
+          detailText: 'Kloub robota je namáhán obrovským ohybovým momentem od hmotnosti vyloženého ramene a břemene. Křížové ložisko bezpečně přenáší radiální, axiální i klopné zatížení.',
+          specs: 'Typ: Křížové válečkové • Radiální/Axiální tuhost: extrémní • Vůle: předepnuto'
+        },
+        hollow: {
+          badge: '6. Vnitřní architektura',
+          title: 'Průchozí dutá hřídel (Hollow Shaft)',
+          desc: 'Osový otvor procházející středem motoru, brzdy i převodovky Harmonic Drive. Umožňuje vést elektrické kabely, optická vlákna a vzduchové hadice vnitřkem ramene robota.',
+          detailTitle: 'Proč vnitřní vedení kabelů:',
+          detailText: 'Kabely vedené vně robota se mohou zachytit o svařovací přípravek, paletu nebo operátora. Vnitřní vedení dutou hřídelí eliminuje kroucení kabeláže a zkracuje prostoje.',
+          specs: 'Vnitřní průměr: Ø 15 až 35 mm • Úhel neomezené rotace • Ochrana vodičů'
+        },
+        flange: {
+          badge: '7. Mechanický výstup',
+          title: 'Výstupní příruba článku (Robotic Flange)',
+          desc: 'Masivní čelní příruba z duralu nebo oceli, přímo spojená s Flexspline a vnitřním kroužkem křížového ložiska. Nese normalizované závitové otvory dle normy ISO 9409-1.',
+          detailTitle: 'Přenos krouticího momentu na rameno:',
+          detailText: 'Příruba tvoří tuhý mechanický most mezi převodovkou a dalším ramenem robota (nebo koncovým nástrojem). Přenáší plný točivý moment až stovky Newtonmetrů.',
+          specs: 'Norma: ISO 9409-1 • Závity: M6 / M8 • Kolíkovací otvory pro přesnou rekalibraci'
+        }
+      };
 
+      // 1. KINEMATICKÉ VYKRESLENÍ HARMONIC DRIVE
+      const hdSvg = document.getElementById('harmonicDriveSvg');
+      function renderHdKinematics() {
+        if (!hdSvg) return;
+
+        const cx = 230;
+        const cy = 138;
+        const numCircTeeth = 40;
+        const numFlexTeeth = 38; // Z_c - Z_f = 2
+        const majorA = 104;
+        const minorB = 90;
+        const circRadius = 106;
+        const circTipRadius = 98;
+        const theta0 = -Math.PI / 2; // Výchozí referenční úhel 12 hodin (nahoře)
+
+        // Úhly rotace (v radiánech)
+        const wgRad = ((motorAngleDeg % 360) * Math.PI) / 180;
+        const flexRad = -wgRad * (2 / numFlexTeeth); // Pomalá rotace v protisměru
+        const thetaAxis = theta0 + wgRad; // Směr velké poloosy elipsy
+
+        // Circular Spline (Pevný vnější věnec se 40 zuby)
+        // Zuby jsou posunuty o půl rozteče tak, aby v úhlu 12 hodin byla MEZERA (zubní mezera pro vstup zubu Flexspline)
+        let circTeethSvg = '';
+        const pitchCirc = (2 * Math.PI) / numCircTeeth;
+        const wCroot = (pitchCirc / 2) * 0.52;
+        const wCtip = (pitchCirc / 2) * 0.30;
+
+        for (let k = 0; k < numCircTeeth; k++) {
+          const ang = theta0 + (k + 0.5) * pitchCirc;
+          const p1x = cx + circRadius * Math.cos(ang - wCroot);
+          const p1y = cy + circRadius * Math.sin(ang - wCroot);
+          const p2x = cx + circTipRadius * Math.cos(ang - wCtip);
+          const p2y = cy + circTipRadius * Math.sin(ang - wCtip);
+          const p3x = cx + circTipRadius * Math.cos(ang + wCtip);
+          const p3y = cy + circTipRadius * Math.sin(ang + wCtip);
+          const p4x = cx + circRadius * Math.cos(ang + wCroot);
+          const p4y = cy + circRadius * Math.sin(ang + wCroot);
+
+          const toothStroke = hdPart === 'circ' ? '#38bdf8' : 'rgba(56,189,248,0.55)';
+          const toothFill = hdPart === 'circ' ? 'rgba(56,189,248,0.3)' : 'rgba(15,23,42,0.6)';
+          circTeethSvg += `<polygon points="${p1x.toFixed(1)},${p1y.toFixed(1)} ${p2x.toFixed(1)},${p2y.toFixed(1)} ${p3x.toFixed(1)},${p3y.toFixed(1)} ${p4x.toFixed(1)},${p4y.toFixed(1)}" fill="${toothFill}" stroke="${toothStroke}" stroke-width="1.2"/>`;
+        }
+
+        // Flexspline (Pružné kolo s 38 zuby)
+        // Zub 0 začíná přesně v úhlu 12 hodin (theta0) a vstupuje do zubní mezery pevného věnce
+        let flexTeethSvg = '';
+        let flexWallPoints = [];
+        const pitchFlex = (2 * Math.PI) / numFlexTeeth;
+        const wFbase = (pitchFlex / 2) * 0.48;
+        const wFtip = (pitchFlex / 2) * 0.28;
+
+        for (let j = 0; j < numFlexTeeth; j++) {
+          const toothMatAngle = theta0 + flexRad + j * pitchFlex;
+          const deltaPhi = toothMatAngle - thetaAxis;
+          // Eliptický poloměr v místě daného zubu
+          const denom = Math.sqrt(Math.pow(minorB * Math.cos(deltaPhi), 2) + Math.pow(majorA * Math.sin(deltaPhi), 2));
+          const rTip = (majorA * minorB) / denom;
+          const rBase = rTip - 7;
+          const rWall = rTip - 11;
+
+          const tp1x = cx + rBase * Math.cos(toothMatAngle - wFbase);
+          const tp1y = cy + rBase * Math.sin(toothMatAngle - wFbase);
+          const tp2x = cx + rTip * Math.cos(toothMatAngle - wFtip);
+          const tp2y = cy + rTip * Math.sin(toothMatAngle - wFtip);
+          const tp3x = cx + rTip * Math.cos(toothMatAngle + wFtip);
+          const tp3y = cy + rTip * Math.sin(toothMatAngle + wFtip);
+          const tp4x = cx + rBase * Math.cos(toothMatAngle + wFbase);
+          const tp4y = cy + rBase * Math.sin(toothMatAngle + wFbase);
+
+          flexWallPoints.push(`${(cx + rWall * Math.cos(toothMatAngle)).toFixed(1)},${(cy + rWall * Math.sin(toothMatAngle)).toFixed(1)}`);
+
+          const isMarkerTooth = j === 0;
+          let fillT = hdPart === 'flex' ? 'rgba(6,182,212,0.35)' : 'rgba(6,182,212,0.2)';
+          let strokeT = hdPart === 'flex' ? '#06b6d4' : 'rgba(6,182,212,0.6)';
+          let strokeW = '1.2';
+
+          if (isMarkerTooth) {
+            fillT = '#fbbf24';
+            strokeT = '#f59e0b';
+            strokeW = '2.2';
+          }
+
+          flexTeethSvg += `<polygon points="${tp1x.toFixed(1)},${tp1y.toFixed(1)} ${tp2x.toFixed(1)},${tp2y.toFixed(1)} ${tp3x.toFixed(1)},${tp3y.toFixed(1)} ${tp4x.toFixed(1)},${tp4y.toFixed(1)}" fill="${fillT}" stroke="${strokeT}" stroke-width="${strokeW}"/>`;
+
+          if (isMarkerTooth) {
+            const markerTagX = cx + (rTip + 18) * Math.cos(toothMatAngle);
+            const markerTagY = cy + (rTip + 18) * Math.sin(toothMatAngle);
+            flexTeethSvg += `
+              <circle cx="${(cx + rTip * Math.cos(toothMatAngle)).toFixed(1)}" cy="${(cy + rTip * Math.sin(toothMatAngle)).toFixed(1)}" r="3" fill="#ffffff"/>
+              <line x1="${(cx + rTip * Math.cos(toothMatAngle)).toFixed(1)}" y1="${(cy + rTip * Math.sin(toothMatAngle)).toFixed(1)}" x2="${markerTagX.toFixed(1)}" y2="${markerTagY.toFixed(1)}" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="2 2"/>
+              <rect x="${(markerTagX - 16).toFixed(1)}" y="${(markerTagY - 8).toFixed(1)}" width="32" height="15" rx="3" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5"/>
+              <text x="${markerTagX.toFixed(1)}" y="${(markerTagY + 3).toFixed(1)}" fill="#fbbf24" font-size="9" font-family="monospace" font-weight="700" text-anchor="middle">ZUB 1</text>
+            `;
+          }
+        }
+
+        // Vlnový generátor (Wave generator - eliptické jádro a kuličkové ložisko)
+        const wgA = 78;
+        const wgB = 64;
+        let wgBallsSvg = '';
+        for (let b = 0; b < 14; b++) {
+          const bAngle = thetaAxis + (b * 2 * Math.PI) / 14;
+          const bRel = bAngle - thetaAxis;
+          const bDenom = Math.sqrt(Math.pow((wgB + 4) * Math.cos(bRel), 2) + Math.pow((wgA + 4) * Math.sin(bRel), 2));
+          const bRadius = ((wgA + 4) * (wgB + 4)) / bDenom;
+          const bx = cx + bRadius * Math.cos(bAngle);
+          const by = cy + bRadius * Math.sin(bAngle);
+          wgBallsSvg += `<circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="4" fill="#e2e8f0" stroke="#475569" stroke-width="1"/>`;
+        }
+
+        // Zóny záběru (vrchol hlavní poloosy elipsy)
+        const z1x = cx + 104 * Math.cos(thetaAxis);
+        const z1y = cy + 104 * Math.sin(thetaAxis);
+        const z2x = cx + 104 * Math.cos(thetaAxis + Math.PI);
+        const z2y = cy + 104 * Math.sin(thetaAxis + Math.PI);
+
+        // Výstupní úhel ve stupních (reverzní rotace)
+        const armAngleDeg = -(motorAngleDeg % 360) * (2 / numFlexTeeth);
+
+        hdSvg.innerHTML = `
+          <defs>
+            <radialGradient id="hdBgGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(6,182,212,0.12)"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Vnější pevný kruh Circular Spline (Stator přišroubovaný ke skříni) -->
+          <circle cx="${cx}" cy="${cy}" r="126" fill="#090d16" stroke="${hdPart === 'circ' ? '#38bdf8' : 'rgba(56,189,248,0.3)'}" stroke-width="${hdPart === 'circ' ? '3' : '2'}"/>
+          <circle cx="${cx}" cy="${cy}" r="120" fill="url(#hdBgGlow)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          
+          <!-- Šrouby uchycení statoru -->
+          <circle cx="${(cx + 115 * 0.707).toFixed(1)}" cy="${(cy + 115 * 0.707).toFixed(1)}" r="3.5" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+          <circle cx="${(cx - 115 * 0.707).toFixed(1)}" cy="${(cy + 115 * 0.707).toFixed(1)}" r="3.5" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+          <circle cx="${(cx + 115 * 0.707).toFixed(1)}" cy="${(cy - 115 * 0.707).toFixed(1)}" r="3.5" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+          <circle cx="${(cx - 115 * 0.707).toFixed(1)}" cy="${(cy - 115 * 0.707).toFixed(1)}" r="3.5" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+          
+          <!-- Referenční značka 0° statoru -->
+          <polygon points="${cx},${cy - 118} ${cx - 5},${cy - 126} ${cx + 5},${cy - 126}" fill="#ffffff"/>
+          <text x="${cx}" y="${cy - 129}" fill="#e2e8f0" font-size="8.5" font-family="monospace" font-weight="700" text-anchor="middle">0° STATOR</text>
+
+          <!-- Vnitřní ozubení Circular Spline -->
+          <g id="hdCircTeethGroup">${circTeethSvg}</g>
+
+          <!-- Flexspline pružná stěna misky -->
+          <polygon points="${flexWallPoints.join(' ')}" fill="${hdPart === 'flex' ? 'rgba(6,182,212,0.22)' : 'rgba(15,23,42,0.85)'}" stroke="${hdPart === 'flex' ? '#06b6d4' : 'rgba(6,182,212,0.5)'}" stroke-width="2.5"/>
+
+          <!-- Ozubení Flexspline -->
+          <g id="hdFlexTeethGroup">${flexTeethSvg}</g>
+
+          <!-- Wave Generator (Eliptické ložisko a vačkový náboj) -->
+          <g transform="rotate(${(motorAngleDeg % 360).toFixed(2)}, ${cx}, ${cy})">
+            <!-- Vnější kroužek ložiska -->
+            <ellipse cx="${cx}" cy="${cy}" rx="${wgB + 8}" ry="${wgA + 8}" fill="none" stroke="${hdPart === 'wave' ? '#eab308' : '#64748b'}" stroke-width="1.8"/>
+            <!-- Eliptický náboj spojený s hřídelí -->
+            <ellipse cx="${cx}" cy="${cy}" rx="${wgB}" ry="${wgA}" fill="${hdPart === 'wave' ? 'rgba(234,179,8,0.25)' : '#1e293b'}" stroke="${hdPart === 'wave' ? '#f59e0b' : '#475569'}" stroke-width="2.5"/>
+            <!-- Osa velké poloosy -->
+            <line x1="${cx}" y1="${cy - wgA}" x2="${cx}" y2="${cy + wgA}" stroke="rgba(234,179,8,0.4)" stroke-dasharray="3 3"/>
+            <line x1="${cx - wgB}" y1="${cy}" x2="${cx + wgB}" y2="${cy}" stroke="rgba(56,189,248,0.3)" stroke-dasharray="2 2"/>
+          </g>
+
+          <!-- Kuličky pružného ložiska -->
+          <g id="hdBearingBalls">${wgBallsSvg}</g>
+
+          <!-- Středová motorová hřídel -->
+          <circle cx="${cx}" cy="${cy}" r="22" fill="#090d16" stroke="#cbd5e1" stroke-width="2"/>
+          <rect x="${cx - 4}" y="${cy - 20}" width="8" height="10" fill="#eab308" rx="1"/>
+          <text x="${cx}" y="${cy + 4}" fill="#ffffff" font-size="8.5" font-family="monospace" font-weight="700" text-anchor="middle">MOTOR</text>
+
+          <!-- Šipka vstupu rotace motoru (CW) -->
+          <path d="M${cx + 28} ${cy - 10} A 32 32 0 0 1 ${cx + 10} ${cy + 30}" fill="none" stroke="#eab308" stroke-width="2.5"/>
+          <text x="${cx + 34}" y="${cy + 22}" fill="#eab308" font-size="8.5" font-family="monospace" font-weight="700">&omega;<sub>in</sub></text>
+
+          <!-- Indikátory zón 100% záběru (na hlavní ose elipsy) -->
+          <circle cx="${z1x.toFixed(1)}" cy="${z1y.toFixed(1)}" r="6" fill="rgba(34,197,94,0.3)" stroke="#22c55e" stroke-width="2"/>
+          <circle cx="${z1x.toFixed(1)}" cy="${z1y.toFixed(1)}" r="2" fill="#ffffff"/>
+          <circle cx="${z2x.toFixed(1)}" cy="${z2y.toFixed(1)}" r="6" fill="rgba(34,197,94,0.3)" stroke="#22c55e" stroke-width="2"/>
+          <circle cx="${z2x.toFixed(1)}" cy="${z2y.toFixed(1)}" r="2" fill="#ffffff"/>
+
+          <!-- Texty zón záběru a vůle -->
+          <text x="12" y="22" fill="#22c55e" font-size="9" font-family="sans-serif" font-weight="700">&bull; 2 protilehlé zóny plného záběru (zuby přesně v mezeře)</text>
+          <text x="12" y="36" fill="#38bdf8" font-size="9" font-family="sans-serif">&bull; Na kolmé ose jsou zuby zcela volné</text>
+          <text x="12" y="270" fill="var(--text-muted)" font-size="9" font-family="monospace">Circular: 40z | Flexspline: 38z (&Delta; = 2z)</text>
+          <text x="448" y="270" fill="#fbbf24" font-size="9" font-family="monospace" text-anchor="end">Sledujte posun ZUBU 1 při rotaci</text>
+        `;
+
+        // Aktualizace telemetrických údajů
+        const teleMotor = document.getElementById('hdTeleMotor');
+        const teleArm = document.getElementById('hdTeleArm');
+        const valMotorAngle = document.getElementById('hdValMotorAngle');
+        const sliderMotor = document.getElementById('hdSliderMotor');
+
+        const curAngleNorm = motorAngleDeg % 360;
+        if (teleMotor) teleMotor.textContent = `Motor: ${curAngleNorm.toFixed(1)}° (${(curAngleNorm / 360).toFixed(2)} ot)`;
+        if (teleArm) teleArm.textContent = `Kloub: ${armAngleDeg.toFixed(1)}°`;
+        if (valMotorAngle) valMotorAngle.textContent = `${Math.round(curAngleNorm)}°`;
+        if (sliderMotor) sliderMotor.value = `${Math.round(curAngleNorm)}`;
+      }
+
+      // Animační smyčka pro kinematiku Harmonic Drive (0° až 360°)
+      function stepHdAnimation() {
+        if (!isHdPlaying && !isSteppingTurn) return;
+
+        if (isSteppingTurn) {
+          motorAngleDeg += 4;
+          if (motorAngleDeg >= stepTurnTarget) {
+            motorAngleDeg = stepTurnTarget % 360;
+            isSteppingTurn = false;
+          }
+        } else {
+          motorAngleDeg = (motorAngleDeg + hdAnimSpeed * 60) % 360;
+        }
+
+        renderHdKinematics();
+
+        if (isHdPlaying || isSteppingTurn) {
+          hdAnimReqId = requestAnimationFrame(stepHdAnimation);
+        }
+      }
+
+      function toggleHdPlay() {
+        isHdPlaying = !isHdPlaying;
+        isSteppingTurn = false;
+        const icon = document.getElementById('hdPlayIcon');
+        const text = document.getElementById('hdPlayText');
+
+        if (isHdPlaying) {
+          if (icon) icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+          if (text) text.textContent = 'Pozastavit';
+          stepHdAnimation();
+        } else {
+          if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+          if (text) text.textContent = 'Spustit rotaci';
+          if (hdAnimReqId) cancelAnimationFrame(hdAnimReqId);
+        }
+      }
+
+      // Krok o 360° (1 celá otočka motoru)
+      function stepOneTurn() {
+        isHdPlaying = false;
+        const icon = document.getElementById('hdPlayIcon');
+        const text = document.getElementById('hdPlayText');
+        if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+        if (text) text.textContent = 'Spustit rotaci';
+
+        isSteppingTurn = true;
+        stepTurnTarget = (motorAngleDeg % 360) + 360;
+        stepHdAnimation();
+      }
+
+      function resetHdAngle() {
+        isHdPlaying = false;
+        isSteppingTurn = false;
+        motorAngleDeg = 0;
+        const icon = document.getElementById('hdPlayIcon');
+        const text = document.getElementById('hdPlayText');
+        if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+        if (text) text.textContent = 'Spustit rotaci';
+        if (hdAnimReqId) cancelAnimationFrame(hdAnimReqId);
+        renderHdKinematics();
+      }
+
+      // 2. PODÉLNÝ ŘEZ KLOUBEM (CUTAWAY)
+      const cutawaySvg = document.getElementById('hdCutawaySvg');
+      function renderHdCutaway() {
+        if (!cutawaySvg) return;
+
+        const isAct = (p) => cutawayPart === p;
+
+        cutawaySvg.innerHTML = `
+          <!-- Osa symetrie kloubu -->
+          <line x1="5" y1="135" x2="455" y2="135" stroke="rgba(255,255,255,0.2)" stroke-dasharray="6 3"/>
+
+          <!-- 1. PLÁŠŤ A STATOR CELÉHO KLOUBU (Společné těleso) -->
+          <rect x="75" y="38" width="270" height="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+          <rect x="75" y="218" width="270" height="14" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+
+          <!-- 6. DUTÁ HŘÍDEL (Hollow shaft středem x=15 až 445) -->
+          <g class="cutaway-part ${isAct('hollow') ? 'active' : ''}" data-part="hollow">
+            <rect x="15" y="122" width="430" height="26" fill="#090d16" stroke="${isAct('hollow') ? 'var(--accent)' : '#475569'}" stroke-width="${isAct('hollow') ? '2.5' : '1.5'}"/>
+            <!-- Vnitřní kabely -->
+            <path d="M15 129 Q 120 126 230 131 T 445 128" fill="none" stroke="#ef4444" stroke-width="2"/>
+            <path d="M15 133 Q 120 137 230 133 T 445 135" fill="none" stroke="#22c55e" stroke-width="2"/>
+            <path d="M15 137 Q 120 133 230 138 T 445 139" fill="none" stroke="#3b82f6" stroke-width="2"/>
+            <path d="M15 141 Q 120 144 230 139 T 445 142" fill="none" stroke="#eab308" stroke-width="2"/>
+            <text x="230" y="156" fill="${isAct('hollow') ? 'var(--accent)' : '#94a3b8'}" font-size="8.5" font-family="monospace" text-anchor="middle">Průchod kabelů dutou hřídelí</text>
+          </g>
+
+          <!-- 2. OPTICKÝ ABSOLUTNÍ ENKODÉR (x=20 až 68) -->
+          <g class="cutaway-part ${isAct('encoder') ? 'active' : ''}" data-part="encoder">
+            <!-- Kryt enkodéru -->
+            <path d="M18 52 L68 52 L68 122 L18 122 Z" fill="${isAct('encoder') ? 'rgba(168,85,247,0.3)' : 'rgba(30,41,59,0.7)'}" stroke="${isAct('encoder') ? '#c084fc' : '#64748b'}" stroke-width="${isAct('encoder') ? '2.5' : '1.2'}"/>
+            <path d="M18 148 L68 148 L68 218 L18 218 Z" fill="${isAct('encoder') ? 'rgba(168,85,247,0.3)' : 'rgba(30,41,59,0.7)'}" stroke="${isAct('encoder') ? '#c084fc' : '#64748b'}" stroke-width="${isAct('encoder') ? '2.5' : '1.2'}"/>
+            <!-- Kódový skleněný kotouč -->
+            <line x1="42" y1="58" x2="42" y2="120" stroke="#c084fc" stroke-width="3"/>
+            <line x1="42" y1="150" x2="42" y2="212" stroke="#c084fc" stroke-width="3"/>
+            <!-- Optická čtecí hlava -->
+            <rect x="50" y="65" width="12" height="18" fill="#a855f7" rx="2"/>
+            <rect x="50" y="187" width="12" height="18" fill="#a855f7" rx="2"/>
+            <text x="43" y="44" fill="${isAct('encoder') ? '#c084fc' : '#a855f7'}" font-size="8.5" font-weight="700" text-anchor="middle">Enkodér</text>
+          </g>
+
+          <!-- 3. BEZPEČNOSTNÍ BRZDA 24V (x=74 až 130) -->
+          <g class="cutaway-part ${isAct('brake') ? 'active' : ''}" data-part="brake">
+            <!-- Těleso elektromagnetu -->
+            <rect x="75" y="55" width="52" height="64" fill="${isAct('brake') ? 'rgba(239,68,68,0.3)' : 'rgba(30,41,59,0.8)'}" stroke="${isAct('brake') ? '#f87171' : '#64748b'}" stroke-width="${isAct('brake') ? '2.5' : '1.2'}"/>
+            <rect x="75" y="151" width="52" height="64" fill="${isAct('brake') ? 'rgba(239,68,68,0.3)' : 'rgba(30,41,59,0.8)'}" stroke="${isAct('brake') ? '#f87171' : '#64748b'}" stroke-width="${isAct('brake') ? '2.5' : '1.2'}"/>
+            <!-- Cívka 24 V -->
+            <rect x="82" y="62" width="22" height="26" fill="#ef4444" opacity="0.8"/>
+            <rect x="82" y="182" width="22" height="26" fill="#ef4444" opacity="0.8"/>
+            <!-- Přítlačné pružiny a třecí kotouč -->
+            <line x1="118" y1="58" x2="118" y2="118" stroke="#fca5a5" stroke-width="4"/>
+            <line x1="118" y1="152" x2="118" y2="212" stroke="#fca5a5" stroke-width="4"/>
+            <text x="101" y="44" fill="${isAct('brake') ? '#f87171' : '#ef4444'}" font-size="8.5" font-weight="700" text-anchor="middle">Brzda 24V</text>
+          </g>
+
+          <!-- 1. BLDC SERVOMOTOR (x=136 až 255) -->
+          <g class="cutaway-part ${isAct('motor') ? 'active' : ''}" data-part="motor">
+            <!-- Měděné statorové vinutí -->
+            <rect x="140" y="55" width="112" height="32" fill="#d97706" opacity="0.85" rx="3"/>
+            <rect x="140" y="183" width="112" height="32" fill="#d97706" opacity="0.85" rx="3"/>
+            <!-- Permanentní neodymové magnety rotoru -->
+            <rect x="150" y="94" width="94" height="24" fill="${isAct('motor') ? '#38bdf8' : '#334155'}" stroke="${isAct('motor') ? 'var(--accent)' : '#64748b'}" stroke-width="${isAct('motor') ? '2.5' : '1'}"/>
+            <rect x="150" y="152" width="94" height="24" fill="${isAct('motor') ? '#38bdf8' : '#334155'}" stroke="${isAct('motor') ? 'var(--accent)' : '#64748b'}" stroke-width="${isAct('motor') ? '2.5' : '1'}"/>
+            <!-- Chladicí žebra statoru -->
+            <line x1="155" y1="36" x2="155" y2="52" stroke="#64748b" stroke-width="2"/>
+            <line x1="180" y1="36" x2="180" y2="52" stroke="#64748b" stroke-width="2"/>
+            <line x1="205" y1="36" x2="205" y2="52" stroke="#64748b" stroke-width="2"/>
+            <line x1="230" y1="36" x2="230" y2="52" stroke="#64748b" stroke-width="2"/>
+            <text x="195" y="44" fill="${isAct('motor') ? 'var(--accent)' : '#38bdf8'}" font-size="8.5" font-weight="700" text-anchor="middle">Servomotor BLDC</text>
+          </g>
+
+          <!-- 4. PŘEVODOVKA HARMONIC DRIVE (x=262 až 345) -->
+          <g class="cutaway-part ${isAct('harmonic') ? 'active' : ''}" data-part="harmonic">
+            <!-- Pevné kolo Circular Spline spojené s pláštěm -->
+            <rect x="290" y="52" width="50" height="22" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+            <rect x="290" y="196" width="50" height="22" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Pružná miska Flexspline -->
+            <path d="M266 112 L332 76 L332 86 L280 116 Z" fill="rgba(6,182,212,0.4)" stroke="${isAct('harmonic') ? 'var(--accent)' : '#06b6d4'}" stroke-width="${isAct('harmonic') ? '2.5' : '1.5'}"/>
+            <path d="M266 158 L332 194 L332 184 L280 154 Z" fill="rgba(6,182,212,0.4)" stroke="${isAct('harmonic') ? 'var(--accent)' : '#06b6d4'}" stroke-width="${isAct('harmonic') ? '2.5' : '1.5'}"/>
+            <!-- Vlnový generátor (Wave Generator eliptické ložisko) -->
+            <ellipse cx="320" cy="98" rx="8" ry="14" fill="#eab308" stroke="#ca8a04" stroke-width="1.5"/>
+            <ellipse cx="320" cy="172" rx="8" ry="14" fill="#eab308" stroke="#ca8a04" stroke-width="1.5"/>
+            <text x="310" y="44" fill="${isAct('harmonic') ? 'var(--accent)' : '#eab308'}" font-size="8.5" font-weight="700" text-anchor="middle">Harmonic Drive</text>
+          </g>
+
+          <!-- 5. KŘÍŽOVÉ VÁLEČKOVÉ LOŽISKO (x=352 až 388) -->
+          <g class="cutaway-part ${isAct('bearing') ? 'active' : ''}" data-part="bearing">
+            <rect x="354" y="52" width="34" height="66" fill="${isAct('bearing') ? 'rgba(56,189,248,0.3)' : 'rgba(30,41,59,0.85)'}" stroke="${isAct('bearing') ? '#38bdf8' : '#64748b'}" stroke-width="${isAct('bearing') ? '2.5' : '1.5'}"/>
+            <rect x="354" y="152" width="34" height="66" fill="${isAct('bearing') ? 'rgba(56,189,248,0.3)' : 'rgba(30,41,59,0.85)'}" stroke="${isAct('bearing') ? '#38bdf8' : '#64748b'}" stroke-width="${isAct('bearing') ? '2.5' : '1.5'}"/>
+            <!-- Zkřížené válečky 90° X -->
+            <line x1="362" y1="75" x2="380" y2="95" stroke="#38bdf8" stroke-width="3"/>
+            <line x1="362" y1="95" x2="380" y2="75" stroke="#38bdf8" stroke-width="3"/>
+            <line x1="362" y1="175" x2="380" y2="195" stroke="#38bdf8" stroke-width="3"/>
+            <line x1="362" y1="195" x2="380" y2="175" stroke="#38bdf8" stroke-width="3"/>
+            <text x="371" y="44" fill="${isAct('bearing') ? '#38bdf8' : '#94a3b8'}" font-size="8.5" font-weight="700" text-anchor="middle">Křížové l.</text>
+          </g>
+
+          <!-- 7. VÝSTUPNÍ PŘÍRUBA (x=392 až 440) -->
+          <g class="cutaway-part ${isAct('flange') ? 'active' : ''}" data-part="flange">
+            <path d="M394 40 L435 40 L435 120 L394 120 Z" fill="${isAct('flange') ? 'rgba(148,163,184,0.4)' : '#334155'}" stroke="${isAct('flange') ? '#ffffff' : '#94a3b8'}" stroke-width="${isAct('flange') ? '2.5' : '1.5'}"/>
+            <path d="M394 150 L435 150 L435 230 L394 230 Z" fill="${isAct('flange') ? 'rgba(148,163,184,0.4)' : '#334155'}" stroke="${isAct('flange') ? '#ffffff' : '#94a3b8'}" stroke-width="${isAct('flange') ? '2.5' : '1.5'}"/>
+            <!-- Závitové otvory pro šrouby ramene -->
+            <circle cx="415" cy="65" r="4" fill="#090d16" stroke="#94a3b8" stroke-width="1.5"/>
+            <circle cx="415" cy="205" r="4" fill="#090d16" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="415" y="32" fill="${isAct('flange') ? '#ffffff' : '#94a3b8'}" font-size="8.5" font-weight="700" text-anchor="middle">Příruba ramene</text>
+          </g>
+        `;
+
+        // Navázání klikacích událostí přímo v SVG
+        cutawaySvg.querySelectorAll('.cutaway-part').forEach(el => {
+          el.addEventListener('click', () => {
+            const p = el.getAttribute('data-part');
+            if (p) selectCutawayPart(p);
+          });
+        });
+      }
+
+      function selectCutawayPart(part) {
+        cutawayPart = part;
+        const pills = document.querySelectorAll('#cutawayPills .hd-pill-btn');
+        pills.forEach(btn => {
+          if (btn.getAttribute('data-part') === part) btn.classList.add('active');
+          else btn.classList.remove('active');
+        });
+
+        const data = cutawayData[part];
+        if (data) {
+          const b = document.getElementById('cutawayPartBadge');
+          const t = document.getElementById('cutawayPartTitle');
+          const d = document.getElementById('cutawayPartDesc');
+          const dt = document.getElementById('cutawayDetailTitle');
+          const dx = document.getElementById('cutawayDetailText');
+          const sp = document.getElementById('cutawaySpecs');
+          if (b) b.textContent = data.badge;
+          if (t) t.textContent = data.title;
+          if (d) d.textContent = data.desc;
+          if (dt) dt.textContent = data.detailTitle;
+          if (dx) dx.textContent = data.detailText;
+          if (sp) sp.textContent = data.specs;
+        }
+
+        renderHdCutaway();
+      }
+
+      // 3. KALKULÁTOR A SCHÉMA TOKU ENERGIE
+      const powerFlowSvg = document.getElementById('hdPowerFlowSvg');
+      function updateCalculator() {
+        const outRpm = calcSpeed / calcRatio;
+        const outDegPerSec = outRpm * 6.0;
+        const outTorque = calcTorque * calcRatio * calcEta;
+        const gain = calcRatio * calcEta;
+        const payloadKg = (outTorque / calcArmLen) / 9.81;
+
+        const outRpmEl = document.getElementById('calcOutRpm');
+        const outDegEl = document.getElementById('calcOutDeg');
+        const outTorqueEl = document.getElementById('calcOutTorque');
+        const gainEl = document.getElementById('calcGain');
+        const payloadTextEl = document.getElementById('calcPayloadText');
+        const valSpeedEl = document.getElementById('valCalcSpeed');
+        const valTorqueEl = document.getElementById('valCalcTorque');
+
+        if (outRpmEl) outRpmEl.textContent = `${outRpm.toFixed(1)} RPM`;
+        if (outDegEl) outDegEl.textContent = `${outDegPerSec.toFixed(1)} °/s`;
+        if (outTorqueEl) outTorqueEl.textContent = `${outTorque.toFixed(1)} Nm`;
+        if (gainEl) gainEl.textContent = `Zesílení momentu: ${gain.toFixed(1)}×`;
+        if (valSpeedEl) valSpeedEl.textContent = `${calcSpeed} RPM`;
+        if (valTorqueEl) valTorqueEl.textContent = `${calcTorque.toFixed(1)} Nm`;
+
+        if (payloadTextEl) {
+          payloadTextEl.innerHTML = `
+            Při vyložení ramene o délce $r = ${calcArmLen}\\,\\text{m}$ vyvine tento malý servomotor zdvihací sílu $F \\approx ${(outTorque / calcArmLen).toFixed(1)}\\,\\text{N}$, což bezpečně zvedne břemeno o hmotnosti až <strong>${payloadKg.toFixed(1)} kg</strong>!
+          `;
+        }
+
+        if (powerFlowSvg) {
+          powerFlowSvg.innerHTML = `
+            <!-- Servomotor -->
+            <rect x="20" y="35" width="115" height="110" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+            <text x="77" y="60" fill="#38bdf8" font-size="10" font-weight="700" text-anchor="middle">1. SERVOMOTOR</text>
+            <text x="77" y="85" fill="#ffffff" font-size="12" font-family="monospace" font-weight="700" text-anchor="middle">${calcSpeed} RPM</text>
+            <text x="77" y="105" fill="#94a3b8" font-size="10" text-anchor="middle">Moment: ${calcTorque.toFixed(1)} Nm</text>
+            <text x="77" y="125" fill="#38bdf8" font-size="9" text-anchor="middle">Vysoká rychlost</text>
+
+            <!-- Šipka toku 1 -->
+            <path d="M142 90 L178 90" stroke="#eab308" stroke-width="3" stroke-dasharray="4 2"/>
+            <polygon points="178,90 170,85 170,95" fill="#eab308"/>
+
+            <!-- Harmonic Drive -->
+            <rect x="185" y="35" width="115" height="110" rx="6" fill="rgba(6,182,212,0.12)" stroke="var(--accent)" stroke-width="2"/>
+            <text x="242" y="60" fill="var(--accent)" font-size="10" font-weight="700" text-anchor="middle">2. HARMONIC DRIVE</text>
+            <text x="242" y="85" fill="#fbbf24" font-size="13" font-family="monospace" font-weight="700" text-anchor="middle">i = -${calcRatio}:1</text>
+            <text x="242" y="105" fill="#94a3b8" font-size="9.5" text-anchor="middle">Nulová vůle (0')</text>
+            <text x="242" y="125" fill="#22c55e" font-size="9" text-anchor="middle">Účinnost &eta; = 85 %</text>
+
+            <!-- Šipka toku 2 -->
+            <path d="M307 90 L343 90" stroke="#22c55e" stroke-width="4" stroke-dasharray="4 2"/>
+            <polygon points="343,90 335,84 335,96" fill="#22c55e"/>
+
+            <!-- Výstupní kloub ramene -->
+            <rect x="350" y="35" width="100" height="110" rx="6" fill="rgba(34,197,94,0.12)" stroke="#22c55e" stroke-width="2"/>
+            <text x="400" y="60" fill="#22c55e" font-size="10" font-weight="700" text-anchor="middle">3. KLOUB RAMENE</text>
+            <text x="400" y="85" fill="#4ade80" font-size="13" font-family="monospace" font-weight="700" text-anchor="middle">${outTorque.toFixed(0)} Nm</text>
+            <text x="400" y="105" fill="#ffffff" font-size="10" font-family="monospace" text-anchor="middle">${outRpm.toFixed(1)} RPM</text>
+            <text x="400" y="125" fill="#fbbf24" font-size="9.5" font-weight="700" text-anchor="middle">Nosnost: ${payloadKg.toFixed(1)} kg</text>
+          `;
+        }
+      }
+
+      // Volba režimu Slide 8 (Kinematika / Řez / Kalkulátor)
+      function setHdViewMode(mode) {
+        hdViewMode = mode;
+        ['btnHdViewKinematics', 'btnHdViewCutaway', 'btnHdViewCalculator'].forEach(id => {
+          document.getElementById(id)?.classList.remove('active');
+        });
+
+        const boxKin = document.getElementById('hdViewKinematicsBox');
+        const boxCut = document.getElementById('hdViewCutawayBox');
+        const boxCalc = document.getElementById('hdViewCalcBox');
+
+        const rightKin = document.getElementById('hdRightPanelKinematics');
+        const rightCut = document.getElementById('hdRightPanelCutaway');
+        const rightCalc = document.getElementById('hdRightPanelCalc');
+
+        if (mode === 'kinematics') {
+          document.getElementById('btnHdViewKinematics')?.classList.add('active');
+          if (boxKin) boxKin.style.display = 'flex';
+          if (boxCut) boxCut.style.display = 'none';
+          if (boxCalc) boxCalc.style.display = 'none';
+          if (rightKin) rightKin.style.display = 'flex';
+          if (rightCut) rightCut.style.display = 'none';
+          if (rightCalc) rightCalc.style.display = 'none';
+          renderHdKinematics();
+        } else if (mode === 'cutaway') {
+          document.getElementById('btnHdViewCutaway')?.classList.add('active');
+          if (boxKin) boxKin.style.display = 'none';
+          if (boxCut) boxCut.style.display = 'flex';
+          if (boxCalc) boxCalc.style.display = 'none';
+          if (rightKin) rightKin.style.display = 'none';
+          if (rightCut) rightCut.style.display = 'flex';
+          if (rightCalc) rightCalc.style.display = 'none';
+          renderHdCutaway();
+        } else if (mode === 'calculator') {
+          document.getElementById('btnHdViewCalculator')?.classList.add('active');
+          if (boxKin) boxKin.style.display = 'none';
+          if (boxCut) boxCut.style.display = 'none';
+          if (boxCalc) boxCalc.style.display = 'flex';
+          if (rightKin) rightKin.style.display = 'none';
+          if (rightCut) rightCut.style.display = 'none';
+          if (rightCalc) rightCalc.style.display = 'flex';
+          updateCalculator();
+        }
+      }
+
+      function renderHdSvg() {
+        if (hdViewMode === 'kinematics') renderHdKinematics();
+        else if (hdViewMode === 'cutaway') renderHdCutaway();
+        else updateCalculator();
+      }
+
+      // Posluchače přepínání režimů
+      document.getElementById('btnHdViewKinematics')?.addEventListener('click', () => setHdViewMode('kinematics'));
+      document.getElementById('btnHdViewCutaway')?.addEventListener('click', () => setHdViewMode('cutaway'));
+      document.getElementById('btnHdViewCalculator')?.addEventListener('click', () => setHdViewMode('calculator'));
+
+      // Posluchače ovládání animace
+      document.getElementById('btnHdPlay')?.addEventListener('click', toggleHdPlay);
+      document.getElementById('btnHdStepTurn')?.addEventListener('click', stepOneTurn);
+      document.getElementById('btnHdReset')?.addEventListener('click', resetHdAngle);
+
+      document.getElementById('btnHdSpeedSlow')?.addEventListener('click', () => {
+        hdAnimSpeed = 0.016;
+        document.getElementById('btnHdSpeedSlow')?.classList.add('active');
+        document.getElementById('btnHdSpeedFast')?.classList.remove('active');
+      });
+
+      document.getElementById('btnHdSpeedFast')?.addEventListener('click', () => {
+        hdAnimSpeed = 0.045;
+        document.getElementById('btnHdSpeedFast')?.classList.add('active');
+        document.getElementById('btnHdSpeedSlow')?.classList.remove('active');
+      });
+
+      document.getElementById('hdSliderMotor')?.addEventListener('input', (e) => {
+        isHdPlaying = false;
+        isSteppingTurn = false;
+        const icon = document.getElementById('hdPlayIcon');
+        const text = document.getElementById('hdPlayText');
+        if (icon) icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+        if (text) text.textContent = 'Spustit rotaci';
+        if (hdAnimReqId) cancelAnimationFrame(hdAnimReqId);
+
+        motorAngleDeg = parseFloat(e.target.value);
+        renderHdKinematics();
+      });
+
+      // Výběr komponenty Harmonic Drive
       function selectHdComponent(part) {
         hdPart = part;
         ['btnHdCompWave', 'btnHdCompFlex', 'btnHdCompCirc'].forEach(id => {
-          const btn = document.getElementById(id);
-          if (btn) btn.classList.remove('active');
+          document.getElementById(id)?.classList.remove('active');
         });
         if (part === 'wave') document.getElementById('btnHdCompWave')?.classList.add('active');
         if (part === 'flex') document.getElementById('btnHdCompFlex')?.classList.add('active');
@@ -2332,12 +3231,60 @@
           if (t) t.textContent = info.title;
           if (d) d.textContent = info.desc;
         }
-        renderHdSvg();
+        renderHdKinematics();
       }
 
       document.getElementById('btnHdCompWave')?.addEventListener('click', () => selectHdComponent('wave'));
       document.getElementById('btnHdCompFlex')?.addEventListener('click', () => selectHdComponent('flex'));
       document.getElementById('btnHdCompCirc')?.addEventListener('click', () => selectHdComponent('circ'));
+
+      // Tlačítka komponent v řezu kloubu
+      document.querySelectorAll('#cutawayPills .hd-pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const p = btn.getAttribute('data-part');
+          if (p) selectCutawayPart(p);
+        });
+      });
+
+      // Kalkulátor předvolby
+      document.getElementById('btnPresetUr5')?.addEventListener('click', () => {
+        calcRatio = 50;
+        document.getElementById('btnPresetUr5')?.classList.add('active');
+        document.getElementById('btnPresetKuka')?.classList.remove('active');
+        document.getElementById('btnPresetHeavy')?.classList.remove('active');
+        updateCalculator();
+      });
+
+      document.getElementById('btnPresetKuka')?.addEventListener('click', () => {
+        calcRatio = 80;
+        document.getElementById('btnPresetUr5')?.classList.remove('active');
+        document.getElementById('btnPresetKuka')?.classList.add('active');
+        document.getElementById('btnPresetHeavy')?.classList.remove('active');
+        updateCalculator();
+      });
+
+      document.getElementById('btnPresetHeavy')?.addEventListener('click', () => {
+        calcRatio = 100;
+        document.getElementById('btnPresetUr5')?.classList.remove('active');
+        document.getElementById('btnPresetKuka')?.classList.remove('active');
+        document.getElementById('btnPresetHeavy')?.classList.add('active');
+        updateCalculator();
+      });
+
+      document.getElementById('sliderCalcSpeed')?.addEventListener('input', (e) => {
+        calcSpeed = parseInt(e.target.value, 10);
+        updateCalculator();
+      });
+
+      document.getElementById('sliderCalcTorque')?.addEventListener('input', (e) => {
+        calcTorque = parseFloat(e.target.value);
+        updateCalculator();
+      });
+
+      // Inicializace zobrazení Slide 8
+      renderHdKinematics();
+      renderHdCutaway();
+      updateCalculator();
 
       /* ====================================================================
          6. Koncové efektory a chapadla (Slide 9)
