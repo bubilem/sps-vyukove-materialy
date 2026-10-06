@@ -1,0 +1,562 @@
+/* ==========================================================================
+   Téma 040: Síťová vrstva (Network Layer) - Dedikované styly
+   SPŠ Výukové materiály &bull; Předmět POS
+   100% Offline & Pure Vanilla CSS
+   ========================================================================== */
+
+:root {
+  --pos-accent: #3b82f6;
+  --pos-accent-glow: rgba(59, 130, 246, 0.25);
+  --pos-cyan: #06b6d4;
+  --pos-emerald: #10b981;
+  --pos-amber: #f59e0b;
+  --pos-rose: #f43f5e;
+  --pos-purple: #a855f7;
+}
+
+/* 1. Titulní snímek a badges */
+.hero-title {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, #f8fafc 20%, #60a5fa 60%, #06b6d4 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 820px;
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+}
+
+.title-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* 2. Slide layouty */
+.slide-content {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.slide-header-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.slide-header-badge h2 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.slide-lead {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout,
+.split-layout-3,
+.split-layout-4,
+.grid-3,
+.grid-4 {
+  display: grid;
+  width: 100%;
+  align-items: stretch;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-3,
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-4,
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+/* Zajištění stejné výšky, zarovnání karet nahoře a odstranění nežádoucího marginu */
+.split-layout > .content-card,
+.split-layout-3 > .content-card,
+.split-layout-4 > .content-card,
+.grid-3 > .content-card,
+.grid-4 > .content-card,
+.split-layout > .card,
+.split-layout-3 > .card,
+.split-layout-4 > .card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+}
+
+/* Informační boxy na konci karet zarovnány jednotně dolů */
+.split-layout > .content-card > .info-box:last-child,
+.split-layout-3 > .content-card > .info-box:last-child,
+.split-layout-4 > .content-card > .info-box:last-child,
+.grid-3 > .content-card > .info-box:last-child,
+.grid-4 > .content-card > .info-box:last-child {
+  margin-top: auto !important;
+}
+
+/* 3. Karty a informační boxy */
+.content-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+  position: relative;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.content-card:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.content-card h3,
+.content-card h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.content-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.feature-list li {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pos-accent);
+}
+
+.info-box {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.info-box.info-success {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.info-box.info-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.info-box.info-danger {
+  background: rgba(244, 63, 94, 0.08);
+  border-color: rgba(244, 63, 94, 0.25);
+}
+
+/* 4. Tabulky a schémata záhlaví */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.data-table th {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* 5. Interaktivní Packet Header Explorer */
+.header-grid-wrapper {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.packet-bit-ruler {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+  gap: 1px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.packet-row {
+  display: grid;
+  grid-template-columns: repeat(32, 1fr);
+  gap: 2px;
+  margin-bottom: 3px;
+}
+
+.hdr-cell {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 0.45rem 0.25rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.hdr-cell:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: #60a5fa;
+  transform: translateY(-1px);
+}
+
+.hdr-cell.active {
+  background: rgba(59, 130, 246, 0.4);
+  border-color: #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+}
+
+.hdr-title {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hdr-bits {
+  display: block;
+  font-size: 0.62rem;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+}
+
+.hdr-detail-panel {
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.hdr-detail-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: rgba(59, 130, 246, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #60a5fa;
+  flex-shrink: 0;
+}
+
+.hdr-detail-info h4 {
+  font-size: 0.95rem;
+  color: #93c5fd;
+  margin-bottom: 0.2rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hdr-detail-info p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* 6. Interaktivní Router & Směrovací trenažér */
+.routing-sim-container {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.sim-input-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+}
+
+.sim-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  margin-bottom: 0.75rem;
+}
+
+.routing-table-mini {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.routing-table-mini th,
+.routing-table-mini td {
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.routing-table-mini th {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  font-weight: 600;
+}
+
+.routing-table-mini tr.matched {
+  background: rgba(16, 185, 129, 0.22) !important;
+  border-left: 3px solid #10b981;
+}
+
+.routing-table-mini tr.candidate {
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.sim-input-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.sim-input-row input {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.sim-input-row button {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: opacity 0.2s;
+}
+
+.sim-input-row button:hover {
+  opacity: 0.9;
+}
+
+.sim-log-box {
+  background: rgba(3, 7, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+  min-height: 190px;
+  max-height: 230px;
+  overflow-y: auto;
+}
+
+.sim-step {
+  margin-bottom: 0.35rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid #3b82f6;
+}
+
+.sim-step.success {
+  border-color: #10b981;
+  color: #a7f3d0;
+}
+
+.sim-step.highlight {
+  border-color: #f59e0b;
+  color: #fde68a;
+}
+
+/* 7. Kvízové otázky */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.question-title {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+  line-height: 1.4;
+}
+
+.question-num {
+  font-family: var(--font-mono);
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+.question-btn {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  transition: all 0.2s ease;
+}
+
+.question-btn:hover {
+  background: rgba(59, 130, 246, 0.22);
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.65rem;
+  padding: 0.65rem;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #d1fae5;
+}
+
+.question-card.revealed .question-hint {
+  display: block;
+}
+
+/* 8. Responzivita */
+@media (max-width: 900px) {
+  .split-layout,
+  .split-layout-3,
+  .split-layout-4,
+  .grid-3,
+  .grid-4,
+  .routing-sim-container,
+  .questions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .split-layout > .content-card + .content-card,
+  .split-layout-3 > .content-card + .content-card,
+  .split-layout-4 > .content-card + .content-card {
+    margin-top: 1rem !important;
+  }
+}

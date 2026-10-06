@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 040: Síťová vrstva (Network Layer) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Síťová vrstva L3, protokoly IPv4 a IPv6, anatomie paketu, TTL, IP adresace, směrovače a statické i dynamické směrování dle CCNA:ITN.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 040 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">040 Síťová vrstva</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; Network Layer L3</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Síťová vrstva (Network Layer)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 040</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Layer 3</span>
+          </div>
+          <h1 class="hero-title">Síťová vrstva (Network Layer)</h1>
+          <p class="hero-subtitle">
+            Globální end-to-end komunikace napříč heterogenními sítěmi &bull; Protokoly IPv4 a IPv6, detailní anatomie paketu, TTL, architektura směrovačů a principy statického i dynamického směrování.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Zařazení &amp; Úloha L3
+              </h4>
+              <p>Propojení odlišných fyzických sítí. Rozdíl mezi lokálním doručováním L2 (Hop-by-Hop) a globálním přenosem L3 (End-to-End).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>
+                Pakety IPv4 &amp; IPv6
+              </h4>
+              <p>Struktura hlaviček, kontrolní součty, pole TTL / Hop Limit pro prevenci smyček a interaktivní Packet Header Explorer.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Směrovače (Routery)
+              </h4>
+              <p>Hardware a vnitřní architektura Cisco směrovače, rozhraní, paměti (RAM, NVRAM, Flash) a životní cyklus paketu při průchodu.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                Směrování v praxi
+              </h4>
+              <p>Vyhledávání v routovací tabulce metodou Longest Prefix Match, statické routy vs. dynamické protokoly OSPF a BGP.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Zařazení a úloha síťové vrstvy
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Zařazení a úloha síťové vrstvy">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Architektura sítí</span>
+            <h2>Postavení síťové vrstvy v modelech ISO/OSI a TCP/IP</h2>
+          </div>
+          <p class="slide-lead">
+            Síťová vrstva (Network Layer / Internet Layer) je srdcem globálního Internetu. Zajišťuje doručení dat z výchozího zařízení ke koncovému cíli přes libovolný počet mezilehlých sítí.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                4 základní pilíře síťové vrstvy
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>1. Adresování koncových zařízení:</strong> Každé zařízení v síti musí mít unikátní logickou IP adresu, která určuje nejen jeho identitu, ale i geografické/topologické umístění v síti.
+                </li>
+                <li>
+                  <strong>2. Enkapsulace (balení do paketů):</strong> Síťová vrstva přebírá segment od transportní vrstvy L4 (TCP/UDP) a přidává IP hlavičku se zdrojovou a cílovou IP adresou. PDU na této vrstvě se nazývá <em>paket (packet)</em>.
+                </li>
+                <li>
+                  <strong>3. Směrování (Routing):</strong> Nalezení optimální trasy přes mezilehlé sítě. Směrovače (routery) analyzují cílovou IP adresu a přeposílají paket k cíli přes nejlepší rozhraní.
+                </li>
+                <li>
+                  <strong>4. Deenkapsulace:</strong> Na cílovém zařízení je IP hlavička zkontrolována, sejmuta a data jsou předána odpovídajícímu transportnímu protokolu (L4).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                End-to-End (L3) vs. Hop-by-Hop (L2)
+              </h3>
+              <p>
+                Zásadní didaktický koncept Cisco CCNA: pochopení rozdílu mezi tím, co se mění při přeskocích mezi zařízeními, a co zůstává po celou cestu netknuté.
+              </p>
+
+              <div class="info-box" style="margin: 0.75rem 0; border-left: 4px solid #3b82f6;">
+                <strong>Síťová vrstva L3 (End-to-End):</strong><br>
+                Zdrojová a cílová IP adresa v hlavičce paketu se během přenosu běžně <em>nemění</em>! Reprezentují původního odesílatele a konečného příjemce na druhé straně planety.
+              </div>
+
+              <div class="info-box info-warning" style="border-left: 4px solid #f59e0b;">
+                <strong>Linková vrstva L2 (Hop-by-Hop):</strong><br>
+                Zdrojová a cílová MAC adresa v ethernetovém rámci se <em>mění na každém směrovači</em>! Rámec existuje pouze lokálně v rámci jednoho fyzického segmentu LAN.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Principy a vlastnosti protokolu IP
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Principy a vlastnosti protokolu IP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Základní principy</span>
+            <h2>Vlastnosti protokolu IP (Internet Protocol)</h2>
+          </div>
+          <p class="slide-lead">
+            Protokol IP byl navržen s nízkou režií, aby byl co nejrychlejší a mohl běžet nad jakýmkoli fyzickým médiem. Má tři základní charakteristiky:
+          </p>
+
+          <div class="split-layout-3">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                1. Nespojovaný (Connectionless)
+              </h3>
+              <p>
+                Před odesláním paketu se <strong>nenavazuje žádné předchozí spojení</strong> mezi odesílatelem a příjemcem (žádný handshake jako u TCP).
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                Odesílatel paket jednoduše pošle do sítě. Neví, zda je příjemce online, zda je schopen data přijmout ani zda paket v pořádku dorazí. Podobá se to vhození dopisu do poštovní schránky.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                2. Nespolehlivý / Best-Effort
+              </h3>
+              <p>
+                Termín „nespolehlivý“ neznamená, že síť nefunguje, ale že protokol IP sám o sobě <strong>negarantuje doručení</strong> ani pořadí paketů.
+              </p>
+              <div class="info-box info-warning" style="margin-top: 0.75rem;">
+                Pokud dojde k přetížení routeru nebo chybě na lince, IP paket se bez váhání zahodí. Spolehlivost, potvrzování doručení (ACK) a opětovné zaslání ztracených dat řeší až vyšší vrstva L4 (protokol TCP).
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                3. Nezávislý na médiu (Media Independent)
+              </h3>
+              <p>
+                IP pakety putují stejně dobře po měděném UTP kabelu, optickém vlákně, Wi-Fi radiových vlnách i satelitním spoji.
+              </p>
+              <div class="info-box info-success" style="margin-top: 0.75rem;">
+                Jediné omezení tvoří <strong>MTU (Maximum Transmission Unit)</strong> linkové vrstvy (např. 1500 bajtů pro Ethernet). Pokud je paket větší než MTU další linky, musí být fragmentován nebo odmítnut.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Protokoly síťové vrstvy
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Protokoly síťové vrstvy">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Přehled protokolů</span>
+            <h2>Ekosystém protokolů síťové vrstvy</h2>
+          </div>
+          <p class="slide-lead">
+            Síťová vrstva se skládá ze směrovaných protokolů nesoucích uživatelská data a pomocných řídicích a směrovacích protokolů.
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 22%;">Kategorie protokolu</th>
+                <th style="width: 18%;">Protokoly</th>
+                <th style="width: 20%;">PDU / Vrstva</th>
+                <th>Klíčová funkce a role v síťové komunikaci</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Směrované protokoly (Routed)</strong></td>
+                <td><span style="color: #60a5fa; font-weight:700;">IPv4, IPv6</span></td>
+                <td>Paket (Packet) &bull; L3</td>
+                <td>Přenášejí uživatelská data a aplikační zprávy. Obsahují logické adresy odesílatele a příjemce, podle kterých routery rozhodují o trase.</td>
+              </tr>
+              <tr>
+                <td><strong>Diagnostické a řídicí</strong></td>
+                <td><span style="color: #38bdf8; font-weight:700;">ICMPv4, ICMPv6</span></td>
+                <td>Řídicí zpráva &bull; L3</td>
+                <td>Signalizují chyby při doručování (např. <em>Destination Unreachable</em>, <em>Time Exceeded</em>) a poskytují diagnostiku nástroji <code>ping</code> a <code>traceroute</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Mapovací a vazební</strong></td>
+                <td><span style="color: #10b981; font-weight:700;">ARP, NDP</span></td>
+                <td>Vazba L2 &harr; L3</td>
+                <td>Překládají logické IP adresy na fyzické MAC adresy rozhraní. ARP slouží pro IPv4 sítě, NDP (Neighbor Discovery Protocol) využívá ICMPv6 v sítích IPv6.</td>
+              </tr>
+              <tr>
+                <td><strong>Směrovací protokoly (Routing)</strong></td>
+                <td><span style="color: #f59e0b; font-weight:700;">OSPF, EIGRP, RIP, BGP</span></td>
+                <td>Směrovací zprávy</td>
+                <td>Autonomní komunikace mezi směrovači. Dynamicky zjišťují stav linek, vyměňují si informace o dostupných sítích a plní směrovací tabulky.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="info-box" style="margin-top: 1rem; border-left: 4px solid #06b6d4;">
+            <strong>Důležité rozlišení pojmů:</strong><br>
+            <strong>Směrovaný protokol (Routed Protocol)</strong> nese uživatelský náklad (IPv4, IPv6). <strong>Směrovací protokol (Routing Protocol)</strong> je řídicí protokol, kterým si routery mezi sebou předávají mapy sítě (OSPF, BGP).
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Anatomie paketu IPv4
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Anatomie paketu IPv4">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Paket IPv4</span>
+            <h2>Anatomie paketu IPv4 &amp; Paketový inspektor</h2>
+          </div>
+          <p class="slide-lead">
+            Záhlaví IPv4 paketu má standardní velikost <strong>20 bajtů</strong> (při použití voleb až 60 B). Klikněte na libovolné pole pro zobrazení podrobného vysvětlení:
+          </p>
+
+          <div class="header-grid-wrapper">
+            <!-- Pravítko bitů 0 až 31 -->
+            <div class="packet-bit-ruler">
+              <span style="grid-column: span 8;">Bit 0 &ndash; 7 (Bajt 0)</span>
+              <span style="grid-column: span 8;">Bit 8 &ndash; 15 (Bajt 1)</span>
+              <span style="grid-column: span 8;">Bit 16 &ndash; 23 (Bajt 2)</span>
+              <span style="grid-column: span 8;">Bit 24 &ndash; 31 (Bajt 3)</span>
+            </div>
+
+            <!-- Řádek 1 (0-31) -->
+            <div class="packet-row">
+              <div class="hdr-cell active" style="grid-column: span 4;" data-field="ver">
+                <span class="hdr-title">Version</span>
+                <span class="hdr-bits">4 bity</span>
+              </div>
+              <div class="hdr-cell" style="grid-column: span 4;" data-field="ihl">
+                <span class="hdr-title">IHL</span>
+                <span class="hdr-bits">4 bity</span>
+              </div>
+              <div class="hdr-cell" style="grid-column: span 8;" data-field="dscp">
+                <span class="hdr-title">DSCP / ECN (ToS)</span>
+                <span class="hdr-bits">8 bitů</span>
+              </div>
+              <div class="hdr-cell" style="grid-column: span 16;" data-field="len">
+                <span class="hdr-title">Total Length (Celková délka)</span>
+                <span class="hdr-bits">16 bitů</span>
+              </div>
+            </div>
+
+            <!-- Řádek 2 (32-63) -->
+            <div class="packet-row">
+              <div class="hdr-cell" style="grid-column: span 16;" data-field="id">
+                <span class="hdr-title">Identification</span>
+                <span class="hdr-bits">16 bitů</span>
+              </div>
+              <div class="hdr-cell" style="grid-column: span 3;" data-field="flags">
+                <span class="hdr-title">Flags</span>
+                <span class="hdr-bits">3 b</span>
+              </div>
+              <div class="hdr-cell" style="grid-column: span 13;" data-field="offset">
+                <span class="hdr-title">Fragment Offset</span>
+                <span class="hdr-bits">13 bitů</span>
+              </div>
+            </div>
+
+            <!-- Řádek 3 (64-95) -->
+            <div class="packet-row">
+              <div class="hdr-cell" style="grid-column: span 8;" data-field="ttl">
+                <span class="hdr-title" style="color: #f87171;">TTL</span>
+                <span class="hdr-bits">8 bitů</span>
+              </div>
+              <div class="hdr-cell" style="grid-column: span 8;" data-field="proto">
+                <span class="hdr-title">Protocol</span>
+                <span class="hdr-bits">8 bitů</span>
+              </div>
+              <div class="hdr-cell" style="grid-column: span 16;" data-field="chk">
+                <span class="hdr-title">Header Checksum</span>
+                <span class="hdr-bits">16 bitů</span>
+              </div>
+            </div>
+
+            <!-- Řádek 4 (96-127) -->
+            <div class="packet-row">
+              <div class="hdr-cell" style="grid-column: span 32;" data-field="src">
+                <span class="hdr-title" style="color: #60a5fa;">Source IPv4 Address (Zdrojová IP adresa odesílatele)</span>
+                <span class="hdr-bits">32 bitů (4 oktety)</span>
+              </div>
+            </div>
+
+            <!-- Řádek 5 (128-159) -->
+            <div class="packet-row">
+              <div class="hdr-cell" style="grid-column: span 32;" data-field="dst">
+                <span class="hdr-title" style="color: #34d399;">Destination IPv4 Address (Cílová IP adresa příjemce)</span>
+                <span class="hdr-bits">32 bitů (4 oktety)</span>
+              </div>
+            </div>
+
+            <!-- Detail panel -->
+            <div class="hdr-detail-panel">
+              <div class="hdr-detail-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              </div>
+              <div class="hdr-detail-info">
+                <h4 id="hdrDetailTitle">Version (Verze) – 4 bity</h4>
+                <p id="hdrDetailDesc">Určuje verzi IP protokolu. Pro IPv4 má hodnotu binárně 0100 (4). Router podle tohoto pole okamžitě ví, jak má zbývající část paketu interpretovat.</p>
+                <div style="margin-top: 0.35rem; font-size: 0.72rem; color: #38bdf8; font-family: var(--font-mono);" id="hdrDetailRfc">
+                  RFC 791 • Hodnota: 4 (0100)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Anatomie paketu IPv6
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Anatomie paketu IPv6 a srovnání">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Paket IPv6</span>
+            <h2>Moderní architektura paketu IPv6 &amp; Srovnání</h2>
+          </div>
+          <p class="slide-lead">
+            IPv6 zjednodušuje zpracování na routerech: hlavička má <strong>fixní pevnou délku 40 bajtů</strong>, odstranila zbytečná pole a kontrolní součty.
+          </p>
+
+          <div class="split-layout">
+            <div>
+              <div class="header-grid-wrapper" style="margin-top: 0;">
+                <div class="packet-row">
+                  <div class="hdr-cell" style="grid-column: span 4;" data-field="v6-ver">
+                    <span class="hdr-title">Ver (4b)</span>
+                  </div>
+                  <div class="hdr-cell" style="grid-column: span 8;" data-field="v6-tc">
+                    <span class="hdr-title">Traffic Class (8b)</span>
+                  </div>
+                  <div class="hdr-cell" style="grid-column: span 20;" data-field="v6-fl">
+                    <span class="hdr-title">Flow Label (20b)</span>
+                  </div>
+                </div>
+                <div class="packet-row">
+                  <div class="hdr-cell" style="grid-column: span 16;" data-field="v6-pl">
+                    <span class="hdr-title">Payload Length (16b)</span>
+                  </div>
+                  <div class="hdr-cell" style="grid-column: span 8;" data-field="v6-nh">
+                    <span class="hdr-title" style="color: #38bdf8;">Next Hdr (8b)</span>
+                  </div>
+                  <div class="hdr-cell" style="grid-column: span 8;" data-field="v6-hl">
+                    <span class="hdr-title" style="color: #f87171;">Hop Limit (8b)</span>
+                  </div>
+                </div>
+                <div class="packet-row">
+                  <div class="hdr-cell" style="grid-column: span 32;" data-field="v6-src">
+                    <span class="hdr-title" style="color: #60a5fa;">Source IPv6 Address (128 bitů / 16 bajtů)</span>
+                  </div>
+                </div>
+                <div class="packet-row">
+                  <div class="hdr-cell" style="grid-column: span 32;" data-field="v6-dst">
+                    <span class="hdr-title" style="color: #34d399;">Destination IPv6 Address (128 bitů / 16 bajtů)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-box info-success" style="margin-top: 0.75rem;">
+                <strong>Proč je IPv6 rychlejší na routeru?</strong><br>
+                Fixní velikost 40 bajtů umožňuje hardware routeru okamžitě načíst cílovou adresu bez počítání délky záhlaví (IHL). Žádná kontrolní suma znamená, že router nemusí při snížení Hop Limitu nic přepočítávat!
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+                Klíčové rozdíly: IPv4 vs. IPv6
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Velikost adresy:</strong> IPv4 má 32 bitů (4,3 miliardy adres) &times; IPv6 má 128 bitů ($3.4 \times 10^{38}$ adres).</li>
+                <li><strong>Délka hlavičky:</strong> IPv4 je proměnná (20 až 60 B) &times; IPv6 má fixních 40 B.</li>
+                <li><strong>Prevence smyček:</strong> IPv4 má pole <em>Time to Live (TTL)</em> &times; IPv6 má ekvivalent <em>Hop Limit</em>.</li>
+                <li><strong>Fragmentace:</strong> V IPv4 mohou fragmentovat i routery na trase &times; V IPv6 fragmentuje <strong>pouze odesílatel</strong> pomocí Path MTU Discovery.</li>
+                <li><strong>Extension Headers (Rozšíření):</strong> IPv6 vkládá volby jako zřetězené mezihlavičky za pole <em>Next Header</em>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: IP adresa, hierarchie a Default Gateway
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="IP adresa a Default Gateway">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Logické adresování</span>
+            <h2>Hierarchie IP adresy &amp; Výchozí brána (Default Gateway)</h2>
+          </div>
+          <p class="slide-lead">
+            IP adresa je logická hierarchická adresa. Skládá se ze dvou částí: <strong>adresy sítě (Network Portion)</strong> a <strong>adresy hostitele (Host Portion)</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                Proč potřebujeme hierarchii?
+              </h3>
+              <p>
+                Kdyby byl Internet adresován plochými MAC adresami, musely by směrovače znát umístění všech miliard síťových karet na světě. Žádný router by takovou tabulku nezvládl.
+              </p>
+              <div class="info-box" style="margin-top: 0.75rem;">
+                Díky hierarchii routerům na páteři Internetu stačí znát směr do celé sítě (např. do sítě poskytovatele nebo univerzity). Teprve lokální router v cílové LAN doručí paket konkrétnímu hostiteli.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Jak PC pozná, zda poslat paket lokálně či na Gateway?
+              </h3>
+              <p>
+                Když stanice odesílá paket, provede logický bitový součin (AND) své IP adresy s maskou a cílové IP adresy s maskou:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Cíl je ve STEJNÉ síti (Local Host):</strong> Odesílatel použije protokol ARP k zjištění MAC adresy cílového PC a odešle rámec přímo přes L2 switch.
+                </li>
+                <li>
+                  <strong>Cíl je v JINÉ síti (Remote Host):</strong> Odesílatel odešle paket na <strong>Výchozí bránu (Default Gateway)</strong>, což je lokální rozhraní routeru. Rámec dostane cílovou MAC adresu routeru, ale cílová IP adresa v paketu zůstává nezměněna!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Směrovače – Hardware a architektura
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Směrovače – Hardware a architektura">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Hardware L3</span>
+            <h2>Směrovače (Routery): Hardware a komponenty</h2>
+          </div>
+          <p class="slide-lead">
+            Směrovač je specializovaný počítač navržený pro rychlé přeposílání paketů mezi sítěmi. Rozděluje jak kolizní, tak <strong>broadcastové domény</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                Vnitřní paměťová architektura Cisco routeru
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>CPU (Centrální procesor):</strong> Vykonává instrukce operačního systému Cisco IOS, počítá směrovací algoritmy (Dijkstra SPF) a inicializuje směrovač.</li>
+                <li><strong>RAM (Operační paměť - volatilní):</strong> Uchovává běžící konfiguraci (<em>running-config</em>), aktuální směrovací tabulku (Routing Table), vyrovnávací paměť ARP cache a buffery paketů. Při restartu se maže!</li>
+                <li><strong>NVRAM (Non-Volatile RAM):</strong> Uchovává uloženou startovací konfiguraci (<em>startup-config</em>). Data přetrvávají i po vypnutí napájení.</li>
+                <li><strong>Flash paměť:</strong> EEPROM uchovávající obraz operačního systému Cisco IOS. Umožňuje upgrade firmwaru bez výměny hardwaru.</li>
+                <li><strong>ROM (Read-Only Memory):</strong> Obsahuje základní diagnostický kód POST, zavaděč Bootstrap a nouzový záchranný systém ROMmon.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+                Rozhraní směrovače (Interfaces)
+              </h3>
+              <p>
+                Každé rozhraní routeru je samostatnou <strong>L3 bránou</strong> pro jinou síť a má svou vlastní IP adresu a masku:
+              </p>
+              <div class="info-box" style="margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.78rem;">
+                &bull; <strong>LAN rozhraní:</strong> GigabitEthernet (Gi0/0/0, Gi0/0/1) – RJ-45 kroucená dvojlinka nebo optické SFP moduly do LAN přepínačů.<br>
+                &bull; <strong>WAN rozhraní:</strong> Serial, High-Speed WAN Interface Cards (HWIC) pro dálkové páteřní spoje k ISP.<br>
+                &bull; <strong>Rozhraní správy:</strong> Console port (RJ-45 / Mini-USB) pro přímou terminálovou správu (Out-of-Band) a Aux port.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Životní cyklus paketu na routeru
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Životní cyklus paketu na směrovači">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Pipeline zpracování</span>
+            <h2>Životní cyklus paketu při průchodu směrovačem</h2>
+          </div>
+          <p class="slide-lead">
+            Co se přesně stane uvnitř routeru za mikrosekundy od chvíle, kdy na rozhraní dorazí elektrický signál, až po odeslání nového rámce:
+          </p>
+
+          <div class="split-layout-4" style="margin-top: 0.5rem;">
+            <div class="content-card" style="border-top: 3px solid #38bdf8;">
+              <h4 style="color: #38bdf8;">1. Přijetí &amp; L2 Deenkapsulace</h4>
+              <p style="font-size: 0.8rem;">
+                Rozhraní přijme rámec. Síťový čip ověří kontrolní součet FCS (CRC-32). Pokud je rámec v pořádku a cílová MAC odpovídá routeru, záhlaví a zápatí L2 se <strong>odstraní</strong> a vyjme se L3 paket.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h4 style="color: #f59e0b;">2. Kontrola záhlaví &amp; TTL</h4>
+              <p style="font-size: 0.8rem;">
+                Router ověří verzi IP a kontrolní součet záhlaví. Sníží hodnotu <strong>TTL o 1</strong>. Pokud je nová hodnota 0, paket se zahodí a odesílateli se vrátí zpráva ICMP Time Exceeded!
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h4 style="color: #10b981;">3. Hledání trasy v tabulce</h4>
+              <p style="font-size: 0.8rem;">
+                Router nahlédne do své směrovací tabulky a podle cílové IP adresy hledá nejlepší shodu metodou <strong>Longest Prefix Match</strong>. Zjistí odchozí rozhraní a IP adresu dalšího skoku (Next-Hop).
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #a855f7;">
+              <h4 style="color: #a855f7;">4. Nová L2 Enkapsulace &amp; TX</h4>
+              <p style="font-size: 0.8rem;">
+                Router vyhledá MAC adresu Next-Hopu v ARP cache. Zabalí paket do <strong>zbrusu nového L2 rámce</strong> s novou zdrojovou i cílovou MAC a novým FCS, a odešle jej na fyzické médium.
+              </p>
+            </div>
+          </div>
+
+          <div class="info-box info-warning" style="margin-top: 1rem;">
+            <strong>Zlaté pravidlo přeposílání:</strong> Paket při průchodu každým routerem ztratí svůj starý linkový obal (L2) a získá obal nový. IP paket uvnitř zůstává stejný (až na snížené TTL a přepočtenou kontrolní sumu).
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Směrovací tabulka a LPM
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Směrovací tabulka a Longest Prefix Match">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Princip LPM</span>
+            <h2>Směrovací tabulka &amp; Princip Longest Prefix Match</h2>
+          </div>
+          <p class="slide-lead">
+            Pokud má směrovač v tabulce více tras, které vyhovují cílové IP adrese, <strong>vždy zvítězí trasa s nejdelší maskou podsítě</strong> (největším počtem binárních jedniček v prefixu). Vyzkoušejte v trenažéru:
+          </p>
+
+          <div class="routing-sim-container">
+            <!-- Vstupy a tabulka -->
+            <div class="sim-input-card">
+              <h4 style="margin-bottom: 0.5rem; color: #93c5fd;">Směrovací tabulka routeru R1:</h4>
+              <div class="sim-table-wrap">
+                <table class="routing-table-mini">
+                  <thead>
+                    <tr>
+                      <th>Kód</th>
+                      <th>Cílová síť / Prefix</th>
+                      <th>Next-Hop IP</th>
+                      <th>Odchozí rozhraní</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>C</td><td>192.168.1.0/24</td><td>Přímo připojeno</td><td>Gi0/0/0</td></tr>
+                    <tr><td>S</td><td>192.168.1.32/27</td><td>10.0.0.2</td><td>Serial0/1/0</td></tr>
+                    <tr><td>O</td><td>192.168.1.48/28</td><td>10.0.0.6</td><td>Gi0/0/1</td></tr>
+                    <tr><td>O</td><td>10.0.0.0/8</td><td>192.168.100.1</td><td>Gi0/0/2</td></tr>
+                    <tr><td>D</td><td>172.16.0.0/16</td><td>10.0.0.2</td><td>Serial0/1/0</td></tr>
+                    <tr><td>S*</td><td>0.0.0.0/0</td><td>203.0.113.1</td><td>Gi0/1/0 (WAN)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.4rem;">
+                Vyberte testovací IP nebo zadejte vlastní:
+              </div>
+              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <button class="sim-preset-btn question-btn" data-ip="192.168.1.50">192.168.1.50</button>
+                <button class="sim-preset-btn question-btn" data-ip="192.168.1.35">192.168.1.35</button>
+                <button class="sim-preset-btn question-btn" data-ip="192.168.1.15">192.168.1.15</button>
+                <button class="sim-preset-btn question-btn" data-ip="10.5.20.1">10.5.20.1</button>
+                <button class="sim-preset-btn question-btn" data-ip="8.8.8.8">8.8.8.8 (Internet)</button>
+              </div>
+
+              <div class="sim-input-row">
+                <input type="text" id="simDestIp" value="192.168.1.50" placeholder="Zadejte cílovou IP...">
+                <button id="simRouteBtn">
+                  <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  Vyhodnotit
+                </button>
+              </div>
+            </div>
+
+            <!-- Výstupní log simulace -->
+            <div class="sim-input-card">
+              <h4 style="margin-bottom: 0.5rem; color: #34d399;">Protokol rozhodování směrovače (Pipeline log):</h4>
+              <div class="sim-log-box" id="simLog">
+                <div class="sim-step">[Info] Zadejte IP adresu nebo klikněte na předvolbu výše pro spuštění simulace LPM.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Statické směrování
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Statické směrování">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Konfigurace sítí</span>
+            <h2>Statické směrování (Static Routing)</h2>
+          </div>
+          <p class="slide-lead">
+            Při statickém směrování zadává síťový administrátor trasy do směrovací tabulky ručně. Vhodné pro malé sítě, záložní linky a koncové uzly (Stub networks).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Syntaxe příkazu Cisco IOS
+              </h3>
+              <p>Základní statická trasa se konfiguruje v globálním konfiguračním režimu:</p>
+              
+              <div style="background: #030712; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid #1f2937; font-family: var(--font-mono); font-size: 0.76rem; color: #93c5fd; margin: 0.5rem 0;">
+                Router(config)# <strong>ip route</strong> <em>cílová_síť maska {next_hop | odchozí_rozhraní}</em> [AD]<br><br>
+                <span style="color: #94a3b8;">! Příklad 1: Statická cesta do sítě 10.1.1.0/24 přes router 192.168.1.2</span><br>
+                Router(config)# <strong>ip route 10.1.1.0 255.255.255.0 192.168.1.2</strong><br><br>
+                <span style="color: #94a3b8;">! Příklad 2: Výchozí statická cesta (Default Route / Gateway of Last Resort)</span><br>
+                Router(config)# <strong>ip route 0.0.0.0 0.0.0.0 203.0.113.1</strong>
+              </div>
+
+              <div class="info-box info-success">
+                <strong>Výchozí trasa (0.0.0.0/0):</strong> Trasa se čtyřmi nulami a nulovou maskou zachytí jakýkoli paket, pro který neexistuje konkrétnější záznam v tabulce, a odešle jej k poskytovateli (ISP).
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Výhody vs. Nevýhody statického směrování
+              </h3>
+              <table class="data-table" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr>
+                    <th>Výhody</th>
+                    <th>Nevýhody</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="color: #34d399;"><strong>Žádná režie CPU &amp; RAM:</strong> Router nemusí spouštět náročné výpočetní algoritmy.</td>
+                    <td style="color: #f87171;"><strong>Neškáluje se:</strong> V rozsáhlých sítích s desítkami routerů je ruční správa neudržitelná.</td>
+                  </tr>
+                  <tr>
+                    <td style="color: #34d399;"><strong>Žádný provoz na lince:</strong> Mezi routery se nevyměňují žádné směrovací aktualizace.</td>
+                    <td style="color: #f87171;"><strong>Nereaguje na výpadek:</strong> Pokud spoj spadne, router o tom neví a dál posílá pakety do černé díry.</td>
+                  </tr>
+                  <tr>
+                    <td style="color: #34d399;"><strong>Vysoká bezpečnost:</strong> Administrátor má absolutní kontrolu nad trasami provozu.</td>
+                    <td style="color: #f87171;"><strong>Riziko lidské chyby:</strong> Překlep v masce způsobí nefunkčnost směrování.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Dynamické směrování
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Dynamické směrování">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Dynamické protokoly</span>
+            <h2>Dynamické směrování &amp; Třídění protokolů</h2>
+          </div>
+          <p class="slide-lead">
+            Směrovací protokoly umožňují routerům autonomně objevovat vzdálené sítě, udržovat aktuální informace a při výpadku linky <strong>automaticky přepnout na záložní trasu</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Klasifikace: IGP vs. EGP
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>IGP (Interior Gateway Protocols):</strong> Slouží ke směrování <em>uvnitř</em> jednoho autonomního systému (AS – např. firemní síť, kampus, ISP).
+                  <div style="font-size: 0.8rem; color: #93c5fd; margin-top: 0.2rem;">
+                    &bull; <strong>Link-State (Stav linek):</strong> OSPF (Open Shortest Path First), IS-IS. Každý router má kompletní mapu topologie a počítá nejkratší cestu (Dijkstra algoritmus).<br>
+                    &bull; <strong>Distance Vector (Vektor vzdálenosti):</strong> RIPv2 (metrika počet skoků hop count, max 15), EIGRP (pokročilý vektor Cisco).
+                  </div>
+                </li>
+                <li>
+                  <strong>EGP (Exterior Gateway Protocols):</strong> Slouží ke směrování <em>mezi různými autonomními systémy</em> na celosvětové páteři Internetu. De facto jediným standardem je protokol <strong>BGP (Border Gateway Protocol)</strong>.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Administrativní vzdálenost (AD) &amp; Metriky
+              </h3>
+              <p>
+                Pokud se router dozví o téže síti ze dvou různých protokolů, vybere ten s <strong>nižší administrativní vzdáleností (důvěryhodností)</strong>:
+              </p>
+              <table class="data-table" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr>
+                    <th>Zdroj trasy</th>
+                    <th>Výchozí AD</th>
+                    <th>Metrika</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Přímo připojená (Connected)</strong></td><td style="color:#34d399; font-weight:700;">0</td><td>0</td></tr>
+                  <tr><td><strong>Statická trasa (Static)</strong></td><td style="color:#60a5fa; font-weight:700;">1</td><td>0</td></tr>
+                  <tr><td><strong>EIGRP (Internal)</strong></td><td>90</td><td>Šířka pásma + Zpoždění</td></tr>
+                  <tr><td><strong>OSPF</strong></td><td>110</td><td>Cena (Cost = 100 Mbps / BW)</td></tr>
+                  <tr><td><strong>RIP</strong></td><td>120</td><td>Počet skoků (Hop Count)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Shrnutí a prověření znalostí
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Shrnutí a prověření znalostí">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Závěr tématu</span>
+            <h2>Shrnutí klíčových pojmů &amp; Prověření znalostí</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled nejdůležitějších principů síťové vrstvy L3 a ověření znalostí z učiva Cisco CCNA:ITN:
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #38bdf8;">End-to-End</h4>
+              <p style="font-size: 0.76rem;">IP adresy zůstávají po celou trasu neměnné, zatímco L2 MAC adresy se mění na každém směrovači.</p>
+            </div>
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #f87171;">TTL &amp; Prevence</h4>
+              <p style="font-size: 0.76rem;">Pole TTL (IPv4) a Hop Limit (IPv6) dekrementují na každém skoku o 1 a chrání síť před nekonečnými smyčkami.</p>
+            </div>
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #10b981;">Longest Prefix</h4>
+              <p style="font-size: 0.76rem;">Při směrování vždy vítězí shoda s nejdelší maskou podsítě (nejkonkrétnější záznam v tabulce).</p>
+            </div>
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #f59e0b;">AD &amp; Směrovače</h4>
+              <p style="font-size: 0.76rem;">Směrovač rozděluje broadcastové domény. Výběr protokolu se řídí prioritou administrativní vzdálenosti.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.5rem;">Ověření znalostí (Kliknutím zobrazte vysvětlení):</h3>
+
+          <div class="questions-grid">
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč má IPv6 pevnou délku záhlaví 40 B a proč z něj byla odstraněna kontrolní suma (Header Checksum)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Pevná délka 40 bajtů umožňuje hardwarovým čipům routeru okamžitě přečíst cílovou adresu bez nutnosti analyzovat pole IHL. Odstranění kontrolního součtu dramaticky urychluje odbavení paketů, protože router nemusí při každém snížení pole Hop Limit znovu počítat kontrolní sumu. Integritu dat navíc spolehlivě hlídá L2 vrstva (FCS/CRC-32) a transportní L4 vrstva (TCP checksum).
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Co přesně se stane s paketem, pokud hodnota v poli TTL klesne na 0? Jak toho využívá nástroj traceroute?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Směrovač paket okamžitě zahodí a odesílateli zašle zprávu ICMP Type 11 (Time Exceeded). Nástroj <code>traceroute</code> toho geniálně využívá: odesílá pakety s postupně se zvyšujícím TTL (1, 2, 3...). První router na trase vrátí ICMP zprávu pro TTL=1 (čímž odhalí svou IP), druhý pro TTL=2 atd., až se zmapuje celá trasa do cíle.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Router má v tabulce trasy 10.0.0.0/8, 10.1.0.0/16 a 10.1.1.0/24. Kam pošle paket s cílem 10.1.1.55?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Pošle jej po trase <strong>10.1.1.0/24</strong>! Přestože cílová IP adresa matematicky vyhovuje všem třem trasám, uplatní se pravidlo <em>Longest Prefix Match</em>. Trasa s prefixem /24 má nejdelší shodu bitů v síťové části (24 jedniček vs. 16 a 8), a proto má přednost.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Proč počítač při odesílání dat do Internetu potřebuje znát MAC adresu své výchozí brány (Default Gateway), ale ne cílového serveru?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Fyzické linkové rámce (L2) fungují pouze v lokální síti. Počítač nemůže přímo oslovit cizí server přes ethernetový rámec, protože cizí server není připojen ke stejnému switchi. Odesílatel proto předá rámec s L3 paketem své výchozí bráně (směrovači) pomocí její MAC adresy. Teprve router paket vyjme a přes své WAN rozhraní jej posune dál do světa.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../035-VLAN-a-STP/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 035 VLAN a STP (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../041-IP-Adresace/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 041 IP Adresace (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 13</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Síťová vrstva
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 040 -->
+  <script src="network-engine.js"></script>
+</body>
+
+</html>

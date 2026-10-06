@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 041: IP Adresace | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Protokol IP, anatomie IP adresy, bitový součin AND, masky podsítě, privátní vs. veřejné adresy dle RFC 1918, loopback, subnety a IPv6 adresace dle CCNA:ITN.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 041 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">041 IP Adresace</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; IP Addressing</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="IP Adresace (IP Addressing)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 041</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Základy adresace</span>
+          </div>
+          <h1 class="hero-title">IP Adresace (IP Addressing)</h1>
+          <p class="hero-subtitle">
+            Základní stavební kámen Internetu &bull; Anatomie 32bitových IPv4 adres a 128bitových IPv6 adres, matematika masky podsítě, bitový součin AND, privátní vs. veřejné rozsahy, speciální adresy a úvod do podsítí.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                Anatomie IPv4 &amp; Maska
+              </h4>
+              <p>32 bitů, 4 dekadické oktety, bitové váhy mocnin dvou a bitový součin (AND) oddělující síť od hostitele.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Role &amp; Typy přenosu
+              </h4>
+              <p>Síťová adresa, rozsah použitelných hostů, broadcast adresa a přenosy Unicast, Broadcast, Multicast i Anycast.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Veřejné vs. Privátní (RFC 1918)
+              </h4>
+              <p>Globálně směrovatelné adresy, privátní rozsahy tříd A, B, C a speciální adresy (Loopback 127.0.0.1, APIPA).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><circle cx="12" cy="12" r="10"></circle><path d="m10 15 5-3-5-3v6z"></path></svg>
+                IPv6 &amp; Interaktivní dílna
+              </h4>
+              <p>128bitové adresy, hexadecimální notace, pravidla zkracování nul a živý bitový analyzátor adresace.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Úloha logického adresování
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Úloha logického adresování a protokol IP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Základy sítí</span>
+            <h2>Úloha logického adresování &amp; Protokol IP</h2>
+          </div>
+          <p class="slide-lead">
+            Proč v moderních počítačových sítích nestačí fyzické MAC adresy ze síťové karty a proč je hierarchická IP adresa nezbytná:
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f87171;"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                Fyzická adresa L2 (MAC Address)
+              </h3>
+              <p>
+                MAC adresa (48 bitů) je vázána na konkrétní hardware síťové karty (NIC) již z výroby:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Je plochá (ne-hierarchická):</strong> Z MAC adresy nelze poznat, ve kterém městě, budově nebo síti se zařízení nachází.</li>
+                <li><strong>Funguje jen lokálně:</strong> L2 rámce nemohou opustit lokální síť LAN (přes směrovač neprojdou).</li>
+                <li>Podobá se rodnému číslu občana – identifikuje konkrétního člověka, ale neříká, na jaké adrese právě bydlí.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Logická adresa L3 (IP Address)
+              </h3>
+              <p>
+                IP adresa je logická a konfigurovatelná (přiřazuje se ručně administrátorem nebo automaticky protokolem DHCP):
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Je hierarchická:</strong> Část adresy určuje síť (město / ulici) a část adresy určuje hostitele (číslo domu).</li>
+                <li><strong>Umožňuje celosvětové směrování:</strong> Směrovače na páteři Internetu směrují podle síťové části adresy bez nutnosti znát jednotlivé koncové počítače.</li>
+                <li>Podobá se poštovní doručovací adrese (PSČ + město + ulice + číslo popisné).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Anatomie IPv4 adresy
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Anatomie IPv4 adresy a binární rozpad">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">IPv4 Anatomie</span>
+            <h2>Anatomie IPv4 adresy &amp; Binární váhy bitů</h2>
+          </div>
+          <p class="slide-lead">
+            IPv4 adresa má celkem <strong>32 bitů</strong>. Lidé ji zapisují v dekadickém tvaru s tečkami (<em>Dotted Decimal Notation</em>) jako 4 oktety:
+          </p>
+
+          <div class="octet-box-grid">
+            <div class="octet-box">
+              <div class="octet-num">192</div>
+              <div class="octet-bin">11000000</div>
+              <div class="octet-label">1. Oktet (8 bitů)</div>
+            </div>
+            <div class="octet-box">
+              <div class="octet-num">168</div>
+              <div class="octet-bin">10101000</div>
+              <div class="octet-label">2. Oktet (8 bitů)</div>
+            </div>
+            <div class="octet-box">
+              <div class="octet-num">1</div>
+              <div class="octet-bin">00000001</div>
+              <div class="octet-label">3. Oktet (8 bitů)</div>
+            </div>
+            <div class="octet-box">
+              <div class="octet-num">10</div>
+              <div class="octet-bin">00001010</div>
+              <div class="octet-label">4. Oktet (8 bitů)</div>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 0.75rem;">
+            <h4>Binární váhy jednoho oktetu (mocniny dvou od $2^7$ do $2^0$):</h4>
+            <div class="weights-bar">
+              <div class="weights-item">128<small>$2^7$</small></div>
+              <div class="weights-item">64<small>$2^6$</small></div>
+              <div class="weights-item">32<small>$2^5$</small></div>
+              <div class="weights-item">16<small>$2^4$</small></div>
+              <div class="weights-item">8<small>$2^3$</small></div>
+              <div class="weights-item">4<small>$2^2$</small></div>
+              <div class="weights-item">2<small>$2^1$</small></div>
+              <div class="weights-item">1<small>$2^0$</small></div>
+            </div>
+
+            <p style="margin-top: 0.75rem; font-size: 0.84rem;">
+              Každý z 4 oktetů může nabývat hodnoty od <strong>0</strong> (binárně <code>00000000</code>) do <strong>255</strong> (binárně <code>11111111</code>, což je součet $128+64+32+16+8+4+2+1$). Celkový adresní prostor IPv4 činí $2^{32} \approx 4\,294\,967\,296$ adres.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Maska podsítě a bitový součin AND
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Maska podsítě a bitový součin AND">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Matematika sítě</span>
+            <h2>Maska podsítě (Subnet Mask) &amp; Bitový součin AND</h2>
+          </div>
+          <p class="slide-lead">
+            IP adresa sama o sobě nemá žádný smysl! Teprve <strong>maska podsítě</strong> určuje, kolik bitů patří síti a kolik hostiteli.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                Pravidlo souvislé řady jedniček
+              </h3>
+              <p>
+                Maska podsítě je speciální 32bitové číslo, které se skládá z <strong>nepřerušené řady jedniček zleva</strong> následované řadou nul:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Jedničky (1):</strong> Označují bity adresy sítě (Network Portion / NetID).</li>
+                <li><strong>Nuly (0):</strong> Označují bity konkrétního zařízení (Host Portion / HostID).</li>
+                <li><strong>CIDR Prefix (/X):</strong> Zkrácený zápis počtu jedniček v masce (např. <code>255.255.255.0</code> má 24 jedniček &rarr; zápis <code>/24</code>).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Jak hardware počítá: Operace AND
+              </h3>
+              <p>
+                Když operační systém potřebuje zjistit adresu sítě, provede po bitech logický součin <strong>IP adresa AND Maska</strong> (1 AND 1 = 1, jakákoli kombinace s 0 = 0):
+              </p>
+              <div style="background: #030712; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid #1f2937; font-family: var(--font-mono); font-size: 0.76rem; margin-top: 0.5rem;">
+                <span style="color:#60a5fa;">IP (192.168.1.10):</span>&nbsp;&nbsp; 11000000.10101000.00000001.00001010<br>
+                <span style="color:#f59e0b;">Maska (/24):</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11111111.11111111.11111111.00000000<br>
+                <span style="color:#64748b;">-----------------------------------------------------------------</span><br>
+                <span style="color:#34d399; font-weight:700;">Síť (192.168.1.0):</span>&nbsp; 11000000.10101000.00000001.00000000
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Druhy adres v podsíti
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Druhy adres v IPv4 podsíti">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Struktura podsítě</span>
+            <h2>Druhy adres v IPv4 podsíti: Síť, Hostitelé a Broadcast</h2>
+          </div>
+          <p class="slide-lead">
+            Každý blok IPv4 podsítě má přesně tři typy adres. Dvě z nich jsou vyhrazeny a <strong>nesmí být nikdy přiřazeny koncovému počítači</strong>:
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Druh adresy</th>
+                <th style="width: 25%;">Binární charakteristika</th>
+                <th style="width: 20%;">Příklad v síti /24</th>
+                <th>Význam a pravidlo použití</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: #60a5fa;">1. Síťová adresa (Network)</strong></td>
+                <td>Všechny bity v části hostitele jsou <strong>0</strong></td>
+                <td><code>192.168.1.0</code></td>
+                <td>Identifikuje celou podsíť jako celek ve směrovacích tabulkách. Žádné zařízení nesmí mít tuto IP!</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #34d399;">2. Rozsah hostitelů (Usable Hosts)</strong></td>
+                <td>Kombinace nul a jedniček v části hostitele</td>
+                <td><code>192.168.1.1</code> až <code>192.168.1.254</code></td>
+                <td>Platné adresy pro počítače, servery, telefony, tiskárny a rozhraní směrovačů v dané síti.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #f87171;">3. Broadcast adresa (Všesměrová)</strong></td>
+                <td>Všechny bity v části hostitele jsou <strong>1</strong></td>
+                <td><code>192.168.1.255</code></td>
+                <td>Zpráva odeslaná na tuto adresu je doručena všem zařízením v dané podsíti současně (např. ARP request).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="split-layout" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h4>Vzorec pro celkový počet adres v síti:</h4>
+              <div style="font-family: var(--font-mono); font-size: 1.15rem; color: #38bdf8; margin: 0.25rem 0;">
+                Celkem adres = $2^H$
+              </div>
+              <p style="font-size: 0.8rem;">Kde $H$ je počet bitů v části hostitele ($H = 32 - \text{prefix}$). Např. pro /24 je $H = 8$, tedy $2^8 = 256$ adres.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>Vzorec pro použitelné hostitele pro PC:</h4>
+              <div style="font-family: var(--font-mono); font-size: 1.15rem; color: #34d399; margin: 0.25rem 0;">
+                Použitelní hosté = $2^H - 2$
+              </div>
+              <p style="font-size: 0.8rem;">Odečítají se přesně 2 adresy: <strong>síťová adresa</strong> (samé nuly) a <strong>broadcast adresa</strong> (samé jedničky). Pro /24 tedy $256 - 2 = 254$ počítačů.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Typy komunikace (Způsoby přenosu)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Způsoby přenosu: Unicast, Broadcast, Multicast, Anycast">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Formy přenosu</span>
+            <h2>Typy síťové komunikace: Unicast, Broadcast, Multicast a Anycast</h2>
+          </div>
+          <p class="slide-lead">
+            V závislosti na tom, kolika zařízením je zpráva určena, rozlišujeme čtyři základní modely komunikace:
+          </p>
+
+          <div class="split-layout-4">
+            <div class="content-card">
+              <h4 style="color: #60a5fa;">Unicast (1 : 1)</h4>
+              <p style="font-size: 0.8rem;">
+                Komunikace z jednoho konkrétního zařízení na jedno cílové zařízení (např. prohlížení webu HTTP, stahování souboru, SSH spojení).
+              </p>
+              <div class="info-box" style="margin-top: 0.5rem; font-size: 0.72rem;">
+                Nejčastější typ provozu v síti.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #f87171;">Broadcast (1 : Všem)</h4>
+              <p style="font-size: 0.8rem;">
+                Odesílatel pošle jednu zprávu, kterou přijmou a zpracují <strong>úplně všechna zařízení</strong> v dané lokální podsíti (např. ARP dotaz, DHCP Discovery).
+              </p>
+              <div class="info-box info-danger" style="margin-top: 0.5rem; font-size: 0.72rem;">
+                Routery broadcast nikdy nepřeposílají dál! V IPv6 broadcast neexistuje.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #10b981;">Multicast (1 : Skupině)</h4>
+              <p style="font-size: 0.8rem;">
+                Zpráva je doručena pouze vybrané skupině zařízení, která se k odběru přihlásila (např. IPTV stream, směrovací zprávy OSPF na <code>224.0.0.5</code>).
+              </p>
+              <div class="info-box info-success" style="margin-top: 0.5rem; font-size: 0.72rem;">
+                Rozsah IPv4 224.0.0.0 až 239.255.255.255.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #a855f7;">Anycast (1 : Nejbližšímu)</h4>
+              <p style="font-size: 0.8rem;">
+                Více serverů sdílí stejnou IP adresu. Paket je doručen topologicky <strong>nejbližšímu uzlu</strong> podle směrovacích tabulek (klíčové pro DNS servery a CDN sítě).
+              </p>
+              <div class="info-box" style="margin-top: 0.5rem; font-size: 0.72rem;">
+                Standardní součást IPv6.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Historické třídní adresování
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Historické třídní adresování (Classful)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Historie sítí</span>
+            <h2>Historické třídní adresování (Classful Addressing)</h2>
+          </div>
+          <p class="slide-lead">
+            Původní architektura z roku 1981 dělila adresy pevně podle počátečních bitů do tříd A, B, C, D a E bez nutnosti uvádět masku. Proč tento systém selhal:
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Třída</th>
+                <th>První oktet</th>
+                <th>Výchozí maska</th>
+                <th>Kapacita sítě</th>
+                <th>Účel v původním návrhu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: #60a5fa;">Třída A</strong></td>
+                <td><code>0 – 127</code></td>
+                <td><code>255.0.0.0</code> (/8)</td>
+                <td>16 777 214 hostů</td>
+                <td>Obří vládní organizace a globální korporace (IBM, Apple, MIT).</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #38bdf8;">Třída B</strong></td>
+                <td><code>128 – 191</code></td>
+                <td><code>255.255.0.0</code> (/16)</td>
+                <td>65 534 hostů</td>
+                <td>Univerzity a středně velké organizace.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #34d399;">Třída C</strong></td>
+                <td><code>192 – 223</code></td>
+                <td><code>255.255.255.0</code> (/24)</td>
+                <td>254 hostů</td>
+                <td>Malé lokální sítě.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #f59e0b;">Třída D</strong></td>
+                <td><code>224 – 239</code></td>
+                <td>Není definována</td>
+                <td>—</td>
+                <td>Vyhrazeno pro Multicast skupinové vysílání.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #a855f7;">Třída E</strong></td>
+                <td><code>240 – 255</code></td>
+                <td>Není definována</td>
+                <td>—</td>
+                <td>Rezervováno pro experimentální a výzkumné účely.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="info-box info-danger" style="margin-top: 1rem;">
+            <strong>Proč třídní systém zkolaboval?</strong><br>
+            Obrovské plýtvání adresami! Když firma potřebovala 500 počítačů, třída C (254 hostů) jí nestačila. Dostala celou třídu B (65 534 adres) a přes 65 000 adres zůstalo navždy nevyužitých. V roce 1993 byl třídní systém nahrazen moderním <strong>beztřídním směrováním CIDR (Classless Inter-Domain Routing)</strong> s libovolnou maskou.
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Privátní vs. Veřejné IP adresy
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Privátní vs. Veřejné IP adresy (RFC 1918)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">RFC 1918 Standard</span>
+            <h2>Privátní vs. Veřejné IP adresy &amp; Překlad adres NAT</h2>
+          </div>
+          <p class="slide-lead">
+            Aby se oddálilo vyčerpání IPv4 adres, definovala norma <strong>RFC 1918</strong> tři rozsahy privátních adres, které může kdokoli bezplatně použít v domácnosti či firmě:
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Rozsah dle RFC 1918</th>
+                <th>Prefix</th>
+                <th>Celkem adres</th>
+                <th>Typické využití</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: #60a5fa;">10.0.0.0 – 10.255.255.255</strong></td>
+                <td><code>10.0.0.0/8</code></td>
+                <td>16 777 216</td>
+                <td>Velké podnikové sítě, korporace, datová centra, kampusy.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #38bdf8;">172.16.0.0 – 172.31.255.255</strong></td>
+                <td><code>172.16.0.0/12</code></td>
+                <td>1 048 576</td>
+                <td>Střední firmy, školní laboratoře, virtualizační clustery.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #34d399;">192.168.0.0 – 192.168.255.255</strong></td>
+                <td><code>192.168.0.0/16</code></td>
+                <td>65 536</td>
+                <td>Domácí Wi-Fi routery, malé kanceláře (SOHO), tiskárny.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="split-layout" style="margin-top: 1rem;">
+            <div class="content-card">
+              <h4>Veřejné IP adresy (Public IP)</h4>
+              <p style="font-size: 0.82rem;">
+                Globálně unikátní v celém Internetu. Přidělují je regionální autority (např. <em>RIPE NCC</em> v Evropě). Jsou přímo směrovatelné po celém světě.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4>Role překladu adres (NAT / PAT)</h4>
+              <p style="font-size: 0.82rem;">
+                Privátní adresy <strong>nesmí routery v Internetu směrovat</strong>. Pro přístup na web musí domácí router přeložit privátní IP počítače na svou jedinou veřejnou IP pomocí mechanismu <strong>NAT (Network Address Translation)</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Speciální a rezervované IP adresy
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Speciální a rezervované IP adresy">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rezervované adresy</span>
+            <h2>Speciální a rezervované IP adresy</h2>
+          </div>
+          <p class="slide-lead">
+            V IPv4 existují speciální adresy určené pro vnitřní diagnostiku operačního systému nebo automatickou záchrannou konfiguraci:
+          </p>
+
+          <div class="split-layout-3">
+            <div class="content-card">
+              <h4 style="color: #38bdf8;">Loopback (Zpětná smyčka)</h4>
+              <div style="font-family: var(--font-mono); font-size: 0.95rem; color: #93c5fd; margin-bottom: 0.4rem;">
+                127.0.0.0/8 (typicky 127.0.0.1)
+              </div>
+              <p style="font-size: 0.82rem;">
+                Slouží k testování funkčnosti lokálního síťového zásobníku TCP/IP v operačním systému. Paket odeslaný na <code>127.0.0.1</code> (<em>localhost</em>) <strong>nikdy neopustí síťovou kartu</strong> a okamžitě se vrací zpět.
+              </p>
+              <div class="info-box" style="margin-top: 0.5rem; font-size: 0.75rem;">
+                Příkaz <code>ping 127.0.0.1</code> ověří, zda je TCP/IP v OS v pořádku nainstalován.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #f59e0b;">APIPA / Link-Local</h4>
+              <div style="font-family: var(--font-mono); font-size: 0.95rem; color: #fde68a; margin-bottom: 0.4rem;">
+                169.254.0.0/16
+              </div>
+              <p style="font-size: 0.82rem;">
+                Automatická konfigurace operačního systému Windows / macOS při <strong>výpadku DHCP serveru</strong>. Pokud PC nedostane IP od routeru, samo si vylosuje IP z tohoto rozsahu.
+              </p>
+              <div class="info-box info-warning" style="margin-top: 0.5rem; font-size: 0.75rem;">
+                Pokud máte na PC IP začínající 169.254.x.x, nejde vám internet, protože DHCP server neodpovídá!
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #10b981;">Neurčená a Výchozí trasa</h4>
+              <div style="font-family: var(--font-mono); font-size: 0.95rem; color: #a7f3d0; margin-bottom: 0.4rem;">
+                0.0.0.0/0
+              </div>
+              <p style="font-size: 0.82rem;">
+                Jako zdrojová adresa označuje zařízení, které ještě nemá přiřazenou IP adresu (během procesu DHCP). Ve směrovacích tabulkách představuje <strong>výchozí bránu (Default Route)</strong> do celého Internetu.
+              </p>
+              <div class="info-box info-success" style="margin-top: 0.5rem; font-size: 0.75rem;">
+                Reprezentuje libovolnou adresu v síti.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Úvod do podsítí (Subnetů)
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Úvod do podsítí (Subnetů)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Segmentace sítě</span>
+            <h2>Úvod do tvorby podsítí (Subnetting)</h2>
+          </div>
+          <p class="slide-lead">
+            Vytváření podsítí (Subnetting) je technika rozdělení jedné velké sítě na menší nezávislé logické sítě:
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Proč sítě dělíme na podsítě?
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Zmenšení broadcastových domén:</strong> V obří síti s tisíci počítači by broadcastové zprávy zahltily linky a procesory. Podsítě izolují broadcast pouze do své malé skupiny.
+                </li>
+                <li>
+                  <strong>Zvýšení bezpečnosti:</strong> Mezi jednotlivými podsítěmi stojí směrovač nebo firewall, který může filtrovat přístup (např. oddělit účtárnu od veřejné Wi-Fi pro hosty).
+                </li>
+                <li>
+                  <strong>Lepší správa a přehlednost:</strong> Každé oddělení, budova nebo patro má svůj vyhrazený adresní blok.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Princip: Půjčování bitů z části hostitele
+              </h3>
+              <p>
+                Při tvorbě podsítě posuneme masku doprava – <strong>„půjčíme si“ bity</strong> z původní části hostitele a přidáme je k části sítě:
+              </p>
+              <div class="info-box" style="margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+                &bull; Půjčíme 1 bit &rarr; $2^1 = 2$ podsítě (původní síť rozdělíme na 2 poloviny)<br>
+                &bull; Půjčíme 2 bity &rarr; $2^2 = 4$ podsítě (síť rozdělíme na 4 čtvrtiny)<br>
+                &bull; Půjčíme 3 bity &rarr; $2^3 = 8$ podsítí...
+              </div>
+              <div class="info-box info-success" style="margin-top: 0.5rem;">
+                Podrobné matematické výpočty, FLSM krájení koláče a techniku VLSM podrobně rozebírá samostatná prezentace a trenažér <strong>042 Subnetting a VLSM</strong>!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Architektura a formát IPv6 adres
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Architektura a formát IPv6 adres">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Nový věk: IPv6</span>
+            <h2>Architektura a formát IPv6 adres (128 bitů)</h2>
+          </div>
+          <p class="slide-lead">
+            IPv6 řeší definitivní vyčerpání IPv4. Má <strong>128 bitů</strong> ($3.4 \times 10^{38}$ adres) a zapisuje se v hexadecimální soustavě jako 8 skupin po 4 znacích (hextetů) oddělených dvojtečkou:
+          </p>
+
+          <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem; font-family: var(--font-mono); font-size: 0.88rem; color: #38bdf8; text-align: center; margin: 0.75rem 0;">
+            2001 : 0db8 : 0000 : 0000 : 0008 : 0800 : 200c : 417a
+          </div>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4 style="color: #60a5fa;">Pravidlo 1: Vynechání úvodních nul</h4>
+              <p style="font-size: 0.82rem;">
+                V každém hextetu (4 hexadecimální číslice) lze vynechat počáteční nuly:
+              </p>
+              <div style="font-family: var(--font-mono); font-size: 0.78rem; background: #030712; padding: 0.5rem; border-radius: 4px; margin-top: 0.4rem; color: #93c5fd;">
+                <code>0db8</code> &rarr; <code>db8</code><br>
+                <code>0000</code> &rarr; <code>0</code><br>
+                <code>0800</code> &rarr; <code>800</code> (koncové nuly zůstávají!)
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #34d399;">Pravidlo 2: Nahrazení nul dvojtečkou (::)</h4>
+              <p style="font-size: 0.82rem;">
+                Jednu souvislou sekvenci nulových hextetů lze nahradit dvojtečkou <code>::</code>:
+              </p>
+              <div style="font-family: var(--font-mono); font-size: 0.78rem; background: #030712; padding: 0.5rem; border-radius: 4px; margin-top: 0.4rem; color: #a7f3d0;">
+                Zkrácený tvar výše uvedené adresy:<br>
+                <strong>2001:db8::8:800:200c:417a</strong>
+              </div>
+              <div class="info-box info-warning" style="margin-top: 0.5rem; font-size: 0.75rem;">
+                <strong>Pozor:</strong> Zápis <code>::</code> smí být v jedné adrese použit <strong>pouze jednou</strong>! Jinak by nebylo možné jednoznačně určit počet vynechaných nul.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Typy a struktura IPv6 adres
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Typy a struktura IPv6 adres">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">IPv6 Klasifikace</span>
+            <h2>Typy a struktura adres v protokolu IPv6</h2>
+          </div>
+          <p class="slide-lead">
+            V IPv6 neexistují broadcasty! Zprávy jsou doručovány jako Unicast, Multicast nebo Anycast:
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Typ IPv6 adresy</th>
+                <th>Prefix a rozsah</th>
+                <th>Význam a dosah v síti</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: #60a5fa;">GUA (Global Unicast Address)</strong></td>
+                <td><code>2000::/3</code></td>
+                <td>Veřejná globálně směrovatelná adresa v celosvětovém Internetu (obdoba veřejné IPv4).</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #f59e0b;">Link-Local Address (LLA)</strong></td>
+                <td><code>fe80::/10</code></td>
+                <td>Povinná adresa platná <strong>pouze v lokálním L2 segmentu</strong>. Router ji nikdy nepřepošle dál. Slouží pro komunikaci sousedů a směrovací protokoly.</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #34d399;">ULA (Unique Local Address)</strong></td>
+                <td><code>fc00::/7</code> (v praxi <code>fd00::/8</code>)</td>
+                <td>Privátní adresa pro lokální firemní sítě, nesměrovatelná v Internetu (obdoba privátních IPv4 dle RFC 1918).</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #a855f7;">Loopback</strong></td>
+                <td><code>::1/128</code></td>
+                <td>Zpětná smyčka na lokální uzel (ekvivalent 127.0.0.1 z IPv4).</td>
+              </tr>
+              <tr>
+                <td><strong style="color: #f87171;">Multicast</strong></td>
+                <td><code>ff00::/8</code></td>
+                <td>Skupinové vysílání (např. <code>ff02::1</code> pro všechna IPv6 zařízení na lince, <code>ff02::2</code> pro všechny routery).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="info-box" style="margin-top: 1rem; border-left: 4px solid #38bdf8;">
+            <strong>Struktura běžné GUA adresy (/64):</strong><br>
+            Prvních 48 bitů tvoří <em>Global Routing Prefix</em> od poskytovatele, dalších 16 bitů je <em>Subnet ID</em> (umožňuje firmě vytvořit 65 536 podsítí!) a zbývajících 64 bitů je <em>Interface ID</em> (identifikátor zařízení).
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Interaktivní dílna IP adresace
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Interaktivní dílna IP adresace">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Laboratorní trenažér</span>
+            <h2>Interaktivní dílna: Analyzátor adres &amp; IPv6 Zkracovač</h2>
+          </div>
+          <p class="slide-lead">
+            Otestujte libovolnou IP adresu v živém kalkulátoru bitového součinu nebo vyzkoušejte pravidla komprese IPv6:
+          </p>
+
+          <div class="addr-analyzer-container">
+            <!-- 1. Analyzátor IPv4 a AND kalkulátor -->
+            <div class="analyzer-input-card">
+              <h4 style="color: #93c5fd; margin-bottom: 0.5rem;">IPv4 Analyzátor &amp; Bitový AND</h4>
+              
+              <div class="analyzer-input-group">
+                <label for="analyzerIp">IP Adresa:</label>
+                <input type="text" id="analyzerIp" value="192.168.1.45" placeholder="Např. 192.168.1.45">
+              </div>
+
+              <div class="analyzer-input-group">
+                <label for="analyzerMask">Maska podsítě (CIDR Prefix):</label>
+                <select id="analyzerMask">
+                  <option value="8">255.0.0.0 (/8)</option>
+                  <option value="12">255.240.0.0 (/12)</option>
+                  <option value="16">255.255.0.0 (/16)</option>
+                  <option value="20">255.255.240.0 (/20)</option>
+                  <option value="24" selected>255.255.255.0 (/24)</option>
+                  <option value="25">255.255.255.128 (/25)</option>
+                  <option value="26">255.255.255.192 (/26)</option>
+                  <option value="27">255.255.255.224 (/27)</option>
+                  <option value="28">255.255.255.240 (/28)</option>
+                  <option value="30">255.255.255.252 (/30)</option>
+                </select>
+              </div>
+
+              <button class="analyzer-btn" id="analyzerCalcBtn">
+                <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                Vypočítat a analyzovat
+              </button>
+
+              <div class="analyzer-presets">
+                <span class="preset-chip" data-ip="192.168.1.45" data-mask="24">192.168.1.45/24</span>
+                <span class="preset-chip" data-ip="10.50.12.1" data-mask="16">10.50.12.1/16</span>
+                <span class="preset-chip" data-ip="172.16.8.99" data-mask="20">172.16.8.99/20</span>
+                <span class="preset-chip" data-ip="127.0.0.1" data-mask="8">127.0.0.1/8</span>
+                <span class="preset-chip" data-ip="169.254.10.5" data-mask="16">169.254.10.5/16</span>
+                <span class="preset-chip" data-ip="8.8.8.8" data-mask="24">8.8.8.8/24</span>
+              </div>
+            </div>
+
+            <!-- Výsledky analýzy -->
+            <div class="analyzer-results-card">
+              <div class="and-math-box" id="analyzerMath">
+                <!-- Vloženo JS -->
+              </div>
+
+              <div class="res-grid">
+                <div class="res-item">
+                  <span class="res-label">Síťová adresa (NetID):</span>
+                  <span class="res-value" id="resNet">192.168.1.0 /24</span>
+                </div>
+                <div class="res-item">
+                  <span class="res-label">Broadcast adresa:</span>
+                  <span class="res-value" id="resBcast" style="color: #f87171;">192.168.1.255</span>
+                </div>
+                <div class="res-item" style="grid-column: span 2;">
+                  <span class="res-label">Rozsah použitelných hostitelů pro PC:</span>
+                  <span class="res-value" id="resRange" style="color: #34d399;">192.168.1.1 – 192.168.1.254</span>
+                </div>
+                <div class="res-item">
+                  <span class="res-label">Počet počítačů v síti:</span>
+                  <span class="res-value" id="resHosts">254 počítačů (celkem 256)</span>
+                </div>
+                <div class="res-item">
+                  <span class="res-label">Klasifikace a rozsah:</span>
+                  <div id="resType">Privátní adresa RFC 1918</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. IPv6 Kompresor -->
+          <div class="v6-playground">
+            <h4 style="color: #a855f7; margin-bottom: 0.4rem; font-size: 0.95rem;">IPv6 Zkracovač: Ověření Pravidla 1 a Pravidla 2</h4>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <input type="text" id="v6Input" value="2001:0db8:0000:0000:0008:0800:200c:417a" style="flex:1; background: rgba(15,23,42,0.85); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.45rem 0.75rem; font-family: var(--font-mono); font-size: 0.8rem; color: #fff;">
+              <button id="v6Btn" class="analyzer-btn" style="width: auto; padding: 0.45rem 1rem;">Zkrátit</button>
+            </div>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem;">
+              <button class="v6-preset-btn question-btn" data-v6="2001:0db8:0000:0000:0008:0800:200c:417a">Ukázka 1</button>
+              <button class="v6-preset-btn question-btn" data-v6="fe80:0000:0000:0000:0202:b3ff:fe1e:8329">Link-Local</button>
+              <button class="v6-preset-btn question-btn" data-v6="2001:0db8:0000:0000:0000:0000:0000:0001">Mnoho nul</button>
+              <button class="v6-preset-btn question-btn" data-v6="0000:0000:0000:0000:0000:0000:0000:0001">Loopback</button>
+            </div>
+            <div class="split-layout">
+              <div class="v6-step-box">
+                <div class="v6-step-title">Krok 1: Odstranění úvodních nul (Pravidlo 1)</div>
+                <div id="v6Step1" style="color: #93c5fd;">—</div>
+              </div>
+              <div class="v6-step-box">
+                <div class="v6-step-title">Krok 2 &amp; Finální tvar: Nahrazení nul sekvencí :: (Pravidlo 2)</div>
+                <div id="v6Final" style="color: #34d399; font-weight: 700;">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 14: Shrnutí a prověření znalostí
+           ========================================== -->
+      <section class="slide" id="slide-14" data-title="Shrnutí a prověření znalostí">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Závěr tématu</span>
+            <h2>Shrnutí klíčových pojmů &amp; Prověření znalostí</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled nejdůležitějších principů IP adresace a kontrolní otázky z kurikula Cisco CCNA:
+          </p>
+
+          <div class="summary-grid" style="grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #38bdf8;">Bitový AND</h4>
+              <p style="font-size: 0.76rem;">IP adresa AND Maska definuje adresu sítě. Maska určuje hranici mezi NetID a HostID.</p>
+            </div>
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #10b981;">RFC 1918 Privátní</h4>
+              <p style="font-size: 0.76rem;">Rozsahy 10.x, 172.16-31.x a 192.168.x nelze směrovat v Internetu a vyžadují překlad NAT.</p>
+            </div>
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #f59e0b;">Rezervované IP</h4>
+              <p style="font-size: 0.76rem;">127.0.0.1 (Loopback) pro test TCP/IP v OS a 169.254.x.x (APIPA) při výpadku DHCP serveru.</p>
+            </div>
+            <div class="content-card" style="padding: 0.75rem;">
+              <h4 style="font-size: 0.85rem; color: #a855f7;">IPv6 Zkracování</h4>
+              <p style="font-size: 0.76rem;">128 bitů. Vynechání počátečních nul a maximálně jedno použití dvojtečky <code>::</code> pro nuly.</p>
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.5rem;">Ověření znalostí (Kliknutím zobrazte vysvětlení):</h3>
+
+          <div class="questions-grid">
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč nemůžeme koncovému počítači přiřadit adresu 192.168.1.0/24 ani 192.168.1.255/24?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Adresa <code>192.168.1.0</code> je adresa sítě (všechny hostitelské bity jsou 0), která reprezentuje celou síť jako celek ve směrovacích tabulkách. Adresa <code>192.168.1.255</code> je broadcastová adresa (všechny hostitelské bity jsou 1), která slouží k odeslání zprávy všem stanicím v síti současně. Proto je rozsah použitelných hostů vždy $2^H - 2$.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Počítač v učebně má IP adresu 169.254.120.45. Proč se nemůže připojit k Internetu a co tato adresa znamená?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Jedná se o adresu APIPA (Automatic Private IP Addressing) z rozsahu <code>169.254.0.0/16</code>. Počítač si ji sám přiřadil, protože odeslal dotaz DHCP Discover, ale žádný DHCP server v síti neodpověděl (např. odpojený kabel, vypnutý switch nebo spadlá služba DHCP). Tato adresa nemá výchozí bránu (Default Gateway) a není směrovatelná do Internetu.
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jaký je rozdíl mezi privátní IP adresou (RFC 1918) a veřejnou IP adresou? Proč nestačí samotná privátní IP?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Privátní IP adresy (10.x, 172.16–31.x, 192.168.x) jsou lokální a nejsou globálně unikátní – miliony domácností na světě mají stejnou IP <code>192.168.1.1</code>. Proto je směrovače na páteři Internetu zahazují. Pro komunikaci do Internetu musí domácí nebo firemní router přeložit privátní IP na svou veřejnou globálně unikátní IP adresu pomocí technologie NAT (Network Address Translation).
+              </div>
+            </div>
+
+            <div class="question-card">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Proč je v zápisu IPv6 adresy přísně zakázáno použít dvojtečku :: dvakrát (např. 2001::5::1)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Dvojtečka <code>::</code> nahrazuje libovolný počet chybějících nulových hextetů tak, aby celkový součet byl 8 hextetů. Pokud by byla použita dvakrát, počítač by neměl jak zjistit, kolik nul chybí na prvním místě a kolik na druhém (zda např. 3 nuly a 2 nuly, nebo 1 nula a 4 nuly). Zápis by byl nejednoznačný a neplatný.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../040-Sitova-vrstva/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 040 Síťová vrstva (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../042-Subnetting-VLSM/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 042 Subnetting a VLSM (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 14</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: IP Adresace
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 041 -->
+  <script src="addressing-engine.js"></script>
+</body>
+
+</html>

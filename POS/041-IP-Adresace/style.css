@@ -1,0 +1,571 @@
+/* ==========================================================================
+   Téma 041: IP Adresace - Dedikované styly
+   SPŠ Výukové materiály &bull; Předmět POS
+   100% Offline & Pure Vanilla CSS
+   ========================================================================== */
+
+:root {
+  --pos-accent: #3b82f6;
+  --pos-accent-glow: rgba(59, 130, 246, 0.25);
+  --pos-cyan: #06b6d4;
+  --pos-emerald: #10b981;
+  --pos-amber: #f59e0b;
+  --pos-rose: #f43f5e;
+  --pos-purple: #a855f7;
+}
+
+/* 1. Titulní snímek */
+.hero-title {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, #f8fafc 20%, #38bdf8 60%, #818cf8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 820px;
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+}
+
+.title-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* 2. Slide layouty */
+.slide-content {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.slide-header-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.slide-header-badge h2 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.slide-lead {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout,
+.split-layout-3,
+.split-layout-4,
+.grid-3,
+.grid-4 {
+  display: grid;
+  width: 100%;
+  align-items: stretch;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-3,
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-4,
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+/* Zajištění stejné výšky, zarovnání karet nahoře a odstranění nežádoucího marginu */
+.split-layout > .content-card,
+.split-layout-3 > .content-card,
+.split-layout-4 > .content-card,
+.grid-3 > .content-card,
+.grid-4 > .content-card,
+.split-layout > .card,
+.split-layout-3 > .card,
+.split-layout-4 > .card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+}
+
+/* Informační boxy na konci karet zarovnány jednotně dolů */
+.split-layout > .content-card > .info-box:last-child,
+.split-layout-3 > .content-card > .info-box:last-child,
+.split-layout-4 > .content-card > .info-box:last-child,
+.grid-3 > .content-card > .info-box:last-child,
+.grid-4 > .content-card > .info-box:last-child {
+  margin-top: auto !important;
+}
+
+/* 3. Karty a informační boxy */
+.content-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+  position: relative;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.content-card:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.content-card h3,
+.content-card h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.content-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.feature-list li {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pos-accent);
+}
+
+.info-box {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.info-box.info-success {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.info-box.info-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.info-box.info-danger {
+  background: rgba(244, 63, 94, 0.08);
+  border-color: rgba(244, 63, 94, 0.25);
+}
+
+/* 4. Tabulky */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.data-table th {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* 5. Vizuální rozpad oktetů a binárních vah */
+.octet-box-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.octet-box {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.octet-num {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: #38bdf8;
+  margin-bottom: 0.2rem;
+}
+
+.octet-bin {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+}
+
+.octet-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.weights-bar {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  background: #030712;
+  border: 1px solid #1f2937;
+  border-radius: 6px;
+  padding: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.weights-item {
+  padding: 4px 2px;
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 4px;
+  color: #93c5fd;
+}
+
+.weights-item small {
+  display: block;
+  font-size: 0.6rem;
+  color: #64748b;
+}
+
+/* 6. Interaktivní IP Adresní Analyzer & AND kalkulátor */
+.addr-analyzer-container {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.analyzer-input-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+}
+
+.analyzer-input-group {
+  margin-bottom: 0.75rem;
+}
+
+.analyzer-input-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.analyzer-input-group input,
+.analyzer-input-group select {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.analyzer-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: opacity 0.2s;
+}
+
+.analyzer-btn:hover {
+  opacity: 0.9;
+}
+
+.analyzer-presets {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.preset-chip {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  color: #93c5fd;
+  border-radius: 9999px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.preset-chip:hover {
+  background: rgba(59, 130, 246, 0.28);
+  border-color: #60a5fa;
+}
+
+/* Výsledková karta analyzátoru */
+.analyzer-results-card {
+  background: rgba(3, 7, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.and-math-box {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.and-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.and-line.divider {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 3px 0;
+}
+
+.res-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.res-item {
+  background: rgba(30, 41, 59, 0.5);
+  padding: 0.45rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.res-label {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  display: block;
+}
+
+.res-value {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+/* 7. IPv6 Zkracovací trenažér */
+.v6-playground {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  margin-top: 0.5rem;
+}
+
+.v6-step-box {
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-color);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.v6-step-title {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #93c5fd;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+/* 8. Kvízové otázky */
+.questions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.question-title {
+  display: flex;
+  gap: 0.6rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.65rem;
+  line-height: 1.4;
+}
+
+.question-num {
+  font-family: var(--font-mono);
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+.question-btn {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: flex-start;
+  transition: all 0.2s ease;
+}
+
+.question-btn:hover {
+  background: rgba(59, 130, 246, 0.22);
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.65rem;
+  padding: 0.65rem;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #d1fae5;
+}
+
+.question-card.revealed .question-hint {
+  display: block;
+}
+
+/* 9. Responzivita */
+@media (max-width: 900px) {
+  .split-layout,
+  .split-layout-3,
+  .split-layout-4,
+  .grid-3,
+  .grid-4,
+  .addr-analyzer-container,
+  .questions-grid,
+  .octet-box-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .split-layout > .content-card + .content-card,
+  .split-layout-3 > .content-card + .content-card,
+  .split-layout-4 > .content-card + .content-card {
+    margin-top: 1rem !important;
+  }
+}
