@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 060: Aplikační vrstva (Application Layer) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Aplikační vrstva L7, architektury Klient-Server a P2P, přehled a systematika síťových protokolů dle CCNA:ITN.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 060 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Indikátor postupu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">060 Aplikační vrstva</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #c084fc; border-color: rgba(168, 85, 247, 0.35); background: rgba(168, 85, 247, 0.12);">CCNA:ITN &bull; Application Layer L7</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Aplikační vrstva (Application Layer)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 060</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">Cisco CCNA:ITN Layer 7</span>
+          </div>
+          <h1 class="hero-title">Aplikační vrstva (Application Layer)</h1>
+          <p class="hero-subtitle">
+            Most mezi uživatelem a počítačovou sítí &bull; Zařazení v modelech OSI a TCP/IP, síťové architektury Klient-Server vs. P2P, kódování zpráv a ucelená systematika moderních síťových protokolů.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Zařazení &amp; Účel
+              </h4>
+              <p>Hranice mezi lidským světem aplikací a síťovým zásobníkem. Sloučení vrstev L5–L7 v modelu TCP/IP.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                Architektury aplikací
+              </h4>
+              <p>Tradiční Klient-Server model s centralizovanou autoritou vs. distribuované sítě Peer-to-Peer (P2P).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Systematika protokolů
+              </h4>
+              <p>Rozpad do aplikačních domén: Web (HTTP), Jména (DNS), Adresace (DHCP), Pošta (SMTP/IMAP) a Vzdálená správa.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #fbbf24;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Interaktivní Explorer
+              </h4>
+              <p>Databáze aplikačních standardů, filtrování dle transportního protokolu, RFC norem a portů.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Zařazení v modelech OSI a TCP/IP
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Zařazení v modelech OSI a TCP/IP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Vrstvová architektura</span>
+            <h2>Zařazení aplikační vrstvy: Rozdíl mezi OSI a TCP/IP</h2>
+          </div>
+          <p class="slide-lead">
+            V 7vrstvém modelu ISO/OSI je vrchol rozdělen do tří samostatných úrovní. V praktickém modelu TCP/IP jsou všechny sloučeny do jediné <strong>aplikační vrstvy</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Dekompozice v modelu ISO/OSI (L5 až L7)
+              </h3>
+              <div class="osi-layer-stack">
+                <div class="osi-layer-item" style="border-left: 3px solid #c084fc;">
+                  <div>
+                    <strong style="color: #c084fc;">Vrstva 7: Aplikační (Application)</strong>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);">Poskytuje rozhraní přímo koncovým uživatelským aplikacím (HTTP, DNS, SSH, FTP).</div>
+                  </div>
+                  <span class="layer-tag" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">L7</span>
+                </div>
+
+                <div class="osi-layer-item" style="border-left: 3px solid #38bdf8;">
+                  <div>
+                    <strong style="color: #38bdf8;">Vrstva 6: Prezentační (Presentation)</strong>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);">Formátování, syntaxe dat, kódování znaků (UTF-8, ASCII), komprese (Gzip) a šifrování (TLS).</div>
+                  </div>
+                  <span class="layer-tag" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">L6</span>
+                </div>
+
+                <div class="osi-layer-item" style="border-left: 3px solid #34d399;">
+                  <div>
+                    <strong style="color: #34d399;">Vrstva 5: Relační (Session)</strong>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);">Zakládá, řídí, synchronizuje a ukončuje dialogy/relace mezi dvěma aplikacemi.</div>
+                  </div>
+                  <span class="layer-tag" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">L5</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><layers></layers><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Pragmatický přístup modelu TCP/IP
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                V reálném softwaru a v modelu TCP/IP jsou všechny tyto tři funkce integrovány <strong>přímo do konkrétního aplikačního protokolu a knihoven programu</strong>:
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <strong>Například webový prohlížeč s HTTPS:</strong> Řeší aplikační dotaz (GET /index.html &ndash; L7), šifrování a certifikáty TLS (L6) i udržování přihlašovací relace a cookies (L5) v rámci jediného procesu.
+                </li>
+                <li>
+                  <strong>Jednoduchost a rychlost:</strong> Odpadá zbytečná mezivrstvová režie a programátor má plnou kontrolu nad formátem zpráv.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Účel a hlavní funkce
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Účel a hlavní funkce aplikační vrstvy">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Funkce L7</span>
+            <h2>Účel a klíčové úkoly aplikační vrstvy</h2>
+          </div>
+          <p class="slide-lead">
+            Aplikační vrstva nepopisuje samotné grafické okno programu (např. tlačítka v Chrome), ale <strong>protokoly, kterými program formuluje požadavky a vyměňuje zprávy po síti</strong>.
+          </p>
+
+          <div class="grid-4">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><code-icon></code-icon><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                1. Definice syntaxe
+              </h4>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                Určuje přesnou strukturu zpráv – příkazy (GET, POST), hlavičky, oddělovače řádků a formát odpovědí (např. JSON, XML, HTML).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><lock></lock><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                2. Šifrování a TLS
+              </h4>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                Ochrana dat před odposlechem. Zajišťuje důvěrnost a ověření identity serveru pomocí kryptografických certifikátů.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><file-text></file-text><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                3. Komprese dat
+              </h4>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                Zmenšení objemu přenášených dat (algoritmy Gzip, Brotli, JPEG) pro zrychlení načítání a úsporu šířky pásma v síti.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #fbbf24;"><user-check></user-check><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                4. Autentizace
+              </h4>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+                Ověření identity uživatele a přístupových práv (přihlašovací údaje, tokeny OAuth2, SSH klíče, API klíče).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Architektury síťových aplikací
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Architektury síťových aplikací: Client-Server vs. P2P">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Aplikační modely</span>
+            <h2>Architektury síťových aplikací: Klient-Server vs. P2P</h2>
+          </div>
+          <p class="slide-lead">
+            Způsob, jakým spolu komunikující uzly spolupracují, určuje celkovou spolehlivost, bezpečnost i škálovatelnost celého řešení.
+          </p>
+
+          <div class="split-layout">
+            <div class="arch-card">
+              <h3 style="color: #60a5fa;">
+                <svg class="icon" viewBox="0 0 24 24"><server></server><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Model Klient-Server (Client-Server)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Centralizovaný model s jasně vymezenými rolemi. Server má pevnou IP adresu, běží nepřetržitě a pasivně čeká na požadavky. Klient je iniciátorem relace.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.25rem;">
+                <li><strong>Výhody:</strong> Centrální správa dat, jednoduché zálohování a kontrola oprávnění.</li>
+                <li><strong>Nevýhody:</strong> Server představuje jediný bod selhání (Single Point of Failure) a úzké hrdlo při přetížení.</li>
+                <li><strong>Příklady:</strong> Web (HTTP), E-mailové servery, Databáze MySQL, DNS, DHCP.</li>
+              </ul>
+            </div>
+
+            <div class="arch-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><users></users><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                Model Peer-to-Peer (P2P)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Decentralizovaný model. Každý zapojený uzel (Peer) vystupuje <strong>současně jako klient i server</strong>. Data si uzly sdílí přímo mezi sebou.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.25rem;">
+                <li><strong>Výhody:</strong> Vysoká odolnost proti výpadku, škálovatelnost (čím více stahujících, tím vyšší celková kapacita).</li>
+                <li><strong>Nevýhody:</strong> Obtížné zabezpečení a dohled, uzly se dynamicky odpojují a připojují.</li>
+                <li><strong>Příklady:</strong> BitTorrent, distribuované blockchainy (Bitcoin), sdílení souborů IPFS.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Webové protokoly (HTTP rodina)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Webové protokoly: HTTP a HTTPS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Webové služby</span>
+            <h2>Webová komunikace: Rodina protokolů HTTP a HTTPS</h2>
+          </div>
+          <p class="slide-lead">
+            World Wide Web je dominantní službou moderního Internetu. Přenos hypertextových stránek se vyvíjí od jednoduchého textu po extrémně optimalizované binární toky.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><globe></globe><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Základní HTTP a bezpečné HTTPS
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>HTTP (Port 80 / TCP):</strong> Nešifrovaný textový protokol. Všechny požadavky (GET, POST) a odpovědi putují sítí v čitelném tvaru &ndash; zranitelné vůči odposlechu (Eavesdropping).
+                </li>
+                <li>
+                  <strong>HTTPS (Port 443 / TCP):</strong> HTTP zapouzdřené do kryptografické vrstvy <strong>TLS</strong>. Zajišťuje důvěrnost, integritu a ověření identity webu. Dnes naprostý globální standard.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><zap></zap><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Evoluce: HTTP/1.1 &rarr; HTTP/2 &rarr; HTTP/3
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.65rem; border-radius: var(--radius-sm); border-left: 3px solid #60a5fa; font-size: 0.82rem;">
+                  <strong>HTTP/1.1:</strong> Textový formát, perzistentní spojení (Keep-Alive), trpí blokováním čela fronty (HOLB) na úrovni aplikačních požadavků.
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.65rem; border-radius: var(--radius-sm); border-left: 3px solid #34d399; font-size: 0.82rem;">
+                  <strong>HTTP/2:</strong> Binární protokol, multiplexing stovek požadavků v jediném TCP spojení, komprese hlaviček HPACK.
+                </div>
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.65rem; border-radius: var(--radius-sm); border-left: 3px solid #c084fc; font-size: 0.82rem;">
+                  <strong>HTTP/3:</strong> Přechod na <strong>UDP (protokol QUIC)</strong>! Eliminuje HOLB na transportní vrstvě a umožňuje okamžitý 0-RTT start spojení.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Jmenné a konfigurační služby (DNS & DHCP)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Jmenné a konfigurační služby: DNS a DHCP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Infrastrukturní pilíře</span>
+            <h2>Infrastrukturní služby: DNS a DHCP</h2>
+          </div>
+          <p class="slide-lead">
+            Dva neviditelné protokoly, bez kterých by se běžný uživatel do sítě vůbec nepřipojil.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #38bdf8;">
+                <svg class="icon" viewBox="0 0 24 24"><compass></compass><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                DNS (Domain Name System &bull; Port 53)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Telefonní seznam Internetu. Převádí snadno zapamatovatelná doménová jména (např. <code>sps.cz</code>) na číselné IP adresy (IPv4 / IPv6), které potřebují směrovače.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Transport:</strong> Běží primárně nad <strong>UDP</strong> pro rychlost, <strong>TCP</strong> využívá pro zónové přenosy a velké odpovědi.</li>
+                <li><strong>Hierarchie:</strong> Distribuovaný strom kořenových (Root), TLD (.cz) a autoritativních serverů.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><settings></settings><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                DHCP (Dynamic Host Configuration &bull; Port 67/68)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Automatická konfigurace koncových zařízení. Při připojení kabelem či Wi-Fi zajistí automatické přidělení IP adresy, masky, brány i DNS serverů.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Transport:</strong> Běží nad <strong>UDP</strong> pomocí broadcastu.</li>
+                <li><strong>Mechanismus:</strong> Čtyřkrokový proces <strong>DORA</strong> (Discover, Offer, Request, Acknowledge).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: E-mailové protokoly
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="E-mailový ekosystém: SMTP, POP3 a IMAP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Elektronická pošta</span>
+            <h2>E-mailový ekosystém: Odesílání (SMTP) a příjem (POP3/IMAP)</h2>
+          </div>
+          <p class="slide-lead">
+            E-mail je jedním z nejstarších distribuovaných systémů. Zásadně rozlišuje mezi <strong>protokolem pro odesílání mezi servery</strong> a <strong>protokoly pro přístup uživatele k poštovní schránce</strong>.
+          </p>
+
+          <div class="split-layout-3">
+            <div class="content-card" style="border-top: 3px solid #60a5fa;">
+              <h4 style="color: #60a5fa;">SMTP (Port 25 / 587)</h4>
+              <span class="badge" style="font-size: 0.72rem; margin-bottom: 0.5rem;">Odesílání pošty</span>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Simple Mail Transfer Protocol slouží pro <strong>přenos zprávy z klienta na server</strong> a následné předávání (relay) mezi poštovními servery na celém světě.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h4 style="color: #fbbf24;">POP3 (Port 110 / 995)</h4>
+              <span class="badge" style="font-size: 0.72rem; margin-bottom: 0.5rem;">Stahování pošty</span>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Post Office Protocol stáhne zprávy ze serveru <strong>do lokálního počítače</strong> a ze serveru je smaže. Zastaralý model, nevhodný pro více zařízení (mobil + notebook).
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h4 style="color: #34d399;">IMAP (Port 143 / 993)</h4>
+              <span class="badge" style="font-size: 0.72rem; margin-bottom: 0.5rem;">Synchronizace na serveru</span>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Internet Message Access Protocol nechává zprávy i složky <strong>uložené přímo na serveru</strong>. Umožňuje bezchybnou synchronizaci napříč všemi zařízeními.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Souborové služby a vzdálená správa
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Souborové protokoly a vzdálená správa">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Správa a soubory</span>
+            <h2>Přenos souborů a vzdálená správa: FTP, SMB, SSH a RDP</h2>
+          </div>
+          <p class="slide-lead">
+            Bezpečné i historické standardy pro sdílení dat a dálkovou konfiguraci serverů.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><terminal></terminal><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Vzdálená správa (SSH vs. Telnet &amp; RDP)
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>SSH (Port 22 / TCP):</strong> Bezpečný šifrovaný přístup k příkazové řádce Linuxu a síťových prvků Cisco. Umožňuje autentizaci heslem nebo asymetrickým klíčem.
+                </li>
+                <li>
+                  <strong>Telnet (Port 23 / TCP):</strong> Zastaralý nešifrovaný textový terminál. Hesla přenáší v čistém textu &ndash; dnes zakázán.
+                </li>
+                <li>
+                  <strong>RDP (Port 3389 / TCP):</strong> Vzdálená grafická plocha Windows. Umožňuje práci s GUI vzdáleného počítače.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><folder></folder><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                Sdílení a přenos souborů (FTP, TFTP, SMB)
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>FTP (Port 20/21 / TCP):</strong> Tradiční přenos souborů. Využívá dvě spojení &ndash; řídicí (21) a datové (20).
+                </li>
+                <li>
+                  <strong>TFTP (Port 69 / UDP):</strong> Extrémně jednoduchý přenos bez přihlášení, využívaný pro bootování počítačů po síti (PXE) a zálohy firmware.
+                </li>
+                <li>
+                  <strong>SMB (Port 445 / TCP):</strong> Sdílení složek, disků a tiskáren v lokální síti Windows (Server Message Block).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Dohled a systémové služby (SNMP, NTP, Syslog)
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Dohled sítě a systémové služby: SNMP, NTP, Syslog">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Síťový provoz</span>
+            <h2>Dohledové a systémové protokoly: SNMP, Syslog a NTP</h2>
+          </div>
+          <p class="slide-lead">
+            Tyto protokoly zajišťují, aby administrátoři měli přesný přehled o stavu, vytížení a událostech v síti.
+          </p>
+
+          <div class="split-layout-3">
+            <div class="content-card">
+              <h4 style="color: #38bdf8;">SNMP (Port 161/162 / UDP)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Simple Network Management Protocol. Dohledové servery periodicky dotazují routery a switche na využití paměti, teplotu a propustnost rozhraní (MIB databáze).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #34d399;">Syslog (Port 514 / UDP)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Centralizovaný sběr systémových zpráv. Síťové prvky odesílají hlášení o chybách, přihlášení uživatelů a pádech linek na centrální logovací server.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="color: #fbbf24;">NTP (Port 123 / UDP)</h4>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Network Time Protocol. Synchronizuje hodiny na zařízeních na zlomky milisekund. Klíčové pro správné časové razítko logů a platnost TLS certifikátů.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní Protocol Explorer
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Interaktivní Protocol Explorer">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní mapa</span>
+            <h2>Interaktivní katalog aplikačních protokolů</h2>
+          </div>
+          <p class="slide-lead">
+            Filtrujte protokoly podle účelu a transportní vrstvy, vyhledejte port a prozkoumejte normy RFC.
+          </p>
+
+          <div class="proto-explorer-wrap">
+            <div class="proto-filters-bar">
+              <input type="text" id="protoSearchInput" class="proto-search" placeholder="Hledat protokol, port nebo službu (např. HTTP, 53, pošta, SSH)...">
+              <button class="proto-filter-btn active" data-filter="all">Vše</button>
+              <button class="proto-filter-btn" data-filter="web">Web</button>
+              <button class="proto-filter-btn" data-filter="infra">DNS &amp; DHCP</button>
+              <button class="proto-filter-btn" data-filter="mail">Pošta</button>
+              <button class="proto-filter-btn" data-filter="file">Správa &amp; Soubory</button>
+              <button class="proto-filter-btn" data-filter="mgmt">Dohled</button>
+            </div>
+
+            <div class="proto-cards-grid" id="protoCardsGrid">
+              <!-- Plněno z app-engine.js -->
+            </div>
+
+            <div id="protoDetailBox" style="margin-top: 1rem; padding: 0.75rem; background: rgba(30, 41, 59, 0.4); border-radius: var(--radius-sm); border: 1px dashed var(--border-color);">
+              <span style="font-size: 0.82rem; color: var(--text-muted);">Klikněte na libovolnou kartu protokolu pro detailní informace.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: PDU a rozhraní s transportní vrstvou
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="PDU a rozhraní s transportní vrstvou">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Enkapsulace L7 &rarr; L4</span>
+            <h2>PDU zpráva a napojení na transportní vrstvu</h2>
+          </div>
+          <p class="slide-lead">
+            Aplikační vrstva vytváří čistá data (Message). K jejich odeslání do sítě však musí zvolit vhodný transportní protokol (TCP nebo UDP).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><git-commit></git-commit><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg>
+                Volba transportu podle požadavků aplikace
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Aplikace volí TCP, pokud:</strong> Nesmí dojít ke ztrátě ani jediného bajtu a data musí dorazit přesně v původním pořadí (HTML stránka, e-mail, bankovní transakce, přenos souboru).
+                </li>
+                <li>
+                  <strong>Aplikace volí UDP, pokud:</strong> Záleží na okamžité rychlosti a minimální latenci, přičemž občasná ztráta paketu je přípustná (hlasový hovor, online hraní, video stream, bleskový DNS dotaz).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><package></package><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                Enkapsulace aplikační zprávy
+              </h3>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border-left: 3px solid #c084fc;">
+                <strong style="color: #c084fc;">1. Aplikační zpráva (Data / Message):</strong>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0.25rem 0 0 0;">
+                  HTTP GET požadavek, DNS dotaz, soubor k odeslání.
+                </p>
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border-left: 3px solid #38bdf8; margin-top: 0.5rem;">
+                <strong style="color: #38bdf8;">2. Předání transportní vrstvě L4:</strong>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0.25rem 0 0 0;">
+                  Transportní vrstva data rozseká na segmenty a přidá číslo zdrojového a cílového portu (např. Port 443 pro HTTPS).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Didaktické shrnutí
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Didaktické shrnutí tématu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rekapitulace SPŠ</span>
+            <h2>Strukturované shrnutí: Aplikační vrstva v kostce</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled pro zkoušení a orientaci v protokolech aplikační vrstvy.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Architektury a principy
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Spojení vrstev:</strong> V modelu TCP/IP slučuje aplikační vrstva funkce vrstev L5, L6 a L7 modelu OSI.</li>
+                <li><strong>Klient-Server:</strong> Centralizovaný model (web, databáze), kde server naslouchá na stálém well-known portu.</li>
+                <li><strong>Peer-to-Peer:</strong> Distribuovaný model (BitTorrent), kde každý uzel vystupuje jako klient i server současně.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Klíčové protokoly ke zkoušení
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Web:</strong> HTTP (80) nešifrovaný vs. HTTPS (443) šifrovaný přes TLS.</li>
+                <li><strong>Infrastruktura:</strong> DNS (53 &ndash; překlad jmen) a DHCP (67/68 &ndash; automatická IP konfigurace).</li>
+                <li><strong>Pošta:</strong> SMTP (25 &ndash; odesílání) vs. IMAP (143 &ndash; synchronizace) a POP3 (110 &ndash; stažení).</li>
+                <li><strong>Správa:</strong> SSH (22 &ndash; bezpečný terminál) vs. Telnet (23 &ndash; nebezpečný textový terminál).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Kontrolní otázky a opakovací kvíz
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Kontrolní otázky a opakovací kvíz">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Kontrolní otázky pro upevnění látky</h2>
+          </div>
+          <p class="slide-lead">
+            Otestujte své porozumění aplikační vrstvě. Zkuste si nejprve odpovědět sami a poté rozbalte nápovědu.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Otázka 1 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Jaký je rozdíl mezi pojetím aplikační vrstvy v modelu ISO/OSI a v modelu TCP/IP?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Model ISO/OSI rozděluje horní část do tří samostatných vrstev: L5 Relační (řízení relací), L6 Prezentační (kódování, komprese, šifrování) a L7 Aplikační (uživatelské rozhraní). V praktickém modelu TCP/IP jsou všechny tyto tři funkce sloučeny do jediné Aplikační vrstvy a jsou implementovány přímo v rámci konkrétního protokolu.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Proč se pro elektronickou poštu používá jiný protokol pro odesílání (SMTP) a jiný pro čtení schránky (IMAP / POP3)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                SMTP je protokol typu „push“ &ndash; slouží k doručení zprávy od odesílatele na server a následnému předávání mezi servery po síti. Poštovní server příjemce však nemůže zprávu přímo „vnutit“ do vypnutého mobilu nebo notebooku. Uživatel si proto poštu stahuje / synchronizuje ze své schránky přes protokol typu „pull“ (IMAP nebo POP3), až když aplikaci spustí.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>V čem spočívá zásadní rozdíl mezi architekturou Klient-Server a architekturou Peer-to-Peer (P2P)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                V modelu Klient-Server existuje centralizovaný server s pevnou IP adresou, který obsluhuje pasivní klienty. Server je jediným centrálním bodem správy (ale i možného výpadku). V síti P2P má každý zapojený uzel (peer) rovnocennou roli &ndash; vystupuje současně jako klient i server a data se vyměňují přímo mezi uzly bez nutnosti centrálního serveru.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Proč je protokol Telnet v moderních počítačových sítích přísně zakázán a nahrazen protokolem SSH?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Telnet přenáší veškerou komunikaci včetně uživatelských jmen a hesel v nešifrované podobě (čistý text). Kdokoli v síti může pomocí odposlechu (např. v programu Wireshark) hesla okamžitě přečíst. Protokol SSH veškerý provoz šifruje asymetrickou a symetrickou kryptografií a chrání integritu zpráv.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Ovládací lišta prezentace -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../051-TCP-a-UDP/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 051 TCP a UDP (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../061-DHCP/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 061 DHCP (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 13</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Aplikační vrstva
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 060 -->
+  <script src="app-engine.js"></script>
+</body>
+
+</html>

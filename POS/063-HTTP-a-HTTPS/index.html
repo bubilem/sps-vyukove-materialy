@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 063: Protokoly HTTP a HTTPS | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Protokoly HTTP a HTTPS, metody GET/POST, stavové kódy, TLS šifrování, certifikáty, HTTP/2 a HTTP/3 QUIC.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 063 -->
+  <link rel="stylesheet" href="style.css?v=3">
+</head>
+
+<body>
+  <!-- Ambientní pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Indikátor postupu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">063 HTTP a HTTPS</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #34d399; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12);">CCNA:ITN &bull; Web Protocols</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Protokoly HTTP a HTTPS">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 063</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399;">Cisco CCNA:ITN Web Layer</span>
+          </div>
+          <h1 class="hero-title">Protokoly HTTP a HTTPS</h1>
+          <p class="hero-subtitle">
+            Páteř moderního webu a internetových služeb &bull; Architektura Klient-Server, metody požadavků, stavové kódy, šifrování TLS, digitální certifikáty, evoluce HTTP/2 a HTTP/3 QUIC s interaktivním trenažérem.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><globe></globe><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Protokol HTTP
+              </h4>
+              <p>Bezstavový přenos hypertextu, architektura Klient-Server na portu 80 a způsoby ukládání stavu (Cookies).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><file-text></file-text><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Metody &amp; Stavové kódy
+              </h4>
+              <p>Žádosti GET, POST, PUT, DELETE a kompletní přehled odpovědí od 200 OK po 404 a 500 Server Error.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #22d3ee;"><lock></lock><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Bezpečné HTTPS &amp; TLS
+              </h4>
+              <p>Kryptografická ochrana na portu 443, asymetrická a symetrická šifra, proces TLS Handshake a certifikáty CA.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #fbbf24;"><zap></zap><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Živý simulátor
+              </h4>
+              <p>Demonstrace odposlechu hesla v čirém textu u HTTP vs. zašifrovaný bezpečný tok u HTTPS.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Účel a vlastnosti protokolu HTTP
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Účel a vlastnosti protokolu HTTP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Hypertext &bull; RFC 9110</span>
+            <h2>Účel a vlastnosti protokolu HTTP</h2>
+          </div>
+          <p class="slide-lead">
+            HTTP (Hypertext Transfer Protocol) vytvořil Tim Berners-Lee v CERNu v roce 1989. Stal se univerzálním jazykem pro přenos webových stránek, obrázků i datových rozhraní REST API.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><zap></zap><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Klíčová vlastnost: Bezstavovost (Stateless)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Každý požadavek, který klient odešle, je pro server <strong>zcela nezávislý na jakýchkoli předchozích požadavcích</strong>. Server si mezi jednotlivými dotazy nepamatuje, kdo jste, ani co jste dělali před 5 sekundami.
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.82rem;">
+                <strong>Výhoda bezstavovosti:</strong> Extrémní škálovatelnost. Server nemusí v paměti držet miliony otevřených uživatelských profilů.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">
+                <svg class="icon" viewBox="0 0 24 24"><cookie></cookie><circle cx="12" cy="12" r="10"></circle><circle cx="8" cy="9" r="1"></circle><circle cx="15" cy="8" r="1"></circle><circle cx="10" cy="14" r="1"></circle><circle cx="16" cy="14" r="1"></circle></svg>
+                Jak se tedy řeší stav (Přihlášení a nákupní košík)?
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Protože samotné HTTP stav nezná, byl vyvinut aplikační mechanismus:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>HTTP Cookies (Hlavička Set-Cookie):</strong> Server po přihlášení pošle klientovi malý identifikátor relace (Session ID). Prohlížeč jej pak automaticky přikládá ke každému dalšímu požadavku.</li>
+                <li><strong>Moderní Web Tokens (JWT):</strong> Kryptograficky podepsaný token uchovávaný v paměti aplikace.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Architektura Klient-Server a porty
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Architektura Klient-Server a porty">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Model komunikace</span>
+            <h2>Architektura Klient-Server: Prohlížeč &harr; Webový server</h2>
+          </div>
+          <p class="slide-lead">
+            Veškerá webová komunikace se řídí modelem dotaz &ndash; odpověď (Request &ndash; Response).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">Klient (User Agent)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Typicky webový prohlížeč (Chrome, Firefox, Safari) nebo mobilní aplikace:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Iniciuje spojení s webovým serverem.</li>
+                <li>Sestaví a odešle HTTP požadavek (Request).</li>
+                <li>Přijme HTML, CSS, JavaScript a multimédia a vykreslí je uživateli na obrazovce.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399;">Webový Server (HTTP Daemon)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Software běžící na serveru (Apache, Nginx, Microsoft IIS, Caddy):
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Nepřetržitě naslouchá na standardních portech:
+                  <ul style="margin-left: 1rem; margin-top: 0.25rem; font-size: 0.8rem;">
+                    <li><strong>Port 80 (TCP):</strong> Pro nešifrované HTTP.</li>
+                    <li><strong>Port 443 (TCP / UDP):</strong> Pro zabezpečené HTTPS.</li>
+                  </ul>
+                </li>
+                <li>Vyhodnotí požadavek a vrátí stavový kód s obsahem (Response).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Anatomie zpráv (Request a Response)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Anatomie HTTP zpráv: Request a Response">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Syntaxe zpráv</span>
+            <h2>Anatomie zpráv: Struktura požadavku a odpovědi</h2>
+          </div>
+          <p class="slide-lead">
+            V původním HTTP/1.1 mají zprávy čistý textový formát s přehlednou strukturou řádků.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">HTTP Požadavek (Request)</h3>
+              <div style="background: #030712; padding: 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; color: #e2e8f0; line-height: 1.4;">
+                <span style="color: #38bdf8;">GET /index.html HTTP/1.1</span><br>
+                Host: www.skola.cz<br>
+                User-Agent: Mozilla/5.0 (Windows NT 10.0)<br>
+                Accept: text/html,application/xhtml+xml<br>
+                Accept-Language: cs,en;q=0.9<br>
+                <br>
+                <span style="color: var(--text-muted);">&lt;volitelné tělo pro POST / JSON&gt;</span>
+              </div>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Metoda:</strong> GET (čtení), POST (vytvoření), PUT (přepsání), DELETE (smazání).</li>
+                <li><strong>Hlavičky:</strong> Metadata určující hostitele, klientský prohlížeč a formáty.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399;">HTTP Odpověď (Response)</h3>
+              <div style="background: #030712; padding: 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; color: #e2e8f0; line-height: 1.4;">
+                <span style="color: #34d399;">HTTP/1.1 200 OK</span><br>
+                Date: Tue, 06 Oct 2026 21:00:00 GMT<br>
+                Server: Nginx/1.24.0<br>
+                Content-Type: text/html; charset=UTF-8<br>
+                Content-Length: 1250<br>
+                <br>
+                &lt;!DOCTYPE html&gt;&lt;html&gt;&lt;body&gt;...&lt;/body&gt;&lt;/html&gt;
+              </div>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Stavový řádek:</strong> Verze protokolu a trojciferný stavový kód (např. 200 OK).</li>
+                <li><strong>Tělo odpovědi (Body):</strong> Samotná data (HTML kód, JSON data nebo binární obrázek).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Přehled stavových kódů
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Přehled HTTP stavových kódů">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Status Codes</span>
+            <h2>Přehled HTTP stavových kódů (Status Codes)</h2>
+          </div>
+          <p class="slide-lead">
+            Trojciferná čísla vrácená serverem informují klienta o výsledku zpracování požadavku.
+          </p>
+
+          <div class="split-layout-4" style="gap: 0.75rem;">
+            <div class="content-card" style="border-top: 3px solid #34d399;">
+              <span class="status-code-badge status-2xx">2xx Úspěch</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                <strong>200 OK:</strong> Vše proběhlo v pořádku.<br>
+                <strong>201 Created:</strong> Nový záznam byl vytvořen.<br>
+                <strong>204 No Content:</strong> Úspěch bez těla.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #60a5fa;">
+              <span class="status-code-badge status-3xx">3xx Přesměrování</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                <strong>301 Moved Permanently:</strong> Trvalý přesun na nové URL.<br>
+                <strong>302 Found:</strong> Dočasný přesun.<br>
+                <strong>304 Not Modified:</strong> Beze změny (použij cache).
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <span class="status-code-badge status-4xx">4xx Chyba klienta</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                <strong>400 Bad Request:</strong> Chybná syntaxe.<br>
+                <strong>401 Unauthorized:</strong> Chybí přihlášení.<br>
+                <strong>403 Forbidden:</strong> Zákaz přístupu.<br>
+                <strong>404 Not Found:</strong> Soubor neexistuje.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #ef4444;">
+              <span class="status-code-badge status-5xx">5xx Chyba serveru</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                <strong>500 Internal Error:</strong> Pád aplikace.<br>
+                <strong>502 Bad Gateway:</strong> Neplatná proxy odpověď.<br>
+                <strong>503 Unavailable:</strong> Server přetížen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Protokol HTTPS a kryptografie TLS
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Protokol HTTPS a kryptografie TLS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Zabezpečení &bull; Port 443</span>
+            <h2>Protokol HTTPS: Kryptografická ochrana webu pomocí TLS</h2>
+          </div>
+          <p class="slide-lead">
+            Při obyčejném HTTP putují veškerá data (včetně hesel a čísel platebních karet) v otevřeném textu. Kdokoli na Wi-Fi nebo po trase je může odposlechnout.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><shield></shield><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Tři pilíře zabezpečení HTTPS
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>1. Důvěrnost (Šifrování):</strong> Nikdo po cestě (ani poskytovatel připojení, ani útočník na kavárenské Wi-Fi) nemůže přečíst obsah přenášených dat.
+                </li>
+                <li>
+                  <strong>2. Integrita:</strong> Data nelze cestou nepozorovaně pozměnit ani podvrhnout (ochrana proti vkládání škodlivých skriptů).
+                </li>
+                <li>
+                  <strong>3. Autentizace serveru:</strong> Digitální certifikát X.509 zaručuje, že komunikujete se skutečným webem (např. sps.cz) a ne s podvrženým útočníkem.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">
+                <svg class="icon" viewBox="0 0 24 24"><key></key><path d="M21 2l-2 2m-2-2l2 2m7 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>
+                Kombinace asymetrické a symetrické šifry
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                HTTPS spojuje to nejlepší z obou světů kryptografie:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Asymetrická šifra (RSA / ECC):</strong> Používá se pouze na začátku při TLS Handshaku k bezpečnému vyjednání klíče a ověření certifikátu.</li>
+                <li><strong>Symetrická šifra (AES-GCM / ChaCha20):</strong> Extrémně rychlá šifra se společným klíčem, která následně šifruje veškerý objem dat bez ztráty výkonu procesoru.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: TLS Handshake v detailu
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Proces TLS Handshake">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">TLS 1.3 Handshake</span>
+            <h2>Proces TLS Handshake: Jak se naváže šifrované spojení?</h2>
+          </div>
+          <p class="slide-lead">
+            Před přenosem prvního bajtu webové stránky proběhne po TCP handshake ještě kryptografický <strong>TLS Handshake</strong>. V moderním standardu <strong>TLS 1.3</strong> stačí k dohodnutí jediný síťový oběh (1-RTT).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #22d3ee;"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                Postup výměny v TLS 1.3
+              </h3>
+              <ol style="margin-left: 1.25rem; font-size: 0.83rem; line-height: 1.5; color: var(--text-secondary);">
+                <li>
+                  <strong>1. Client Hello:</strong> Klient posílá podporované verze TLS, seznam šifrovacích algoritmů (Cipher Suites) a svůj parametr pro výměnu klíčů (Diffie-Hellman Key Share).
+                </li>
+                <li>
+                  <strong>2. Server Hello:</strong> Server vybere šifru, pošle svůj Key Share, digitální certifikát podepsaný certifikační autoritou (CA) a digitální podpis.
+                </li>
+                <li>
+                  <strong>3. Odvození klíčů:</strong> Obě strany nezávisle na sobě matematicky vypočítají naprosto shodný tajný symetrický klíč relace (Session Key).
+                </li>
+                <li>
+                  <strong>4. Finished &amp; Šifrovaná data:</strong> Od tohoto okamžiku tečou sítí pouze šifrované bajty!
+                </li>
+              </ol>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Role certifikačních autorit (CA)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Jak prohlížeč ví, že server nepodvrhuje útočník?
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Každý operační systém a prohlížeč má v sobě pevně uložený seznam <strong>důvěryhodných kořenových autorit (Root CA)</strong>.</li>
+                <li>Certifikát webu (např. Let's Encrypt, DigiCert) je kryptograficky podepsán touto autoritou. Pokud podpis nesouhlasí nebo certifikát vypršel, prohlížeč zobrazí červené varování o nebezpečí!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Evoluce webu: HTTP/1.0 až HTTP/3 QUIC
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Evoluce webu: HTTP/1.0 až HTTP/3 QUIC">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Moderní standardy</span>
+            <h2>Evoluce webových protokolů: HTTP/1.0 až HTTP/3 QUIC</h2>
+          </div>
+          <p class="slide-lead">
+            Interaktivní porovnání přenosu 4 objektů webu (HTML, CSS, JS a obrázek) napříč generacemi protokolu.
+          </p>
+
+          <!-- Interaktivní simulátor verzí -->
+          <div class="sim-card">
+            <div class="ver-sim-toolbar">
+              <div class="ver-tabs">
+                <button class="ver-tab-btn" data-ver="http10">HTTP/1.0 (1996)</button>
+                <button class="ver-tab-btn" data-ver="http11">HTTP/1.1 (1997)</button>
+                <button class="ver-tab-btn active" data-ver="http2">HTTP/2 (2015)</button>
+                <button class="ver-tab-btn" data-ver="http3">HTTP/3 QUIC (2022)</button>
+              </div>
+              <div id="verSimBadge" class="badge" style="font-size: 0.74rem;">Binární revoluce</div>
+            </div>
+
+            <div>
+              <h3 id="verSimTitle" style="font-size: 1.05rem; color: #fff; margin-bottom: 0.25rem;">
+                HTTP/2 (2015) &ndash; Binární rámce a plný Multiplexing
+              </h3>
+              <p id="verSimDesc" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45;">
+                Vše probíhá v jediném TCP spojení. Požadavky a odpovědi jsou rozsekány do binárních rámců a stahují se současně propletené v jednom toku bez blokování.
+              </p>
+            </div>
+
+            <!-- Vizuální linky stahování souborů -->
+            <div class="ver-visualizer-box">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">
+                <span>Simulace stahování 4 webových objektů</span>
+                <span>Časová osa přenosu &rarr;</span>
+              </div>
+              <div id="verLanesWrap" class="ver-lanes-wrap">
+                <!-- Vykresluje http-engine.js -->
+              </div>
+            </div>
+
+            <!-- Metriky verze -->
+            <div class="ver-metrics-grid">
+              <div class="ver-metric-card">
+                <div class="ver-metric-label">Transportní vrstva</div>
+                <div id="mTransport" class="ver-metric-val" style="color: #60a5fa;">TCP (Port 443)</div>
+              </div>
+              <div class="ver-metric-card">
+                <div class="ver-metric-label">Počet spojení</div>
+                <div id="mConns" class="ver-metric-val" style="color: #34d399;">1 jediné TCP spojení</div>
+              </div>
+              <div class="ver-metric-card">
+                <div class="ver-metric-label">Latence / RTT</div>
+                <div id="mLatency" class="ver-metric-val" style="color: #fbbf24;">2-3 RTT</div>
+              </div>
+              <div class="ver-metric-card">
+                <div class="ver-metric-label">Head-of-Line blokování</div>
+                <div id="mHol" class="ver-metric-val" style="color: #c084fc;">Vyřešeno v HTTP</div>
+              </div>
+            </div>
+
+            <div id="verSimTip" class="ver-desc-box">
+              <!-- Didaktický tip -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: ŽIVÝ INTERAKTIVNÍ SIMULÁTOR KLIENT-SERVER
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Simulátor komunikace Klient-Server">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Interaktivní trenažér</span>
+            <h2>Simulátor komunikace Klient &ndash; Server: Hlavičky, TLS a Cookies</h2>
+          </div>
+          <p class="slide-lead">
+            Krokujte reálnou komunikaci mezi webovým prohlížečem a serverem. Sledujte navazování spojení, přenos HTTP hlaviček, nastavování Cookies i šifrování TLS.
+          </p>
+
+          <div class="sim-card">
+            <!-- Navigace předdefinovaných scénářů -->
+            <div class="cs-scenario-nav">
+              <button class="cs-scenario-btn active" data-scenario="0">1. GET /index.html (200 OK)</button>
+              <button class="cs-scenario-btn" data-scenario="1">2. POST /login (Set-Cookie)</button>
+              <button class="cs-scenario-btn" data-scenario="2">3. GET /profil (Cookie)</button>
+              <button class="cs-scenario-btn" data-scenario="3">4. HTTPS &amp; TLS 1.3 (Port 443)</button>
+              <button class="cs-scenario-btn" data-scenario="4">5. Přesměrování 301 &amp; HSTS</button>
+            </div>
+
+            <!-- Krokovací lišta stepperu -->
+            <div class="cs-stepper-bar">
+              <div class="cs-stepper-controls">
+                <button class="sim-btn" id="btnCsPrev" title="Předchozí krok">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  <span>Předchozí</span>
+                </button>
+                <button class="sim-btn primary" id="btnCsNext" title="Další krok">
+                  <span>Další krok</span>
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <button class="sim-btn" id="btnCsPlay" title="Automatické přehrávání kroků">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>Přehrát</span>
+                </button>
+                <button class="sim-btn" id="btnCsReset" title="Resetovat na 1. krok">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                  <span>Reset</span>
+                </button>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 0.85rem;">
+                <span id="csStepCounter" style="font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; font-weight: 700;">Krok 1 z 4</span>
+                <div id="csStepIndicators" class="cs-step-indicators"></div>
+              </div>
+            </div>
+
+            <!-- Síťová scéna (Klient <===> Linka s Wiresharkem <===> Web Server) -->
+            <div class="cs-stage">
+              <!-- Uzel 1: Klient (Browser) -->
+              <div id="csNodeClient" class="cs-node active-sender">
+                <div class="cs-node-header">
+                  <div class="cs-node-title">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    Klient (Browser)
+                  </div>
+                  <span class="cs-node-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">192.168.1.45</span>
+                </div>
+
+                <div>
+                  <div style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.2rem;">Adresní řádek URL:</div>
+                  <div id="csBrowserBar" class="cs-browser-bar">
+                    <!-- URL s ikonou zámku -->
+                  </div>
+                </div>
+
+                <div id="csCookieVault" class="cs-cookie-vault">
+                  <!-- Klientské cookies -->
+                </div>
+              </div>
+
+              <!-- Uzel 2: Síťový drát & Wireshark odposlech -->
+              <div class="cs-wire-column">
+                <div id="csWireLine" class="cs-wire-line">
+                  <div id="csPacketFlyer" class="cs-packet-flyer ltr">HTTP Request</div>
+                </div>
+
+                <div class="cs-wire-sniffer">
+                  <div class="cs-sniffer-header">
+                    <span style="display: flex; align-items: center; gap: 0.3rem;">
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                      Wireshark odposlech na síťové lince:
+                    </span>
+                    <span id="csWireSecureTag" style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-muted);">L2/L3 Linka</span>
+                  </div>
+                  <div id="csSnifferData" class="cs-sniffer-data">Čekání na data...</div>
+                  <div id="csSnifferNote" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;"></div>
+                </div>
+              </div>
+
+              <!-- Uzel 3: Web Server -->
+              <div id="csNodeServer" class="cs-node">
+                <div class="cs-node-header">
+                  <div class="cs-node-title">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#34d399" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                    Web Server
+                  </div>
+                  <span id="csServerPortBadge" class="cs-node-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Port 80</span>
+                </div>
+
+                <div style="font-size: 0.76rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.3rem;">
+                  <div><strong>Host:</strong> sps.cz (194.108.4.12)</div>
+                  <div><strong>Software:</strong> Nginx 1.24 / Ubuntu</div>
+                  <div><strong>Certifikát:</strong> Let's Encrypt X.509</div>
+                  <div><strong>Databáze:</strong> Relace Redis &bull; PostgreSQL</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dvoupanelový inspektor pod scénou -->
+            <div class="cs-inspector-grid">
+              <!-- Levý panel: Inspekce zprávy a hlaviček -->
+              <div class="cs-inspector-box">
+                <div class="cs-box-topbar">
+                  <span>Inspektor HTTP zprávy &bull; Hlavičky a Payload</span>
+                  <span style="color: var(--text-muted); font-size: 0.7rem; font-family: var(--font-mono);">RFC 9110 / RFC 8446</span>
+                </div>
+                <div id="csHeadersBox" class="cs-box-content">
+                  <!-- Hlavičky -->
+                </div>
+              </div>
+
+              <!-- Pravý panel: Didaktické vysvětlení a kontext -->
+              <div class="cs-inspector-box">
+                <div class="cs-box-topbar">
+                  <span>Průběh komunikace a didaktický rozbor</span>
+                  <span style="color: #34d399; font-size: 0.7rem;">Detail kroku</span>
+                </div>
+                <div id="csDidacticBox" class="cs-didactic-panel">
+                  <!-- Didaktický rozbor -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Interaktivní inspektor stavových kódů
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Inspektor HTTP stavových kódů">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Diagnostika webu</span>
+            <h2>Interaktivní inspektor HTTP stavových kódů</h2>
+          </div>
+          <p class="slide-lead">
+            Klikněte na libovolný kód pro zobrazení jeho oficiálního významu a chování v prohlížeči.
+          </p>
+
+          <div class="content-card">
+            <div style="display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1rem;">
+              <button class="sim-btn status-btn active" data-code="200">200</button>
+              <button class="sim-btn status-btn" data-code="201">201</button>
+              <button class="sim-btn status-btn" data-code="204">204</button>
+              <button class="sim-btn status-btn" data-code="301">301</button>
+              <button class="sim-btn status-btn" data-code="302">302</button>
+              <button class="sim-btn status-btn" data-code="304">304</button>
+              <button class="sim-btn status-btn" data-code="400">400</button>
+              <button class="sim-btn status-btn" data-code="401">401</button>
+              <button class="sim-btn status-btn" data-code="403">403</button>
+              <button class="sim-btn status-btn" data-code="404">404</button>
+              <button class="sim-btn status-btn" data-code="429">429</button>
+              <button class="sim-btn status-btn" data-code="500">500</button>
+              <button class="sim-btn status-btn" data-code="502">502</button>
+              <button class="sim-btn status-btn" data-code="503">503</button>
+            </div>
+
+            <div style="background: rgba(15, 23, 42, 0.6); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <h3 id="statusCodeTitle" style="color: #34d399; margin: 0;">200 OK</h3>
+                <span id="statusCodeCat" class="badge" style="font-size: 0.72rem;">2xx Úspěch</span>
+              </div>
+              <p id="statusCodeDesc" style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-top: 0.5rem;">
+                Standardní odpověď pro úspěšné HTTP požadavky. Tělo odpovědi obsahuje požadovaná data.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Didaktické shrnutí
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Didaktické shrnutí HTTP a HTTPS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rekapitulace SPŠ</span>
+            <h2>Strukturované shrnutí: Protokoly HTTP a HTTPS v kostce</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled pro zkoušení a orientaci v protokolech HTTP a HTTPS.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Architektura a syntaxe
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Bezstavovost:</strong> Každý dotaz je nezávislý. Stav je řešen klientskými Cookies a tokeny.</li>
+                <li><strong>Porty:</strong> Port 80 pro nešifrované HTTP, Port 443 pro zabezpečené HTTPS.</li>
+                <li><strong>Metody:</strong> GET (čtení), POST (vytvoření), PUT (přepsání), DELETE (odstranění).</li>
+                <li><strong>Stavové kódy:</strong> 2xx (úspěch), 3xx (přesměrování), 4xx (chyba klienta), 5xx (chyba serveru).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><lock></lock><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Zabezpečení a evoluce
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>HTTPS = HTTP + TLS:</strong> Šifrování obsahu i hlaviček asymetrickou a symetrickou šifrou.</li>
+                <li><strong>Certifikáty:</strong> Digitální certifikát X.509 ověřený certifikační autoritou (CA) zaručuje identitu webu.</li>
+                <li><strong>HTTP/2:</strong> Multiplexing požadavků v jediném TCP spojení.</li>
+                <li><strong>HTTP/3:</strong> Protokol QUIC nad UDP eliminující zpoždění a Head-of-Line blokování.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Kontrolní otázky a opakovací kvíz
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Kontrolní otázky a opakovací kvíz">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Kontrolní otázky pro upevnění látky</h2>
+          </div>
+          <p class="slide-lead">
+            Otestujte své porozumění webovým protokolům HTTP a HTTPS.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Otázka 1 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Co přesně znamená, že protokol HTTP je „bezstavový“ (Stateless), a jakým způsobem webové aplikace udržují uživatele přihlášeného?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Bezstavovost znamená, že webový server si mezi jednotlivými požadavky nepamatuje žádnou informaci o předchozích krocích klienta. Každý dotaz je vyhodnocen samostatně. Pro udržení přihlášení server po úspěšné autentizaci pošle klientovi v hlavičce Set-Cookie identifikační token (Session ID). Prohlížeč pak tuto Cookie automaticky přikládá ke každému dalšímu dotazu, takže server pozná, o kterého uživatele se jedná.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Proč při použití HTTPS využívá vrstva TLS jak asymetrickou, tak symetrickou kryptografii?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Asymetrická kryptografie (dva různé klíče &ndash; veřejný a soukromý) řeší bezpečné ověření identity serveru a bezpečnou výměnu tajného klíče přes nedůvěryhodnou síť, ale je výpočetně velmi pomalá. Symetrická kryptografie (jeden společný klíč) je naopak extrémně rychlá a hardwarově akcelerovaná. TLS proto použije asymetrickou šifru pouze při úvodním TLS Handshaku k vyjednání společného klíče a samotná data pak přenáší bleskovou symetrickou šifrou (např. AES-GCM).
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jaký je zásadní rozdíl mezi chybovými kódy třídy 4xx a třídy 5xx? Uveďte po jednom příkladu.</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Kódy třídy 4xx označují chybu na straně klienta &ndash; klient odeslal neplatný požadavek, zadal neexistující URL nebo nemá oprávnění (např. 404 Not Found nebo 403 Forbidden). Kódy třídy 5xx označují chybu na straně serveru &ndash; požadavek klienta byl platný, ale server selhal při jeho zpracování, spadl běhový skript nebo je server přetížen (např. 500 Internal Server Error nebo 503 Service Unavailable).
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>V čem spočívá revoluční změna protokolu HTTP/3 oproti HTTP/1.1 a HTTP/2 na transportní vrstvě?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Zatímco HTTP/1.1 i HTTP/2 běžely nad protokolem TCP, HTTP/3 zcela opouští TCP a přechází na protokol QUIC, který běží nad UDP. Tím je odstraněn problém Head-of-Line blokování (kdy ztráta jednoho paketu v TCP zastavila všechny ostatní proudy), TLS 1.3 je integrováno přímo do transportní vrstvy a spojení lze navázat s nulovým zpožděním (0-RTT).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Ovládací lišta prezentace -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../062-DNS/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 062 DNS (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Poslední téma bloku">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: HTTP a HTTPS
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 063 -->
+  <script src="http-engine.js?v=3"></script>
+</body>
+
+</html>

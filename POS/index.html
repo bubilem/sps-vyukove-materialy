@@ -345,23 +345,87 @@
         </div>
       </div>
 
-      <!-- Téma 060: Aplikační vrstva (V přípravě) -->
-      <div class="lesson-card" data-keywords="060 aplikacni vrstva l7 dns dhcp http https ssh ftp snmp email smtp imap web sluzby plan" style="opacity: 0.85;">
+      <!-- Téma 060: Aplikační vrstva (AKTIVNÍ PREZENTACE) -->
+      <div class="lesson-card" data-keywords="060 aplikacni vrstva l7 protokoly klient server peer to peer p2p rest api syntaxe komprese sifrovani tls ccna pos">
         <div>
           <div class="lesson-card-top">
-            <span class="lesson-num">TÉMA 060</span>
-            <span class="lesson-exam-badge">V přípravě</span>
+            <span class="lesson-num" style="color: #c084fc; border-color: rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.12);">TÉMA 060</span>
+            <span class="lesson-exam-badge" style="color: #c084fc; background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.3);">Aplikační vrstva &bull; CCNA:ITN</span>
           </div>
           <h2>Aplikační vrstva</h2>
           <p class="lesson-desc">
-            Služby a protokoly orientované na uživatele a systémové funkce: překlad jmen DNS, dynamická konfigurace klientů DHCP (proces DORA), webové protokoly HTTP/HTTPS s TLS šifrováním, zabezpečená vzdálená správa SSH, elektronická pošta (SMTP, IMAP) a monitorování sítě SNMP.
+            Most mezi uživatelskými programy a sítí. Sloučení vrstev L5–L7 modelu OSI v modelu TCP/IP, síťové architektury Klient-Server vs. distribuovaný Peer-to-Peer (P2P), kódování zpráv, komprese a ucelená systematika moderních síťových protokolů s interaktivním Protocol Explorerem.
           </p>
         </div>
         <div class="lesson-footer">
-          <span class="lesson-time">Připravuje se &bull; CCNA:ITN / SRWE</span>
-          <span class="btn-launch-lesson" style="opacity: 0.5; pointer-events: none;">
-            Připravuje se
-          </span>
+          <span class="lesson-time">Klíčové téma &bull; 13 snímků &bull; Protocol Explorer</span>
+          <a href="060-Aplikacni-vrstva/index.html" class="btn-launch-lesson" style="color: #c084fc;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 061: Protokol DHCP (AKTIVNÍ PREZENTACE A SIMULÁTOR) -->
+      <div class="lesson-card" data-keywords="061 dhcp dora discover offer request ack nak release lease time relay agent ip helper-address snooping udp 67 68 pos ccna">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #22d3ee; border-color: rgba(6, 182, 212, 0.3); background: rgba(6, 182, 212, 0.12);">TÉMA 061</span>
+            <span class="lesson-exam-badge" style="color: #22d3ee; background: rgba(6, 182, 212, 0.12); border-color: rgba(6, 182, 212, 0.3);">Konfigurace IP &bull; CCNA:ITN</span>
+          </div>
+          <h2>Protokol DHCP</h2>
+          <p class="lesson-desc">
+            Automatická konfigurace síťových zařízení: předávání IP adres, masek, výchozí brány a DNS serverů. Porty UDP 67 a 68, detailní rozbor čtyřfázového procesu DORA (Discover, Offer, Request, Acknowledge), zprávy NAK a Release, správa zápůjčky (Lease Time, časovače T1 a T2), DHCP Relay Agent na směrovači a obrana proti útokům pomocí DHCP Snooping s živým interaktivním simulátorem.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 13 snímků &bull; Živý simulátor DORA</span>
+          <a href="061-DHCP/index.html" class="btn-launch-lesson" style="color: #22d3ee;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 062: Protokol DNS (AKTIVNÍ PREZENTACE A SIMULÁTOR) -->
+      <div class="lesson-card" data-keywords="062 dns domain name system fqdn root tld tld.cz a aaaa cname mx ns ptr txt soa rekurzivni iterativni ttl dnssec resolver ccna pos">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.12);">TÉMA 062</span>
+            <span class="lesson-exam-badge" style="color: #60a5fa; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.3);">Překlad domén &bull; CCNA:ITN</span>
+          </div>
+          <h2>Protokol DNS</h2>
+          <p class="lesson-desc">
+            Telefonní seznam světového Internetu: hierarchický distribuovaný překlad jmen na IP adresy. Kořenové servery (Root .), domény nejvyšší úrovně (TLD .cz, .com) a FQDN. Rekurzivní resolvery vs. autoritativní servery, zónové záznamy A, AAAA, CNAME, MX, TXT, NS, SOA a PTR, transport na portu 53 nad UDP i TCP, mezipaměť (TTL) a zabezpečení DNSSEC s živým interaktivním krokovacím simulátorem překladu.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 13 snímků &bull; Živý DNS Resolver</span>
+          <a href="062-DNS/index.html" class="btn-launch-lesson" style="color: #60a5fa;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 063: Protokoly HTTP a HTTPS (AKTIVNÍ PREZENTACE A SIMULÁTOR) -->
+      <div class="lesson-card" data-keywords="063 http https web get post put delete status codes 200 404 500 tls ssl certifikat ca rsa aes quic http2 http3 pos ccna">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #34d399; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.12);">TÉMA 063</span>
+            <span class="lesson-exam-badge" style="color: #34d399; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3);">Webové standardy &bull; CCNA:ITN</span>
+          </div>
+          <h2>Protokoly HTTP a HTTPS</h2>
+          <p class="lesson-desc">
+            Páteř moderního webu: architektura Klient-Server, bezstavovost a správa relací (Cookies). Anatomie požadavku (metody GET, POST, PUT, DELETE) a odpovědi, detailní katalog stavových kódů (2xx, 3xx, 4xx, 5xx), kryptografická ochrana HTTPS a vrstva TLS na portu 443, asymetrická a symetrická šifra, certifikáty CA, vývoj od HTTP/1.1 přes HTTP/2 po revoluční HTTP/3 (QUIC nad UDP) s interaktivním simulátorem odposlechu.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 12 snímků &bull; Živý simulátor TLS</span>
+          <a href="063-HTTP-a-HTTPS/index.html" class="btn-launch-lesson" style="color: #34d399;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
         </div>
       </div>
 

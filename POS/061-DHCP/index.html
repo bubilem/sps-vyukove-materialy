@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 061: Protokol DHCP (Dynamic Host Configuration Protocol) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Protokol DHCP, proces DORA, správa zápůjček (Lease Time), DHCP Relay Agent a zabezpečení DHCP Snooping.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 061 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Indikátor postupu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">061 DHCP</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #22d3ee; border-color: rgba(6, 182, 212, 0.35); background: rgba(6, 182, 212, 0.12);">CCNA:ITN &bull; DHCP Protocol</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Protokol DHCP">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 061</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(6, 182, 212, 0.4); color: #22d3ee;">Cisco CCNA:ITN / SRWE</span>
+          </div>
+          <h1 class="hero-title">Protokol DHCP (Dynamic Host Configuration Protocol)</h1>
+          <p class="hero-subtitle">
+            Automatická konfigurace síťových zařízení &bull; Vlastnosti a účel protokolu, proces DORA v detailu, správa doby zápůjčky (Lease Time), DHCP Relay Agent a zabezpečení proti útokům pomocí DHCP Snooping.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #22d3ee;"><settings></settings><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Účel &amp; Parametry
+              </h4>
+              <p>Eliminace chyb ruční konfigurace. Předávání IP, masky, brány (Gateway), DNS serverů a doby zápůjčky.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rotate-cw></rotate-cw><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                Proces DORA
+              </h4>
+              <p>Čtyři kroky navázání konfigurace: Discover &rarr; Offer &rarr; Request &rarr; Acknowledge na portech UDP 67 a 68.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><clock></clock><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Správa zápůjčky
+              </h4>
+              <p>Princip Lease Time, automatická obnova zápůjčky (časovače T1 50% a T2 87.5%) a uvolnění adresy (Release).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><shield></shield><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Relay &amp; Zabezpečení
+              </h4>
+              <p>Směrování přes DHCP Relay Agent (ip helper-address) a obrana přepínačů pomocí DHCP Snooping.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Účel a vlastnosti DHCP
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Účel a vlastnosti protokolu DHCP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Základní principy</span>
+            <h2>Účel a vlastnosti DHCP: Proč automatická konfigurace?</h2>
+          </div>
+          <p class="slide-lead">
+            V malých sítích s 5 počítači lze IP adresy nastavit ručně. V podnikové síti, na školní Wi-Fi nebo v datacentru se stovkami zařízení je manuální konfigurace neudržitelná.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><alert-circle></alert-circle><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Problémy ruční (statické) konfigurace
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>IP konflikt (Duplicita):</strong> Stačí překlep a dva počítače dostanou stejnou IP adresu &ndash; obě zařízení přestanou spolehlivě komunikovat.
+                </li>
+                <li>
+                  <strong>Obrovská administrativní zátěž:</strong> Při změně IP adresy DNS serveru nebo výchozí brány by správce musel obcházet stovky počítačů.
+                </li>
+                <li>
+                  <strong>Plýtvání adresami:</strong> Statická adresa zůstává zablokována pro notebook, i když je uživatel doma nebo na služební cestě.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Výhody dynamického protokolu DHCP
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Plug &amp; Play připojení:</strong> Uživatel zapojí kabel nebo se připojí k Wi-Fi a během sekundy je bez jakéhokoli nastavování online.
+                </li>
+                <li>
+                  <strong>Efektivní recyklace adres:</strong> Adresa je zapůjčena pouze po dobu, kdy je zařízení zapnuto. Po odpojení se vrací do fondu pro další klienty.
+                </li>
+                <li>
+                  <strong>Centrální správa:</strong> Změna sítě, brány či DNS serveru se nastaví na jediném místě v DHCP serveru a okamžitě se promítne všem.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Parametry předávané klientovi
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Konfigurační parametry předávané klientovi">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">DHCP Options</span>
+            <h2>Konfigurační parametry předávané klientovi (DHCP Options)</h2>
+          </div>
+          <p class="slide-lead">
+            DHCP server nepřiděluje pouze samotnou IP adresu, ale kompletní sadu síťových parametrů pro plnohodnotný přístup do LAN i Internetu.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #22d3ee;"><list></list><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                Klíčové parametry (Standardní výbava)
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>IP adresa klienta:</strong> Unikátní logická adresa z lokálního podsíťového fondu (např. <code>192.168.1.105</code>).
+                </li>
+                <li>
+                  <strong>Maska podsítě (Subnet Mask &bull; Option 1):</strong> Určuje hranici mezi síťovou částí a hostitelem (např. <code>255.255.255.0</code> /24).
+                </li>
+                <li>
+                  <strong>Výchozí brána (Default Gateway &bull; Option 3):</strong> IP adresa lokálního rozhraní routeru (např. <code>192.168.1.1</code>), kam se posílají pakety do cizích sítí.
+                </li>
+                <li>
+                  <strong>DNS servery (Domain Name Servers &bull; Option 6):</strong> Adresy serverů pro překlad doménových jmen (např. <code>8.8.8.8</code>, <code>1.1.1.1</code>).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><sliders></sliders><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                Doplňkové a podnikové volby (Options)
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Doba zápůjčky (Lease Time &bull; Option 51):</strong> Doba v sekundách, po kterou smí klient adresu používat (např. 86 400 s = 24 hodin).
+                </li>
+                <li>
+                  <strong>Doménové jméno (Domain Name &bull; Option 15):</strong> Přípona lokální domény (např. <code>sps.local</code>).
+                </li>
+                <li>
+                  <strong>Časové servery (NTP &bull; Option 42):</strong> Servery pro synchronizaci času v podnikové síti.
+                </li>
+                <li>
+                  <strong>TFTP Boot Server (Option 66):</strong> IP serveru pro bootování tenkých klientů a instalaci OS po síti (PXE).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Porty a transportní vrstva
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Porty a transportní vrstva: UDP 67 a 68">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">L4 &bull; UDP</span>
+            <h2>Transportní vrstva a porty: Proč UDP porty 67 a 68?</h2>
+          </div>
+          <p class="slide-lead">
+            DHCP pracuje na transportní vrstvě nad protokolem <strong>UDP</strong> a vyžaduje přesně definovanou dvojici portů.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><anchor></anchor><circle cx="12" cy="5" r="3"></circle><line x1="12" y1="22" x2="12" y2="8"></line><path d="M5 12H2a10 10 0 0 0 20 0h-3"></path></svg>
+                Rozdělení portů klient vs. server
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #22d3ee;">
+                  <strong style="color: #22d3ee; font-size: 0.9rem;">Port 67 (UDP) &bull; DHCP Server</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Server naslouchá na tomto portu a přijímá zprávy od klientů (DHCPDISCOVER a DHCPREQUEST).
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #3b82f6;">
+                  <strong style="color: #60a5fa; font-size: 0.9rem;">Port 68 (UDP) &bull; DHCP Client</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Klientská zařízení naslouchají na portu 68 a přijímají odpovědi od serveru (DHCPOFFER a DHCPACK).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><help-circle></help-circle><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Proč se nepoužívá protokol TCP?
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Důvod je zcela fundamentální:
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <strong>Klient zatím NEMÁ IP adresu!</strong> Aby bylo možné navázat TCP spojení (Three-Way Handshake), musí obě strany mít platnou IP adresu. Klient však teprve žádá o její přidělení.
+                </li>
+                <li>
+                  <strong>Nutnost všesměrového vysílání (Broadcast):</strong> Klient nezná IP adresu žádného DHCP serveru v síti. Musí proto vyslat zprávu jako Broadcast na adresu <code>255.255.255.255</code> se zdrojovou adresou <code>0.0.0.0</code>. To TCP ze své podstaty neumožňuje.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Proces DORA v detailu
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Proces DORA v detailu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Jádro protokolu</span>
+            <h2>Čtyři kroky navázání konfigurace: Proces DORA</h2>
+          </div>
+          <p class="slide-lead">
+            Výměna zpráv mezi klientem a serverem probíhá v ustáleném cyklu označovaném akronymem <strong>D-O-R-A</strong>.
+          </p>
+
+          <div class="split-layout-4">
+            <div class="dora-step-card" style="border-top: 3px solid #22d3ee;">
+              <span class="dora-letter" style="background: rgba(6, 182, 212, 0.2); color: #22d3ee;">D</span>
+              <strong style="color: #22d3ee;">DHCPDISCOVER</strong>
+              <span class="badge" style="font-size: 0.68rem;">Klient &rarr; Broadcast</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                Klient volá do sítě: <em>„Je zde nějaký DHCP server? Potřebuji IP adresu!“</em> (Src: 0.0.0.0, Dst: 255.255.255.255).
+              </p>
+            </div>
+
+            <div class="dora-step-card" style="border-top: 3px solid #3b82f6;">
+              <span class="dora-letter" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">O</span>
+              <strong style="color: #60a5fa;">DHCPOFFER</strong>
+              <span class="badge" style="font-size: 0.68rem;">Server &rarr; Klient</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                Server odpovídá s nabídkou: <em>„Mám pro tebe IP 192.168.1.105, bránu 192.168.1.1 na 24 hodin.“</em>
+              </p>
+            </div>
+
+            <div class="dora-step-card" style="border-top: 3px solid #f59e0b;">
+              <span class="dora-letter" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">R</span>
+              <strong style="color: #fbbf24;">DHCPREQUEST</strong>
+              <span class="badge" style="font-size: 0.68rem;">Klient &rarr; Broadcast</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                Klient oznamuje: <em>„Přijímám nabídku od serveru A!“</em> Broadcastem zároveň dává vědět ostatním serverům, že jejich nabídky odmítá.
+              </p>
+            </div>
+
+            <div class="dora-step-card" style="border-top: 3px solid #10b981;">
+              <span class="dora-letter" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">A</span>
+              <strong style="color: #34d399;">DHCPACK</strong>
+              <span class="badge" style="font-size: 0.68rem;">Server &rarr; Klient</span>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+                Server potvrzuje zápis do své tabulky zápůjček: <em>„Hotovo, adresa je tvoje. Můžeš komunikovat.“</em>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Zprávy DHCPNAK a DHCPRELEASE
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Zprávy DHCPNAK a DHCPRELEASE">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Řídicí zprávy</span>
+            <h2>Další zprávy DHCP: Odmítnutí (NAK) a uvolnění (Release)</h2>
+          </div>
+          <p class="slide-lead">
+            Kromě základního cyklu DORA definuje protokol DHCP další důležité zprávy pro řešení neplatných stavů a korektní ukončení.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #ef4444;">
+                <svg class="icon" viewBox="0 0 24 24"><x-circle></x-circle><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                DHCPNAK (Negative Acknowledgment)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Odmítnutí požadavku serverem. Server říká klientovi: <em>„Tuto IP adresu ti nemohu přidělit!“</em>
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Kdy nastává:</strong> Klient se probudí z režimu spánku a žádá o svou starou IP adresu, ale mezitím se přestěhoval do jiné podsítě (např. z domova do školy).</li>
+                <li><strong>Důsledek:</strong> Klient musí okamžitě zapomenout svou neplatnou konfiguraci a zahájit proces DORA úplně od začátku novým DHCPDISCOVER.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><log-out></log-out><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                DHCPRELEASE (Uvolnění adresy)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Dobrovolné vrácení adresy klientem. Klient při korektním odhlášení posílá serveru zprávu unicastem.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Příklad v praxi:</strong> Příkaz v systému Windows <code>ipconfig /release</code>.</li>
+                <li><strong>Důsledek:</strong> Server okamžitě uvolní záznam v tabulce zápůjček a adresa je ihned dostupná pro jiného klienta bez čekání na vypršení časovače Lease Time.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Správa zápůjčky (Lease Time)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Správa doby zápůjčky (Lease Time)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Časovače DHCP</span>
+            <h2>Životní cyklus zápůjčky: Časovače T1 (Obnova) a T2 (Rebind)</h2>
+          </div>
+          <p class="slide-lead">
+            Přidělená IP adresa není klientovi dána navždy, ale pouze <strong>zapůjčena na stanovenou dobu (Lease Time)</strong>. Během provozu klient adresu automaticky obnovuje.
+          </p>
+
+          <div class="split-layout-3">
+            <div class="content-card" style="border-top: 3px solid #22d3ee;">
+              <h4 style="color: #22d3ee;">Časovač T1: Obnova (Renew)</h4>
+              <span class="badge" style="font-size: 0.72rem; margin-bottom: 0.5rem;">50 % doby zápůjčky</span>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Při uplynutí 50 % doby pošle klient <strong>přímou unicastovou zprávu DHCPREQUEST</strong> původnímu serveru. Pokud server odpoví DHCPACK, zápůjčka se obnoví na plných 100 %.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h4 style="color: #fbbf24;">Časovač T2: Znovunavázání (Rebind)</h4>
+              <span class="badge" style="font-size: 0.72rem; margin-bottom: 0.5rem;">87,5 % doby zápůjčky</span>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Pokud původní server neodpovídá (např. spadl), klient v 87,5 % času vyšle <strong>broadcast DHCPREQUEST</strong> do celé sítě a žádá libovolný jiný DHCP server o prodloužení.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #ef4444;">
+              <h4 style="color: #f87171;">Expirace zápůjčky</h4>
+              <span class="badge" style="font-size: 0.72rem; margin-bottom: 0.5rem;">100 % doby zápůjčky</span>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+                Pokud žádný server neodpověděl a čas vypršel, klient <strong>musí okamžitě přestat IP adresu používat</strong>. Přechází do stavu INIT a zahajuje nový proces DORA.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Konfigurace fondu a statické rezervace
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Konfigurace fondu a statické rezervace">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Správa adres</span>
+            <h2>Struktura DHCP serveru: Fondy adres, výjimky a rezervace</h2>
+          </div>
+          <p class="slide-lead">
+            DHCP server rozděluje IP adresní prostor do logických skupin podle typu připojených zařízení.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><database></database><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                Adresní fond (DHCP Pool) a vyloučení
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>DHCP Scope / Pool:</strong> Rozsah adres, ze kterých server dynamicky přiděluje (např. <code>192.168.1.100</code> až <code>192.168.1.200</code>).
+                </li>
+                <li>
+                  <strong>Vyloučené adresy (Exclusions):</strong> Rozsah adres vyjmutý z dynamického přidělování, určený pro zařízení s pevnou IP (tiskárny, servery, routery, management switchů &ndash; např. <code>.1</code> až <code>.20</code>).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><bookmark></bookmark><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                Statické DHCP rezervace (MAC Mapping)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Kombinace výhod statické i dynamické konfigurace:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  Správce sváže <strong>fyzickou MAC adresu zařízení s konkrétní stálou IP adresou</strong> (např. tiskárna s MAC <code>00:11:22:33:44:55</code> dostane vždy <code>192.168.1.20</code>).
+                </li>
+                <li>
+                  Tiskárna se stále konfiguruje přes DHCP (automaticky získá bránu a DNS), ale má garantovanou vždy stejnou IP adresu.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: DHCP Relay Agent
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="DHCP Relay Agent a směrování">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Podnikové sítě</span>
+            <h2>DHCP Relay Agent: Jak přeposlat broadcast přes router?</h2>
+          </div>
+          <p class="slide-lead">
+            Směrovače (routery) ze své podstaty <strong>zastavují všesměrové vysílání (broadcast)</strong>. Co když máme centrální DHCP server v jiné VLAN nebo v datacentru?
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Problém: Broadcast neprojde přes router
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Když klient vyšle zprávu DHCPDISCOVER na <code>255.255.255.255</code>, router na rozhraní tento broadcast zahodí. Museli bychom mít fyzický DHCP server v každé jednotlivé podsíti (VLAN).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                Řešení: Cisco ip helper-address
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Router funguje jako <strong>DHCP Relay Agent</strong>:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Zachytí klientský broadcast na portu 67.</li>
+                <li>Zabalí jej do <strong>směrovatelného Unicast paketu</strong> a odešle přímo na IP centrálního DHCP serveru.</li>
+                <li>Příkaz na rozhraní Cisco IOS: <code>Router(config-if)# ip helper-address 10.0.0.50</code>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Zabezpečení DHCP (DHCP Snooping)
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Zabezpečení DHCP: Rogue Server a Snooping">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Kybernetická bezpečnost</span>
+            <h2>Zabezpečení DHCP: Útoky Rogue Server a ochrana DHCP Snooping</h2>
+          </div>
+          <p class="slide-lead">
+            Protože je DHCP protokol založen na důvěře a broadcastu, je oblíbeným cílem útočníků v lokální síti.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #ef4444;">
+                <svg class="icon" viewBox="0 0 24 24"><alert-octagon></alert-octagon><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Útoky na protokol DHCP
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Rogue DHCP Server (Falešný server):</strong> Útočník zapojí do sítě vlastní DHCP server. Na dotazy DISCOVER odpoví rychleji než legitimní server a podstrčí klientům svou vlastní IP adresu jako Default Gateway (útok Man-in-the-Middle) nebo falešný DNS.
+                </li>
+                <li>
+                  <strong>DHCP Starvation (Vyhladovění fondu):</strong> Útočník chrlí miliony dotazů s podvrženými MAC adresami a vyčerpá všechny volné IP adresy serveru. Legitimní uživatelé se nepřipojí (DoS).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><shield></shield><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Obrana: DHCP Snooping na přepínači
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Bezpečnostní funkce L2 přepínačů (Cisco Catalyst), která rozděluje porty switche:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Trusted porty (Důvěryhodné):</strong> Porty vedoucí k pravému DHCP serveru či upstream routeru. Zde jsou odpovědi DHCPOFFER a DHCPACK povoleny.
+                </li>
+                <li>
+                  <strong>Untrusted porty (Nedůvěryhodné):</strong> Všechny uživatelské přístupové porty. Pokud z nich dorazí DHCPOFFER, switch paket <strong>okamžitě zahodí a port může zablokovat</strong>!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: ŽIVÝ INTERAKTIVNÍ SIMULÁTOR DORA
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Interaktivní simulátor procesu DORA">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge" style="background: rgba(6, 182, 212, 0.2); color: #22d3ee;">Živý trenažér</span>
+            <h2>Živá simulace komunikace DHCP: Proces DORA krok za krokem</h2>
+          </div>
+          <p class="slide-lead">
+            Klikněte na jednotlivé fáze procesu DORA. Sledujte putování paketů v síti, změnu stavů na síťové kartě a zápis do tabulky zápůjček.
+          </p>
+
+          <div class="dhcp-sim-box">
+            <div class="sim-actions-toolbar">
+              <button class="sim-btn primary" id="btnDhcpDiscover">1. DHCPDISCOVER</button>
+              <button class="sim-btn" id="btnDhcpOffer">2. DHCPOFFER</button>
+              <button class="sim-btn" id="btnDhcpRequest">3. DHCPREQUEST</button>
+              <button class="sim-btn" id="btnDhcpAck">4. DHCPACK</button>
+              <button class="sim-btn" id="btnDhcpRenew" style="color: #38bdf8;">Obnovit (Renew T1)</button>
+              <button class="sim-btn" id="btnDhcpRelease" style="color: #f87171;">Uvolnit (Release)</button>
+            </div>
+
+            <div class="sim-stage">
+              <!-- Klient -->
+              <div class="host-box">
+                <div class="host-name">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #22d3ee;"><monitor></monitor><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Klient (PC1)
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">MAC: 00:1A:2B:3C:4D:5E</div>
+                <div class="host-ip" id="dhcpClientIp">0.0.0.0 (Nenastaveno)</div>
+                <div class="host-state" id="dhcpClientState">INIT</div>
+              </div>
+
+              <!-- Kanál -->
+              <div class="sim-channel">
+                <span style="font-size: 0.72rem; color: rgba(255,255,255,0.2); letter-spacing: 0.05em; text-transform: uppercase;">Lokální LAN (L2 Broadcast)</span>
+                <div class="sim-packet-bubble" id="dhcpBubble">DHCPDISCOVER</div>
+              </div>
+
+              <!-- Server -->
+              <div class="host-box">
+                <div class="host-name">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><server></server><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                  DHCP Server
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Fond: 192.168.1.100–200</div>
+                <div class="host-ip">192.168.1.1:67</div>
+                <div class="host-state" id="dhcpServerState" style="color: #34d399; border-color: rgba(16, 185, 129, 0.4);">NASLOUCHÁ</div>
+              </div>
+            </div>
+
+            <div id="dhcpStatusNote" style="font-size: 0.86rem; color: var(--text-primary); margin-bottom: 0.75rem; min-height: 24px;">
+              Klikněte na tlačítko <strong>1. DHCPDISCOVER</strong> pro spuštění vyhledávání serveru.
+            </div>
+
+            <!-- Tabulka zápůjček serveru (Lease Table) na celou šíři -->
+            <div class="lease-table-wrap">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted);">Tabulka zápůjček serveru (DHCP Lease Table):</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Fond: 192.168.1.100 &ndash; 192.168.1.200</span>
+              </div>
+              <table class="lease-table">
+                <thead>
+                  <tr>
+                    <th style="width: 25%;">Přidělená IP adresa</th>
+                    <th style="width: 30%;">Klientská MAC adresa</th>
+                    <th style="width: 25%;">Doba zápůjčky (Lease Time)</th>
+                    <th style="width: 20%;">Stav relace</th>
+                  </tr>
+                </thead>
+                <tbody id="dhcpLeaseTable">
+                  <tr style="color: var(--text-muted);">
+                    <td colspan="4" style="text-align: center; padding: 0.45rem;">Žádná aktivní zápůjčka v tabulce.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Záznamník síťových paketů (Sniffer) na celou šíři okna simulátoru -->
+            <div class="sniffer-fullwidth">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.4rem;">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                  Záznamník síťových paketů (Sniffer &bull; Paketový analyzátor):
+                </span>
+                <span style="font-size: 0.71rem; color: #22d3ee; font-family: var(--font-mono);">Filtr: UDP port 67 &harr; 68</span>
+              </div>
+              
+              <div class="sim-sniffer-box">
+                <!-- Hlavička sloupců snifferu -->
+                <div class="sim-sniffer-header">
+                  <span>Čas</span>
+                  <span>Směr</span>
+                  <span>Zpráva DHCP</span>
+                  <span>Zdroj &rarr; Cíl (IP : Port)</span>
+                  <span>Dekódované parametry a volby paketu (DHCP Options)</span>
+                </div>
+                <!-- Tělo logu -->
+                <div class="sim-log-wrap" id="dhcpLogWrap">
+                  <div class="sim-log-entry" style="color: var(--text-muted);">
+                    <span class="sniff-time">--:--.--</span>
+                    <strong class="sniff-dir" style="color: var(--text-muted);">&ndash;&ndash;</strong>
+                    <span class="sniff-type" style="color: var(--text-muted);">[ČEKÁM]</span>
+                    <span class="sniff-endpoints">&ndash;&ndash;</span>
+                    <span class="sniff-details">Čekání na první zprávu... Klikněte na tlačítko 1. DHCPDISCOVER.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Didaktické shrnutí
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Didaktické shrnutí protokolu DHCP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rekapitulace SPŠ</span>
+            <h2>Strukturované shrnutí: Protokol DHCP v kostce</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled pro zkoušení a orientaci v protokolu DHCP.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #22d3ee;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Klíčové parametry a proces
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Transport:</strong> Protokol UDP, server na portu 67, klient na portu 68.</li>
+                <li><strong>Čtyři kroky DORA:</strong> Discover (hledání), Offer (nabídka), Request (žádost), Ack (potvrzení).</li>
+                <li><strong>Předávaná data:</strong> IP adresa, maska, výchozí brána, DNS servery, lease time.</li>
+                <li><strong>Časovače:</strong> T1 (obnova po 50 % času unicastem), T2 (rebind po 87,5 % broadcastem).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><shield></shield><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Podniková síť a bezpečnost
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>DHCP Relay Agent:</strong> Přeposílá broadcasty přes router jako Unicast (<code>ip helper-address</code>).</li>
+                <li><strong>Statická rezervace:</strong> Pevné svázání MAC adresy zařízení se stálou IP adresou z fondu.</li>
+                <li><strong>DHCP Snooping:</strong> Ochrana na L2 přepínačích blokující falešné DHCP servery (Rogue DHCP) na nedůvěryhodných portech.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Kontrolní otázky a opakovací kvíz
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Kontrolní otázky a opakovací kvíz">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Kontrolní otázky pro upevnění látky</h2>
+          </div>
+          <p class="slide-lead">
+            Otestujte své porozumění protokolu DHCP.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Otázka 1 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč klient při procesu DORA posílá zprávu DHCPREQUEST jako broadcast, i když již zná IP adresu serveru z nabídky DHCPOFFER?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                V síti může být více aktivních DHCP serverů (např. pro redundanci) a klient mohl obdržet více nabídek DHCPOFFER najednou. Tím, že klient odešle DHCPREQUEST všesměrově (broadcast), veřejně oznámí vybraný server a všem ostatním serverům dá najevo, že jejich nabídky nepřijal a mohou své rezervované adresy vrátit zpět do fondu.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Kdy a proč nastává situace, že DHCP server odpoví klientovi zprávou DHCPNAK?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Zpráva DHCPNAK (Negative Acknowledgment) nastává tehdy, když klient žádá o prodloužení nebo potvrzení IP adresy, která již v dané síti není platná. Typicky: uživatel měl notebook zapnutý v domácí síti (192.168.1.0/24), uspal jej, přišel do školy (kde je síť 10.0.0.0/8) a probudil jej. Školní DHCP server zjistí, že požadovaná adresa neodpovídá školnímu fondu, odpoví DHCPNAK a donutí klienta zahájit nový proces DORA.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>K čemu slouží příkaz „ip helper-address“ na Cisco směrovači a jaký problém řeší?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Směrovače standardně nepropouštějí všesměrové vysílání (L2/L3 broadcast). Pokud je centrální DHCP server umístěn v jiné podsíti než klient, zpráva DHCPDISCOVER by k němu nedorazila. Příkaz ip helper-address promění router v DHCP Relay Agent &ndash; zachytí klientský broadcast na portu 67, zabalí jej do směrovatelného unicastového paketu a odešle jej na zadanou IP adresu DHCP serveru.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>V čem spočívá funkce DHCP Snooping na switchi a jak chrání síť před útokem Rogue DHCP Server?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                DHCP Snooping rozděluje porty přepínače na důvěryhodné (Trusted &ndash; vedoucí k pravému serveru) a nedůvěryhodné (Untrusted &ndash; přístupové porty pro běžná PC). Pokud se útočník na uživatelském (untrusted) portu pokusí vysílat serverové odpovědi DHCPOFFER nebo DHCPACK s podvrženou bránou či DNS, přepínač tyto pakety okamžitě zahodí a útok zmaří.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Ovládací lišta prezentace -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../060-Aplikacni-vrstva/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 060 Aplikační vrstva (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../062-DNS/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 062 DNS (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 13</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Protokol DHCP
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 061 -->
+  <script src="dhcp-engine.js"></script>
+</body>
+
+</html>

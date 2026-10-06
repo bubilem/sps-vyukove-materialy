@@ -1,0 +1,783 @@
+/* ==========================================================================
+   Téma 063: Protokoly HTTP a HTTPS - Dedikované styly
+   SPŠ Výukové materiály • Předmět POS
+   100% Offline & Pure Vanilla CSS
+   ========================================================================== */
+
+:root {
+  --pos-accent: #10b981;
+  --pos-accent-glow: rgba(16, 185, 129, 0.25);
+  --pos-blue: #3b82f6;
+  --pos-cyan: #06b6d4;
+  --pos-amber: #f59e0b;
+  --pos-rose: #f43f5e;
+  --pos-purple: #a855f7;
+}
+
+/* 1. Titulní snímek */
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, #f8fafc 20%, #34d399 60%, #38bdf8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 840px;
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+}
+
+.title-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* 2. Slide layouty */
+.slide-content {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.slide-header-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.slide-header-badge h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.slide-lead {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout,
+.split-layout-3,
+.split-layout-4,
+.grid-3,
+.grid-4 {
+  display: grid;
+  width: 100%;
+  align-items: stretch;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-3,
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-4,
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.split-layout > .content-card,
+.split-layout-3 > .content-card,
+.split-layout-4 > .content-card,
+.grid-3 > .content-card,
+.grid-4 > .content-card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+}
+
+.split-layout > .content-card > .info-box:last-child,
+.split-layout-3 > .content-card > .info-box:last-child {
+  margin-top: auto;
+}
+
+/* 3. Seznamy vlastností */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pos-accent);
+}
+
+.feature-list li strong {
+  color: var(--text-primary);
+}
+
+/* 4. Stavové kódy barvy */
+.status-code-badge {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.status-2xx { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+.status-3xx { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.status-4xx { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+.status-5xx { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+/* ==========================================================================
+   5. Simulátor verzí HTTP (Snímek 8) & Simulátor Klient-Server (Snímek 9)
+   ========================================================================== */
+
+/* Společné prvky simulátorů */
+.sim-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* --- A. SIMULÁTOR VERZÍ HTTP (Snímek 8) --- */
+.ver-sim-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.85rem;
+}
+
+.ver-tabs {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.ver-tab-btn {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.ver-tab-btn:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--pos-blue);
+  color: #fff;
+}
+
+.ver-tab-btn.active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--pos-accent);
+  color: #34d399;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+}
+
+.ver-sim-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ver-visualizer-box {
+  background: rgba(3, 7, 18, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ver-lanes-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ver-file-lane {
+  display: grid;
+  grid-template-columns: 140px 1fr 90px;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+
+.ver-file-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ver-lane-track {
+  height: 24px;
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.ver-block {
+  height: 18px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #fff;
+  transition: all 0.4s ease;
+  white-space: nowrap;
+  padding: 0 0.35rem;
+  margin-right: 3px;
+  animation: pulse-block 1.5s infinite alternate;
+}
+
+@keyframes pulse-block {
+  from { opacity: 0.85; }
+  to { opacity: 1; }
+}
+
+.ver-block.html { background: #3b82f6; }
+.ver-block.css { background: #8b5cf6; }
+.ver-block.js { background: #eab308; color: #000; }
+.ver-block.img { background: #10b981; }
+.ver-block.tcp { background: #64748b; }
+.ver-block.loss { background: #ef4444; text-decoration: line-through; }
+
+.ver-file-status {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.ver-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.ver-metric-card {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  text-align: center;
+}
+
+.ver-metric-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+}
+
+.ver-metric-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.ver-desc-box {
+  background: rgba(16, 185, 129, 0.08);
+  border-left: 3px solid var(--pos-accent);
+  border-radius: 4px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.ver-desc-box strong {
+  color: #34d399;
+}
+
+/* --- B. SIMULÁTOR KOMUNIKACE KLIENT-SERVER (Snímek 9) --- */
+.cs-scenario-nav {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.75rem;
+}
+
+.cs-scenario-btn {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.cs-scenario-btn:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--pos-accent);
+  color: #fff;
+}
+
+.cs-scenario-btn.active {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: var(--pos-accent);
+  color: #34d399;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+/* Krokovací ovladač */
+.cs-stepper-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.cs-stepper-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.cs-step-indicators {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cs-step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cs-step-dot.active {
+  background: var(--pos-accent);
+  border-color: #34d399;
+  color: #030712;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.cs-step-dot.done {
+  background: rgba(16, 185, 129, 0.3);
+  border-color: var(--pos-accent);
+  color: #34d399;
+}
+
+/* Síťová scéna (Klient <===> Linka <===> Server) */
+.cs-stage {
+  display: grid;
+  grid-template-columns: 260px 1fr 260px;
+  gap: 1rem;
+  align-items: stretch;
+  background: rgba(3, 7, 18, 0.5);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.cs-node {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.cs-node.active-sender {
+  border-color: #60a5fa;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.3);
+}
+
+.cs-node.active-receiver {
+  border-color: #34d399;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.3);
+}
+
+.cs-node-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.35rem;
+}
+
+.cs-node-title {
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cs-node-badge {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+.cs-browser-bar {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-cookie-vault {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px dashed rgba(245, 158, 11, 0.3);
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.72rem;
+}
+
+.cs-cookie-vault-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #fbbf24;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.cs-cookie-item {
+  font-family: var(--font-mono);
+  color: #cbd5e1;
+  background: rgba(30, 41, 59, 0.7);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+/* Drát a animovaný přenos */
+.cs-wire-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+  position: relative;
+}
+
+.cs-wire-line {
+  height: 52px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-sm);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.85rem;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.cs-wire-line.encrypted {
+  border-color: #34d399;
+  border-style: solid;
+  box-shadow: inset 0 0 16px rgba(16, 185, 129, 0.15);
+}
+
+.cs-packet-flyer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  max-width: 95%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  animation: cs-packet-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+@keyframes cs-packet-pop {
+  0% { transform: scale(0.92); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.cs-packet-flyer.ltr {
+  background: rgba(59, 130, 246, 0.25);
+  border: 1px solid #3b82f6;
+  color: #93c5fd;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+.cs-packet-flyer.rtl {
+  background: rgba(16, 185, 129, 0.25);
+  border: 1px solid #10b981;
+  color: #6ee7b7;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+}
+
+.cs-packet-flyer.none {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid #f59e0b;
+  color: #fcd34d;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+}
+
+.cs-wire-sniffer {
+  background: rgba(3, 7, 18, 0.85);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.cs-sniffer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.cs-sniffer-data {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+/* Inspekční blok pod scénou */
+.cs-inspector-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.cs-inspector-box {
+  background: rgba(3, 7, 18, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cs-box-topbar {
+  background: rgba(30, 41, 59, 0.7);
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.cs-box-content {
+  padding: 0.75rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.cs-box-content .hl-method { color: #60a5fa; font-weight: 700; }
+.cs-box-content .hl-status { color: #34d399; font-weight: 700; }
+.cs-box-content .hl-header-key { color: #94a3b8; }
+.cs-box-content .hl-header-val { color: #f8fafc; }
+.cs-box-content .hl-cookie { color: #fbbf24; font-weight: 700; }
+.cs-box-content .hl-body { color: #a78bfa; }
+
+.cs-didactic-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.cs-didactic-panel strong {
+  color: var(--text-primary);
+}
+
+.cs-tip-callout {
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 3px solid #f59e0b;
+  border-radius: 3px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.cs-tip-callout strong {
+  color: #fbbf24;
+}
+
+/* 6. Otázky */
+.question-item {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: var(--transition);
+}
+
+.question-item:hover {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.question-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.question-num {
+  font-family: var(--font-mono);
+  color: var(--pos-accent);
+}
+
+.question-btn {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.question-btn:hover {
+  background: var(--pos-accent);
+  color: #fff;
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.6rem;
+  padding: 0.75rem;
+  background: rgba(30, 41, 59, 0.5);
+  border-left: 3px solid var(--pos-accent);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}

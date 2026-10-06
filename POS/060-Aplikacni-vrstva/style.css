@@ -1,0 +1,373 @@
+/* ==========================================================================
+   Téma 060: Aplikační vrstva (Application Layer) - Dedikované styly
+   SPŠ Výukové materiály • Předmět POS
+   100% Offline & Pure Vanilla CSS
+   ========================================================================== */
+
+:root {
+  --pos-accent: #a855f7;
+  --pos-accent-glow: rgba(168, 85, 247, 0.25);
+  --pos-cyan: #06b6d4;
+  --pos-blue: #3b82f6;
+  --pos-emerald: #10b981;
+  --pos-amber: #f59e0b;
+  --pos-rose: #f43f5e;
+}
+
+/* 1. Titulní snímek */
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, #f8fafc 20%, #c084fc 60%, #38bdf8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 840px;
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+}
+
+.title-badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* 2. Slide layouty */
+.slide-content {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.slide-header-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.slide-header-badge h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.slide-lead {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout,
+.split-layout-3,
+.split-layout-4,
+.grid-3,
+.grid-4 {
+  display: grid;
+  width: 100%;
+  align-items: stretch;
+  margin-bottom: 1.25rem;
+}
+
+.split-layout {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-3,
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.split-layout-4,
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.split-layout > .content-card,
+.split-layout-3 > .content-card,
+.split-layout-4 > .content-card,
+.grid-3 > .content-card,
+.grid-4 > .content-card {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+}
+
+.split-layout > .content-card > .info-box:last-child,
+.split-layout-3 > .content-card > .info-box:last-child {
+  margin-top: auto;
+}
+
+/* 3. Seznamy vlastností */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0.2rem;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pos-accent);
+}
+
+.feature-list li strong {
+  color: var(--text-primary);
+}
+
+/* 4. Porovnání OSI L5-L7 vs TCP/IP */
+.osi-layer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+}
+
+.osi-layer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.9rem;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+}
+
+.osi-layer-item .layer-tag {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+}
+
+/* 5. Modely aplikací (Client-Server vs P2P) */
+.arch-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.arch-visual {
+  height: 100px;
+  background: rgba(3, 7, 18, 0.5);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px dashed var(--border-subtle);
+  margin: 0.5rem 0;
+}
+
+/* 6. Interaktivní Protocol Explorer */
+.proto-explorer-wrap {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+
+.proto-filters-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.proto-search {
+  flex: 1;
+  min-width: 220px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.85rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.proto-search:focus {
+  border-color: var(--pos-accent);
+  box-shadow: 0 0 0 2px var(--pos-accent-glow);
+}
+
+.proto-filter-btn {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.8rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.proto-filter-btn:hover {
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--text-primary);
+  border-color: var(--pos-accent);
+}
+
+.proto-filter-btn.active {
+  background: var(--pos-accent);
+  color: #fff;
+  border-color: var(--pos-accent);
+  font-weight: 600;
+}
+
+.proto-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-height: 330px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.proto-card-item {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.proto-card-item:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: var(--pos-accent);
+  transform: translateY(-2px);
+}
+
+.proto-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.proto-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.proto-port {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.proto-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* 7. Otázky a interakce */
+.question-item {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: var(--transition);
+}
+
+.question-item:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.question-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.question-num {
+  font-family: var(--font-mono);
+  color: var(--pos-accent);
+}
+
+.question-btn {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.question-btn:hover {
+  background: var(--pos-accent);
+  color: #fff;
+}
+
+.question-hint {
+  display: none;
+  margin-top: 0.6rem;
+  padding: 0.75rem;
+  background: rgba(30, 41, 59, 0.5);
+  border-left: 3px solid var(--pos-accent);
+  border-radius: 4px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}

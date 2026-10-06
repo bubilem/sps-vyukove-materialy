@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 062: Protokol DNS (Domain Name System) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Protokol DNS, stromová hierarchie, rekurzivní a iterativní dotazy, typy záznamů (A, AAAA, MX, CNAME) a bezpečnost DNSSEC.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 062 -->
+  <link rel="stylesheet" href="style.css?v=4">
+</head>
+
+<body>
+  <!-- Ambientní pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Indikátor postupu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">062 DNS</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; DNS Protocol</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Protokol DNS">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 062</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Name System</span>
+          </div>
+          <h1 class="hero-title">Protokol DNS (Domain Name System)</h1>
+          <p class="hero-subtitle">
+            Telefonní seznam celosvětového Internetu &bull; Hierarchický distribuovaný překlad doménových jmen na IP adresy, rekurzivní vs. iterativní dotazy, typy zónových záznamů a zabezpečení DNSSEC.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><compass></compass><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                Účel &amp; Význam
+              </h4>
+              <p>Most mezi lidsky zapamatovatelnými jmény (sps.cz) a číselnými IP adresami, které potřebují routery.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #a855f7;"><git-branch></git-branch><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+                Stromová hierarchie
+              </h4>
+              <p>Kořenová doména (Root .), domény nejvyšší úrovně (TLD .cz, .com) a plně kvalifikovaná jména (FQDN).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><file-text></file-text><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Typy záznamů
+              </h4>
+              <p>Zónové záznamy: A (IPv4), AAAA (IPv6), CNAME (alias), MX (pošta), TXT (SPF), PTR a SOA autorita.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #fbbf24;"><play></play><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Živá simulace
+              </h4>
+              <p>Interaktivní krokování překladu domény od klienta přes kořenový server až po autoritativní odpověď.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Účel a principy DNS
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Účel a principy fungování DNS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Základní poslání</span>
+            <h2>Účel a principy DNS: Telefonní seznam Internetu</h2>
+          </div>
+          <p class="slide-lead">
+            Lidé si snadno pamatují jména jako <code>seznam.cz</code> nebo <code>google.com</code>. Síťové přepínače a směrovače však pracují výhradně s číselnými IP adresami.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><book-open></book-open><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                Proč je DNS distribuovaná databáze?
+              </h3>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+                V počátcích ARPANETu existoval jediný textový soubor <code>HOSTS.TXT</code> spravovaný Stanfordem, který si každý počítač stahoval. S exponenciálním růstem sítě to bylo neudržitelné.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Žádný centrální bod:</strong> Databáze DNS je rozdělena na tisíce zón po celém světě. Každý správce domény plně ovládá své záznamy.</li>
+                <li><strong>Škálovatelnost a redundance:</strong> Dotazy se odbavují z vyrovnávacích pamětí (cache), což zabraňuje přetížení kořenových serverů.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><layers></layers><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Dva směry překladu
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #60a5fa;">
+                  <strong style="color: #60a5fa; font-size: 0.9rem;">Dopředný překlad (Forward Lookup):</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Převod doménového jména na IP adresu (např. <code>sps.cz &rarr; 194.108.4.12</code>). Používá se při každém zadání URL do prohlížeče.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #34d399;">
+                  <strong style="color: #34d399; font-size: 0.9rem;">Zpětný / Reverzní překlad (Reverse Lookup):</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Převod IP adresy na doménové jméno (např. <code>194.108.4.12 &rarr; sps.cz</code>) pomocí PTR záznamu v doméně <code>in-addr.arpa</code>. Slouží k ověření pravosti odesílatelů e-mailů.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Hierarchická stromová struktura
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Hierarchická stromová struktura DNS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">DNS Hierarchy</span>
+            <h2>Hierarchická stromová struktura doménových jmen</h2>
+          </div>
+          <p class="slide-lead">
+            Jmenný prostor DNS je uspořádán jako <strong>obrácený strom</strong>. Na samém vrcholu leží neviditelná kořenová tečka (Root).
+          </p>
+
+          <div class="dns-tree-container">
+            <div class="dns-tree-level" style="border-left: 3px solid #c084fc;">
+              <span class="dns-tree-tag" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">Root (.)</span>
+              <div>
+                <strong>Kořenová úroveň (Root Level)</strong> &ndash; reprezentována tečkou na konci FQDN. Celosvětově je spravována 13 jmennými autoritami (A až M), provozovanými přes stovky Anycast serverů.
+              </div>
+            </div>
+
+            <div class="dns-tree-level" style="border-left: 3px solid #60a5fa;">
+              <span class="dns-tree-tag" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">TLD (.cz, .com)</span>
+              <div>
+                <strong>Domény nejvyšší úrovně (Top-Level Domains)</strong> &ndash; generické <em>gTLD</em> (.com, .org, .net, .edu) a národní <em>ccTLD</em> (.cz spravovaný sdružením CZ.NIC, .sk, .de).
+              </div>
+            </div>
+
+            <div class="dns-tree-level" style="border-left: 3px solid #22d3ee;">
+              <span class="dns-tree-tag" style="background: rgba(6, 182, 212, 0.2); color: #22d3ee;">2. úroveň (sps.cz)</span>
+              <div>
+                <strong>Domény druhé úrovně (Second-Level Domains)</strong> &ndash; domény registrované konkrétními školami, firmami či jednotlivci (např. <code>sps.cz</code>, <code>cisco.com</code>).
+              </div>
+            </div>
+
+            <div class="dns-tree-level" style="border-left: 3px solid #34d399;">
+              <span class="dns-tree-tag" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Subdomény</span>
+              <div>
+                <strong>Subdomény a jména hostitelů</strong> &ndash; libovolně členěné správcem dané domény (např. <code>portal.sps.cz</code>, <code>mail.sps.cz</code>).
+              </div>
+            </div>
+          </div>
+
+          <div class="info-box" style="margin-top: 0.75rem; font-size: 0.84rem;">
+            <strong>Plně kvalifikované jméno (FQDN):</strong> Absolutní doménové jméno zakončené tečkou označující kořen, např. <code>portal.sps.cz.</code> (webové prohlížeče koncovou tečku doplňují automaticky).
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Role a typy DNS serverů
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Role a typy DNS serverů">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Infrastruktura DNS</span>
+            <h2>Role a typy DNS serverů v procesu překladu</h2>
+          </div>
+          <p class="slide-lead">
+            V DNS hierarchii má každý typ serveru přesně vymezenou úlohu. Žádný server nezná celý Internet.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">
+                <svg class="icon" viewBox="0 0 24 24"><server></server><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Rekurzivní Resolver (DNS Klientův agent)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Server poskytovatele připojení (ISP) nebo veřejné služby (Google 8.8.8.8, Cloudflare 1.1.1.1, CZ.NIC 185.43.135.1).
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Přijme dotaz od počítače klienta a <strong>udělá veškerou těžkou práci za něj</strong>.</li>
+                <li>Postupně obvolá Root, TLD a autoritativní servery, získá výsledek a vrátí jej klientovi.</li>
+                <li>Ukládá odpovědi do své mezipaměti (Cache) pro bleskovou obsluhu dalších uživatelů.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><shield-check></shield-check><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Autoritativní DNS Server (Držitel pravdy)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Server, který má pro danou doménu nahraný oficiální konfigurační <strong>zónový soubor</strong> od jejího vlastníka.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Zná definitivní a přesné IP adresy (záznamy A, AAAA, MX) pro spravovanou zónu.</li>
+                <li>Není resolverem &ndash; neobvolává cizí servery, odpovídá pouze na dotazy týkající se jeho vlastní domény.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Rekurzivní vs. Iterativní dotazování
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Rekurzivní vs. Iterativní dotazování">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Typy dotazů</span>
+            <h2>Proces dotazování: Rekurzivní vs. Iterativní dotaz</h2>
+          </div>
+          <p class="slide-lead">
+            Při překladu jména se kombinují dva základní principy dotazování.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">Rekurzivní dotaz (Recursive Query)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Klient posílá dotaz svému Resolveru a říká: <em>„Prosím, zjisti mi definitivní IP adresu pro portal.sps.cz. Neodpovídej mi odkazy na jiné servery, chci finální výsledek nebo chybu.“</em>
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.8rem;">
+                Klient (notebook) tak nemusí znát strukturu Internetu ani spotřebovávat procesorový výkon na postupné procházení stromu.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #c084fc;">Iterativní dotaz (Iterative Query)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Resolver se postupně ptá jednotlivých autorit a ty odpovídají: <em>„Já definitivní IP neznám, ale vím, kdo spravuje další úroveň podrobností &ndash; zeptej se tam!“</em>
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.8rem;">
+                Root server tak není zahlcován požadavky na konkrétní IP adresy &ndash; pouze nasměruje resolver na příslušný TLD server.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Klíčové typy DNS záznamů
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Klíčové typy DNS záznamů">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Zónové záznamy</span>
+            <h2>Klíčové typy DNS záznamů (Resource Records &bull; RR)</h2>
+          </div>
+          <p class="slide-lead">
+            Zónový soubor domény se skládá z typovaných záznamů. Každý záznam slouží k jinému účelu.
+          </p>
+
+          <div class="grid-4" style="gap: 0.75rem;">
+            <div class="content-card" style="border-top: 3px solid #60a5fa;">
+              <strong style="color: #60a5fa;">A záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">IPv4 adresa</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Převádí doménu na 32bitovou IPv4 (např. <code>194.108.4.12</code>).
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #22d3ee;">
+              <strong style="color: #22d3ee;">AAAA záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">IPv6 adresa</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Quad-A záznam pro moderní 128bitovou adresu IPv6.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #34d399;">
+              <strong style="color: #34d399;">CNAME záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Kanonický alias</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Alias odkazující na jiné doménové jméno (např. <code>www.sps.cz &rarr; sps.cz</code>).
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <strong style="color: #fbbf24;">MX záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Poštovní server</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Mail Exchanger &ndash; určuje server pro příjem e-mailů a jeho prioritu.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #a855f7;">
+              <strong style="color: #c084fc;">NS záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Jmenný server</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Name Server delegující autoritu pro danou zónu.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #ef4444;">
+              <strong style="color: #f87171;">PTR záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Reverzní ukazatel</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Zpětné mapování IP adresy na jméno pro antispam.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #ec4899;">
+              <strong style="color: #f472b6;">TXT záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Textová data</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Textové ověření domény a antispamové záznamy SPF/DKIM.
+              </p>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #64748b;">
+              <strong style="color: #cbd5e1;">SOA záznam</strong>
+              <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">Počátek autority</div>
+              <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Základní parametry zóny, sériové číslo a časovače.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Transportní protokol a port 53
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Transportní protokol a port 53">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Port 53</span>
+            <h2>Transportní vrstva DNS: Port 53 nad UDP i TCP</h2>
+          </div>
+          <p class="slide-lead">
+            DNS je jedním z mála protokolů, který standardně využívá jak <strong>UDP</strong>, tak <strong>TCP</strong> na stejném portu <strong>53</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #34d399;">Port 53 nad UDP (Běžný provoz)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Používá se pro <strong>99 % všech běžných klientských dotazů</strong>.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Jeden paket s dotazem a jeden paket s odpovědí bez nutnosti navazovat TCP spojení.</li>
+                <li>Maximální původní limit velikosti UDP zprávy byl 512 bajtů (rozšířen mechanismem EDNS0 až na 4096 B).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #60a5fa;">Port 53 nad TCP (Zónové přenosy a DNSSEC)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                TCP se aktivuje ve specifických situacích:
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Zónové přenosy (AXFR/IXFR):</strong> Replikace celého zónového souboru mezi primárním a sekundárním DNS serverem.</li>
+                <li><strong>Odpovědi přesahující limit (Truncation bit TC=1):</strong> Pokud se odpověď nevejde do UDP paketu, server vrátí příznak TC a klient dotaz zopakuje přes TCP.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: DNS Caching a TTL
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="DNS Caching a hodnota TTL">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Optimalizace sítě</span>
+            <h2>DNS Caching a hodnota TTL (Time to Live)</h2>
+          </div>
+          <p class="slide-lead">
+            Bez mezipaměti (cache) by se světové DNS servery během několika minut zhroutily pod náporem miliard dotazů.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #fbbf24;"><clock></clock><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Co znamená TTL u DNS záznamu?
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                TTL určuje dobu v sekundách, po kterou smí rekurzivní resolver nebo klientský počítač <strong>uchovávat odpověď ve své paměti</strong>, aniž by se znovu dotazoval autoritativního serveru.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Vysoké TTL (např. 86400 s = 24 h):</strong> Rychlé načítání, minimální zátěž serveru, ale pomalé šíření případných změn IP adresy.</li>
+                <li><strong>Nízké TTL (např. 300 s = 5 min):</strong> Vhodné před plánovanou migrací serveru na novou IP adresu.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><terminal></terminal><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Lokální DNS Cache v operačním systému
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Každý operační systém si udržuje vlastní lokální vyrovnávací paměť DNS záznamů.
+              </p>
+              <div style="background: rgba(3, 7, 18, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8rem; margin-top: 0.5rem;">
+                # Zobrazení mezipaměti v OS Windows:<br>
+                <span style="color: #38bdf8;">ipconfig /displaydns</span><br><br>
+                # Vymazání mezipaměti (např. po změně webu):<br>
+                <span style="color: #34d399;">ipconfig /flushdns</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Zabezpečení DNS a DNSSEC
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Zabezpečení DNS a kryptografické DNSSEC">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Kybernetická bezpečnost</span>
+            <h2>Zabezpečení DNS: Útok Cache Poisoning a obrana DNSSEC</h2>
+          </div>
+          <p class="slide-lead">
+            Původní protokol DNS z roku 1983 neobsahuje žádné ověření pravosti. Toho útočníci využívají k podvržení záznamů.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3 style="color: #ef4444;">
+                <svg class="icon" viewBox="0 0 24 24"><shield-alert></shield-alert><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Útok DNS Cache Poisoning (Spoofing)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Útočník podvrhne falešnou odpověď do vyrovnávací paměti rekurzivního resolveru (např. podstrčí IP falešného bankovnictví pro doménu banka.cz). Všichni klienti daného poskytovatele jsou pak přesměrováni na phishingový web!
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><shield-check></shield-check><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Obrana: DNSSEC (DNS Security Extensions)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                Kryptografické rozšíření DNS, které podepisuje všechny záznamy asymetrickým digitálním podpisem (RRSIG).
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>Resolver si ověří platnost řetězce důvěry (Chain of Trust) od kořene až po konkrétní záznam.</li>
+                <li>Podvržený záznam bez platného podpisu resolver okamžitě zahodí.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: ŽIVÝ INTERAKTIVNÍ SIMULÁTOR DNS
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Interaktivní simulátor překladu domény">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">Živá laboratoř</span>
+            <h2>Živá simulace překladu domény: Krok za krokem hierarchií DNS</h2>
+          </div>
+          <p class="slide-lead">
+            Vyberte doménu a klikáním na jednotlivé kroky sledujte, jak se rekurzivní resolver postupně dotazuje Root, TLD a autoritativního serveru.
+          </p>
+
+          <div class="dns-sim-box">
+            <div class="dns-query-toolbar">
+              <label style="font-size: 0.85rem; color: var(--text-secondary);">Zvolte doménu k překladu:</label>
+              <select id="dnsDomainSelect" class="dns-select">
+                <option value="portal.sps.cz">portal.sps.cz (.cz doména)</option>
+                <option value="mail.google.com">mail.google.com (.com doména)</option>
+                <option value="api.github.com">api.github.com (.com doména)</option>
+              </select>
+
+              <button class="sim-btn primary" id="btnDnsStep">Další krok resolvingu</button>
+              <button class="sim-btn" id="btnDnsReset">Reset</button>
+            </div>
+
+            <!-- Síťové uzly -->
+            <div class="dns-nodes-grid">
+              <div class="dns-node-card active" id="nodeClient">
+                <div class="node-role">Klient</div>
+                <div class="node-name">PC (Browser)</div>
+              </div>
+              <div class="dns-node-card" id="nodeResolver">
+                <div class="node-role">Resolver (8.8.8.8)</div>
+                <div class="node-name">DNS ISP</div>
+              </div>
+              <div class="dns-node-card" id="nodeRoot">
+                <div class="node-role">Root Server</div>
+                <div class="node-name">Kořen (.)</div>
+              </div>
+              <div class="dns-node-card" id="nodeTld">
+                <div class="node-role">TLD Server</div>
+                <div class="node-name">TLD (.cz / .com)</div>
+              </div>
+              <div class="dns-node-card" id="nodeAuth">
+                <div class="node-role">Autoritativní</div>
+                <div class="node-name">Auth NS</div>
+              </div>
+            </div>
+
+            <!-- Průběh a zpráva -->
+            <div class="dns-flow-track" id="dnsFlowTrack">
+              Klikněte na „Další krok resolvingu“ pro zahájení překladu domény.
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Výsledná odpověď zapsaná do cache klienta:</div>
+                <div id="dnsResultBox" style="padding: 0.65rem; background: rgba(3, 7, 18, 0.6); border-radius: 4px; font-size: 0.85rem; min-height: 48px; display: flex; align-items: center;">
+                  Čekání na spuštění dotazu...
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Záznamník dotazů v síti (Log):</div>
+                <div id="dnsLogWrap" style="max-height: 80px; overflow-y: auto; background: rgba(3, 7, 18, 0.6); border-radius: 4px; padding: 0.4rem 0.6rem; font-family: var(--font-mono); font-size: 0.75rem;">
+                  <div style="color: var(--text-muted);">Připraven k dotazování...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Interaktivní inspektor záznamů
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Inspektor typů DNS záznamů">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Zónová syntaxe</span>
+            <h2>Interaktivní inspektor zónových DNS záznamů</h2>
+          </div>
+          <p class="slide-lead">
+            Klikněte na typ záznamu a prozkoumejte jeho přesnou syntaxi v zónovém souboru BIND a praktické využití.
+          </p>
+
+          <div class="dns-inspector-card">
+            <!-- Navigační lišta typů záznamů -->
+            <div class="dns-record-tabs">
+              <button class="dns-record-btn active" data-record="A">A (IPv4)</button>
+              <button class="dns-record-btn" data-record="AAAA">AAAA (IPv6)</button>
+              <button class="dns-record-btn" data-record="CNAME">CNAME (Alias)</button>
+              <button class="dns-record-btn" data-record="MX">MX (Mail)</button>
+              <button class="dns-record-btn" data-record="NS">NS (Server)</button>
+              <button class="dns-record-btn" data-record="PTR">PTR (Reverse)</button>
+              <button class="dns-record-btn" data-record="TXT">TXT (SPF/DKIM)</button>
+              <button class="dns-record-btn" data-record="SOA">SOA (Authority)</button>
+              <button class="dns-record-btn" data-record="SRV">SRV (Service)</button>
+            </div>
+
+            <!-- Dynamicky vykreslené tělo inspektoru -->
+            <div id="dnsInspectorContainer" class="dns-inspector-body">
+              <!-- Bude naplněno skriptem dns-engine.js -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Didaktické shrnutí
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Didaktické shrnutí protokolu DNS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rekapitulace SPŠ</span>
+            <h2>Strukturované shrnutí: Protokol DNS v kostce</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled pro zkoušení a orientaci v protokolu DNS.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Hierarchie a principy
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Port a transport:</strong> Port 53 nad UDP (rychlé dotazy) i TCP (zónové přenosy a DNSSEC).</li>
+                <li><strong>Hierarchie:</strong> Root servery (.), TLD (.cz, .com) a autoritativní servery.</li>
+                <li><strong>Dotazování:</strong> Klient vysílá rekurzivní dotaz, resolver prochází strom iterativně.</li>
+                <li><strong>Optimalizace:</strong> DNS Caching a časovač TTL pro úsporu síťového pásma.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><file-text></file-text><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Záznamy a bezpečnost
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Záznamy:</strong> A (IPv4), AAAA (IPv6), CNAME (alias), MX (pošta), TXT (antispam SPF), NS (delegace).</li>
+                <li><strong>Hrozby:</strong> DNS Cache Poisoning (podvržení IP do cache).</li>
+                <li><strong>Obrana:</strong> DNSSEC &ndash; kryptografické podepisování záznamů chránící integritu.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Kontrolní otázky a opakovací kvíz
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Kontrolní otázky a opakovací kvíz">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Kontrolní otázky pro upevnění látky</h2>
+          </div>
+          <p class="slide-lead">
+            Otestujte své porozumění protokolu DNS.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Otázka 1 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Jaký je rozdíl mezi rekurzivním dotazem a iterativním dotazem v DNS architektuře?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Při rekurzivním dotazu žádá klient svůj resolver o konečnou odpověď (přesnou IP adresu nebo chybu). Resolver pak provede veškeré dohledání za něj. Při iterativním dotazu se resolver ptá nadřazených serverů (Root, TLD) a ty mu odpovídají odkazem na další server, který má podrobnější informace o zóně (např. „Já sps.cz neznám, ale zeptej se na NS serveru pro .cz“).
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Proč protokol DNS standardně používá port 53 nad UDP, ale v určitých situacích přepíná na TCP?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                UDP je preferováno pro běžné dotazy klientů, protože je bleskové a nevyžaduje navazování spojení (jeden dotaz a jedna odpověď). Pokud je však odpověď příliš velká (překročí limit UDP paketu, typicky u velkých kryptografických klíčů DNSSEC), server vrátí příznak Truncated (TC=1) a klient dotaz zopakuje spolehlivě přes TCP. TCP se také povinně používá pro zónové přenosy (AXFR) mezi servery.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>K čemu slouží hodnota TTL u DNS záznamu a jaký dopad má její nastavení na provoz sítě?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                TTL (Time to Live) udává počet sekund, po které smí mezipaměť (resolver i klient) záznam uchovávat bez nového dotazování autoritativního serveru. Vysoké TTL (např. 24 h) šetří šířku pásma a urychluje odezvu, ale zpomaluje šíření změn při přesunu webu na nový server. Nízké TTL (např. 300 s) umožňuje okamžité přepnutí serveru, ale zvyšuje zátěž DNS infrastruktury.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>V čem spočívá útok DNS Cache Poisoning a jakou ochranu proti němu poskytuje technologie DNSSEC?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Při Cache Poisoningu útočník podvrhne falešnou odpověď do mezipaměti rekurzivního resolveru dříve, než dorazí odpověď od pravého autoritativního serveru. Uživatelé pak při zadání legitimní adresy (např. banky) skončí na falešném serveru. DNSSEC tomu brání tím, že každý zónový záznam je digitálně podepsán asymetrickým klíčem. Resolver podpis ověří proti kořeni a podvržený nepodepsaný záznam okamžitě zahodí.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Ovládací lišta prezentace -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <a href="../061-DHCP/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 061 DHCP (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../063-HTTP-a-HTTPS/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 063 HTTP a HTTPS (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 13</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Protokol DNS
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 062 -->
+  <script src="dns-engine.js?v=4"></script>
+</body>
+
+</html>
