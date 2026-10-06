@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 050: Transportní vrstva (Transport Layer) | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Transportní vrstva L4, účel, multiplexing, čísla portů dle IANA, sokety, protokoly TCP a UDP, PDU segment a výpočty MSS.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 050 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">050 Transportní vrstva</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #60a5fa; border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.12);">CCNA:ITN &bull; Transport Layer L4</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Transportní vrstva (Transport Layer)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 050</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(59, 130, 246, 0.4); color: #60a5fa;">Cisco CCNA:ITN Layer 4</span>
+          </div>
+          <h1 class="hero-title">Transportní vrstva (Transport Layer)</h1>
+          <p class="hero-subtitle">
+            Logická end-to-end komunikace mezi aplikačními procesy &bull; Účel a zařazení L4, multiplexing, 16bitové porty a IANA rozsahy, koncept soketů, protokoly TCP a UDP, PDU segment a výpočty MSS.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Zařazení &amp; Účel L4
+              </h4>
+              <p>Most mezi fyzickým doručením na uzel (L3) a konkrétní běžící aplikací (L7). Zajištění Process-to-Process komunikace.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Porty a Sokety
+              </h4>
+              <p>16bitová adresace portů (0–65535), rozsahy IANA a koncept Socket Pair (pětice identifikující spojení v síti).</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+                Protokoly TCP a UDP
+              </h4>
+              <p>Dvourychlostní svět: spolehlivý spojovaný TCP se stavovým automatem vs. bleskový nespojovaný UDP bez záruk.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Segment &amp; MSS
+              </h4>
+              <p>PDU transportní vrstvy, segmentace datových proudů, omezení MTU vs. MSS a interaktivní segmentační trenažér.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Zařazení transportní vrstvy
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Zařazení transportní vrstvy v modelech">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Architektura sítí</span>
+            <h2>Zařazení transportní vrstvy v modelech ISO/OSI a TCP/IP</h2>
+          </div>
+          <p class="slide-lead">
+            Síťová vrstva (L3) dokáže spolehlivě dopravit paket z jednoho počítače do druhého napříč Internetem. Jak ale operační systém pozná, zda příchozí data patří prohlížeči, e-mailovému klientovi nebo online hře? Zde nastupuje <strong>transportní vrstva (L4)</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                Hierarchie a postavení vrstvy
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.75rem;">
+                Transportní vrstva tvoří <strong>hranici mezi síťovým světem a softwarovými aplikacemi</strong>:
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <strong>V modelu ISO/OSI:</strong> Je to přesně <strong>4. vrstva (Layer 4)</strong>, ležící nad síťovou vrstvou L3 a pod relační vrstvou L5.
+                </li>
+                <li>
+                  <strong>V modelu TCP/IP:</strong> Tvoří <strong>transportní vrstvu (Transport Layer)</strong>, přímo spojenou s aplikační vrstvou (HTTP, DNS, SSH...).
+                </li>
+                <li>
+                  <strong>End-to-End princip:</strong> Transportní protokoly běží <em>výhradně na koncových zařízeních</em> (klient a server). Mezilehlé síťové prvky (switche a routery) do L4 hlaviček standardně nezasahují.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                Zásadní rozdíl: Host-to-Host vs. Process-to-Process
+              </h3>
+              <div class="layer-compare-box">
+                <div class="layer-col l3">
+                  <div class="layer-col-header" style="color: var(--pos-amber);">
+                    <span>Síťová vrstva (L3)</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem;">IP adresa</span>
+                  </div>
+                  <strong style="font-size: 0.85rem; color: var(--text-primary);">Host-to-Host doručení</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">
+                    Adresuje celá fyzická zařízení v globální síti. Říká: <em>„Tento balík doruč z počítače A na počítač B.“</em>
+                  </p>
+                </div>
+
+                <div class="layer-col l4">
+                  <div class="layer-col-header" style="color: var(--pos-cyan);">
+                    <span>Transportní vrstva (L4)</span>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem;">Číslo portu</span>
+                  </div>
+                  <strong style="font-size: 0.85rem; color: var(--text-primary);">Process-to-Process doručení</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">
+                    Adresuje konkrétní proces či vlákno v OS. Říká: <em>„Uvnitř počítače B předej data procesu webového serveru (port 443).“</em>
+                  </p>
+                </div>
+              </div>
+              <div class="info-box" style="margin-top: 0.5rem; font-size: 0.84rem;">
+                Bez transportní vrstvy by na počítači mohl v jednu chvíli běžet pouze jediný síťový program.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Účel a 4 pilíře transportní vrstvy
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Účel a 4 klíčové funkce L4">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Funkce L4</span>
+            <h2>Čtyři základní pilíře a účel transportní vrstvy</h2>
+          </div>
+          <p class="slide-lead">
+            Transportní vrstva řeší komplexní logistiku přenosu dat. Přeměňuje nestrukturovaný proud aplikačních dat na přenositelné jednotky a garantuje požadovanou úroveň komunikace.
+          </p>
+
+          <div class="grid-4">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                1. Multiplexing
+              </h4>
+              <p style="font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary);">
+                Umožňuje <strong>souběžnou komunikaci desítek různých aplikací</strong> (prohlížeč, Spotify, Discord, aktualizace OS) přes jedinou síťovou kartu a jednu IP adresu současně.
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.78rem;">
+                Směrování dat do správné aplikace zajišťují čísla portů.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                2. Segmentace dat
+              </h4>
+              <p style="font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary);">
+                Rozřezání velkých zpráv (např. 5GB souboru) na <strong>malé bloky – segmenty</strong>, které odpovídají limitu sítě (MTU), a jejich následné poskládání v cíli (Reassembly).
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.78rem;">
+                Žádný velký přenos nezablokuje celou síť pro ostatní.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+                3. Řízení toku (Flow)
+              </h4>
+              <p style="font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary);">
+                Ochrana příjemce před zahlcením. Pokud odesílatel chrlí gigabity za sekundu, ale pomalý server nestíhá data zpracovávat, <strong>transportní vrstva odesílatele přibrzdí</strong>.
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.78rem;">
+                U protokolu TCP realizováno mechanismem posuvného okna.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                4. Spolehlivost
+              </h4>
+              <p style="font-size: 0.85rem; line-height: 1.5; color: var(--text-secondary);">
+                Výběr mezi stoprocentní <strong>spolehlivostí s potvrzováním a opravou ztrát</strong> (TCP), nebo <strong>maximální rychlostí s minimální režií</strong> bez potvrzování (UDP).
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.78rem;">
+                Aplikace si volí protokol podle svých požadavků.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Pojem Soket (Socket)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Pojem Soket a adresace aplikací">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Adresace L4</span>
+            <h2>Pojem Soket (Socket) a identifikace spojení</h2>
+          </div>
+          <p class="slide-lead">
+            Samotná IP adresa identifikuje pouze počítač v síti. Samotné číslo portu identifikuje pouze proces v rámci operačního systému. Teprve jejich spojením vzniká <strong>soket (socket)</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Co je síťový soket?
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.75rem;">
+                Soket je koncový bod obousměrného komunikačního kanálu mezi dvěma programy v síti. V zápisu se uvádí jako:
+              </p>
+              <div style="text-align: center; margin: 0.75rem 0;">
+                <span class="socket-formula">Soket = IP adresa : Číslo portu</span>
+              </div>
+              <ul class="feature-list">
+                <li>
+                  <strong>Příklad klientského soketu:</strong> <code>192.168.1.55:54210</code> (váš notebook, dynamicky přidělený klientský port prohlížeče).
+                </li>
+                <li>
+                  <strong>Příklad serverového soketu:</strong> <code>142.250.186.174:443</code> (webový server Google naslouchající na pevném portu HTTPS).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+                Pětice: Unikátní Socket Pair (5-Tuple)
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                Každé jednotlivé síťové spojení na světě je v jádře operačního systému jednoznačně identifikováno touto <strong>5-ticí hodnot</strong>:
+              </p>
+
+              <div class="socket-tuple-grid">
+                <div class="socket-tuple-item">
+                  <div class="lbl">1. Protokol</div>
+                  <div class="val" style="color: #60a5fa;">TCP / UDP</div>
+                </div>
+                <div class="socket-tuple-item">
+                  <div class="lbl">2. Zdrojová IP</div>
+                  <div class="val">192.168.1.55</div>
+                </div>
+                <div class="socket-tuple-item">
+                  <div class="lbl">3. Zdrojový Port</div>
+                  <div class="val" style="color: #38bdf8;">54210</div>
+                </div>
+                <div class="socket-tuple-item">
+                  <div class="lbl">4. Cílová IP</div>
+                  <div class="val">142.250.186.174</div>
+                </div>
+                <div class="socket-tuple-item">
+                  <div class="lbl">5. Cílový Port</div>
+                  <div class="val" style="color: #f59e0b;">443</div>
+                </div>
+              </div>
+
+              <div class="info-box" style="font-size: 0.83rem;">
+                <strong>Proč může mít uživatel otevřeno 10 záložek na stejném webu?</strong><br>
+                Cílová IP i cílový port (443) jsou stejné. Každá nová záložka však od operačního systému dostane <em>jiný zdrojový port</em> (např. 54210, 54211, 54212), takže spojení zůstávají dokonale oddělená.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Čísla portů a IANA rozsahy
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Čísla portů a rozdělení dle IANA">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Standardizace IANA</span>
+            <h2>Čísla portů a jejich oficiální rozdělení dle IANA</h2>
+          </div>
+          <p class="slide-lead">
+            Číslo portu je <strong>16bitové celé číslo bez znaménka</strong>. Celkem existuje $2^{16} = 65\,536$ možných čísel portů (v rozsahu od <strong>0 do 65535</strong>). Organizace IANA (Internet Assigned Numbers Authority) tento prostor rozdělila do tří striktních kategorií.
+          </p>
+
+          <!-- Vizuální měřítko rozsahů -->
+          <div class="port-range-bar">
+            <div class="port-range-seg well-known">
+              <span>Well-Known (0–1023)</span>
+              <span class="range-nums">Systémové služby (1 024 portů)</span>
+            </div>
+            <div class="port-range-seg registered">
+              <span>Registered Ports (1024–49151)</span>
+              <span class="range-nums">Uživatelské &amp; Databázové (48 128 portů)</span>
+            </div>
+            <div class="port-range-seg dynamic">
+              <span>Dynamic / Ephemeral (49152–65535)</span>
+              <span class="range-nums">Klientské odchozí (16 384 portů)</span>
+            </div>
+          </div>
+
+          <div class="split-layout-3" style="margin-top: 1rem;">
+            <div class="content-card" style="border-top: 3px solid #ef4444;">
+              <h4 style="color: #f87171;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Well-Known Ports (0 – 1023)
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Pevně vyhrazeno pro <strong>klíčové systémové protokoly Internetu</strong>. V operačních systémech (Linux, macOS) vyžaduje naslouchání na těchto portech oprávnění správce (root).
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.78rem;">
+                <strong>Příklady:</strong> HTTP (80), HTTPS (443), SSH (22), DNS (53), DHCP (67/68), SMTP (25).
+              </div>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h4 style="color: #fbbf24;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                Registered Ports (1024 – 49151)
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Registrované u IANA konkrétními výrobci software a komunitami pro <strong>aplikační servery, databáze a herní protokoly</strong>, aby se zamezilo kolizím portů.
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.78rem;">
+                <strong>Příklady:</strong> MySQL (3306), PostgreSQL (5432), MS SQL (1433), RDP (3389), Minecraft (25565).
+              </div>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h4 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                Dynamic / Ephemeral (49152 – 65535)
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Nazývané též <strong>privátní nebo efemérní (dočasné) porty</strong>. Operační systém je automaticky náhodně alokuje aplikacím klienta jako <em>zdrojové porty</em> při otevírání nového spojení.
+              </p>
+              <div class="info-box" style="margin-top: auto; font-size: 0.78rem;">
+                Po uzavření spojení a vypršení časovače je port vrácen do fondu pro další použití.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Přehled klíčových portů a služeb
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Přehled klíčových síťových portů">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Znalostní báze CCNA</span>
+            <h2>Přehled standardních portů a síťových služeb</h2>
+          </div>
+          <p class="slide-lead">
+            Následující přehled tvoří základní znalostní minimum každého správce sítě i studenta SPŠ. Tyto porty a jejich protokoly musíte bezpečně rozpoznat při konfiguraci firewallu i analýze v nástroji Wireshark.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Webové, terminálové a souborové služby
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Port 20 / 21 (TCP) &bull; FTP:</strong> Přenos souborů. Port 21 slouží pro příkazy a řízení relace, port 20 pro samotný datový tok.
+                </li>
+                <li>
+                  <strong>Port 22 (TCP) &bull; SSH / SFTP:</strong> Zabezpečená šifrovaná vzdálená příkazová řádka a bezpečný přenos souborů. Nahradil starý Telnet.
+                </li>
+                <li>
+                  <strong>Port 23 (TCP) &bull; Telnet:</strong> Nešifrovaný textový terminál. Hesla přenáší v čistém textu – dnes v ostré síti přísně zakázán.
+                </li>
+                <li>
+                  <strong>Port 80 (TCP) &bull; HTTP:</strong> Základní nešifrovaný protokol pro přenos webových stránek World Wide Web.
+                </li>
+                <li>
+                  <strong>Port 443 (TCP/UDP) &bull; HTTPS:</strong> Šifrovaný web s ochranou TLS/SSL. U moderního HTTP/3 běží nad UDP (QUIC).
+                </li>
+                <li>
+                  <strong>Port 3389 (TCP/UDP) &bull; RDP:</strong> Grafická vzdálená plocha systémů Microsoft Windows.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Infrastrukturní služby a elektronická pošta
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Port 53 (UDP / TCP) &bull; DNS:</strong> Překlad domén (např. sps.cz na IP). UDP pro bleskové dotazy klientů, TCP pro zónové přenosy mezi servery.
+                </li>
+                <li>
+                  <strong>Port 67 / 68 (UDP) &bull; DHCP:</strong> Automatická konfigurace sítě. Server naslouchá na portu 67, klientské zařízení na portu 68.
+                </li>
+                <li>
+                  <strong>Port 69 (UDP) &bull; TFTP:</strong> Triviální FTP bez autentizace – bootování PC po síti (PXE) a zálohování konfigurací Cisco IOS.
+                </li>
+                <li>
+                  <strong>Port 123 (UDP) &bull; NTP:</strong> Network Time Protocol pro přesnou synchronizaci hodin na milisekundy.
+                </li>
+                <li>
+                  <strong>Port 25 (TCP) &bull; SMTP:</strong> Odesílání a předávání pošty mezi poštovními servery (Mail Transfer Agent).
+                </li>
+                <li>
+                  <strong>Port 110 (POP3) / 143 (IMAP) &bull; Pošta:</strong> Příjem a synchronizace e-mailů. Moderní zabezpečené verze běží na portech 995 (POP3S) a 993 (IMAPS).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Interaktivní Port & Socket Explorer
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Interaktivní Port &amp; Socket Explorer">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Interaktivní Port Explorer a generátor klientských soketů</h2>
+          </div>
+          <p class="slide-lead">
+            Vyhledejte libovolný síťový port v databázi, vyfiltrujte protokoly a vyzkoušejte si, jak operační systém generuje unikátní klientský soket pro komunikaci.
+          </p>
+
+          <div class="split-layout">
+            <!-- Levá část: Port Explorer -->
+            <div class="port-explorer-panel">
+              <h4 style="margin-bottom: 0.75rem; color: var(--pos-accent); display: flex; align-items: center; gap: 0.5rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Databáze síťových portů
+              </h4>
+
+              <div class="port-filter-bar">
+                <input type="text" id="portSearchInput" class="port-search-input" placeholder="Hledat port nebo službu (např. 80, DNS, SSH, DHCP)...">
+                <button class="port-filter-btn active" data-filter="all">Vše</button>
+                <button class="port-filter-btn" data-filter="tcp">TCP</button>
+                <button class="port-filter-btn" data-filter="udp">UDP</button>
+                <button class="port-filter-btn" data-filter="well-known">0–1023</button>
+              </div>
+
+              <div class="port-table-wrap">
+                <table class="port-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 70px;">Port</th>
+                      <th style="width: 80px;">Proto</th>
+                      <th style="width: 140px;">Služba</th>
+                      <th>Popis a využití v síti</th>
+                    </tr>
+                  </thead>
+                  <tbody id="portTableBody">
+                    <!-- Plněno z transport-engine.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Pravá část: Socket Simulator -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4 style="margin-bottom: 0.5rem; color: var(--pos-cyan); display: flex; align-items: center; gap: 0.5rem;">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                  Trenažér: Sestavení relace Socket Pair
+                </h4>
+                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                  Vyberte cílovou serverovou službu a sledujte, jak operační systém dynamicky sestaví unikátní soketové propojení:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 0.75rem;">
+                  <div>
+                    <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Cílová služba serveru:</label>
+                    <select id="socketServiceSelect" style="width: 100%; padding: 0.45rem; background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-color); border-radius: 4px; color: #fff; font-size: 0.85rem;">
+                      <option value="TCP|443|142.250.186.174|HTTPS Web (Google)">Webový server HTTPS (Port 443 / TCP)</option>
+                      <option value="TCP|22|194.108.4.12|SSH Terminál">Zabezpečený terminál SSH (Port 22 / TCP)</option>
+                      <option value="UDP|53|8.8.8.8|DNS Resolver">Překlad adres DNS (Port 53 / UDP)</option>
+                      <option value="TCP|3306|10.0.0.50|MySQL Databáze">Databázový server MySQL (Port 3306 / TCP)</option>
+                      <option value="TCP|3389|172.16.1.100|Windows RDP">Vzdálená plocha Windows RDP (Port 3389 / TCP)</option>
+                    </select>
+                  </div>
+
+                  <div style="display: flex; gap: 0.5rem; align-items: flex-end;">
+                    <div style="flex: 1;">
+                      <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">IP adresa klienta (LAN):</label>
+                      <input type="text" id="socketClientIp" value="192.168.1.45" style="width: 100%; padding: 0.45rem; background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border-color); border-radius: 4px; color: #fff; font-size: 0.85rem; font-family: var(--font-mono);">
+                    </div>
+                    <button id="socketRandomPortBtn" class="question-btn" type="button" style="white-space: nowrap; height: 34px;">
+                      <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                      Nový efemérní port
+                    </button>
+                  </div>
+                </div>
+
+                <div class="socket-badge-card" style="margin-top: 0.5rem;">
+                  <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Výsledný Socket Pair (Konverzace v OS)</div>
+                  <div id="socketFormulaDisplay" class="socket-formula" style="font-size: 0.95rem;">
+                    <!-- Plněno z JS -->
+                  </div>
+
+                  <div class="socket-tuple-grid" style="margin-top: 0.5rem; margin-bottom: 0;">
+                    <div class="socket-tuple-item"><div class="lbl">Protokol</div><div class="val" id="valProto">TCP</div></div>
+                    <div class="socket-tuple-item"><div class="lbl">Klient IP</div><div class="val" id="valSrcIp">192.168.1.45</div></div>
+                    <div class="socket-tuple-item"><div class="lbl">Klient Port</div><div class="val" id="valSrcPort" style="color:#60a5fa;">52341</div></div>
+                    <div class="socket-tuple-item"><div class="lbl">Server IP</div><div class="val" id="valDstIp">142.250.186.174</div></div>
+                    <div class="socket-tuple-item"><div class="lbl">Server Port</div><div class="val" id="valDstPort" style="color:#f59e0b;">443</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-box" style="margin-top: 0.75rem; font-size: 0.78rem;">
+                Klientský port pochází z efemérního rozsahu (49152–65535). Serverový port je standardní well-known port služby.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Přehled protokolů transportní vrstvy
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Přehled protokolů transportní vrstvy">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Protokoly L4</span>
+            <h2>Přehled protokolů: Od gigantů TCP a UDP po moderní QUIC</h2>
+          </div>
+          <p class="slide-lead">
+            Ačkoli v běžném Internetu dominují TCP a UDP, rodina transportních protokolů zahrnuje i specializované standardy pro telekomunikace, multimédia a moderní web.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                <h3 style="color: #60a5fa; margin: 0;">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  TCP (Transmission Control Protocol)
+                </h3>
+                <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">RFC 793</span>
+              </div>
+              <p style="font-size: 0.86rem; line-height: 1.5; color: var(--text-secondary);">
+                <strong>Královský protokol spolehlivého přenosu.</strong> Před odesláním dat naváže spojení (Three-Way Handshake), potvrzuje každý bajt, garantuje správné pořadí a řídí zahlcení sítě.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Využití:</strong> Web (HTTP/1.1, HTTP/2), stahování souborů, e-maily, databáze.</li>
+                <li><strong>Nevýhoda:</strong> Větší režie hlavičky (20–60 B) a zpoždění při retransmisi ztracených paketů.</li>
+              </ul>
+
+              <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border-subtle);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <h3 style="color: #34d399; margin: 0;">
+                    <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    UDP (User Datagram Protocol)
+                  </h3>
+                  <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">RFC 768</span>
+                </div>
+                <p style="font-size: 0.86rem; line-height: 1.5; color: var(--text-secondary);">
+                  <strong>Minimalistický nespojovaný protokol.</strong> Princip „pošli a zapomeň“ (Fire &amp; Forget). Žádné navazování spojení, žádné potvrzování, nulová zpoždění.
+                </p>
+                <ul class="feature-list" style="margin-top: 0.5rem;">
+                  <li><strong>Využití:</strong> DNS dotazy, DHCP, VoIP hovory, online hry, live video streaming.</li>
+                  <li><strong>Výhoda:</strong> Hlavička má pouze 8 bajtů; podpora broadcastu a multicastu.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Specializované a moderní protokoly
+              </h3>
+
+              <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                    <strong style="color: #c084fc; font-size: 0.9rem;">QUIC (Quick UDP Internet Connections)</strong>
+                    <span class="badge" style="font-size: 0.7rem;">HTTP/3 &bull; RFC 9000</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin: 0;">
+                    Moderní protokol od Google a IETF tvořící páteř <strong>HTTP/3</strong>. Běží nad UDP, má integrované TLS 1.3 šifrování, nulové zpoždění při obnovení spojení (0-RTT) a eliminuje blokování čela fronty (Head-of-Line Blocking).
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                    <strong style="color: #38bdf8; font-size: 0.9rem;">SCTP (Stream Control Transmission Protocol)</strong>
+                    <span class="badge" style="font-size: 0.7rem;">RFC 4960</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin: 0;">
+                    Kombinuje spolehlivost TCP s orientací na zprávy UDP. Podporuje <em>multi-homing</em> (jedno spojení přes více síťových rozhraní) a <em>multi-streaming</em>. Používá se v telekomunikacích (LTE, 5G, SIGTRAN) a WebRTC.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                    <strong style="color: #fbbf24; font-size: 0.9rem;">DCCP (Datagram Congestion Control Protocol)</strong>
+                    <span class="badge" style="font-size: 0.7rem;">RFC 4340</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin: 0;">
+                    Nespojovaný přenos nespolehlivých datagramů (jako UDP), avšak s vestavěným oboustranným mechanismem řízení zahlcení linky (Congestion Control).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: PDU transportní vrstvy: Segment a Datagram
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="PDU transportní vrstvy: Segment a Datagram">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Enkapsulace dat</span>
+            <h2>PDU na transportní vrstvě: Segment vs. Datagram</h2>
+          </div>
+          <p class="slide-lead">
+            Při průchodu komunikačním zásobníkem směrem dolů jsou aplikační data zapouzdřena. Protokolová datová jednotka (PDU) na 4. vrstvě nese specifický název podle použitého protokolu.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                PDU a enkapsulační pyramida
+              </h3>
+              <div class="encap-flow">
+                <div class="encap-step">
+                  <span class="encap-badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc;">L7 Data</span>
+                  <span>Aplikační data (HTML kód, JSON, JPEG obrázek, text e-mailu)</span>
+                </div>
+                <div class="encap-step" style="border: 2px solid var(--pos-accent); background: rgba(59, 130, 246, 0.1);">
+                  <span class="encap-badge" style="background: var(--pos-accent); color: #fff;">L4 PDU</span>
+                  <span><strong>Segment (TCP)</strong> nebo <strong>Datagram (UDP)</strong> s L4 hlavičkou</span>
+                </div>
+                <div class="encap-step">
+                  <span class="encap-badge" style="background: rgba(6, 182, 212, 0.2); color: #38bdf8;">L3 PDU</span>
+                  <span><strong>Paket (Packet)</strong> přidává IP hlavičku (IP zdroje a cíle)</span>
+                </div>
+                <div class="encap-step">
+                  <span class="encap-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">L2 PDU</span>
+                  <span><strong>Rámec (Frame)</strong> přidává MAC adresy a kontrolní součet FCS</span>
+                </div>
+                <div class="encap-step">
+                  <span class="encap-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">L1 PDU</span>
+                  <span><strong>Bity (Bits)</strong> – elektrické pulzy, světelné záblesky, rádiové vlny</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                Terminologické rozlišení: Segment vs. Datagram
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                V odborné terminologii a v kurikulu Cisco CCNA se přísně rozlišuje:
+              </p>
+
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border-left: 3px solid var(--pos-accent); margin-bottom: 0.75rem;">
+                <strong style="color: #60a5fa;">TCP Segment:</strong>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0.25rem 0 0 0;">
+                  Nazývá se <em>segment</em>, protože vzniká <strong>segmentací (rozřezáním) souvislého proudu bajtů (Byte Stream)</strong>. Každý segment má své Sequence Number a tvoří dílek skládačky.
+                </p>
+              </div>
+
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border-left: 3px solid #10b981;">
+                <strong style="color: #34d399;">UDP Datagram:</strong>
+                <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0.25rem 0 0 0;">
+                  Nazývá se <em>uživatelský datagram (User Datagram)</em>. Jedná se o <strong>samostatnou nezávislou zprávu</strong>, která se nepovažuje za dílek proudu – buď dorazí celá, nebo nedorazí vůbec.
+                </p>
+              </div>
+
+              <div class="info-box" style="margin-top: auto; font-size: 0.82rem;">
+                Pokud se v obecné řeči mluví o „L4 PDU“, standardní souhrnný název je <em>Segment</em>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Význam segmentace dat, MTU a MSS
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Význam segmentace dat, MTU a MSS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Limity sítě</span>
+            <h2>Význam segmentace dat: Limity MTU a výpočet MSS</h2>
+          </div>
+          <p class="slide-lead">
+            Fyzické sítě nemohou přenášet libovolně velké bloky dat najednou. Každé linkové médium má pevný limit zvaný <strong>MTU (Maximum Transmission Unit)</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Co je MTU a jak vzniká MSS?
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>MTU (Maximum Transmission Unit):</strong> Největší povolená velikost L3 paketu na ethernetovém médiu. Pro standardní kabelový Ethernet činí přesně <strong>1 500 bajtů</strong>.
+                </li>
+                <li>
+                  <strong>MSS (Maximum Segment Size):</strong> Maximální velikost <em>čistých užitečných dat (Payload)</em>, která se vejdou do jednoho TCP segmentu bez nutnosti fragmentace na IP vrstvě.
+                </li>
+              </ul>
+
+              <div style="text-align: center; margin: 1rem 0;">
+                <div class="socket-formula" style="font-size: 1rem; color: #34d399;">
+                  MSS = MTU &minus; IP hlavička (20 B) &minus; TCP hlavička (20 B)
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 1.1rem; color: #60a5fa; margin-top: 0.25rem;">
+                  MSS = 1500 &minus; 20 &minus; 20 = <strong>1 460 bajtů</strong>
+                </div>
+              </div>
+
+              <div class="info-box" style="font-size: 0.8rem;">
+                Při použití protokolu UDP činí prostor pro data $1500 - 20 - 8 = 1472 \text{ bajtů}$, protože hlavička UDP má pouze 8 bajtů.
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Dva zásadní důvody pro segmentaci
+              </h3>
+
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--pos-accent); font-size: 0.9rem;">1. Spravedlivé sdílení linky (Fair Sharing / Multiplexing)</strong>
+                  <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.4; margin-top: 0.25rem;">
+                    Kdyby se stahoval 2GB film v jediném obřím bloku, linka by byla na minuty zablokována. Ostatní uživatelé v síti by si nemohli načíst ani malou webovou stránku či odeslat zprávu. Díky rozsekání na malé segmenty se datové toky střídají v mikrosekundách.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: #f59e0b; font-size: 0.9rem;">2. Efektivní obnova po ztrátě (Lokalizace chyb)</strong>
+                  <p style="font-size: 0.83rem; color: var(--text-secondary); line-height: 1.4; margin-top: 0.25rem;">
+                    Pokud vlivem rušení na Wi-Fi dojde k poškození jednoho bitu, zahodí se a znovu odešle <strong>pouze jediný vadný 1460bajtový segment</strong>. Nemusí se znovu přenášet celý gigabajtový soubor od začátku!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Interaktivní segmentační trenažér
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Segmentační trenažér a kalkulátor">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Laboratorní dílna</span>
+            <h2>Interaktivní segmentační kalkulátor a analýza režie</h2>
+          </div>
+          <p class="slide-lead">
+            Zadejte velikost přenášeného souboru, zvolte MTU sítě a transportní protokol. Sledujte, kolik segmentů vznikne a kolik procent přenosu tvoří režie protokolových hlaviček.
+          </p>
+
+          <div class="segment-calc-container">
+            <div class="calc-inputs-row">
+              <div class="calc-field">
+                <label>Velikost přenášených dat:</label>
+                <div style="display: flex; gap: 0.5rem;">
+                  <input type="number" id="calcFileSize" value="100" min="1" max="10000" style="flex: 2;">
+                  <select id="calcFileUnit" style="flex: 1;">
+                    <option value="KB" selected>kB</option>
+                    <option value="MB">MB</option>
+                    <option value="B">Bajtů</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="calc-field">
+                <label>Typ sítě a limit MTU:</label>
+                <select id="calcMtu">
+                  <option value="1500" selected>Standardní Ethernet (MTU 1500 B)</option>
+                  <option value="1492">PPPoE DSL linka (MTU 1492 B)</option>
+                  <option value="1280">Minimální IPv6 linka (MTU 1280 B)</option>
+                  <option value="9000">Datacentrum Jumbo Frames (MTU 9000 B)</option>
+                </select>
+              </div>
+
+              <div class="calc-field">
+                <label>Transportní protokol (L4):</label>
+                <select id="calcProto">
+                  <option value="TCP" selected>TCP (Hlavička 20 B)</option>
+                  <option value="UDP">UDP (Hlavička 8 B)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Výstupní metriky -->
+            <div class="segment-metrics-grid">
+              <div class="metric-card">
+                <div class="metric-val" id="valMss">1 460 B</div>
+                <div class="metric-lbl">MSS (Data na segment)</div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-val" id="valSegmentCount" style="color: #60a5fa;">71</div>
+                <div class="metric-lbl">Počet segmentů celkem</div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-val" id="valTotalOverhead" style="color: #f59e0b;">4.0 kB</div>
+                <div class="metric-lbl">Režie hlaviček (L4+L3+L2)</div>
+              </div>
+
+              <div class="metric-card">
+                <div class="metric-val" id="valPayloadRatio" style="color: #10b981;">96.2 %</div>
+                <div class="metric-lbl">Užitečná data na médiu</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 0.75rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">Vizualizace segmentace datového toku (prvních 20 segmentů):</span>
+                <span style="font-size: 0.75rem; color: #34d399;">Zeleně = Poslední segment (zbytek)</span>
+              </div>
+              <div class="segment-vis-track" id="segmentTrack">
+                <!-- Generováno z JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Didaktické shrnutí tématu
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Didaktické shrnutí tématu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rekapitulace SPŠ</span>
+            <h2>Strukturované shrnutí: Transportní vrstva v kostce</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled nejdůležitějších principů transportní vrstvy, které si musíte odnést k maturitě i do praxe síťového inženýra.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                Klíčové teoretické pojmy
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Process-to-Process:</strong> L4 směruje data konkrétním běžícím procesům, zatímco L3 směruje data mezi fyzickými hostiteli (Host-to-Host).
+                </li>
+                <li>
+                  <strong>Soket:</strong> Dvojice <code>IP:Port</code>. Každé spojení je unikátně definováno 5-ticí (Protokol, Zdrojová IP, Zdrojový Port, Cílová IP, Cílový Port).
+                </li>
+                <li>
+                  <strong>Porty IANA:</strong> Celkem 65 536 portů (16 bitů). Well-known (0–1023), Registered (1024–49151), Dynamic / Ephemeral (49152–65535).
+                </li>
+                <li>
+                  <strong>Multiplexing:</strong> Desítky otevřených aplikací a webových oken sdílí jedno internetové připojení bez kolize.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                Protokoly a segmentace
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>TCP vs. UDP:</strong> TCP je orientovaný na spojení, zaručuje doručení a správné pořadí. UDP je nespojovaný, bleskový, s minimální režií (8 B).
+                </li>
+                <li>
+                  <strong>PDU jednotka:</strong> Na L4 se nazývá <em>Segment</em> (u TCP) nebo <em>Datagram</em> (u UDP).
+                </li>
+                <li>
+                  <strong>MTU vs. MSS:</strong> MTU je limit linky (1500 B u Ethernetu). MSS je čistý prostor pro data TCP segmentu ($1500 - 20 - 20 = 1460 \text{ B}$).
+                </li>
+                <li>
+                  <strong>Význam segmentace:</strong> Zamezuje zablokování přenosového média velkými soubory a umožňuje retransmitovat pouze ztracené segmenty.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Kontrolní otázky a opakovací kvíz
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Kontrolní otázky a opakovací kvíz">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Kontrolní otázky pro upevnění látky</h2>
+          </div>
+          <p class="slide-lead">
+            Otestujte své porozumění transportní vrstvě. Zkuste si nejprve odpovědět sami a poté rozbalte nápovědu.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Otázka 1 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč nemůže samotná IP adresa stačit k doručení dat z webového serveru až do vašeho prohlížeče?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                IP adresa (L3) identifikuje pouze váš počítač v síti (síťovou kartu). Na vašem počítači však současně běží desítky programů (webový prohlížeč, Discord, e-mail, aktualizace). Bez čísla portu (L4) by operační systém nevěděl, kterému konkrétnímu procesu příchozí data předat.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Máte v prohlížeči otevřeno pět různých záložek se stránkami na serveru YouTube (HTTPS, port 443). Jak server pozná, které video poslat do které záložky?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Díky konceptu Socket Pair (5-tice). Server má sice vždy stejnou IP a port 443, ale operační systém vašeho počítače přiřadil každé jednotlivé záložce unikátní náhodný zdrojový port z dynamického/efemérního rozsahu (např. 51201, 51202, 51203). Každé spojení má tedy zcela odlišnou 5-tici a server posílá odpovědi přesně na daný zdrojový port.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jaký je rozdíl mezi MTU a MSS na běžné ethernetové síti s protokolem IPv4 a TCP? Uveďte přesné hodnoty v bajtech.</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                MTU (Maximum Transmission Unit) je maximální velikost celého L3 paketu a na Ethernetu činí 1500 bajtů. MSS (Maximum Segment Size) je čistý prostor pro uživatelská data bez hlaviček. Od MTU 1500 B se odečte 20 B IPv4 hlavička a 20 B TCP hlavička: $1500 - 20 - 20 = 1460$ bajtů.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Do jakých tří oficiálních kategorií dělí organizace IANA čísla portů a jaký je jejich rozsah?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                1. Well-Known Ports: 0 až 1023 (systémové standardní služby jako HTTP, SSH, DNS; vyžadují práva root/admin).<br>
+                2. Registered Ports: 1024 až 49151 (registrované aplikace, databáze a herní servery jako MySQL, RDP).<br>
+                3. Dynamic / Private / Ephemeral Ports: 49152 až 65535 (dočasné klientské porty dynamicky přidělované OS pro odchozí spojení).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../042-Subnetting-VLSM/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 042 Subnetting a VLSM (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../051-TCP-a-UDP/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 051 TCP a UDP (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 13</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Transportní vrstva
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 050 -->
+  <script src="transport-engine.js"></script>
+</body>
+
+</html>

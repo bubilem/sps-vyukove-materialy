@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 051: Protokoly TCP a UDP | POS • SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Srovnání protokolů TCP a UDP, anatomie TCP segmentu a UDP datagramu, interaktivní ukázka Three-Way Handshake, potvrzování, Sliding Window, řazení a ukončení komunikace.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 051 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">051 TCP a UDP</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #34d399; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12);">CCNA:ITN &bull; TCP vs. UDP</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Protokoly TCP a UDP">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 051</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399;">Cisco CCNA:ITN Protocols</span>
+          </div>
+          <h1 class="hero-title">Protokoly TCP a UDP</h1>
+          <p class="hero-subtitle">
+            Detailní srovnání transportních gigantů &bull; Anatomie TCP segmentu a UDP datagramu, řídicí příznaky, stavový model a živý interaktivní simulátor komunikace TCP: Three-Way Handshake, potvrzování ACK, Sliding Window, řazení a korektní i násilné ukončení.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Porovnání protokolů
+              </h4>
+              <p>Stavový a spolehlivý proud TCP vs. bleskový nespojovaný UDP bez záruk. Srovnávací matice a případy užití.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                UDP Datagram
+              </h4>
+              <p>Filozofie „pošli a zapomeň“, minimalistická 8bajtová hlavička a interaktivní inspektor polí.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                TCP Segment
+              </h4>
+              <p>Struktura 20–60 bajtů, Sequence &amp; Ack čísla, řídicí příznaky (SYN, ACK, FIN, RST...) a stavový automat.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Interaktivní simulace
+              </h4>
+              <p>Plně animovaný trenažér navázání 3-way spojení, posuvného okénka, řazení paketů, ztráty a 4-way ukončení.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Porovnání protokolů TCP vs. UDP
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Porovnání protokolů TCP a UDP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Srovnávací analýza</span>
+            <h2>Porovnání protokolů: TCP vs. UDP – Dva odlišné světy</h2>
+          </div>
+          <p class="slide-lead">
+            Všechny aplikace v Internetu si musí vybrat: buď <strong>absolutní spolehlivost s režií a zpožděním (TCP)</strong>, nebo <strong>maximální rychlost s minimální režií bez záruk (UDP)</strong>.
+          </p>
+
+          <div class="compare-table-container">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th style="width: 22%;">Vlastnost / Parametr</th>
+                  <th style="width: 39%; color: #60a5fa;">TCP (Transmission Control Protocol)</th>
+                  <th style="width: 39%; color: #34d399;">UDP (User Datagram Protocol)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Typ komunikace</strong></td>
+                  <td><span class="badge-tcp-tag">Spojovaná (Connection-oriented)</span> &ndash; vyžaduje Three-Way Handshake</td>
+                  <td><span class="badge-udp-tag">Nespojovaná (Connectionless)</span> &ndash; data se posílají rovnou</td>
+                </tr>
+                <tr>
+                  <td><strong>Spolehlivost doručení</strong></td>
+                  <td><strong>Zaručená:</strong> Každý bajt je potvrzován (ACK), ztracené pakety se retransmitují</td>
+                  <td><strong>Nezaručená (Best-effort):</strong> Žádná potvrzení, ztracené pakety se ignorují</td>
+                </tr>
+                <tr>
+                  <td><strong>Velikost hlavičky</strong></td>
+                  <td><strong>20 až 60 bajtů</strong> (minimálně 160 bitů, proměnlivé volby)</td>
+                  <td><strong>Pouze 8 bajtů</strong> (přesně 64 bitů, minimální režie sítě)</td>
+                </tr>
+                <tr>
+                  <td><strong>Zachování pořadí (Order)</strong></td>
+                  <td><strong>Ano:</strong> Pomocí Sequence Numbers příjemce data seřadí i při přeházení</td>
+                  <td><strong>Ne:</strong> Datagramy mohou dorazit v libovolném pořadí nebo duplicitně</td>
+                </tr>
+                <tr>
+                  <td><strong>Řízení toku a zahlcení</strong></td>
+                  <td><strong>Ano:</strong> Posuvné okénko (Flow Control) a algoritmy zahlcení (Congestion)</td>
+                  <td><strong>Ne:</strong> Žádné řízení toku; odesílá data maximální dostupnou rychlostí</td>
+                </tr>
+                <tr>
+                  <td><strong>Typy přenosu</strong></td>
+                  <td>Pouze <strong>Unicast (1:1)</strong> &ndash; spojení dvou konkrétních soketů</td>
+                  <td><strong>Unicast (1:1), Multicast (1:N) i Broadcast (1:všichni)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Příklady využití</strong></td>
+                  <td>Web (HTTP/1.1, HTTP/2), HTTPS, stahování souborů, e-maily, SSH, databáze</td>
+                  <td>DNS dotazy, DHCP, VoIP telefonie, online videohry, živé streamování, QUIC</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Protokol UDP: Filozofie a využití
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Protokol UDP a filozofie přenosu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">UDP &bull; RFC 768</span>
+            <h2>Protokol UDP: Filozofie bleskového přenosu bez stavu</h2>
+          </div>
+          <p class="slide-lead">
+            UDP (User Datagram Protocol) se často zjednodušeně označuje jako „nespolehlivý protokol“. V síťovém inženýrství to však neznamená vadu, ale <strong>cílenou konstrukční volbu pro aplikace v reálném čase</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Proč je UDP v moderních sítích nenahraditelné?
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Princip „Pošli a zapomeň“ (Fire &amp; Forget):</strong> Aplikace předá zprávu vrstvě L4 a ta ji okamžitě odešle do sítě. Nečeká na žádné navazování spojení ani na odpověď.
+                </li>
+                <li>
+                  <strong>Nulový jitter a minimální latence:</strong> U hlasového hovoru (VoIP) nebo online střílečky je 200 ms starý paket bezcenný. Kdybychom čekali na jeho retransmisi jako u TCP, hovor by zamrzl a zvuk by se zpozdil. Je mnohem lepší jeden vzorek zvuku ztratit a pokračovat v živém přenosu.
+                </li>
+                <li>
+                  <strong>Jednoduchost dotaz-odpověď (Request-Response):</strong> U protokolů jako DNS (překlad domény) pošle klient 1 datagram s dotazem a server odpoví 1 datagramem. Navazovat předtím TCP spojení by trvalo trojnásobek času.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Klíčové vlastnosti UDP protokolu
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #10b981;">
+                  <strong style="color: #34d399; font-size: 0.88rem;">1. Bezstavovost (Stateless)</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Server si nemusí v paměti pamatovat žádné stavy klientů. Jeden server tak dokáže obsloužit stovky tisíc UDP dotazů za sekundu bez rizika vyčerpání paměti RAM.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #06b6d4;">
+                  <strong style="color: #22d3ee; font-size: 0.88rem;">2. Schopnost Broadcastu a Multicastu</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Protože UDP nevyžaduje navázání párového spojení, může odesílatel poslat jeden datagram na multicastovou skupinu a oslovit tisíce příjemců najednou (IPTV, routing protokoly).
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #f59e0b;">
+                  <strong style="color: #fbbf24; font-size: 0.88rem;">3. Základ pro moderní HTTP/3 (QUIC)</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Moderní Internet přesouvá webovou komunikaci z pomalého TCP na protokol QUIC, který běží právě nad UDP.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: UDP Datagram: Anatomie záhlaví
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="UDP Datagram: Anatomie záhlaví">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Anatomie L4 PDU</span>
+            <h2>UDP Datagram: Minimalistické 8bajtové záhlaví</h2>
+          </div>
+          <p class="slide-lead">
+            Hlavička protokolu UDP patří k nejjednodušším v celé architektuře TCP/IP. Má <strong>přesně 8 bajtů (64 bitů)</strong> a skládá se pouze ze čtyř 16bitových polí.
+          </p>
+
+          <div class="split-layout">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem;">Klikněte na pole pro zobrazení podrobností:</div>
+              <!-- Vizuální UDP hlavička -->
+              <div class="udp-row">
+                <div class="udp-cell active" data-udp-field="srcPort">
+                  <div class="title">Source Port</div>
+                  <div class="bits">16 bitů (0–15)</div>
+                </div>
+                <div class="udp-cell" data-udp-field="dstPort">
+                  <div class="title">Destination Port</div>
+                  <div class="bits">16 bitů (16–31)</div>
+                </div>
+              </div>
+              <div class="udp-row">
+                <div class="udp-cell" data-udp-field="len">
+                  <div class="title">Length (Délka)</div>
+                  <div class="bits">16 bitů (32–47)</div>
+                </div>
+                <div class="udp-cell" data-udp-field="chk">
+                  <div class="title">Checksum (Kontrolní součet)</div>
+                  <div class="bits">16 bitů (48–63)</div>
+                </div>
+              </div>
+
+              <!-- Payload -->
+              <div style="background: rgba(30, 41, 59, 0.4); border: 1px dashed var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; text-align: center; margin-top: 0.5rem; font-family: var(--font-mono); color: var(--text-secondary); font-size: 0.85rem;">
+                Uživatelská data (Aplikační Payload z L7 &bull; DNS dotaz, VoIP hlas, DHCP data...)
+              </div>
+            </div>
+
+            <!-- Detail vybraného pole -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge" id="udpFieldBits" style="background: rgba(16, 185, 129, 0.2); color: #34d399; margin-bottom: 0.5rem;">16 bitů</span>
+                <h3 id="udpFieldName" style="color: #34d399; margin-bottom: 0.5rem;">Zdrojový port (Source Port)</h3>
+                <p id="udpFieldDesc" style="font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary);">
+                  Číslo portu odesílající aplikace. U klientského dotazu je to náhodně přidělený efemérní port (např. 53120). Pokud se od serveru neočekává žádná odpověď, může být nastaven na hodnotu 0.
+                </p>
+              </div>
+
+              <div class="info-box" style="margin-top: 1rem; font-size: 0.82rem;">
+                <strong>Zajímavost ke kontrolnímu součtu:</strong><br>
+                U protokolu IPv4 je Checksum u UDP volitelný (pokud se nepoužije, vyplní se nuly). U moderního protokolu IPv6 je však kontrolní součet u UDP již <strong>striktně povinný</strong>, protože samotná hlavička IPv6 už žádný kontrolní součet nemá!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Protokol TCP: Filozofie a spolehlivost
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Protokol TCP a princip spolehlivosti">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">TCP &bull; RFC 793</span>
+            <h2>Protokol TCP: Spolehlivý proud bajtů (Byte Stream Service)</h2>
+          </div>
+          <p class="slide-lead">
+            TCP (Transmission Control Protocol) transformuje nespolehlivou datovou síť náchylnou ke ztrátám na <strong>naprosto spolehlivý obousměrný komunikační kanál</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Základní principy spolehlivosti TCP
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Spojovaný charakter (Connection-Oriented):</strong> Než odešle jediný bajt dat, obě strany si vymění kontrolní pakety (Three-Way Handshake) a vytvoří logické spojení.
+                </li>
+                <li>
+                  <strong>Bajtově orientované číslování:</strong> TCP nečísluje pakety (1, 2, 3), ale <em>každý jednotlivý odeslaný bajt</em> dat. Pořadové číslo (Sequence Number) určuje přesný bajtový offset v toku.
+                </li>
+                <li>
+                  <strong>Kumulativní potvrzování (Cumulative ACK):</strong> Příjemce v čísle potvrzení (Ack Number) hlásí přesné číslo <em>dalšího očekávaného bajtu</em>.
+                </li>
+                <li>
+                  <strong>Časovače a retransmise (RTO):</strong> Pokud odesílatel neobdrží potvrzení do vypršení časovače (Retransmission Timeout), data automaticky odešle znovu.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><activity></activity><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Řízení toku a zahlcení (Flow &amp; Congestion Control)
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid var(--pos-accent);">
+                  <strong style="color: #60a5fa; font-size: 0.88rem;">Řízení toku (Flow Control):</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Chrání <strong>příjemce</strong> před zahlcením. Příjemce v každém segmentu v poli <em>Window Size</em> oznamuje, kolik volného místa má ve svém bufferu. Odesílatel nesmí poslat více neackovaných dat, než kolik činí tato hodnota.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #f59e0b;">
+                  <strong style="color: #fbbf24; font-size: 0.88rem;">Řízení zahlcení sítě (Congestion Control):</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Chrání <strong>samotnou mezilehlou síť (routery)</strong> před kolapsem. Algoritmy jako <em>Slow Start</em>, <em>Congestion Avoidance</em> a <em>Fast Recovery</em> testují propustnost a při detekci ztrát okamžitě sníží rychlost.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: TCP Segment: Anatomie záhlaví
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="TCP Segment: Anatomie záhlaví">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Detailní diagram</span>
+            <h2>TCP Segment: Kompletní struktura 20 až 60bajtového záhlaví</h2>
+          </div>
+          <p class="slide-lead">
+            Hlavička TCP segmentu je organizována do <strong>32bitových slov (4 bajty na řádek)</strong>. Kliknutím na libovolné pole zobrazíte jeho specifikaci a význam.
+          </p>
+
+          <div class="split-layout">
+            <!-- Vizuální 32bitová matice TCP -->
+            <div class="header-grid">
+              <div class="header-row scale-row">
+                <span style="grid-column: span 8;">0 &ndash; 7 bitů</span>
+                <span style="grid-column: span 8;">8 &ndash; 15 bitů</span>
+                <span style="grid-column: span 8;">16 &ndash; 23 bitů</span>
+                <span style="grid-column: span 8;">24 &ndash; 31 bitů</span>
+              </div>
+
+              <!-- Řádek 1: Porty -->
+              <div class="header-row">
+                <div class="header-cell active" style="grid-column: span 16;" data-tcp-field="srcPort">
+                  <span>Zdrojový port (16b)</span>
+                </div>
+                <div class="header-cell" style="grid-column: span 16;" data-tcp-field="dstPort">
+                  <span>Cílový port (16b)</span>
+                </div>
+              </div>
+
+              <!-- Řádek 2: Sequence Number -->
+              <div class="header-row">
+                <div class="header-cell" style="grid-column: span 32;" data-tcp-field="seq">
+                  <span>Pořadové číslo &bull; Sequence Number (32 bitů)</span>
+                </div>
+              </div>
+
+              <!-- Řádek 3: Acknowledgment Number -->
+              <div class="header-row">
+                <div class="header-cell" style="grid-column: span 32;" data-tcp-field="ack">
+                  <span>Číslo potvrzení &bull; Acknowledgment Number (32 bitů)</span>
+                </div>
+              </div>
+
+              <!-- Řádek 4: Offset, Rezervováno, Příznaky, Window -->
+              <div class="header-row">
+                <div class="header-cell" style="grid-column: span 4;" data-tcp-field="offset" title="Header Length">
+                  <span>Offset (4b)</span>
+                </div>
+                <div class="header-cell" style="grid-column: span 3;" data-tcp-field="res" title="Rezervováno">
+                  <span>Rez (3b)</span>
+                </div>
+                <div class="header-cell" style="grid-column: span 9;" data-tcp-field="flags" title="Řídicí příznaky">
+                  <span style="color: #fbbf24;">Flags (9b)</span>
+                </div>
+                <div class="header-cell" style="grid-column: span 16;" data-tcp-field="window">
+                  <span>Velikost okna &bull; Window Size (16b)</span>
+                </div>
+              </div>
+
+              <!-- Řádek 5: Checksum a Urgent Pointer -->
+              <div class="header-row">
+                <div class="header-cell" style="grid-column: span 16;" data-tcp-field="checksum">
+                  <span>Kontrolní součet (16b)</span>
+                </div>
+                <div class="header-cell" style="grid-column: span 16;" data-tcp-field="urgPtr">
+                  <span>Urgent Pointer (16b)</span>
+                </div>
+              </div>
+
+              <!-- Řádek 6: Options -->
+              <div class="header-row">
+                <div class="header-cell" style="grid-column: span 32; background: rgba(30, 41, 59, 0.4);" data-tcp-field="options">
+                  <span>Volitelné parametry &bull; Options &amp; Padding (0 až 40 bajtů &ndash; např. MSS, SACK)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detail vybraného pole -->
+            <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge" id="tcpFieldBits" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; margin-bottom: 0.5rem;">16 bitů (0–15)</span>
+                <h3 id="tcpFieldName" style="color: #60a5fa; margin-bottom: 0.5rem;">Zdrojový port (Source Port)</h3>
+                <p id="tcpFieldDesc" style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary);">
+                  Číslo portu odesílatele segmentu. U klienta jde obvykle o náhodný dynamický/efemérní port (např. 51234), u serveru o standardní port služby.
+                </p>
+              </div>
+
+              <div class="info-box" style="margin-top: 1rem; font-size: 0.82rem;">
+                Základní TCP hlavička má přesně <strong>20 bajtů (5 řádků po 4 bajtech)</strong>. Pokud jsou použity volby (např. vyjednání MSS při navázání), může dosáhnout až 60 bajtů.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Řídicí příznaky TCP (Flags)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Řídicí příznaky TCP (Flags)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Řízení spojení</span>
+            <h2>Řídicí příznaky TCP: Šestice klíčových přepínačů</h2>
+          </div>
+          <p class="slide-lead">
+            V poli Flags se nachází jednobitové přepínače (1 = zapnuto, 0 = vypnuto), které určují účel daného segmentu a řídí stavový automat TCP.
+          </p>
+
+          <div class="grid-3" style="gap: 1rem;">
+            <!-- SYN -->
+            <div class="content-card" style="border-top: 3px solid #60a5fa;">
+              <h4 style="color: #60a5fa; display: flex; align-items: center; justify-content: space-between;">
+                <span>SYN (Synchronize)</span>
+                <span class="badge" style="font-size: 0.7rem;">Navázání</span>
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Nastaven <strong>pouze u prvních dvou paketů</strong> navazování spojení. Slouží k synchronizaci počátečních náhodných sekvenčních čísel (ISN).
+              </p>
+            </div>
+
+            <!-- ACK -->
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h4 style="color: #34d399; display: flex; align-items: center; justify-content: space-between;">
+                <span>ACK (Acknowledgment)</span>
+                <span class="badge" style="font-size: 0.7rem;">Potvrzení</span>
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Signalizuje, že pole <em>Acknowledgment Number</em> obsahuje platné číslo dalšího očekávaného bajtu. Je <strong>nastaven téměř u všech segmentů</strong> po navázání.
+              </p>
+            </div>
+
+            <!-- FIN -->
+            <div class="content-card" style="border-top: 3px solid #c084fc;">
+              <h4 style="color: #c084fc; display: flex; align-items: center; justify-content: space-between;">
+                <span>FIN (Finish)</span>
+                <span class="badge" style="font-size: 0.7rem;">Ukončení</span>
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Žádost o <strong>korektní, čisté ukončení spojení</strong>. Odesílatel oznamuje, že již nemá žádná další data k odeslání a spouští Four-Way Handshake.
+              </p>
+            </div>
+
+            <!-- RST -->
+            <div class="content-card" style="border-top: 3px solid #ef4444;">
+              <h4 style="color: #f87171; display: flex; align-items: center; justify-content: space-between;">
+                <span>RST (Reset)</span>
+                <span class="badge" style="font-size: 0.7rem;">Násilný reset</span>
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                <strong>Okamžité a bezpodmínečné zrušení spojení.</strong> Používá se při pokusu o připojení na neotevřený port, pádu aplikace nebo detekci anomálie firewallem.
+              </p>
+            </div>
+
+            <!-- PSH -->
+            <div class="content-card" style="border-top: 3px solid #f59e0b;">
+              <h4 style="color: #fbbf24; display: flex; align-items: center; justify-content: space-between;">
+                <span>PSH (Push)</span>
+                <span class="badge" style="font-size: 0.7rem;">Bez čekání</span>
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Instruuje přijímající TCP, aby data <strong>okamžitě předal aplikaci</strong> a nečekal na zaplnění celého vnitřního vyrovnávacího bufferu (např. odeslání klávesy v SSH).
+              </p>
+            </div>
+
+            <!-- URG -->
+            <div class="content-card" style="border-top: 3px solid #06b6d4;">
+              <h4 style="color: #22d3ee; display: flex; align-items: center; justify-content: space-between;">
+                <span>URG (Urgent)</span>
+                <span class="badge" style="font-size: 0.7rem;">Priorita</span>
+              </h4>
+              <p style="font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                Informuje, že segment nese prioritní data, která mají být zpracována přednostně (např. stisk Ctrl+C pro přerušení běžícího procesu na serveru).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Stavový model a životní cyklus TCP
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Stavový model a životní cyklus TCP">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">TCP State Machine</span>
+            <h2>Životní cyklus TCP: Stavový automat spojení</h2>
+          </div>
+          <p class="slide-lead">
+            Každý TCP soket prochází během své existence přesně definovanými stavy podle standardu RFC 793. Tyto stavy můžete přímo vidět v příkazu <code>netstat -an</code> nebo <code>ss -tuln</code>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                Fáze navazování a aktivní relace
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>CLOSED:</strong> Spojení neexistuje, port je neaktivní.
+                </li>
+                <li>
+                  <strong>LISTEN:</strong> Server pasivně čeká na příchozí pokusy o navázání spojení od klientů na konkrétním portu.
+                </li>
+                <li>
+                  <strong>SYN_SENT:</strong> Klient odeslal paket SYN a čeká na potvrzení od serveru.
+                </li>
+                <li>
+                  <strong>SYN_RECEIVED:</strong> Server přijal SYN, odeslal SYN+ACK a čeká na finální ACK od klienta.
+                </li>
+                <li>
+                  <strong>ESTABLISHED:</strong> Spojení je plně navázáno! Obě strany mohou obousměrně přenášet data.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Fáze ukončování a význam TIME_WAIT
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>FIN_WAIT_1 &amp; FIN_WAIT_2:</strong> Klient zahájil ukončení (poslal FIN) a čeká na potvrzení a FIN od serveru.
+                </li>
+                <li>
+                  <strong>CLOSE_WAIT:</strong> Server obdržel FIN a čeká, až jeho lokální aplikace dokončí rozdělanou práci a zavře soket.
+                </li>
+                <li>
+                  <strong>LAST_ACK:</strong> Server poslal svůj FIN a čeká na poslední potvrzení.
+                </li>
+                <li>
+                  <strong>TIME_WAIT (Dvojnásobek 2 &times; MSL):</strong> Klient po odeslání posledního ACK <em>zůstává v tomto stavu 60 až 120 sekund</em>, než port definitivně uvolní!
+                </li>
+              </ul>
+
+              <div class="info-box" style="margin-top: 0.5rem; font-size: 0.82rem;">
+                <strong>Proč je TIME_WAIT nutný?</strong><br>
+                Zabraňuje tomu, aby zbloudilé, zpožděné pakety ze starého spojení byly omylem doručeny do nového spojení, které by si náhodou otevřelo stejný port.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Fáze 1 TCP: Navázání spojení (3-Way Handshake)
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Fáze 1: Navázání spojení (3-Way Handshake)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Navázání spojení</span>
+            <h2>Fáze 1 TCP: Třícestný Handshake (Three-Way Handshake)</h2>
+          </div>
+          <p class="slide-lead">
+            Před přenosem prvního bajtu dat musí klient a server provést synchronizaci. K tomu slouží třístupňový proces známý jako <strong>SYN &rarr; SYN+ACK &rarr; ACK</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                Tři kroky navázání spojení
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #60a5fa;">
+                  <strong style="color: #60a5fa; font-size: 0.88rem;">1. Krok: SYN (Klient &rarr; Server)</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Klient vygeneruje náhodné počáteční číslo <code>ISN_C = 1000</code>. Odesílá paket s nastaveným příznakem <code>[SYN]</code> a Sequence Number = 1000.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #34d399;">
+                  <strong style="color: #34d399; font-size: 0.88rem;">2. Krok: SYN + ACK (Server &rarr; Klient)</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Server vygeneruje vlastní <code>ISN_S = 5000</code>. Potvrzuje přijetí klientova SYN číslem <code>Ack = 1001</code> (ISN_C + 1) a nastavuje příznaky <code>[SYN, ACK]</code>.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #a855f7;">
+                  <strong style="color: #c084fc; font-size: 0.88rem;">3. Krok: ACK (Klient &rarr; Server)</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Klient potvrzuje SYN serveru číslem <code>Ack = 5001</code> (ISN_S + 1) s příznakem <code>[ACK]</code>. Obě strany přechází do stavu <strong>ESTABLISHED</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Kybernetická bezpečnost: Útok SYN Flood
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Zranitelnost principu Handshake spočívá v tom, že server po kroku 2 alokuje v paměti prostředky (tzv. polootevřené spojení) a čeká na finální ACK.
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <strong>Princip útoku:</strong> Útočník zaplaví server miliony podvržených SYN paketů s falešnými IP adresami a nikdy nepošle finální ACK. Paměť serveru se zaplní a server zkolabuje (Denial of Service).
+                </li>
+                <li>
+                  <strong>Moderní obrana (SYN Cookies):</strong> Server neukládá stav do paměti RAM, ale zakóduje potřebné parametry kryptograficky přímo do počátečního Sequence Number (ISN_S). Stav alokuje až po obdržení platného ACK od klienta!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Fáze 2 TCP: Potvrzování a Sliding Window
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Fáze 2: Potvrzování dat a Sliding Window">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Přenos dat</span>
+            <h2>Fáze 2 TCP: Potvrzování ACK a posuvné okénko (Sliding Window)</h2>
+          </div>
+          <p class="slide-lead">
+            Kdyby odesílatel musel po každém odeslaném paketu zastavit a čekat na ACK, byla by přenosová rychlost zanedbatelná. TCP proto využívá <strong>mechanismus posuvného okénka (Sliding Window)</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Jak funguje posuvné okénko?
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Window Size (Velikost okna):</strong> Počet bajtů, které smí odesílatel poslat najednou do sítě, <em>aniž by musel čekat na potvrzení</em>.
+                </li>
+                <li>
+                  <strong>Průběžný posun okna:</strong> Jakmile dorazí potvrzení ACK pro první odeslané bajty, okénko se posune dopředu a odesílatel může okamžitě vyslat další dávku dat.
+                </li>
+                <li>
+                  <strong>Kumulativní potvrzení:</strong> Jediný paket ACK může potvrdit více doručených segmentů naráz (např. 1 ACK na každé 2 segmenty).
+                </li>
+              </ul>
+
+              <div style="text-align: center; margin: 0.75rem 0;">
+                <span class="socket-formula" style="font-size: 0.95rem;">Ack Number = Poslední doručený bajt + 1</span>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><alert-triangle></alert-triangle><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Regulace rychlosti: Stav Zero Window
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                Co se stane, když pomalý server nestíhá vyprázdnit svou vyrovnávací paměť (přijímací buffer)?
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <strong>Oznámení Window = 0:</strong> Příjemce v odchozím ACK nastaví hodnotu <code>Window Size = 0</code>.
+                </li>
+                <li>
+                  <strong>Zastavení odesílatele:</strong> Odesílatel okamžitě zastaví přenos dat. Žádné další segmenty nevysílá.
+                </li>
+                <li>
+                  <strong>Sondy Zero Window Probe:</strong> V pravidelných intervalech vysílá odesílatel 1bajtové kontrolní sondy a zjišťuje, zda se na serveru již uvolnilo místo v paměti. Jakmile server pošle okno &gt; 0, přenos se okamžitě obnoví.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Fáze 3 TCP: Zachování pořadí a ztráta
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Fáze 3: Řazení paketů a ztráty na lince">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Integrita toku</span>
+            <h2>Fáze 3 TCP: Řazení přeházených paketů a řešení ztrát</h2>
+          </div>
+          <p class="slide-lead">
+            Na síťové vrstvě (L3) mohou směrovače posílat pakety různými cestami. Pakety tak často dorazí na cíl <strong>napřeskáčku (Reordering)</strong> nebo se vlivem zahlcení zcela ztratí.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #c084fc;"><shuffle></shuffle><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+                Jak TCP řeší přeházené pořadí (Reordering)
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                Představte si, že odesílatel vyšle Segment 1, Segment 2 a Segment 3. Na cíl však dorazí v pořadí <strong>#1 &rarr; #3 &rarr; #2</strong>:
+              </p>
+              <ol style="margin-left: 1.25rem; font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                <li>Příjemce přijme Segment #1 a předá jej do aplikace.</li>
+                <li>Následně dorazí Segment #3. Příjemce zjistí mezeru v Sequence Numbers a <strong>uloží segment #3 do vyrovnávací paměti</strong>. Aplikaci jej zatím nepředá!</li>
+                <li>Příjemce odpovídá duplicitním potvrzením žádajícím chybějící bajty segmentu #2.</li>
+                <li>Když opožděný Segment #2 konečně dorazí, TCP buffer <strong>poskládá bajty do souvislého proudu</strong> a předá aplikaci dokonalá data bez jediné chyby.</li>
+              </ol>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #10b981;"><rotate-ccw></rotate-ccw><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                Detekce ztráty: Timeout vs. Fast Retransmit
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #f59e0b;">
+                  <strong style="color: #fbbf24; font-size: 0.88rem;">1. Retransmission Timeout (RTO)</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Základní mechanismus. Odesílatel spustí stopky. Pokud do vypršení RTO neobdrží ACK, předpokládá ztrátu paketu a odešle jej znovu. Nevýhodou je určité zpoždění.
+                  </p>
+                </div>
+
+                <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: var(--radius-sm); border-left: 3px solid #10b981;">
+                  <strong style="color: #34d399; font-size: 0.88rem;">2. Rychlá retransmise (Fast Retransmit)</strong>
+                  <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0.2rem 0 0 0;">
+                    Pokud odesílatel obdrží <strong>3 duplicitní ACK</strong> se stejným číslem potvrzení, ví bez čekání na časovač RTO, že přesně tento jeden segment se ztratil. Okamžitě jej vyšle znovu!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Fáze 4 TCP: Ukončení komunikace
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Fáze 4: Ukončení komunikace (Four-Way &amp; Reset)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ukončení spojení</span>
+            <h2>Fáze 4 TCP: Čtyřcestné ukončení (Four-Way Handshake) a Reset</h2>
+          </div>
+          <p class="slide-lead">
+            Protože je TCP spojení plně obousměrné (Full-Duplex), musí se každý směr ukončit samostatně. K tomu slouží čtyřkrokový proces <strong>FIN &rarr; ACK &rarr; FIN &rarr; ACK</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Korektní 4-krokové ukončení spojení
+              </h3>
+              <ol style="margin-left: 1.25rem; font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);">
+                <li>
+                  <strong>1. FIN od klienta:</strong> Klient dokončil odesílání a posílá paket <code>[FIN, ACK]</code>. Přechází do stavu <em>FIN_WAIT_1</em>.
+                </li>
+                <li>
+                  <strong>2. ACK od serveru:</strong> Server potvrzuje příjem FIN paketem <code>[ACK]</code>. Klient přechází do <em>FIN_WAIT_2</em>, server do <em>CLOSE_WAIT</em>. Server však stále může posílat data!
+                </li>
+                <li>
+                  <strong>3. FIN od serveru:</strong> Až server odešle všechna zbývající data, pošle vlastní <code>[FIN, ACK]</code> a přechází do <em>LAST_ACK</em>.
+                </li>
+                <li>
+                  <strong>4. ACK od klienta:</strong> Klient odpoví finálním <code>[ACK]</code>. Server se ihned uzavře (<em>CLOSED</em>) a klient vstupuje do ochranného stavu <em>TIME_WAIT</em>.
+                </li>
+              </ol>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><x-octagon></x-octagon><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Násilné okamžité zrušení: Příznak RST
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                Pokud není možné nebo žádoucí čekat na čtyřkrokový handshake, vyšle se segment s příznakem <strong>RST (Reset)</strong>:
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <strong>Kdy nastává RST?</strong>
+                  <ul style="margin-left: 1rem; margin-top: 0.25rem; font-size: 0.8rem;">
+                    <li>Pokus o připojení na port, kde žádná služba nenaslouchá (např. Port 80 na serveru, kde neběží web).</li>
+                    <li>Násilný pád aplikace nebo restart počítače s otevřenými sokety.</li>
+                    <li>Zásah firewallu (Firewall aktivně přeruší nežádoucí spojení odesláním TCP Resetu).</li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Důsledek RST:</strong> Obě strany ihned uvolní paměť a přechází do stavu <em>CLOSED</em> bez jakéhokoli potvrzování.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: VELKÝ INTERAKTIVNÍ SIMULÁTOR KOMUNIKACE TCP
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Interaktivní simulátor TCP komunikace">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Živá laboratoř</span>
+            <h2>Interaktivní trenažér: Živá simulace komunikace TCP</h2>
+          </div>
+          <p class="slide-lead">
+            Vyzkoušejte si všechny fáze TCP komunikace v reálném čase. Sledujte stavy obou uzlů, putování paketů a záznamník Packet Sniffer.
+          </p>
+
+          <div class="tcp-sim-container">
+            <!-- Tlačítka scénářů -->
+            <div class="sim-actions-toolbar">
+              <button class="sim-btn primary" id="simBtnHandshake">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                1. Three-Way Handshake
+              </button>
+
+              <button class="sim-btn" id="simBtnData">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                2. Přenos dat (Sliding Window)
+              </button>
+
+              <button class="sim-btn" id="simBtnReorder">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line></svg>
+                3. Přeházení paketů (Order)
+              </button>
+
+              <button class="sim-btn" id="simBtnLoss">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                4. Ztráta &amp; Retransmise
+              </button>
+
+              <button class="sim-btn" id="simBtnClose">
+                <svg class="icon" viewBox="0 0 24 24"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                5. Čtyřcestné ukončení (FIN)
+              </button>
+
+              <button class="sim-btn danger" id="simBtnReset">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                Reset (RST)
+              </button>
+            </div>
+
+            <!-- Jeviště: Klient, Kanál, Server -->
+            <div class="sim-stage">
+              <!-- Klient -->
+              <div class="host-box">
+                <div class="host-name">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                  Klient (Browser)
+                </div>
+                <div class="host-ip">192.168.1.45:51234</div>
+                <div class="host-state state-closed" id="simClientState">CLOSED</div>
+              </div>
+
+              <!-- Kanál s animovaným paketem -->
+              <div class="sim-channel" id="simChannel">
+                <span style="font-size: 0.72rem; color: rgba(255,255,255,0.2); letter-spacing: 0.05em; text-transform: uppercase;">Linka L3 (Internet)</span>
+                <div class="sim-packet-bubble" id="simBubble">SYN (Seq=1000)</div>
+              </div>
+
+              <!-- Server -->
+              <div class="host-box">
+                <div class="host-name">
+                  <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                  Server (Web HTTPS)
+                </div>
+                <div class="host-ip">142.250.186.174:443</div>
+                <div class="host-state state-listen" id="simServerState">LISTEN</div>
+              </div>
+            </div>
+
+            <!-- Popis stavu -->
+            <div id="simStatusNote" style="font-size: 0.86rem; color: var(--text-primary); margin-bottom: 0.75rem; min-height: 24px; line-height: 1.4;">
+              Klikněte na <strong>1. Three-Way Handshake</strong> pro zahájení navazování spojení mezi klientem a serverem.
+            </div>
+
+            <!-- Sniffer Log -->
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.35rem; display: flex; justify-content: space-between;">
+              <span>Živý záznamník paketů (Live Packet Sniffer Log):</span>
+              <span style="color: var(--pos-accent);">Autoscroll zapnut</span>
+            </div>
+            <div class="sim-log-wrap" id="simLogWrap">
+              <div class="sim-log-entry" style="color: var(--text-muted);">
+                <span class="log-time">--:--.--</span>
+                <span>Připraven k zachytávání síťového provozu...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 14: Didaktické shrnutí srovnání TCP a UDP
+           ========================================== -->
+      <section class="slide" id="slide-14" data-title="Didaktické shrnutí tématu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rekapitulace SPŠ</span>
+            <h2>Strukturované shrnutí: Protokoly TCP a UDP v kostce</h2>
+          </div>
+          <p class="slide-lead">
+            Závěrečná rekapitulace klíčových parametrů a didaktických rozdílů pro zkoušení a technickou praxi.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card" style="border-top: 3px solid #60a5fa;">
+              <h4 style="color: #60a5fa;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Protokol TCP (Shrnutí)
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Filozofie:</strong> Spolehlivý stavový proud bajtů (Byte Stream) bez chyb a ztrát.</li>
+                <li><strong>Navázání:</strong> Třícestný Three-Way Handshake (SYN &rarr; SYN+ACK &rarr; ACK).</li>
+                <li><strong>Hlavička:</strong> 20 až 60 bajtů (Sequence #, Ack #, Window Size, 9 bitů Flags).</li>
+                <li><strong>Řízení:</strong> Posuvné okénko (Sliding Window), Flow Control, Congestion Control.</li>
+                <li><strong>Řazení:</strong> Příjemce v bufferu data seřadí podle Sequence Numbers.</li>
+                <li><strong>Ukončení:</strong> Čtyřcestný Four-Way Handshake (FIN &rarr; ACK &rarr; FIN &rarr; ACK) a TIME_WAIT.</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-top: 3px solid #10b981;">
+              <h4 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Protokol UDP (Shrnutí)
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Filozofie:</strong> Bleskový nespojovaný přenos nezávislých datagramů (Fire &amp; Forget).</li>
+                <li><strong>Navázání:</strong> Žádné navazování spojení – data se okamžitě vysílají.</li>
+                <li><strong>Hlavička:</strong> Pouze 8 bajtů (Source Port, Destination Port, Length, Checksum).</li>
+                <li><strong>Bezstavovost:</strong> Server si nepamatuje relace, obrovská propustnost a škálovatelnost.</li>
+                <li><strong>Typy přenosu:</strong> Unicast, Multicast i Broadcast.</li>
+                <li><strong>Ideální pro:</strong> DNS, DHCP, VoIP, video streaming, hry v reálném čase a QUIC.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 15: Kontrolní otázky a opakovací kvíz
+           ========================================== -->
+      <section class="slide" id="slide-15" data-title="Kontrolní otázky a opakovací kvíz">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Kontrolní otázky pro upevnění látky</h2>
+          </div>
+          <p class="slide-lead">
+            Ověřte si, jak dobře rozumíte fungování protokolů TCP a UDP.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Otázka 1 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">01.</span>
+                <span>Proč se u internetové telefonie (VoIP) nebo živého vysílání videa používá protokol UDP a nikoli spolehlivější TCP?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                U komunikace v reálném čase je zásadní minimální zpoždění (latence) a plynulost. Kdyby se použilo TCP a došlo ke ztrátě paketu, TCP by celý proud zastavilo a čekalo na retransmisi (vypršení časovače), což by způsobilo slyšitelné zamrznutí hovoru a zpoždění. U UDP je ztracený vzorek zvuku okamžitě přeskočen a posluchač si výpadku v délce milisekund ani nevšimne.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">02.</span>
+                <span>Co přesně udává hodnota Sequence Number v hlavičce TCP segmentu a proč neudává pouhé pořadové číslo paketu (1, 2, 3...)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                TCP je koncipováno jako Byte Stream Service (proud bajtů). Sequence Number udává pořadové číslo prvního bajtu dat v tomto segmentu v rámci celého datového toku. Díky tomu příjemce přesně ví, na které bajtové pozici má data navázat, i když segmenty mají různou délku nebo dorazí rozkouskované.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">03.</span>
+                <span>Jak funguje Three-Way Handshake a jakou roli v něm hraje číslo ISN (Initial Sequence Number)?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                1. Krok: Klient posílá [SYN] s náhodným ISN_C.<br>
+                2. Krok: Server odpovídá [SYN, ACK] s vlastním náhodným ISN_S a Ack = ISN_C + 1.<br>
+                3. Krok: Klient odpovídá [ACK] s Ack = ISN_S + 1.<br>
+                Čísla ISN jsou generována náhodně (nikoli od nuly) z bezpečnostních důvodů, aby útočník nemohl snadno odhadnout čísla paketů a podvrhnout data do cizího spojení (TCP Session Hijacking).
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-item">
+              <div class="question-title">
+                <span class="question-num">04.</span>
+                <span>Proč zůstává klient po korektním ukončení TCP spojení po dobu 60 až 120 sekund ve stavu TIME_WAIT, než port uvolní?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Doba TIME_WAIT odpovídá dvojnásobku MSL (Maximum Segment Lifetime, obvykle 2 &times; 60 s). Tento časový zámek zaručuje dvě věci: 1. Pokud se poslední odeslaný paket ACK ztratil, server stihne znovu poslat FIN a klient jej stihne znovu potvrdit. 2. Zajišťuje, že všechny zpožděné a zbloudilé pakety z právě ukončeného spojení v síti definitivně zaniknou (vyprší jejich TTL) a nepromíchají se do nového spojení, které by náhodou otevřelo stejný port.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../050-Transportni-vrstva/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 050 Transportní vrstva (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (Zatím v přípravě)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 15</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: TCP a UDP
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Centrální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Dedikovaný interaktivní engine pro téma 051 -->
+  <script src="tcp-udp-engine.js"></script>
+</body>
+
+</html>
