@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 100: Cisco IOS – Základy ovládání | POS &bull; SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Základy Cisco IOS, konzolové připojení, hierarchie režimů CLI, klávesové zkratky, paměťová architektura a správa konfigurace.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 100 -->
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">100 Cisco IOS</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.12);">Cisco CCNA &bull; IOS CLI</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Cisco IOS: Základy ovládání">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 100</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">Cisco CCNA:ITN Správa síťových zařízení</span>
+          </div>
+          <h1 class="hero-title">Cisco IOS: Základy ovládání přes CLI</h1>
+          <p class="hero-subtitle">
+            Vstupní brána do správy profesionálních přepínačů a směrovačů &bull; Konzolový port a přenosové parametry, stromová hierarchie režimů, kontextová nápověda, paměťová architektura a bezpečné ukládání konfigurací.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                Konzolový přístup
+              </h4>
+              <p>Out-of-band management přes rollover kabel nebo USB konzoli. Sériové parametry 9600-8-N-1 v PuTTY.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Hierarchie režimů
+              </h4>
+              <p>User EXEC (&gt;), Privileged EXEC (#), Global Config ((config)#) a konfigurační podrežimy rozhraní a linek.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                CLI Navigace &amp; Tab
+              </h4>
+              <p>Doplňování klávesou Tab, kontextová nápověda (?), zkracování příkazů, klávesové zkratky a chybová hlášení.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Paměť &amp; Uložení
+              </h4>
+              <p>RAM (running-config) vs. NVRAM (startup-config). Uložení pomocí copy run start a mazání přes write erase.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Co je Cisco IOS a bootovací sekvence
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Co je Cisco IOS & Bootovací proces">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Architektura systému</span>
+            <h2>Co je Cisco IOS a jak probíhá start zařízení?</h2>
+          </div>
+          <p class="slide-lead">
+            <strong>Cisco IOS</strong> (Internetwork Operating System) je vysoce optimalizovaný síťový operační systém řídící hardware přepínačů Catalyst a směrovačů Cisco.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                Charakteristika Cisco IOS
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Specializace:</strong> Na rozdíl od desktopových systémů (Windows, macOS) neobsahuje grafické prostředí &ndash; veškerá konfigurace probíhá přes příkazový řádek (CLI) pro maximální výkon a stabilitu.
+                </li>
+                <li>
+                  <strong>Uložení v souboru:</strong> IOS je uložen jako jediný binární obraz (např. <code>c2960-lanbasek9-mz.150-2.SE4.bin</code>) ve Flash paměti.
+                </li>
+                <li>
+                  <strong>Jednotnost rozhraní:</strong> Znalost příkazů Cisco IOS se přímo uplatňuje na všech prvcích &ndash; od malého 8portového switche po gigabitové páteřní směrovače.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                4 Fáze startu zařízení (Boot Sequence)
+              </h3>
+              <ol class="feature-list" style="margin-top: 0.5rem; padding-left: 1.25rem;">
+                <li>
+                  <strong>1. POST (Power-On Self-Test):</strong> Mikrokód v paměti ROM prověří integritu procesoru, paměti RAM a fyzických portů.
+                </li>
+                <li>
+                  <strong>2. Zavedení Bootstrapu:</strong> ROM vyvolá základní zaváděcí kód, který lokalizuje hlavní operační systém IOS.
+                </li>
+                <li>
+                  <strong>3. Načtení IOS:</strong> Bootstrap vyhledá obraz IOS ve Flash paměti (nebo TFTP) a dekomprimuje jej do paměti RAM.
+                </li>
+                <li>
+                  <strong>4. Načtení konfigurace:</strong> IOS vyhledá soubor <code>startup-config</code> v paměti NVRAM. Pokud existuje, zkopíruje jej do RAM jako <code>running-config</code>. Pokud ne, spustí se průvodce <em>Setup Dialog</em>.
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Fyzické konzolové připojení
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Konzolové připojení (Out-of-band)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Fyzická vrstva &amp; Přístup</span>
+            <h2>Fyzické konzolové připojení (Out-of-Band Management)</h2>
+          </div>
+          <p class="slide-lead">
+            Při prvním zapnutí nového zařízení ze skladu prvek nemá žádnou IP adresu ani konfiguraci. Jediným způsobem komunikace je přímé fyzické připojení přes <strong>konzolový port</strong>.
+          </p>
+
+          <!-- Schéma zapojení -->
+          <div class="console-scheme">
+            <div class="console-device-box">
+              <div class="console-device-icon">
+                <svg class="icon" viewBox="0 0 24 24" style="width:32px;height:32px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </div>
+              <strong>Správcovský PC</strong>
+              <small style="color: #94a3b8;">USB port / COM port (RS-232)</small>
+            </div>
+
+            <div class="console-cable-box">
+              <div class="cable-label">Sériová komunikace (RS-232)</div>
+              <div class="cable-line"></div>
+              <small style="color: #64748b;">Modrý Rollover kabel / USB Type-C</small>
+            </div>
+
+            <div class="console-device-box">
+              <div class="console-device-icon" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24" style="width:32px;height:32px;"><rect x="2" y="2" width="20" height="8" rx="2"></rect><rect x="2" y="14" width="20" height="8" rx="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              </div>
+              <strong>Cisco Switch / Router</strong>
+              <small style="color: #94a3b8;">Port CONSOLE (RJ-45 / Mini-USB)</small>
+            </div>
+          </div>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Out-of-Band (Mimosíťová správa)
+              </h4>
+              <p>
+                Konzolové spojení nevyužívá TCP/IP protokol ani síťové karty. Správce má přístup k zařízení i v případě totálního kolapsu sítě, při chybně nastavené VLAN nebo havárii směrování.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Typy konzolových kabelů
+              </h4>
+              <p>
+                Klasický světle modrý <strong>Rollover kabel</strong> (RJ-45 na straně prvku &rarr; DB-9 na straně PC s převodníkem USB-Serial FTDI) nebo moderní <strong>USB kabel</strong> (USB-A do PC &rarr; USB mini-B / Type-C do prvku).
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Terminálové programy & Parametry přenosu
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Terminálový software & Parametry 9600-8-N-1">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Nástroje administrátora</span>
+            <h2>Terminálový software &amp; Zlaté parametry 9600-8-N-1</h2>
+          </div>
+          <p class="slide-lead">
+            Po zapojení kabelu je nutné v operačním systému otevřít emulátor terminálu (např. bezplatný <strong>PuTTY</strong>, <strong>Tera Term</strong> nebo v Linuxu nástroj <strong>minicom / screen</strong>).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                Standardní konfigurace sériového portu
+              </h3>
+              <table class="table-cisco" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr>
+                    <th>Parametr spojení</th>
+                    <th>Hodnota v PuTTY</th>
+                    <th>Význam parametru</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Connection Type</strong></td>
+                    <td><code>Serial</code></td>
+                    <td>Sériový přenos namísto SSH/Telnetu</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Serial line</strong></td>
+                    <td><code>COM3</code> (dle Správce zařízení)</td>
+                    <td>Přiřazený virtuální COM port v OS</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Speed (Baud rate)</strong></td>
+                    <td><code>9600</code> bps</td>
+                    <td>Rychlost přenosu symbolů (bitů za sekundu)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data bits</strong></td>
+                    <td><code>8</code></td>
+                    <td>Počet bitů v jednom znaku</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Parity</strong></td>
+                    <td><code>None</code> (Žádná)</td>
+                    <td>Kontrola parity vypnuta</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Stop bits</strong></td>
+                    <td><code>1</code></td>
+                    <td>Počet ukončovacích stop bitů</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Flow control</strong></td>
+                    <td><code>None</code></td>
+                    <td>Hardwarové řízení toku vypnuto</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content-card" style="border-left: 3px solid #f59e0b;">
+              <h3 style="color: #fbbf24;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Pozor na "System Configuration Dialog"
+              </h3>
+              <p>
+                Při prvním zapnutí čistého zařízení bez konfigurace se na terminálu objeví výzva:
+              </p>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>--- System Configuration Dialog ---
+Would you like to enter the initial configuration dialog? [yes/no]: <span style="color:#ef4444;font-weight:700;">no</span></code></pre>
+              </div>
+              <p style="font-size: 0.85rem; color: #cbd5e1;">
+                <strong>Zásadní pravidlo pro žáky SPŠ:</strong> Vždy odpovídejte <strong>no</strong>! Průvodce je zdlouhavý a nutí vás odpovídat na desítky zbytečných otázek. Cílem síťaře je okamžitě převzít přímou kontrolu nad příkazovým řádkem.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Hierarchie režimů Cisco IOS
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Hierarchie režimů Cisco IOS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Režimy CLI</span>
+            <h2>Hierarchie režimů Cisco IOS: Kde se nacházím?</h2>
+          </div>
+          <p class="slide-lead">
+            Příkazový řádek Cisco IOS má přísnou stromovou strukturu. Podle zakončení promptu (znaku na konci řádku) okamžitě poznáte úroveň svých oprávnění.
+          </p>
+
+          <div class="cli-modes-grid">
+            <!-- 1. User EXEC -->
+            <div class="mode-card">
+              <div class="mode-prompt-badge">Router&gt;</div>
+              <h3 style="color: #38bdf8;">1. Uživatelský režim (User EXEC)</h3>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.35rem;">
+                Výchozí režim ihned po přihlášení. Umožňuje pouze základní monitorování, diagnostiku (ping) a prohlížení některých systémových informací.
+              </p>
+              <div style="margin-top: auto; padding-top: 0.75rem;">
+                <span class="tag" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8;">Příkaz pro postup: <code>enable</code></span>
+              </div>
+            </div>
+
+            <!-- 2. Privileged EXEC -->
+            <div class="mode-card" style="border-color: rgba(52, 211, 153, 0.4);">
+              <div class="mode-prompt-badge" style="color: #34d399; border-color: rgba(52, 211, 153, 0.4);">Router#</div>
+              <h3 style="color: #34d399;">2. Privilegovaný režim (Privileged EXEC)</h3>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.35rem;">
+                Často nazývaný režim <em>Enable</em>. Plná práva k prohlížení veškeré konfigurace (<code>show run</code>), ladění (debug), ukládání a restartu (reload).
+              </p>
+              <div style="margin-top: auto; padding-top: 0.75rem;">
+                <span class="tag" style="background: rgba(52, 211, 153, 0.12); color: #34d399;">Příkaz pro postup: <code>configure terminal</code></span>
+              </div>
+            </div>
+
+            <!-- 3. Global Config -->
+            <div class="mode-card" style="border-color: rgba(245, 158, 11, 0.4);">
+              <div class="mode-prompt-badge" style="color: #fbbf24; border-color: rgba(245, 158, 11, 0.4);">Router(config)#</div>
+              <h3 style="color: #fbbf24;">3. Globální konfigurace (Global Config)</h3>
+              <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.35rem;">
+                Zde provádíte změny s dopadem na celé zařízení (hostname, doména, šifrování). Odsud se vstupuje do specifických podrežimů.
+              </p>
+              <div style="margin-top: auto; padding-top: 0.75rem;">
+                <span class="tag" style="background: rgba(245, 158, 11, 0.12); color: #fbbf24;">Podrežimy: <code>interface</code>, <code>line</code></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specifické konfigurační podrežimy -->
+          <div class="content-card" style="margin-top: 1rem;">
+            <h4>Specifické konfigurační podrežimy (Sub-configuration Modes):</h4>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 0.5rem; font-size: 0.82rem;">
+              <div>
+                <strong style="color: #38bdf8;">Router(config-if)#</strong><br>
+                <em>Konfigurace rozhraní:</em> IP adresy, masky, duplex, aktivace <code>no shutdown</code>.
+              </div>
+              <div>
+                <strong style="color: #38bdf8;">Router(config-line)#</strong><br>
+                <em>Konfigurace linek:</em> hesla pro konzoli (<code>line con 0</code>) a vzdálený přístup (<code>line vty 0 15</code>).
+              </div>
+              <div>
+                <strong style="color: #38bdf8;">Router(config-router)#</strong><br>
+                <em>Směrovací protokoly:</em> OSPF, EIGRP, RIP nebo definice směrovacích procesů.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Pohyb mezi režimy a návrat
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Pohyb mezi režimy a návrat">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Navigace v CLI</span>
+            <h2>Pohyb mezi režimy &amp; Jak se bezpečně vrátit</h2>
+          </div>
+          <p class="slide-lead">
+            Práce v Cisco CLI vyžaduje plynulé přepínání mezi vrstvami konfigurace a spolehlivý návrat zpět do privilegovaného režimu.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="15 10 20 15 15 20"></polyline><path d="M4 4v7a4 4 0 0 0 4 4h12"></path></svg>
+                Postup do hlubších režimů
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <code>enable</code> (zkráceně <code>en</code>):<br>
+                  Přechod z <code>Router&gt;</code> do <code>Router#</code>.
+                </li>
+                <li>
+                  <code>configure terminal</code> (zkráceně <code>conf t</code>):<br>
+                  Přechod z <code>Router#</code> do <code>Router(config)#</code>.
+                </li>
+                <li>
+                  <code>interface GigabitEthernet0/0</code> (zkráceně <code>int g0/0</code>):<br>
+                  Vstup do konfigurace fyzického portu <code>Router(config-if)#</code>.
+                </li>
+                <li>
+                  <code>line console 0</code> (zkráceně <code>line con 0</code>):<br>
+                  Vstup do konfigurace sériové konzole <code>Router(config-line)#</code>.
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f43f5e;"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
+                Cesty zpět a nouzový únik
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Příkaz <code>exit</code>:</strong><br>
+                  Vrátí vás vždy o <strong>jednu úroveň výš</strong> (např. z <code>config-if</code> do <code>config</code>, nebo z <code>config</code> do <code>Router#</code>).
+                </li>
+                <li>
+                  <strong>Příkaz <code>end</code> nebo zkratka <kbd>Ctrl</kbd> + <kbd>Z</kbd>:</strong><br>
+                  <strong>Okamžitý skok</strong> odkudkoli (i z nejhlubšího podrežimu) přímo zpět do Privileged EXEC (<code>Router#</code>)!
+                </li>
+                <li>
+                  <strong>Záchranný příkaz <code>disable</code>:</strong><br>
+                  Sníží oprávnění z <code>Router#</code> zpět do <code>Router&gt;</code>.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tip: do příkaz -->
+          <div class="content-card" style="margin-top: 1rem; border-left: 3px solid #06b6d4;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span class="tag" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee; font-weight: 700;">PRO-TIP SÍŤAŘE</span>
+              <strong style="color: #22d3ee;">Kouzelný příkaz "do" v konfiguračních režimech</strong>
+            </div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.4rem;">
+              Běžně příkazy pro dohled (<code>show run</code>, <code>show ip int br</code>, <code>ping</code>) fungují jen v <code>Router#</code>. Pokud jste uvnitř <code>Router(config-if)#</code>, nemusíte dávat <code>exit</code>! Stačí před příkaz přidat slovo <strong>do</strong>: např. <code>do show ip int brief</code> nebo <code>do write</code>!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Interaktivní nápověda & Zkratky
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Klávesa Tab, Nápověda (?) & Zkratky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Efektivita práce</span>
+            <h2>Klávesa Tab, Nápověda (?) &amp; Editační zkratky</h2>
+          </div>
+          <p class="slide-lead">
+            Zkušený síťový administrátor nikdy nevypisuje dlouhé příkazy ručně. Cisco IOS disponuje propracovaným systémem doplňování a kontextové nápovědy.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Kouzelný otazník (?) &amp; Klávesa Tab
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong>Samostatný <code>?</code> na prázdném řádku:</strong><br>
+                  Vypíše abecední seznam všech příkazů dostupných v daném režimu.
+                </li>
+                <li>
+                  <strong>Písmena následovaná <code>?</code> (např. <code>c?</code>):</strong><br>
+                  Vypíše všechny příkazy začínající danými písmeny (clock, configure, connect, copy).
+                </li>
+                <li>
+                  <strong>Příkaz s mezerou a <code>?</code> (např. <code>clock set ?</code>):</strong><br>
+                  Ukáže, jaký parametr či formát (hh:mm:ss) systém očekává dál!
+                </li>
+                <li>
+                  <strong>Klávesa <kbd>Tab</kbd>:</strong><br>
+                  Automaticky doplní rozepsaný příkaz, pokud je jeho prefix jednoznačný (např. <code>conf</code> + <kbd>Tab</kbd> &rarr; <code>configure</code>).
+                </li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg>
+                Základní editační klávesové zkratky
+              </h3>
+              <div class="key-grid">
+                <div class="key-item">
+                  <kbd>Tab</kbd>
+                  <span>Automatické doplnění slova</span>
+                </div>
+                <div class="key-item">
+                  <kbd>&uarr;</kbd> / <kbd>&darr;</kbd>
+                  <span>Historie předchozích příkazů</span>
+                </div>
+                <div class="key-item">
+                  <kbd>Ctrl</kbd> + <kbd>A</kbd>
+                  <span>Skok na začátek řádku</span>
+                </div>
+                <div class="key-item">
+                  <kbd>Ctrl</kbd> + <kbd>E</kbd>
+                  <span>Skok na konec řádku</span>
+                </div>
+                <div class="key-item">
+                  <kbd>Ctrl</kbd> + <kbd>U</kbd>
+                  <span>Smazání celého řádku</span>
+                </div>
+                <div class="key-item">
+                  <kbd>Ctrl</kbd> + <kbd>C</kbd>
+                  <span>Přerušení běžícího příkazu (ping)</span>
+                </div>
+                <div class="key-item">
+                  <kbd>Ctrl</kbd> + <kbd>Z</kbd>
+                  <span>Okamžitý návrat do Privileged EXEC (#)</span>
+                </div>
+                <div class="key-item">
+                  <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>6</kbd>
+                  <span>Záchrana ze zaseknutého DNS hledání</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Zkracování příkazů & Chybová hlášení
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Zkracování příkazů & Chybová hlášení">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Syntaxe &amp; Diagnostika</span>
+            <h2>Zkracování příkazů &amp; Jak číst chybová hlášení IOS</h2>
+          </div>
+          <p class="slide-lead">
+            V reálné praxi nikdo nepíše plná slova &ndash; stačí napsat tolik znaků, aby byl příkaz jednoznačný. Pokud se spletete, IOS přesně ukáže místo chyby.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Běžně užívané zkratky síťařů
+              </h3>
+              <table class="table-cisco" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr>
+                    <th>Plné znění příkazu</th>
+                    <th>Používaná zkratka</th>
+                    <th>Co příkaz provede</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>enable</code></td>
+                    <td><code>en</code></td>
+                    <td>Vstup do privileged EXEC</td>
+                  </tr>
+                  <tr>
+                    <td><code>configure terminal</code></td>
+                    <td><code>conf t</code></td>
+                    <td>Vstup do globální konfigurace</td>
+                  </tr>
+                  <tr>
+                    <td><code>interface GigabitEthernet0/0</code></td>
+                    <td><code>int g0/0</code></td>
+                    <td>Konfigurace portu G0/0</td>
+                  </tr>
+                  <tr>
+                    <td><code>no shutdown</code></td>
+                    <td><code>no sh</code></td>
+                    <td>Zapnutí (aktivace) portu</td>
+                  </tr>
+                  <tr>
+                    <td><code>show running-config</code></td>
+                    <td><code>sh run</code></td>
+                    <td>Výpis konfigurace z RAM</td>
+                  </tr>
+                  <tr>
+                    <td><code>show ip interface brief</code></td>
+                    <td><code>sh ip int br</code></td>
+                    <td>Přehled portů a IP adres</td>
+                  </tr>
+                  <tr>
+                    <td><code>copy running-config startup-config</code></td>
+                    <td><code>copy run start</code> (nebo <code>wr</code>)</td>
+                    <td>Uložení do stálé paměti NVRAM</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                3 Základní chybová hlášení Cisco IOS
+              </h3>
+
+              <div class="cisco-error-box">
+                <div class="cisco-error-code">% Ambiguous command: "c"</div>
+                <div class="cisco-error-desc">
+                  <strong>Nejednoznačný příkaz:</strong> Napsali jste příliš málo písmen a systém neví, zda chcete <em>clock</em>, <em>configure</em> nebo <em>copy</em>. Napište více písmen nebo použijte <code>c?</code>.
+                </div>
+              </div>
+
+              <div class="cisco-error-box">
+                <div class="cisco-error-code">% Incomplete command.</div>
+                <div class="cisco-error-desc">
+                  <strong>Neúplný příkaz:</strong> Příkaz je platný, ale chybí mu povinné parametry (např. napsali jste pouze <code>ip address</code> a zapomněli na samotnou IP adresu a masku).
+                </div>
+              </div>
+
+              <div class="cisco-error-box">
+                <div class="cisco-error-code">% Invalid input detected at '^' marker.</div>
+                <div class="cisco-error-desc">
+                  <strong>Neplatný vstup (překlep):</strong> Systém stříškou <code>^</code> přesně ukazuje na znak, kterému nerozumí &ndash; např. překlep ve slově nebo parametr zadaný v nesprávném režimu.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Paměťová architektura Cisco prvků
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Paměťová architektura Cisco HW">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Hardware &amp; Ukládání</span>
+            <h2>Paměťová architektura: RAM, NVRAM, Flash a ROM</h2>
+          </div>
+          <p class="slide-lead">
+            Síťové prvky Cisco disponují čtyřmi specializovanými typy pamětí. Pochopení rozdílu mezi volatilní operační pamětí a trvalými úložišti je klíčem k bezpečné správě.
+          </p>
+
+          <div class="memory-grid">
+            <!-- 1. RAM -->
+            <div class="memory-card" style="border-top: 3px solid #ef4444;">
+              <div class="memory-card-header">
+                <h4 style="color: #f87171;">RAM</h4>
+                <span class="memory-type-badge badge-volatile">Volatilní</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #cbd5e1;">
+                <strong>Operační paměť:</strong> Obsahuje aktuálně běžící operační systém, směrovací tabulku, ARP tabulku, vyrovnávací pakety a soubor <code>running-config</code>.
+              </p>
+              <div style="margin-top: auto; font-size: 0.78rem; color: #f87171; padding-top: 0.5rem;">
+                Při výpadku napájení se její obsah okamžitě smaže!
+              </div>
+            </div>
+
+            <!-- 2. NVRAM -->
+            <div class="memory-card" style="border-top: 3px solid #34d399;">
+              <div class="memory-card-header">
+                <h4 style="color: #34d399;">NVRAM</h4>
+                <span class="memory-type-badge badge-non-volatile">Trvalá</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #cbd5e1;">
+                <strong>Non-Volatile RAM:</strong> Speciální stálá paměť uchovávající konfigurační soubor <code>startup-config</code> a hodnotu softwarového konfiguračního registru (0x2102).
+              </p>
+              <div style="margin-top: auto; font-size: 0.78rem; color: #34d399; padding-top: 0.5rem;">
+                Uchová data i po vypnutí či restartu zařízení.
+              </div>
+            </div>
+
+            <!-- 3. Flash -->
+            <div class="memory-card" style="border-top: 3px solid #38bdf8;">
+              <div class="memory-card-header">
+                <h4 style="color: #38bdf8;">Flash</h4>
+                <span class="memory-type-badge badge-non-volatile">Trvalá</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #cbd5e1;">
+                <strong>Elektronický disk:</strong> Flash paměť (EEPROM) slouží k uchování binárních obrazů operačního systému Cisco IOS (<code>.bin</code>), databáze VLAN (<code>vlan.dat</code>) a záložních souborů.
+              </p>
+              <div style="margin-top: auto; font-size: 0.78rem; color: #38bdf8; padding-top: 0.5rem;">
+                Přepisovatelná paměť pro upgrade firmwaru.
+              </div>
+            </div>
+
+            <!-- 4. ROM -->
+            <div class="memory-card" style="border-top: 3px solid #a855f7;">
+              <div class="memory-card-header">
+                <h4 style="color: #c084fc;">ROM</h4>
+                <span class="memory-type-badge badge-non-volatile">Trvalá</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #cbd5e1;">
+                <strong>Read-Only Memory:</strong> Pevná paměť na základní desce obsahující kód diagnostiky POST, zaváděcí Bootstrap a nouzový záchranný režim <em>ROMmon</em> (používaný pro reset zapomenutých hesel).
+              </p>
+              <div style="margin-top: auto; font-size: 0.78rem; color: #c084fc; padding-top: 0.5rem;">
+                Základní firmware zařízení od výrobce.
+              </div>
+            </div>
+          </div>
+
+          <!-- Přehled souborů -->
+          <div class="content-card" style="margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #38bdf8;">running-config (RAM)</strong> vs. <strong style="color: #34d399;">startup-config (NVRAM)</strong>
+              </div>
+              <span class="tag" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Zlaté pravidlo</span>
+            </div>
+            <p style="font-size: 0.84rem; color: #94a3b8; margin-top: 0.35rem;">
+              Všechny příkazy, které zadáváte v příkazové řádce, se <strong>okamžitě</strong> uplatňují v paměti RAM v souboru <code>running-config</code>. Pokud však zařízení vypnete ze zásuvky dříve, než provedete uložení do <code>startup-config</code> v NVRAM, o veškeré nově nastavené údaje nenávratně přijdete!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Práce s konfigurací a uložení
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Práce s konfigurací & Uložení">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Správa konfigurace</span>
+            <h2>Uložení konfigurace, zahození změn a tovární reset</h2>
+          </div>
+          <p class="slide-lead">
+            Správce musí mít plnou kontrolu nad tím, co se do zařízení ukládá, jak ověřit provedené změny a jak uvést prvek do čistého výchozího stavu.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                1. Uložení konfigurace (RAM &rarr; NVRAM)
+              </h3>
+              <p style="font-size: 0.85rem; color: #94a3b8;">
+                Oficiální doporučený příkaz kurikula Cisco CCNA:
+              </p>
+              <div class="code-block" style="margin: 0.4rem 0;">
+                <pre><code>Router# <span style="color:#38bdf8;">copy running-config startup-config</span>
+Destination filename [startup-config]? <kbd>Enter</kbd>
+Building configuration...
+[OK]</code></pre>
+              </div>
+              <p style="font-size: 0.85rem; color: #cbd5e1;">
+                <strong>Rychlá zkratka z praxe:</strong> Příkaz <code>write memory</code> (nebo jednoduše <code>write</code> / <code>wr</code>). Vykoná identické zkopírování do NVRAM na jedno stisknutí klávesy.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                2. Zahození změn &amp; Tovární nastavení
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.4rem;">
+                <li>
+                  <strong>Zahození nechtěných změn v RAM:</strong><br>
+                  Pokud jste v konfiguraci udělali chybu, ale <em>ještě jste neuložili</em>, stačí zařízení restartovat příkazem:
+                  <div class="code-block" style="margin: 0.25rem 0;"><code>Router# <strong>reload</strong> (při dotazu "Save?" zvolte "no")</code></div>
+                </li>
+                <li>
+                  <strong>Smazání celé konfigurace (Factory Reset):</strong><br>
+                  Vymazání souboru <code>startup-config</code> z NVRAM paměti:
+                  <div class="code-block" style="margin: 0.25rem 0;"><code>Router# <strong>erase startup-config</strong> (nebo <strong>write erase</strong>)</code></div>
+                  Po smazání je nutné zařízení restartovat příkazem <code>reload</code>. Prvek nabootuje jako zcela nový!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Klíčové diagnostické příkazy
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Klíčové diagnostické příkazy show">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Diagnostika &amp; Monitoring</span>
+            <h2>Klíčové diagnostické příkazy rodiny "show"</h2>
+          </div>
+          <p class="slide-lead">
+            Příkaz <code>show</code> je nejmocnějším nástrojem síťového inženýra. Umožňuje nahlédnout do stavu portů, verzí softwaru a provozních statistik.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                show ip interface brief (sh ip int br)
+              </h3>
+              <p style="font-size: 0.85rem; color: #94a3b8;">
+                Nejpoužívanější příkaz pro rychlý souhrn všech rozhraní na routeru či switchi:
+              </p>
+              <div class="code-block" style="margin: 0.4rem 0;">
+                <pre><code>Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     192.168.1.1     YES manual up                    up      
+GigabitEthernet0/1     unassigned      YES unset  administratively down down    
+Vlan1                  unassigned      YES unset  down                  down    </code></pre>
+              </div>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.82rem;">
+                <li><strong>Status UP / Protocol UP:</strong> Fyzická vrstva i linkový protokol fungují perfektně.</li>
+                <li><strong>Administratively down:</strong> Port je vypnutý administrátorem (chybí příkaz <code>no shutdown</code>).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Další nepostradatelné show příkazy
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.4rem;">
+                <li>
+                  <code>show version</code> (zkráceně <code>sh ver</code>):<br>
+                  Model prvku, verze IOS, čas běhu (uptime), velikost pamětí a konfigurační registr (<code>0x2102</code>).
+                </li>
+                <li>
+                  <code>show running-config</code> (zkráceně <code>sh run</code>):<br>
+                  Kompletní zobrazení aktuálně aktivní konfigurace v RAM paměti.
+                </li>
+                <li>
+                  <code>show interfaces</code> (zkráceně <code>sh int</code>):<br>
+                  Podrobné statistiky přenosu, MAC adresy, duplex, rychlost a počty chyb (CRC, collision, drop).
+                </li>
+                <li>
+                  <code>terminal length 0</code>:<br>
+                  Vypne stránkování výpisu (výzvu <em>--More--</em>). Celý konfigurační výpis se vytiskne naráz (vhodné pro zálohování přes terminál).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Interaktivní trenažér (Živý terminál)
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Interaktivní trenažér: Cisco IOS CLI">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Laboratorní trenažér</span>
+            <h2>Interaktivní trenažér: Vyzkoušejte si Cisco IOS naživo!</h2>
+          </div>
+          <p class="slide-lead">
+            Klikněte do černého okna terminálu a pište skutečné Cisco příkazy. Trenažér podporuje doplňování klávesou <kbd>Tab</kbd>, nápovědu <code>?</code>, zkratky i historii šipkami.
+          </p>
+
+          <!-- Interaktivní emulátor terminálu -->
+          <div class="ios-terminal-container" id="iosTerminalContainer">
+            <div class="ios-terminal-header">
+              <div class="terminal-window-dots">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <div class="terminal-title-text">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                PuTTY &bull; COM3 &bull; Serial 9600-8-N-1 (Cisco Console)
+              </div>
+              <span class="terminal-session-badge">Connected</span>
+            </div>
+
+            <div class="ios-terminal-body">
+              <div class="ios-terminal-output" id="iosTerminalOutput"></div>
+              <div class="ios-terminal-input-row">
+                <span class="terminal-current-prompt" id="iosTerminalPrompt">Router&gt;</span>
+                <input type="text" class="terminal-input-field" id="iosTerminalInput" autocomplete="off" spellcheck="false" autofocus>
+              </div>
+            </div>
+
+            <!-- Lišta rychlých tlačítek pro žáky -->
+            <div class="ios-terminal-actions">
+              <span class="terminal-action-label">Rychlé volby:</span>
+              <button class="terminal-preset-btn" data-cmd="enable">enable</button>
+              <button class="terminal-preset-btn" data-cmd="?">?</button>
+              <button class="terminal-preset-btn" data-cmd="configure terminal">conf t</button>
+              <button class="terminal-preset-btn" data-cmd="hostname R1-PRAHA">hostname R1-PRAHA</button>
+              <button class="terminal-preset-btn" data-cmd="interface GigabitEthernet0/0">int g0/0</button>
+              <button class="terminal-preset-btn" data-cmd="no shutdown">no shutdown</button>
+              <button class="terminal-preset-btn" data-cmd="show ip interface brief">sh ip int br</button>
+              <button class="terminal-preset-btn" data-cmd="copy running-config startup-config">copy run start</button>
+              <button class="terminal-preset-btn btn-reset" data-cmd="__RESET__">Reset terminálu</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Didaktické shrnutí & Tahák
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Didaktické shrnutí tématu">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Rekapitulace SPŠ</span>
+            <h2>Strukturované shrnutí: Základy Cisco IOS v kostce</h2>
+          </div>
+          <p class="slide-lead">
+            Rychlý přehled klíčových pojmů a postupů pro laboratorní cvičení a zkoušení.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><check-circle></check-circle><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Režimy a navigace
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>User EXEC:</strong> <code>Router&gt;</code> &ndash; pouze základní dohled, příkaz <code>enable</code>.</li>
+                <li><strong>Privileged EXEC:</strong> <code>Router#</code> &ndash; plná správa a dohled, příkaz <code>conf t</code>.</li>
+                <li><strong>Global Config:</strong> <code>Router(config)#</code> &ndash; celosystémové změny parametrů.</li>
+                <li><strong>Záchranný skok:</strong> <kbd>Ctrl</kbd> + <kbd>Z</kbd> nebo příkaz <code>end</code> vrací ihned do <code>Router#</code>.</li>
+                <li><strong>Příkaz "do":</strong> Vykoná privileged příkaz odkudkoli z konfigurace (např. <code>do sh run</code>).</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><line x1="22" y1="12" x2="2" y2="12"></line><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path><line x1="6" y1="16" x2="6.01" y2="16"></line><line x1="10" y1="16" x2="10.01" y2="16"></line></svg>
+                Hardware a paměti
+              </h4>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Konzole:</strong> 9600 baud, 8 datových bitů, bez parity, 1 stop bit, No flow control.</li>
+                <li><strong>Setup dialog:</strong> Při prvním spuštění vždy zadáváme <code>no</code>.</li>
+                <li><strong>RAM (running-config):</strong> Ztrácí se při výpadku napájení.</li>
+                <li><strong>NVRAM (startup-config):</strong> Trvalá paměť, ukládáme příkazem <code>copy run start</code> nebo <code>wr</code>.</li>
+                <li><strong>Smazání:</strong> <code>erase startup-config</code> a restart <code>reload</code>.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 14: Opakovací kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-14" data-title="Kontrolní opakovací otázky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Opakovací otázky: Prověřte své znalosti Cisco IOS</h2>
+          </div>
+          <p class="slide-lead">
+            Klikněte na tlačítko u otázky a ověřte si, zda rozumíte principům ovládání Cisco prvků.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1rem;">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">1</span>
+                <span>Jaký je rozdíl mezi pamětí RAM a NVRAM v síťovém prvku Cisco a jaké soubory v nich sídlí?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                <strong>RAM</strong> je volatilní (operační) paměť, která se při výpadku napájení okamžitě vymaže; sídlí v ní běžící konfigurace <strong>running-config</strong>. <strong>NVRAM</strong> (Non-Volatile RAM) je stálá paměť, která uchovává konfiguraci i po vypnutí zařízení; sídlí v ní uložená konfigurace <strong>startup-config</strong>. Uložení se provádí příkazem <code>copy running-config startup-config</code> (nebo <code>write memory</code>).
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">2</span>
+                <span>Co přesně znamená parametr sériového přenosu 9600-8-N-1 a kde se nastavuje?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Nastavuje se v terminálovém programu (PuTTY, Tera Term) pro sériové konzolové připojení k portu Console. Znamená rychlost <strong>9600 baud</strong> (bitů/s), <strong>8 datových bitů</strong> v rámci, <strong>No parity</strong> (žádný paritní bit) a <strong>1 stop bit</strong>. Řízení toku (flow control) je None.
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">3</span>
+                <span>Jaký je rozdíl mezi promptem zakončeným znakem "&gt;" a znakem "#"? Jak se mezi nimi přepíná?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Prompt s <strong>&gt;</strong> značí uživatelský režim (User EXEC), který má minimální oprávnění a neumožňuje konfigurovat zařízení ani zobrazit plný running-config. Prompt s <strong>#</strong> značí privilegovaný režim (Privileged EXEC), v němž má administrátor plný přístup k dohledu, ladění a přechodu do konfigurace. Z &gt; do # se přechází příkazem <code>enable</code>, zpět příkazem <code>disable</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">4</span>
+                <span>Nacházíte se v podrežimu Router(config-if)#. Jaké jsou možnosti návratu a jak spustit příkaz "show running-config" bez opuštění tohoto režimu?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Příkaz <code>exit</code> vás posune o jednu úroveň výše do <code>Router(config)#</code>. Příkaz <code>end</code> nebo zkratka <kbd>Ctrl</kbd> + <kbd>Z</kbd> vás okamžitě vrátí přímo do privilegovaného režimu <code>Router#</code>. Pokud chcete provést privileged příkaz bez opuštění podrežimu, použijte předponu <strong>do</strong>: <code>do show running-config</code>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../063-HTTP-a-HTTPS/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 063 HTTP a HTTPS (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../101-Cisco-Switch/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 101 Cisco Switch (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 14</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Cisco IOS
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro interaktivní emulátor Cisco IOS CLI -->
+  <script src="ios-terminal.js"></script>
+</body>
+
+</html>

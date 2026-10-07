@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Téma 101: Cisco Switch – Základní konfigurace | POS &bull; SPŠ</title>
+  <meta name="description" content="Kompletní výuková prezentace pro předmět Počítačové sítě (POS) SPŠ: Základní konfigurace Cisco Switche krok za krokem, zabezpečení hesel a konzole, konfigurace SSH v2, management rozhraní SVI VLAN 1, default-gateway a správa portů.">
+
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 101 -->
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body>
+  <!-- Ambientní technologické mřížkové pozadí dle standardu SPŠ -->
+  <div class="app-background">
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%);"></div>
+    <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-grid-overlay"></div>
+  </div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět POS: Počítačové sítě">POS</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">101 Cisco Switch</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #34d399; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12);">Cisco CCNA &bull; Switch Configuration</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek (Hero)
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Cisco Switch: Základní konfigurace">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Předmět POS &bull; Téma 101</span>
+            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge" style="border-color: rgba(16, 185, 129, 0.4); color: #34d399;">Cisco CCNA:ITN Konfigurace přepínače</span>
+          </div>
+          <h1 class="hero-title">Cisco Switch: Základní konfigurace krok za krokem</h1>
+          <p class="hero-subtitle">
+            Od nového přepínače ze skladu k profesionálně zabezpečenému síťovému prvku &bull; Hostname, banner MOTD, zabezpečení přístupu, šifrovaná vzdálená správa SSH v2, virtuální management rozhraní SVI VLAN 1, default-gateway a konfigurace portů.
+          </p>
+
+          <div class="summary-grid" style="margin-top: 2rem; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;">
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Identita &amp; Ochrana
+              </h4>
+              <p>Změna hostname, uvítací právní banner MOTD, enable secret a zašifrování hesel v konfiguraci.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Konzole &amp; SSH v2
+              </h4>
+              <p>Zabezpečení fyzického portu line con 0 a náhrada nebezpečného Telnetu šifrovaným protokolem SSH na line vty.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #60a5fa;"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><line x1="12" y1="8" x2="12" y2="12"></line></svg>
+                Management SVI
+              </h4>
+              <p>Přidělení IP adresy virtuálnímu rozhraní interface vlan 1 a nastavení výchozí brány ip default-gateway.</p>
+            </div>
+
+            <div class="content-card">
+              <h4>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #f59e0b;"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                Správa portů &amp; Uložení
+              </h4>
+              <p>Popisky portů (description), rychlost/duplex, vypnutí nepoužívaných portů (shutdown) a zápis do NVRAM.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Topologie scénáře & Výchozí stav
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Topologie scénáře & Výchozí stav">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Laboratorní zadání</span>
+            <h2>Topologie laboratorního scénáře: Výchozí stav switche</h2>
+          </div>
+          <p class="slide-lead">
+            Nový přepínač Cisco Catalyst po zapojení do zásuvky funguje na 2. vrstvě (L2) ihned &ndash; přepíná rámce. Bez konfigurace je však naprosto <strong>nezabezpečený</strong> a ze sítě <strong>neovladatelný</strong>.
+          </p>
+
+          <!-- Vizuální panel switche -->
+          <div class="switch-visual-panel">
+            <div class="switch-panel-header">
+              <div class="switch-model-badge">
+                <span class="cisco-logo-text">CISCO</span> Catalyst 2960 Series &bull; 24x 10/100 + 2x Gigabit Uplink
+              </div>
+              <span class="tag" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">Model: WS-C2960-24TT-L</span>
+            </div>
+
+            <!-- 24 portů -->
+            <div class="switch-ports-strip">
+              <!-- Porty 1-24 generované v HTML -->
+              <div class="switch-port-item"><div class="port-led led-active" title="Port 1: PC-Admin UP"></div><div class="port-jack"></div><span class="port-num">Fa0/1</span></div>
+              <div class="switch-port-item"><div class="port-led led-active" title="Port 2: PC-Učitel UP"></div><div class="port-jack"></div><span class="port-num">Fa0/2</span></div>
+              <div class="switch-port-item"><div class="port-led led-standby" title="Port 3: Standby"></div><div class="port-jack"></div><span class="port-num">Fa0/3</span></div>
+              <div class="switch-port-item"><div class="port-led led-standby" title="Port 4: Standby"></div><div class="port-jack"></div><span class="port-num">Fa0/4</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/5</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/6</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/7</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/8</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/9</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/10</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/11</span></div>
+              <div class="switch-port-item"><div class="port-led led-inactive"></div><div class="port-jack"></div><span class="port-num">Fa0/12</span></div>
+            </div>
+          </div>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Rizika výchozího stavu
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li><strong>Výchozí název "Switch":</strong> Správce v síti neví, ke kterému z 20 switchů je právě připojen.</li>
+                <li><strong>Konzole bez hesla:</strong> Kdokoli s kabelem získá okamžitý plný přístup k přepínači.</li>
+                <li><strong>Žádná IP adresa:</strong> Na switch nelze přistupovat po síti (přes SSH/Telnet).</li>
+                <li><strong>Všechny porty zapnuté:</strong> Útočník se může připojit do libovolné zásuvky ve zdi.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                Parametry našeho laboratorního scénáře
+              </h3>
+              <table class="table-cisco" style="margin-top: 0.4rem;">
+                <tbody>
+                  <tr><td><strong>Název switche (Hostname):</strong></td><td><code>SW-PATER-01</code></td></tr>
+                  <tr><td><strong>Doména sítě:</strong></td><td><code>sps-skola.cz</code></td></tr>
+                  <tr><td><strong>Správcovská IP (VLAN 1):</strong></td><td><code>192.168.10.2 / 255.255.255.0</code></td></tr>
+                  <tr><td><strong>Výchozí brána (Gateway):</strong></td><td><code>192.168.10.1</code></td></tr>
+                  <tr><td><strong>Admin účet pro SSH:</strong></td><td>Uživatel <code>admin</code> (privilege 15)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Krok 1 – Hostname, Banner & DNS
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Krok 1: Hostname, Banner & DNS">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Scénář &bull; Krok 1</span>
+            <h2>Krok 1: Identita, varovný banner MOTD a vypnutí DNS</h2>
+          </div>
+          <p class="slide-lead">
+            Prvním krokem konfigurace je jednoznačná identifikace přepínače, nastavení právního upozornění a zamezení zasekávání CLI.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Příkazy v režimu Global Config
+              </h3>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>Switch> <span style="color:#38bdf8;">enable</span>
+Switch# <span style="color:#38bdf8;">configure terminal</span>
+Switch(config)# <span style="color:#34d399;">hostname SW-PATER-01</span>
+SW-PATER-01(config)# <span style="color:#34d399;">no ip domain-lookup</span>
+SW-PATER-01(config)# <span style="color:#34d399;">banner motd #ZAKAZ NEOPRAVNENEHO PRISTUPU!#</span></code></pre>
+              </div>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.82rem;">
+                <li><strong>hostname:</strong> Změní prompt terminálu &ndash; správce má okamžitou jistotu, kde se nachází.</li>
+                <li><strong>no ip domain-lookup:</strong> Pokud uděláte v CLI překlep (např. <em>enabble</em>), IOS se standardně pokouší přeložit toto slovo přes DNS na IP adresu a terminál na 2 minuty zamrzne! Tento příkaz to zcela eliminuje.</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-left: 3px solid #f59e0b;">
+              <h3 style="color: #fbbf24;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                Didaktický rozbor: Právní význam MOTD banneru
+              </h3>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.4rem;">
+                Banner MOTD (<em>Message of the Day</em>) se zobrazí každému uživateli ještě <strong>před přihlášením</strong>.
+              </p>
+              <div class="cisco-error-box" style="margin-top: 0.5rem; background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.3); border-left-color: #f59e0b;">
+                <div class="cisco-error-code" style="color: #fde047;">ZÁSADNÍ CHYBA: Nikdy nepište slovo "Vítejte" (Welcome)!</div>
+                <div class="cisco-error-desc">
+                  V mezinárodním i českém právu může útočník u soudu argumentovat, že systém jej sám „přivítal“ (Welcome). Správný banner musí striktně varovat: <em>„Pouze pro autorizovaný personál. Neoprávněný přístup je monitorován a trestně stíhán.“</em>
+                </div>
+              </div>
+              <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.4rem;">
+                Znak <code>#</code> na začátku a na konci funguje jako oddělovač (delimiting character), který IOSu říká, kde text banneru končí.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Krok 2 – Ochrana priviligovaného režimu
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Krok 2: Enable Secret">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Scénář &bull; Krok 2</span>
+            <h2>Krok 2: Ochrana priviligovaného režimu (Enable Secret)</h2>
+          </div>
+          <p class="slide-lead">
+            Kdo získá přístup do privilegovaného režimu (<code>#</code>), má absolutní moc nad zařízením. Proto musí být tento přechod chráněn silným kryptografickým hashem.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Příkaz enable secret
+              </h3>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#34d399;">enable secret SuperTajneHeslo123!</span></code></pre>
+              </div>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.5rem;">
+                Tento příkaz nastaví heslo pro příkaz <code>enable</code>. Heslo se do konfigurace neukládá jako čitelný text, nýbrž se okamžitě jednosměrně zahešuje (MD5 Type 5 hash nebo novější SHA-256 scrypt Type 8/9).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #ef4444;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Proč NIKDY nepoužívat "enable password"?
+              </h3>
+              <table class="table-cisco" style="margin-top: 0.5rem;">
+                <thead>
+                  <tr>
+                    <th>Vlastnost</th>
+                    <th>enable password (ZASTARALÉ)</th>
+                    <th>enable secret (SPRÁVNÉ)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Uložení v souboru:</strong></td>
+                    <td style="color: #f87171;">Čistý čitelný text (Plaintext)</td>
+                    <td style="color: #34d399;">Kryptografický hash</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Příklad v show run:</strong></td>
+                    <td><code>enable password cisco</code></td>
+                    <td><code>enable secret 5 $1$mERr$hx5r...</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Priorita v IOS:</strong></td>
+                    <td>Nižší (ignoruje se)</td>
+                    <td><strong>Vždy má přednost!</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.5rem;">
+                Pokud v konfiguraci zadáte oba příkazy, Cisco IOS automaticky použije bezpečnější <code>enable secret</code> a <code>enable password</code> ignoruje.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Krok 3 – Zabezpečení fyzické konzole
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Krok 3: Zabezpečení konzole (Line con 0)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Scénář &bull; Krok 3</span>
+            <h2>Krok 3: Zabezpečení fyzické konzole (Line Console 0)</h2>
+          </div>
+          <p class="slide-lead">
+            Fyzický konzolový port na switchi nesmí zůstat otevřený. Pokud by někdo v racku připojil modrý rollover kabel, switch musí okamžitě vyžadovat přihlašovací heslo.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Konfigurace linky Line Console 0
+              </h3>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#38bdf8;">line console 0</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">password CiscoKonzole123!</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">login</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">logging synchronous</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">exec-timeout 5 0</span>
+SW-PATER-01(config-line)# <span style="color:#38bdf8;">exit</span></code></pre>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                Rozbor jednotlivých příkazů linky
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong><code>password &lt;heslo&gt;</code>:</strong> Nastaví heslo, které bude vyžadováno při fyzickém připojení přes sériový kabel.
+                </li>
+                <li>
+                  <strong><code>login</code>:</strong> <span style="color: #f87171; font-weight:700;">ZÁSADNÍ PŘÍKAZ!</span> Bez příkazu login se zadané heslo vůbec neaktivuje a konzole se dál neptá na nic!
+                </li>
+                <li>
+                  <strong><code>logging synchronous</code>:</strong> Zabraňuje systémovým zprávám (např. <em>%LINK-3-UPDOWN</em>), aby vám rozbily rozepsaný příkaz. Po výpisu hlášky IOS automaticky znovu vypíše váš rozepsaný řádek!
+                </li>
+                <li>
+                  <strong><code>exec-timeout 5 0</code>:</strong> Bezpečnostní časovač nečinnosti: automaticky odhlásí terminál po 5 minutách a 0 sekundách bez aktivity.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Krok 4 – Globální šifrování hesel
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Krok 4: Service Password-Encryption">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Scénář &bull; Krok 4</span>
+            <h2>Krok 4: Globální šifrování hesel (service password-encryption)</h2>
+          </div>
+          <p class="slide-lead">
+            Heslo pro konzoli a hesla pro linky VTY jsou v souboru <code>running-config</code> standardně uložena v čistém textu. Kdokoli se vám podívá přes rameno (shoulder surfing), heslo ihned uvidí.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Aktivace služby šifrování
+              </h3>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#34d399;">service password-encryption</span></code></pre>
+              </div>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.4rem;">
+                Tento jediný globální příkaz okamžitě převede všechna nezašifrovaná hesla v konfiguraci (pro konzoli, VTY i zastaralý enable password) na zašifrovaný tvar Cisco Type 7.
+              </p>
+              <div class="code-block" style="margin-top: 0.5rem;">
+                <pre><code>! V konfiguraci po aktivaci:
+line con 0
+ password 7 0822455D0A16
+ login</code></pre>
+              </div>
+            </div>
+
+            <div class="content-card" style="border-left: 3px solid #ef4444;">
+              <h3 style="color: #f87171;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Odborné varování SPŠ: Šifra Type 7 NENÍ bezpečná!
+              </h3>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.4rem;">
+                Algoritmus Type 7 je pouze jednoduchá Vigenèrova reverzibilní šifra (obfuskace) vytvořená v 80. letech minulého století.
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.82rem;">
+                <li>
+                  Kdokoli, kdo získá text konfiguračního souboru (např. ze zálohy), dokáže heslo Type 7 dešifrovat za zlomek sekundy pomocí bezplatných online nástrojů.
+                </li>
+                <li>
+                  Účelem <code>service password-encryption</code> je pouze ochrana před náhodným pohledem na monitor v učebně či serverovně.
+                </li>
+                <li>
+                  Pro skutečné zabezpečení vždy používejte <code>enable secret</code> a pro uživatelské účty parametr <code>secret</code> namísto <code>password</code>!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Krok 5 – Telnet vs. SSH v2
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Krok 5: Telnet vs. Bezpečné SSH v2">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Vzdálená správa &bull; Bezpečnost</span>
+            <h2>Krok 5: Vzdálená správa &ndash; Proč je Telnet zakázán a jak nastavit SSH</h2>
+          </div>
+          <p class="slide-lead">
+            Vzdálená správa přes síť je nutností, protože správce nesedí u switche s kabelem. Protokol <strong>Telnet</strong> je však v moderních sítích přísně zakázán &ndash; nahrazuje jej <strong>SSH v2</strong>.
+          </p>
+
+          <div class="protocol-compare-grid">
+            <!-- Telnet nebezpečný -->
+            <div class="compare-card-danger">
+              <h3 style="color: #f87171;">Telnet (TCP port 23) &ndash; ZAKÁZÁNO</h3>
+              <p style="font-size: 0.82rem; color: #94a3b8; margin-top: 0.35rem;">
+                Přenáší veškerá data, přihlašovací jména a hesla v <strong>otevřeném nešifrovaném textu</strong> (Cleartext).
+              </p>
+              <div class="packet-sniff-box" style="color: #fca5a5;">
+                [Wireshark Packet #142]<br>
+                Telnet Data: <strong>Username: admin</strong><br>
+                Telnet Data: <strong>Password: MojeTajneHeslo123</strong>
+              </div>
+              <small style="color: #f87171;">Útočník s Wiresharkem na síti ihned vidí vaše hesla!</small>
+            </div>
+
+            <!-- SSH bezpečné -->
+            <div class="compare-card-secure">
+              <h3 style="color: #34d399;">SSH verze 2 (TCP port 22) &ndash; STANDARD</h3>
+              <p style="font-size: 0.82rem; color: #94a3b8; margin-top: 0.35rem;">
+                Využívá silnou asymetrickou kryptografii (RSA) a symetrické šifrování celého datového toku (AES).
+              </p>
+              <div class="packet-sniff-box" style="color: #86efac;">
+                [Wireshark Packet #142]<br>
+                SSHv2 Encrypted Packet: <strong>7f8a 9c2b 1e4f ...</strong><br>
+                Payload: <strong>Nerozluštitelný binární šum</strong>
+              </div>
+              <small style="color: #34d399;">Hesla ani příkazy nelze odposlechnout ani pozměnit.</small>
+            </div>
+          </div>
+
+          <!-- Postup generování klíčů SSH -->
+          <div class="content-card" style="margin-top: 1rem;">
+            <h4>Čtyři podmínky pro aktivaci SSH na Cisco switchi:</h4>
+            <div class="code-block" style="margin-top: 0.4rem;">
+              <pre><code>SW-PATER-01(config)# <span style="color:#38bdf8;">ip domain-name sps-skola.cz</span>             <span style="color:#94a3b8;">! 1. Doména je nutná pro výpočet FQDN klíče</span>
+SW-PATER-01(config)# <span style="color:#34d399;">crypto key generate rsa modulus 2048</span>    <span style="color:#94a3b8;">! 2. Vygenerování 2048-bitového páru RSA klíčů</span>
+SW-PATER-01(config)# <span style="color:#38bdf8;">ip ssh version 2</span>                        <span style="color:#94a3b8;">! 3. Vynucení moderní bezpečné verze SSH 2</span>
+SW-PATER-01(config)# <span style="color:#34d399;">username admin privilege 15 secret SpravcePass2026!</span>  <span style="color:#94a3b8;">! 4. Vytvoření lokálního správce</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Krok 6 – Konfigurace linek Line VTY
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Krok 6: Zabezpečení Line VTY (SSH)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Scénář &bull; Krok 6</span>
+            <h2>Krok 6: Konfigurace virtuálních terminálů (Line VTY 0 15)</h2>
+          </div>
+          <p class="slide-lead">
+            Linky <strong>VTY</strong> (<em>Virtual Teletype</em>) představují virtuální relace pro vzdálené připojení k přepínači po síti. Switch Catalyst 2960 disponuje 16 linkami (0 až 15).
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Konfigurace linek pro výhradní použití SSH
+              </h3>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#38bdf8;">line vty 0 15</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">transport input ssh</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">login local</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">exec-timeout 10 0</span>
+SW-PATER-01(config-line)# <span style="color:#34d399;">logging synchronous</span>
+SW-PATER-01(config-line)# <span style="color:#38bdf8;">exit</span></code></pre>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Klíčové bezpečnostní mechanismy VTY
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem;">
+                <li>
+                  <strong><code>transport input ssh</code>:</strong><br>
+                  Přísně zakáže nezabezpečený Telnet! Switch bude na portu 22 přijímat pouze šifrovaná spojení protokolu SSH.
+                </li>
+                <li>
+                  <strong><code>login local</code>:</strong><br>
+                  Přepínač nebude vyžadovat jedno společné heslo pro všechny, ale ověří uživatele proti lokální databázi účtů vytvořené příkazem <code>username admin secret ...</code>. Každý správce tak může mít svůj vlastní účet!
+                </li>
+                <li>
+                  <strong><code>exec-timeout 10 0</code>:</strong><br>
+                  Pokud vzdálený správce zapomene otevřené okno PuTTY a odejde na oběd, switch relaci po 10 minutách automaticky zavře.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Krok 7 – Management rozhraní SVI
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Krok 7: Management SVI (VLAN 1)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Síťová vrstva &bull; IP konfigurace</span>
+            <h2>Krok 7: Management rozhraní switche (SVI &ndash; VLAN 1)</h2>
+          </div>
+          <p class="slide-lead">
+            Klasický L2 přepínač nemá na fyzických portech IP adresy &ndash; fyzické porty pracují pouze s rámci a MAC adresami. Jak tedy switch může komunikovat přes IP s administrátorem?
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                Co je to SVI (Switched Virtual Interface)?
+              </h3>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.35rem;">
+                <strong>SVI</strong> je logické virtuální rozhraní vytvořené uvnitř switche navázané na virtuální síť VLAN. Umožňuje přiřadit přepínači vlastní IP adresu pro vzdálenou správu.
+              </p>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#38bdf8;">interface vlan 1</span>
+SW-PATER-01(config-if)# <span style="color:#34d399;">ip address 192.168.10.2 255.255.255.0</span>
+SW-PATER-01(config-if)# <span style="color:#34d399;">description SPRAVCOVSKE ROZHRANI SVI</span>
+SW-PATER-01(config-if)# <span style="color:#34d399;">no shutdown</span>
+SW-PATER-01(config-if)# <span style="color:#38bdf8;">exit</span></code></pre>
+              </div>
+            </div>
+
+            <div class="content-card" style="border-left: 3px solid #34d399;">
+              <h3 style="color: #34d399;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Proč je nutný příkaz "no shutdown"?
+              </h3>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.35rem;">
+                Ve výchozím továrním nastavení je virtuální rozhraní <code>interface vlan 1</code> v administrativně vypnutém stavu (<em>administratively down</em>).
+              </p>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.82rem;">
+                <li>
+                  Bez zadání příkazu <code>no shutdown</code> zůstane rozhraní neaktivní a na přidělenou IP adresu se nebude možné připojit ani pingnout!
+                </li>
+                <li>
+                  <strong>Podmínka stavu UP:</strong> Aby rozhraní <code>vlan 1</code> přešlo do stavu <em>Up/Up</em>, musí být alespoň jeden fyzický port patřící do VLAN 1 aktivně připojen kabelem k zapnutému zařízení (PC nebo router).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Krok 8 – Výchozí brána (Default Gateway)
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Krok 8: Výchozí brána (Default Gateway)">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Směrování &bull; Dostupnost</span>
+            <h2>Krok 8: Nastavení výchozí brány (ip default-gateway)</h2>
+          </div>
+          <p class="slide-lead">
+            Častá záludná otázka u zkoušek: <em>„Proč potřebuje L2 switch výchozí bránu, když sám žádné pakety nesměruje?“</em>
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><circle cx="12" cy="12" r="4"></circle><line x1="1.05" y1="12" x2="7" y2="12"></line><line x1="17.01" y1="12" x2="22.96" y2="12"></line></svg>
+                Příkaz v režimu Global Config
+              </h3>
+              <div class="code-block" style="margin: 0.5rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#34d399;">ip default-gateway 192.168.10.1</span></code></pre>
+              </div>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.4rem;">
+                Příkaz nastavuje IP adresu směrovače (routeru), který propojuje místní síť s okolním světem (školní páteří, internetem nebo VPN).
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Didaktický rozbor: Kdy switch bránu použije?
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.5rem; font-size: 0.84rem;">
+                <li>
+                  Pokud je správce připojen kabelem <strong>ve stejné podsíti</strong> (např. PC má IP <code>192.168.10.50</code>), komunikace probíhá přímo na L2 vrstvě přes MAC adresy &ndash; brána není potřeba.
+                </li>
+                <li>
+                  Pokud se však správce připojuje <strong>z jiné učebny, z domova přes VPN nebo ze školního serveru</strong> (např. IP <code>10.0.5.20</code>), switch musí své odpovědi odeslat na směrovač (Gateway)!
+                </li>
+                <li>
+                  Bez nastaveného <code>ip default-gateway</code> switch sice paket z jiné sítě přijme, ale <strong>nedokáže odpovědět zpět</strong> &ndash; SSH spojení z jiné sítě okamžitě zhavaruje na timeout!
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Krok 9 – Konfigurace portů & Zabezpečení
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Krok 9: Konfigurace portů & Security">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Fyzické porty &bull; Zabezpečení</span>
+            <h2>Krok 9: Konfigurace fyzických portů a bezpečnostní vypnutí</h2>
+          </div>
+          <p class="slide-lead">
+            Správce musí udržovat pořádek v dokumentaci portů a dodržovat základní bezpečnostní zásadu: <strong>nepoužívané porty nesmí být aktivní</strong>.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                Konfigurace aktivního portu pro PC
+              </h3>
+              <div class="code-block" style="margin: 0.4rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#38bdf8;">interface FastEthernet0/1</span>
+SW-PATER-01(config-if)# <span style="color:#34d399;">description PC-UCITEL-KATEDRA</span>
+SW-PATER-01(config-if)# <span style="color:#34d399;">switchport mode access</span>
+SW-PATER-01(config-if)# <span style="color:#34d399;">duplex full</span>
+SW-PATER-01(config-if)# <span style="color:#34d399;">speed auto</span>
+SW-PATER-01(config-if)# <span style="color:#38bdf8;">exit</span></code></pre>
+              </div>
+              <ul class="feature-list" style="margin-top: 0.4rem; font-size: 0.8rem;">
+                <li><strong>description:</strong> Zásadní pro přehlednost při řešení problémů v <code>show interfaces</code>.</li>
+                <li><strong>switchport mode access:</strong> Port je vyhrazen pro koncovou stanici (nikoli pro trunk propojení na další switch).</li>
+              </ul>
+            </div>
+
+            <div class="content-card" style="border-left: 3px solid #ef4444;">
+              <h3 style="color: #f87171;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19.69 14a6.9 6.9 0 0 0 .31-2V5l-8-3-3.11 1.17"></path><path d="M4.73 4.73 4 5v7c0 6 8 10 8 10a20.29 20.29 0 0 0 5.62-4.38"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                Zlaté bezpečnostní pravidlo: Vypnout nepoužité porty!
+              </h3>
+              <p style="font-size: 0.82rem; color: #cbd5e1; margin-top: 0.35rem;">
+                Pokud máte 24portový switch a zapojeno je pouze 8 počítačů, zbylých 16 portů musíte vypnout, aby se do nich nikdo nepovolaný nezapojil!
+              </p>
+              <div class="code-block" style="margin: 0.4rem 0;">
+                <pre><code>SW-PATER-01(config)# <span style="color:#38bdf8;">interface range FastEthernet0/9 - 24</span>
+SW-PATER-01(config-if-range)# <span style="color:#34d399;">description NEPOUZIVANE PORTY</span>
+SW-PATER-01(config-if-range)# <span style="color:#ef4444;">shutdown</span>
+SW-PATER-01(config-if-range)# <span style="color:#38bdf8;">exit</span></code></pre>
+              </div>
+              <small style="color: #94a3b8;">
+                Příkaz <code>interface range</code> umožňuje nakonfigurovat desítky portů najednou jediným příkazem!
+              </small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Krok 10 – Uložení & Verifikace
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Krok 10: Uložení & Diagnostika">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Scénář &bull; Krok 10</span>
+            <h2>Krok 10: Uložení konfigurace a ověření stavu (Verifikace)</h2>
+          </div>
+          <p class="slide-lead">
+            Konfigurace je hotová. Nyní zbývá zkontrolovat funkčnost klíčovými příkazy a trvale uložit výsledky do paměti NVRAM.
+          </p>
+
+          <div class="split-layout">
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #34d399;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Uložení do NVRAM (copy run start)
+              </h3>
+              <div class="code-block" style="margin: 0.4rem 0;">
+                <pre><code>SW-PATER-01# <span style="color:#34d399;">copy running-config startup-config</span>
+Destination filename [startup-config]? <kbd>Enter</kbd>
+Building configuration...
+[OK]</code></pre>
+              </div>
+              <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 0.5rem;">
+                Pokud tento krok vynecháte, při nejbližším výpadku elektrického proudu nebo restartu se switch vrátí do čistého továrního stavu a veškerá práce bude ztracena!
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3>
+                <svg class="icon" viewBox="0 0 24 24" style="color: #38bdf8;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                5 Klíčových verifikačních příkazů
+              </h3>
+              <ul class="feature-list" style="margin-top: 0.4rem; font-size: 0.82rem;">
+                <li>
+                  <code>show ip interface brief</code>:<br>
+                  Ověří, zda je <code>Vlan1</code> ve stavu <em>up / up</em> se správnou IP adresou.
+                </li>
+                <li>
+                  <code>show ip default-gateway</code>:<br>
+                  Zobrazí nastavenou výchozí bránu pro vzdálenou správu.
+                </li>
+                <li>
+                  <code>show ip ssh</code>:<br>
+                  Potvrdí, zda je aktivní <em>SSH Enabled - version 2.0</em>.
+                </li>
+                <li>
+                  <code>show running-config</code>:<br>
+                  Kompletní kontrola zašifrovaných hesel, VTY linek a portů.
+                </li>
+                <li>
+                  <code>show mac address-table</code>:<br>
+                  Zobrazí naučené MAC adresy připojených zařízení na jednotlivých portech.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 13: Interaktivní trenažér & Lab validátor
+           ========================================== -->
+      <section class="slide" id="slide-13" data-title="Laboratorní trenažér: Konfigurace Switche">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Interaktivní trenažér</span>
+            <h2>Praktický lab: Dokončete všech 12 úkolů konfigurace switche!</h2>
+          </div>
+          <p class="slide-lead">
+            Pište příkazy do okna switche vlevo (nebo klikejte na rychlé příkazy). Systém automaticky validuje splnění každého kroku v kontrolním seznamu vpravo.
+          </p>
+
+          <!-- Dvou-sloupcový layout: Terminál vlevo, Checklist vpravo -->
+          <div class="switch-lab-layout">
+            <!-- Levý sloupec: Terminál switche -->
+            <div class="ios-terminal-container" id="switchTerminalContainer" style="margin-top: 0; height: 100%;">
+              <div class="ios-terminal-header">
+                <div class="terminal-window-dots">
+                  <span class="terminal-dot dot-red"></span>
+                  <span class="terminal-dot dot-yellow"></span>
+                  <span class="terminal-dot dot-green"></span>
+                </div>
+                <div class="terminal-title-text">
+                  Cisco Catalyst 2960 &bull; Konzolový trenažér
+                </div>
+                <span class="terminal-session-badge">Active</span>
+              </div>
+
+              <div class="ios-terminal-body">
+                <div class="ios-terminal-output" id="switchLabOutput"></div>
+                <div class="ios-terminal-input-row">
+                  <span class="terminal-current-prompt" id="switchLabPrompt">Switch&gt;</span>
+                  <input type="text" class="terminal-input-field" id="switchLabInput" autocomplete="off" spellcheck="false" autofocus>
+                </div>
+              </div>
+
+              <div class="ios-terminal-actions">
+                <span class="terminal-action-label">Rychlé kroky:</span>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="enable">enable</button>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="conf t">conf t</button>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="hostname SW-PATER-01">hostname</button>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="no ip domain-lookup">no ip domain</button>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="enable secret TajneHeslo123">en secret</button>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="service password-encryption">pass-enc</button>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="ip default-gateway 192.168.10.1">gateway</button>
+                <button class="terminal-preset-btn lab-quick-cmd" data-cmd="copy run start">copy run start</button>
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: Kontrolní seznam scénáře (užší) -->
+            <div class="tasks-checklist-box" id="switchTasksChecklist">
+              <div class="checklist-title">
+                <strong>Kontrolní seznam scénáře</strong>
+                <span class="tag" id="labProgressCount" style="background: rgba(16, 185, 129, 0.15); color: #34d399; font-weight:700;">0 / 12</span>
+              </div>
+
+              <div class="task-item" id="task-hostname">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">1. Změna hostname</div>
+                  <div class="task-hint-text">hostname SW-PATER-01</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-noDomainLookup">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">2. Vypnutí hledání v DNS</div>
+                  <div class="task-hint-text">no ip domain-lookup</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-banner">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">3. Varovný banner MOTD</div>
+                  <div class="task-hint-text">banner motd #ZAKAZ PRISTUPU#</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-enableSecret">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">4. Zabezpečení enable secret</div>
+                  <div class="task-hint-text">enable secret TajneHeslo123</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-serviceEncryption">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">5. Šifrování hesel</div>
+                  <div class="task-hint-text">service password-encryption</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-lineConsole">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">6. Zabezpečení konzole</div>
+                  <div class="task-hint-text">line con 0 &gt; password ... &gt; login</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-sshDomainKey">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">7. IP doména &amp; RSA klíče SSH</div>
+                  <div class="task-hint-text">ip domain-name sps.cz &gt; crypto key...</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-adminUser">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">8. Vytvoření uživatele admin</div>
+                  <div class="task-hint-text">username admin secret HesloAdmin</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-vtySsh">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">9. Line VTY pouze pro SSH</div>
+                  <div class="task-hint-text">line vty 0 15 &gt; transport input ssh</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-vlan1Ip">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">10. Management SVI VLAN 1</div>
+                  <div class="task-hint-text">int vlan 1 &gt; ip addr ... &gt; no shut</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-defaultGateway">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">11. Výchozí brána (Gateway)</div>
+                  <div class="task-hint-text">ip default-gateway 192.168.10.1</div>
+                </div>
+              </div>
+
+              <div class="task-item" id="task-saved">
+                <div class="task-checkbox"></div>
+                <div class="task-content">
+                  <div class="task-title-text">12. Uložení konfigurace</div>
+                  <div class="task-hint-text">copy run start (nebo wr)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 14: Generátor skriptu & Didaktická šablona
+           ========================================== -->
+      <section class="slide" id="slide-14" data-title="Generátor skriptu & Kompletní šablona">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Nástroj pro praxi</span>
+            <h2>Generátor konfigurace &amp; Kompletní šablona pro Packet Tracer</h2>
+          </div>
+          <p class="slide-lead">
+            Upravte si parametry níže podle svého síťového zadání a jedním kliknutím vygenerujte hotový Cisco IOS skript připravený pro vložení do Packet Traceru nebo reálného switche!
+          </p>
+
+          <div class="config-generator-card">
+            <div class="generator-params-grid">
+              <div class="param-group">
+                <label for="genHostname">Hostname zařízení:</label>
+                <input type="text" id="genHostname" value="SW-PATER-01">
+              </div>
+              <div class="param-group">
+                <label for="genDomain">Doménové jméno sítě:</label>
+                <input type="text" id="genDomain" value="sps-skola.cz">
+              </div>
+              <div class="param-group">
+                <label for="genSecretPass">Enable Secret heslo:</label>
+                <input type="text" id="genSecretPass" value="CiscoSecretPass2026!">
+              </div>
+              <div class="param-group">
+                <label for="genConPass">Heslo konzole (Line con 0):</label>
+                <input type="text" id="genConPass" value="KonzolePass123!">
+              </div>
+              <div class="param-group">
+                <label for="genAdminUser">SSH Uživatel &amp; Heslo:</label>
+                <div style="display: flex; gap: 0.35rem;">
+                  <input type="text" id="genAdminUser" value="admin" style="width: 40%;">
+                  <input type="text" id="genAdminPass" value="AdminSSHPass987!" style="width: 60%;">
+                </div>
+              </div>
+              <div class="param-group">
+                <label for="genIp">Management IP &amp; Maska (VLAN 1):</label>
+                <div style="display: flex; gap: 0.35rem;">
+                  <input type="text" id="genIp" value="192.168.10.2" style="width: 55%;">
+                  <input type="text" id="genMask" value="255.255.255.0" style="width: 45%;">
+                </div>
+              </div>
+              <div class="param-group">
+                <label for="genGateway">Výchozí brána (Default-Gateway):</label>
+                <input type="text" id="genGateway" value="192.168.10.1">
+              </div>
+              <div class="param-group" style="justify-content: flex-end; grid-column: span 2;">
+                <div style="display: flex; gap: 0.75rem;">
+                  <button type="button" class="btn-generate-config" id="btnGenerateScript">
+                    <svg class="icon" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    Přegenerovat skript
+                  </button>
+                  <button type="button" class="btn-generate-config" id="btnCopyGeneratedScript" style="background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8;">
+                    <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Kopírovat do schránky
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Výstupní textové pole se skriptem -->
+            <textarea id="generatedConfigOutput" readonly style="width: 100%; height: 180px; font-family: var(--font-mono); font-size: 0.78rem; background: #030712; color: #34d399; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid #1f2937; resize: none;"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 15: Opakovací kontrolní otázky
+           ========================================== -->
+      <section class="slide" id="slide-15" data-title="Kontrolní opakovací otázky">
+        <div class="slide-content">
+          <div class="slide-header-badge">
+            <span class="badge">Ověření znalostí</span>
+            <h2>Opakovací otázky: Prověřte své znalosti konfigurace switche</h2>
+          </div>
+          <p class="slide-lead">
+            Klikněte na tlačítko u otázky a ověřte si své porozumění konfiguraci a zabezpečení Cisco přepínačů.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1rem;">
+            <!-- Otázka 1 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">1</span>
+                <span>Proč se na linkách Line VTY nastavuje "transport input ssh" a jaký je bezpečnostní důsledek?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Příkaz <code>transport input ssh</code> na linkách <code>line vty 0 15</code> striktně povolí pouze šifrovaný protokol SSH a zcela zakáže nezabezpečený Telnet. Zabraňuje tomu, aby útočník odposlouchával přihlašovací jména a hesla správce v otevřeném textu na síti.
+              </div>
+            </div>
+
+            <!-- Otázka 2 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">2</span>
+                <span>Jaký je rozdíl mezi "enable password" a "enable secret" a co dělá příkaz "service password-encryption"?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                <code>enable secret</code> ukládá heslo jako bezpečný jednosměrný kryptografický hash (MD5/SHA-256 scrypt) a má vždy přednost. Zastaralý <code>enable password</code> ukládá heslo v čistém textu. Příkaz <code>service password-encryption</code> zašifruje všechna hesla v konfiguraci pomocí lehké obfuskace Type 7 (ochrana před pohledem přes rameno).
+              </div>
+            </div>
+
+            <!-- Otázka 3 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">3</span>
+                <span>Co je to rozhraní SVI a proč nestačí IP adresu nastavit na fyzický port např. FastEthernet 0/1?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                L2 přepínač nemá fyzické IP porty &ndash; fyzické porty pracují na 2. vrstvě s MAC adresami. Aby měl switch IP adresu pro vzdálenou správu (SSH/ping), vytváří se virtuální rozhraní <strong>SVI</strong> (Switched Virtual Interface) <code>interface vlan 1</code>, na které se přiřadí IP adresa a aktivuje se příkazem <code>no shutdown</code>.
+              </div>
+            </div>
+
+            <!-- Otázka 4 -->
+            <div class="question-card">
+              <div class="question-header">
+                <span class="question-num">4</span>
+                <span>Proč je nutné na switchi nastavit příkaz "ip default-gateway", i když switch sám o sobě nesměruje provoz klientů?</span>
+              </div>
+              <button class="question-btn" type="button">
+                <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <span>Zobrazit odpověď</span>
+              </button>
+              <div class="question-hint">
+                Výchozí brána (Default Gateway) umožňuje samotnému operačnímu systému switche odesílat odpovědi klientům, kteří se k němu připojují <strong>z jiné podsítě</strong> (např. správce přistupující přes router ze vzdálené učebny, internetu nebo VPN). Bez brány by switch nedokázal odpovědět na SSH dotazy mimo svou lokální síť.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../100-Cisco-IOS/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 100 Cisco IOS (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu POS">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Poslední téma bloku">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 15</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Konfigurace switche
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Lokální engine pro interaktivní lab a validátor konfigurace switche -->
+  <script src="switch-config-lab.js"></script>
+</body>
+
+</html>

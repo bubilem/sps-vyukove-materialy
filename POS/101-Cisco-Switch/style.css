@@ -1,0 +1,763 @@
+/* ==========================================================================
+   POS Téma 101: Cisco Switch – Základní konfigurace krok za krokem
+   Dedikované styly pro scénáře, laboratorní validátor a panel switche
+   100% Offline & Pure Vanilla CSS
+   ========================================================================== */
+
+:root {
+  --switch-accent: #10b981;
+  --switch-accent-glow: rgba(16, 185, 129, 0.25);
+  --switch-body-bg: #0d1527;
+  --switch-panel-bg: #090e1a;
+  --led-green: #22c55e;
+  --led-amber: #f59e0b;
+  --led-gray: #475569;
+}
+
+/* 1. Krok za krokem - Scénářová karta (Step-by-Step Card) */
+.step-scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .step-scenario-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  align-self: flex-start;
+  margin-bottom: 0.65rem;
+}
+
+/* 2. Čelní panel Cisco switche (Switch Front Panel) */
+.switch-visual-panel {
+  background: var(--switch-panel-bg);
+  border: 2px solid #1e293b;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin: 1.25rem 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.switch-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.75rem;
+}
+
+.switch-model-badge {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cisco-logo-text {
+  font-weight: 800;
+  color: #38bdf8;
+  letter-spacing: 0.08em;
+}
+
+.switch-ports-strip {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0.45rem;
+  background: #040810;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #1e293b;
+}
+
+@media (max-width: 900px) {
+  .switch-ports-strip {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.switch-port-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #0a0f1d;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  padding: 0.4rem 0.2rem;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.switch-port-item:hover {
+  border-color: #38bdf8;
+  background: #111827;
+}
+
+.port-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-bottom: 0.3rem;
+}
+
+.led-active {
+  background: var(--led-green);
+  box-shadow: 0 0 6px var(--led-green);
+}
+
+.led-standby {
+  background: var(--led-amber);
+  box-shadow: 0 0 5px var(--led-amber);
+}
+
+.led-inactive {
+  background: var(--led-gray);
+}
+
+.port-jack {
+  width: 14px;
+  height: 12px;
+  background: #1e293b;
+  border-radius: 2px;
+  margin-bottom: 0.25rem;
+}
+
+.port-num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #94a3b8;
+}
+
+/* 3. Porovnání Telnet vs. SSH */
+.protocol-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 800px) {
+  .protocol-compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.compare-card-danger {
+  border-top: 3px solid #ef4444;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  border-left: 1px solid rgba(239, 68, 68, 0.2);
+  border-right: 1px solid rgba(239, 68, 68, 0.2);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.compare-card-secure {
+  border-top: 3px solid #10b981;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  border-left: 1px solid rgba(16, 185, 129, 0.2);
+  border-right: 1px solid rgba(16, 185, 129, 0.2);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.packet-sniff-box {
+  background: #030712;
+  border: 1px solid #1f2937;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin: 0.65rem 0;
+  line-height: 1.4;
+}
+
+/* 4. Interaktivní konfigurátor & Lab Validátor (Slide 13) */
+.switch-lab-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 1.25rem;
+  height: 520px;
+  margin-top: 1rem;
+}
+
+@media (max-width: 960px) {
+  .switch-lab-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+/* Terminálový trenažér switche (vlevo) */
+.ios-terminal-container {
+  background: var(--switch-panel-bg);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: var(--radius-md);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ios-terminal-header {
+  background: #0f172a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.terminal-window-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.terminal-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.dot-red { background: #ef4444; }
+.dot-yellow { background: #eab308; }
+.dot-green { background: #22c55e; }
+
+.terminal-title-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.terminal-session-badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+}
+
+.ios-terminal-body {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  background: #040812;
+}
+
+.ios-terminal-output {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.terminal-line {
+  margin-bottom: 0.2rem;
+}
+
+.line-system {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.line-prompt {
+  color: #34d399;
+  font-weight: 700;
+}
+
+.line-cmd {
+  color: #f8fafc;
+}
+
+.line-success {
+  color: #34d399;
+}
+
+.line-warning {
+  color: #fbbf24;
+}
+
+.line-error {
+  color: #f87171;
+}
+
+.ios-terminal-input-row {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  gap: 0.4rem;
+}
+
+.terminal-current-prompt {
+  color: #34d399;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.terminal-input-field {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  color: #f8fafc !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.9rem !important;
+  caret-color: #34d399;
+  box-shadow: none !important;
+}
+
+.ios-terminal-actions {
+  background: rgba(10, 16, 28, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.6rem 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.terminal-action-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+.terminal-preset-btn {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.terminal-preset-btn:hover {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+/* Kontrolní seznam scénáře (vpravo, užší) */
+.tasks-checklist-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 520px;
+}
+
+.checklist-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.45rem;
+}
+
+.checklist-title strong {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.25rem;
+  border: 1px solid transparent;
+  transition: background 0.15s ease;
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.task-checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 2px solid #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.12rem;
+  transition: all 0.2s ease;
+}
+
+.task-item.completed .task-checkbox {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.task-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title-text {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.task-item.completed .task-title-text {
+  color: #10b981;
+}
+
+.task-hint-text {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 5. Generátor kompletní konfigurace */
+.config-generator-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.generator-params-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  .generator-params-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.param-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.param-group label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.param-group input {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.btn-generate-config {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.btn-generate-config:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* 6. Cisco tabulky a chybové komponenty */
+.table-cisco {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.table-cisco th {
+  background: rgba(30, 41, 59, 0.75);
+  color: #34d399;
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table-cisco td {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.table-cisco tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.table-cisco code {
+  color: #34d399;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.cisco-error-box {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-left: 4px solid #ef4444;
+  padding: 0.85rem 1.15rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 0.85rem;
+}
+
+.cisco-error-code {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fca5a5;
+  margin-bottom: 0.25rem;
+}
+
+.cisco-error-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   7. Speciální Light Theme přetížení (Optimalizace čitelnosti ve světlém režimu)
+   ========================================================================== */
+[data-theme="light"] {
+  --switch-body-bg: #f8fafc;
+  --switch-panel-bg: #ffffff;
+}
+
+[data-theme="light"] .step-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .step-card p {
+  color: #334155;
+}
+
+[data-theme="light"] .switch-visual-panel {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .switch-model-badge {
+  color: #334155;
+}
+
+[data-theme="light"] .compare-card-danger {
+  background: #ffffff;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+[data-theme="light"] .compare-card-danger p {
+  color: #334155;
+}
+
+[data-theme="light"] .compare-card-secure {
+  background: #ffffff;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="light"] .compare-card-secure p {
+  color: #334155;
+}
+
+/* Kontrolní seznam ve světlém režimu - vysoký kontrast */
+[data-theme="light"] .tasks-checklist-box {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .checklist-title {
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .checklist-title strong {
+  color: #0f172a;
+}
+
+[data-theme="light"] .task-item {
+  border-radius: 6px;
+}
+
+[data-theme="light"] .task-item:hover {
+  background: #f1f5f9;
+}
+
+[data-theme="light"] .task-checkbox {
+  border-color: #94a3b8;
+  background: #ffffff;
+}
+
+[data-theme="light"] .task-item.completed .task-checkbox {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+[data-theme="light"] .task-title-text {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+[data-theme="light"] .task-item.completed .task-title-text {
+  color: #047857 !important;
+  font-weight: 700;
+}
+
+[data-theme="light"] .task-hint-text {
+  color: #475569 !important;
+  font-weight: 500;
+}
+
+/* Generátor skriptu ve světlém režimu */
+[data-theme="light"] .config-generator-card {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] .param-group label {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+[data-theme="light"] .param-group input {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+[data-theme="light"] .param-group input:focus {
+  background: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+[data-theme="light"] #generatedConfigOutput {
+  background: #0f172a;
+  color: #34d399;
+  border-color: #334155;
+}
+
+/* Cisco tabulky ve světlém režimu */
+[data-theme="light"] .table-cisco th {
+  background: #f1f5f9;
+  color: #047857;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+[data-theme="light"] .table-cisco td {
+  border-bottom: 1px solid #e2e8f0;
+  color: #0f172a;
+}
+
+[data-theme="light"] .table-cisco code {
+  background: #f0fdf4;
+  color: #047857;
+  border: 1px solid #bbf7d0;
+}
+
+[data-theme="light"] .table-cisco tr:hover td {
+  background: #f8fafc;
+}
+
+/* Chybové hlášení ve světlém režimu */
+[data-theme="light"] .cisco-error-box {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  border-left-color: #ef4444;
+}
+
+[data-theme="light"] .cisco-error-code {
+  color: #b91c1c;
+}
+
+[data-theme="light"] .cisco-error-desc {
+  color: #1e293b;
+}
+
+[data-theme="light"] .cisco-error-desc strong {
+  color: #991b1b;
+}
