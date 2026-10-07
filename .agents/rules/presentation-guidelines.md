@@ -89,3 +89,12 @@ Při vytváření nebo úpravách výukových materiálů a prezentací v tomto 
 8. **Lokální dedikované skripty a styly tématu:**
    - Jakékoli skripty (např. interaktivní simulátory, laboratorní demonstrace, canvas kalkulátory) a doplňkové styly specifické pro konkrétní téma se ukládají v samostatných souborech přímo v lokální složce dané prezentace (např. `style.css`, `graph-playground.js`).
    - Do sdílené složky `/assets/` patří výhradně prvky (společné jádro JS/CSS, společné ikony a rozcestníkové enginy), které jsou využívány více prezentacemi napříč systémem.
+
+9. **Jmenné konvence a anglická notace v kódu (Best Practices):**
+   - Všechny programové identifikátory v ukázkách kódu, UML schématech, diagramech a architekturách se píší **anglicky** a v **zavedených standardních notacích**:
+     - **Třídy, Rozhraní, Typy:** `PascalCase` v angličtině (např. `User`, `Customer`, `Order`, `OrderItem`, `Payable`, `Animal`).
+     - **Metody a funkce:** `camelCase` (JS, PHP, Java, např. `calculateTotal()`, `login()`, `sendInvoice()`) resp. `snake_case` pro Python (`calculate_total()`).
+     - **Atributy a proměnné:** `camelCase` (resp. `snake_case` pro Python, např. `id`, `email`, `passwordHash`, `isActive`, `createdAt`).
+     - **Konstanty:** `UPPER_SNAKE_CASE` (např. `PI`, `MAX_ATTEMPTS`, `DEFAULT_CURRENCY`).
+     - **CSS třídy, selektory, cesty a URL:** `kebab-case`.
+   - Výukové texty, vysvětlení, komentáře v kódu, didaktické poznámky a rozbory zůstávají samozřejmě **česky**, ale samotné programové entity respektují světové vývojářské standardy.

@@ -29,4 +29,12 @@ Při vytváření dalších výukových prezentací a témat se řiďte dokument
 7. **Didaktická struktura tématu:** Prezentace pokrývají celá odborná témata SPŠ, která se vyučují i několik vyučovacích hodin a mohou obsahovat desítky snímků. Každé téma obsahuje teoretický výklad, praktické aplikace, diagramy a končí strukturovaným shrnutím a opakovacími otázkami pro upevnění látky. V materiálech neuvádět žádné propojení na maturity ani označení „Maturitní okruh“ (maturity zatím nejsou definovány).
 8. **Cílová skupina (žáci SPŠ 15–19 let):** Všechny materiály, katalogy i prezentace jsou určeny přímo pro žáky střední průmyslové školy ve věku 15 až 19 let. Obsah i rozhraní musí být čisté, srozumitelné, vizuálně poutavé a bez jakýchkoli interních autorských či vývojářských meta-informací (např. popisy adresářové struktury, konvencí tříciferného číslování, interní dokumentace frameworku), které na webu pro studenta nemají místo.
 9. **Lokální dedikované skripty a styly tématu:** Skripty (např. simulátory, laboratorní kalkulátory, interaktivní canvasy) a styly specifické pro dané konkrétní téma se ukládají v samostatných souborech přímo v lokální složce dané prezentace (např. `style.css`, `graph-playground.js`). Ve společné kořenové složce `/assets/` se nacházejí výhradně jádrové a znovupoužitelné prvky (CSS, JS, SVG komponenty), které sdílí více různých prezentací napříč repozitářem.
+10. **Jmenné konvence a anglická notace v kódu (Best Practices):**
+   - Všechny programové identifikátory v ukázkách kódu, UML schématech, diagramech a architekturách se píší **anglicky** a v **zavedených standardních notacích**:
+     - **Třídy, Rozhraní, Typy:** `PascalCase` v angličtině (např. `User`, `Customer`, `Order`, `OrderItem`, `Payable`, `Animal`).
+     - **Metody a funkce:** `camelCase` (JS, PHP, Java, např. `calculateTotal()`, `login()`, `sendInvoice()`) resp. `snake_case` pro Python (`calculate_total()`).
+     - **Atributy a proměnné:** `camelCase` (resp. `snake_case` pro Python, např. `id`, `email`, `passwordHash`, `isActive`, `createdAt`).
+     - **Konstanty:** `UPPER_SNAKE_CASE` (např. `PI`, `MAX_ATTEMPTS`, `DEFAULT_CURRENCY`).
+     - **CSS třídy, selektory, cesty a URL:** `kebab-case`.
+   - Výukové texty, vysvětlení, komentáře v kódu, didaktické poznámky a rozbory zůstávají samozřejmě **česky**, ale samotné programové entity respektují světové vývojářské standardy.
 

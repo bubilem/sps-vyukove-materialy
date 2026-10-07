@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>053 UML Class diagramy | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: UML diagramy tříd (Class Diagram). Anatomie třídy, viditelnost, datové typy, statický obsah, abstraktní třídy, rozhraní a vztahy mezi třídami a objekty.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Sdílené styly pro vícejazyčné přepínače kódu -->
+  <link rel="stylesheet" href="../../assets/css/syntax/code.css">
+  <!-- Dedikované lokální styly pro téma 053 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, transparent 70%);"></div>
+    <div class="ambient-orb ambient-orb-2" style="background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, transparent 70%);"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">053 UML Class diagramy</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag" style="color: #38bdf8; border-color: rgba(6, 182, 212, 0.35); background: rgba(6, 182, 212, 0.12);">UML &amp; Objektové modelování</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="UML: Diagramy tříd">
+        <div class="slide-content">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+            Předmět PRG &bull; Téma 053 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title">
+            UML: Diagramy tříd <br><span class="gradient-text">(Class Diagram)</span>
+          </h1>
+          <p class="hero-description">
+            Univerzální standard pro <strong>návrh a dokumentaci objektových architektur</strong> podle specifikace OMG. Naučte se vizuálně modelovat <strong>strukturu tříd</strong>, pravidla zapouzdření, rozhraní a přesné vztahy mezi třídami i instancemi dříve, než začnete psát samotný kód.
+          </p>
+
+          <!-- Vizuální miniatura UML Blueprintu -->
+          <div class="hero-blueprint-card">
+            <div class="mini-uml-chip">
+              <span class="chip-stereo">&lt;&lt;abstract&gt;&gt;</span>
+              <span class="chip-name"><em style="color: #c084fc;">User</em></span>
+              <div class="chip-members">
+                <span><strong style="color: #f87171;">-</strong> id : Integer</span>
+                <span><strong style="color: #34d399;">+</strong> login()</span>
+              </div>
+            </div>
+            
+            <div class="mini-uml-connector">
+              <span class="connector-label">Generalizace</span>
+              <svg viewBox="0 0 100 24" width="100" height="24">
+                <line x1="10" y1="12" x2="85" y2="12" stroke="#38bdf8" stroke-width="2"></line>
+                <polygon points="10,12 24,6 24,18" fill="#0f172a" stroke="#38bdf8" stroke-width="2"></polygon>
+              </svg>
+              <span class="connector-sub">IS-A vztah</span>
+            </div>
+
+            <div class="mini-uml-chip">
+              <span class="chip-stereo">&lt;&lt;class&gt;&gt;</span>
+              <span class="chip-name">Customer</span>
+              <div class="chip-members">
+                <span><strong style="color: #fbbf24;">#</strong> credit : Float</span>
+                <span><strong style="color: #34d399;">+</strong> pay()</span>
+              </div>
+            </div>
+
+            <div class="mini-uml-connector">
+              <span class="connector-label">Kompozice</span>
+              <svg viewBox="0 0 100 24" width="100" height="24">
+                <polygon points="18,12 28,7 38,12 28,17" fill="#f43f5e" stroke="#f43f5e" stroke-width="1.5"></polygon>
+                <line x1="38" y1="12" x2="90" y2="12" stroke="#f43f5e" stroke-width="2"></line>
+              </svg>
+              <span class="connector-sub">1 ◆── 1..*</span>
+            </div>
+
+            <div class="mini-uml-chip">
+              <span class="chip-stereo">&lt;&lt;part&gt;&gt;</span>
+              <span class="chip-name">OrderItem</span>
+              <div class="chip-members">
+                <span><strong style="color: #f87171;">-</strong> price : Float</span>
+                <span><strong style="color: #34d399;">+</strong> calculate()</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Pilíře tématu s bohatými popisky -->
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag cyan">Anatomie třídy</span>
+              <div class="feature-title">3 Oddíly specifikace</div>
+              <div class="feature-desc">Název, atributy a metody. Viditelnosti <code>+</code>, <code>-</code>, <code>#</code>, <code>~</code> a datové typy.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag purple">Pokročilé OOP</span>
+              <div class="feature-title">Statika &amp; Abstrakce</div>
+              <div class="feature-desc">Podtržení statických členů, kurzíva abstraktních tříd a stereotypy <code>&lt;&lt;interface&gt;&gt;</code>.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag emerald">Vztahy tříd</span>
+              <div class="feature-title">Dědičnost &amp; Rozhraní</div>
+              <div class="feature-desc">Plná vs. čárkovaná čára s trojúhelníkem. Kontrakty a znovupoužitelnost kódu.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag amber">Vztahy objektů</span>
+              <div class="feature-title">Kompozice &amp; Agregace</div>
+              <div class="feature-desc">Plný ◆ vs. prázdný ◇ kosočtverec, paměťový životní cyklus součástí a kardinality.</div>
+            </div>
+          </div>
+
+          <!-- Spodní lišta metadat modulu -->
+          <div class="hero-meta-bar">
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              OMG UML 2.5 Standard
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              Python &bull; JavaScript &bull; PHP
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Interaktivní simulátor paměti
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Co je UML a proč Class diagramy?
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Úvod do UML & Účel diagramů tříd">
+        <div class="slide-header">
+          <h2 class="slide-title">Co je UML a proč modelujeme Class diagramy?</h2>
+          <p class="slide-subtitle">Univerzální dorozumívací jazyk softwarových inženýrů vytvořený mezinárodním konsorciem OMG.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card" style="border-left: 4px solid var(--accent);">
+              <h3 style="margin: 0 0 0.4rem 0; font-size: 1.02rem; color: #38bdf8;">Co znamená zkratka UML?</h3>
+              <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55;">
+                <strong>UML (Unified Modeling Language)</strong> je standardizovaný grafický notační jazyk pro specifikaci, vizualizaci, konstrukci a dokumentaci softwarových systémů. Vznikl sjednocením metodik softwarových průkopníků (Grady Booch, James Rumbaugh, Ivar Jacobson &ndash; tzv. „Tři Amigos").
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.4rem 0; font-size: 0.95rem; color: var(--text-primary);">Proč nestačí jen psát kód?</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6;">
+                <li><strong>Blueprint stavby:</strong> Stejně jako architekt kreslí výkres domu pro zedníky, programátor navrhuje třídy a vazby před samotným kódováním.</li>
+                <li><strong>Nezávislost na jazyku:</strong> Stejný diagram tříd lze implementovat v Pythonu, JavaScriptu, PHP, C# i C++.</li>
+                <li><strong>Týmová komunikace:</strong> Diagram na jedné stránce popíše to, co by v kódu zabralo desítky souborů a tisíce řádků.</li>
+                <li><strong>Reverzní inženýrství:</strong> Moderní IDE (VS Code, JetBrains) umí z UML vygenerovat kostru kódu a naopak.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Rozdělení UML diagramů -->
+          <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h3 style="margin: 0 0 0.7rem 0; font-size: 1rem; color: var(--text-primary);">Dvě hlavní rodiny UML diagramů</h3>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.9rem;">
+                <div style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: var(--radius-sm); padding: 0.75rem;">
+                  <span class="tag cyan" style="margin-bottom: 0.4rem; display: inline-block;">Strukturální (Statické)</span>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 0.5rem 0;">Popisují pevnou architekturu systému &ndash; co v programu existuje:</p>
+                  <ul style="margin: 0; padding-left: 1rem; font-size: 0.78rem; color: var(--text-primary); line-height: 1.5;">
+                    <li><strong>Class Diagram (Třídy)</strong> &larr; Klíčový</li>
+                    <li>Object Diagram (Instance)</li>
+                    <li>Package Diagram (Balíčky)</li>
+                    <li>Component Diagram</li>
+                  </ul>
+                </div>
+
+                <div style="background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: var(--radius-sm); padding: 0.75rem;">
+                  <span class="tag purple" style="margin-bottom: 0.4rem; display: inline-block;">Behaviorální (Dynamické)</span>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 0.5rem 0;">Popisují chování v čase a předávání zpráv za běhu:</p>
+                  <ul style="margin: 0; padding-left: 1rem; font-size: 0.78rem; color: var(--text-primary); line-height: 1.5;">
+                    <li>Use Case Diagram (Případy užití)</li>
+                    <li>Sequence Diagram (Sekvence zpráv)</li>
+                    <li>Activity Diagram (Tok činností)</li>
+                    <li>State Machine (Stavový automat)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 0.6rem 0.8rem; background: rgba(15, 23, 42, 0.6); border-radius: 6px; border-left: 3px solid #10b981; font-size: 0.8rem; color: var(--text-muted);">
+              <strong style="color: #34d399;">Zásada SPŠ:</strong> Class diagram je páteří objektového návrhu. Z něj vychází databázová schémata, aplikační modely i API rozhraní.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Anatomie třídy v UML (Zápis a oddíly)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Anatomie třídy v UML">
+        <div class="slide-header">
+          <h2 class="slide-title">Anatomie třídy v UML: Tři oddíly a možnosti zápisu</h2>
+          <p class="slide-subtitle">Standardizovaný obdélník OMG specifikace a různé úrovně detailu v praxi.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Vizuální box třídy -->
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="uml-class-box" style="box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+              <div class="uml-box-header">
+                <span class="uml-stereotype">&lt;&lt;entity&gt;&gt;</span>
+                <span class="uml-class-name">User</span>
+              </div>
+              <div class="uml-box-section">
+                <span class="uml-section-title">Oddíl atributů (Stav)</span>
+                <div class="uml-line">
+                  <span class="uml-vis priv">-</span>
+                  <span class="uml-member-name">id</span>: <span class="uml-type-tag">Integer</span>
+                </div>
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name">name</span>: <span class="uml-type-tag">String</span>
+                </div>
+                <div class="uml-line">
+                  <span class="uml-vis prot">#</span>
+                  <span class="uml-member-name">passwordHash</span>: <span class="uml-type-tag">String</span>
+                </div>
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name">isActive</span>: <span class="uml-type-tag">Boolean</span> <span class="uml-default-val">= true</span>
+                </div>
+              </div>
+              <div class="uml-box-section">
+                <span class="uml-section-title">Oddíl metod (Chování &amp; Operace)</span>
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name">login</span>(password: <span class="uml-type-tag">String</span>): <span class="uml-type-tag">Boolean</span>
+                </div>
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name">changePassword</span>(newPassword: <span class="uml-type-tag">String</span>): <span class="uml-type-tag">void</span>
+                </div>
+                <div class="uml-line">
+                  <span class="uml-vis priv">-</span>
+                  <span class="uml-member-name">validateEmail</span>(email: <span class="uml-type-tag">String</span>): <span class="uml-type-tag">Boolean</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--text-muted); padding: 0 0.5rem;">
+              <span>1. Název třídy (PascalCase)</span>
+              <span>&bull;</span>
+              <span>2. Atributy (camelCase)</span>
+              <span>&bull;</span>
+              <span>3. Metody (camelCase / snake_case)</span>
+            </div>
+          </div>
+
+          <!-- Pravidla zápisu a úrovně detailu -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card">
+              <h3 style="margin: 0 0 0.4rem 0; font-size: 0.95rem; color: var(--accent);">Přesná syntaxe zápisu řádků</h3>
+              
+              <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 0.5rem;">
+                <div style="color: #60a5fa; margin-bottom: 0.25rem;">// Zápis atributu (notace):</div>
+                <span style="color: #f43f5e;">viditelnost</span> name : <span style="color: #38bdf8;">DataType</span> <span style="color: #fbbf24;">[multiplicity]</span> = <span style="color: #a855f7;">defaultValue</span>
+              </div>
+
+              <div style="background: var(--code-bg); border: 1px solid var(--code-border); border-radius: 6px; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.8rem;">
+                <div style="color: #60a5fa; margin-bottom: 0.25rem;">// Zápis metody (notace):</div>
+                <span style="color: #f43f5e;">viditelnost</span> methodName(param1: <span style="color: #38bdf8;">Type</span>): <span style="color: #34d399;">ReturnType</span>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.4rem 0; font-size: 0.92rem; color: var(--text-primary);">Možnosti zápisu dle účelu:</h4>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.6;">
+                <li><strong>Konceptuální (zjednodušený):</strong> Pouze název třídy, nebo jen klíčové názvy bez typů parametrů. Ideální při prvotním návrhu s týmem.</li>
+                <li><strong>Implementační (detailní):</strong> Obsahuje kompletní typové signatury, výchozí hodnoty a viditelnosti &ndash; slouží jako přímý vzor pro programátora.</li>
+                <li><strong>Vynechání sekce:</strong> Pokud třída nemá atributy (např. utilita) nebo metody, daný oddíl lze v diagramu ponechat prázdný, ale vodorovná čára zůstává.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Modifikátory viditelnosti & Datové typy
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Viditelnost & Datové typy">
+        <div class="slide-header">
+          <h2 class="slide-title">Modifikátory viditelnosti &amp; Datové typy</h2>
+          <p class="slide-subtitle">Jak chránit data objektu (zapouzdření) a jaké typové systémy UML podporuje.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Tabulka viditelností -->
+          <div>
+            <h3 style="margin: 0 0 0.5rem 0; font-size: 0.95rem; color: var(--text-primary);">Značení viditelnosti (Visibility)</h3>
+            <table class="uml-table">
+              <thead>
+                <tr>
+                  <th style="width: 15%;">Znak</th>
+                  <th style="width: 25%;">Modifikátor</th>
+                  <th style="width: 60%;">Význam a dosah v kódu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="symbol-preview-badge" style="color: #34d399;">+</span></td>
+                  <td><strong>public</strong></td>
+                  <td>Veřejný člen &ndash; přístupný odkudkoli z celého programu.</td>
+                </tr>
+                <tr>
+                  <td><span class="symbol-preview-badge" style="color: #f87171;">-</span></td>
+                  <td><strong>private</strong></td>
+                  <td>Soukromý člen &ndash; přístupný pouze uvnitř těla této deklarující třídy.</td>
+                </tr>
+                <tr>
+                  <td><span class="symbol-preview-badge" style="color: #fbbf24;">#</span></td>
+                  <td><strong>protected</strong></td>
+                  <td>Chráněný člen &ndash; přístupný v této třídě a ve všech jejích odvozených potomcích.</td>
+                </tr>
+                <tr>
+                  <td><span class="symbol-preview-badge" style="color: #c084fc;">~</span></td>
+                  <td><strong>package</strong></td>
+                  <td>Balíčkový přístup &ndash; přístupný pouze v rámci stejného namespace / modulu.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="margin-top: 0.75rem; padding: 0.6rem 0.8rem; background: rgba(15, 23, 42, 0.6); border-radius: 6px; font-size: 0.8rem; color: var(--text-secondary); border-left: 3px solid #38bdf8;">
+              <strong style="color: #38bdf8;">Praxe v OOP:</strong> Atributy téměř vždy značíme jako <code>- (private)</code> nebo <code># (protected)</code>. Přístup zvenčí zajišťují veřejné metody <code>+ (public)</code> &ndash; gettery a settery (např. <code>getEmail()</code>, <code>setEmail()</code>).
+            </div>
+          </div>
+
+          <!-- Datové typy -->
+          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+            <div class="content-card">
+              <h3 style="margin: 0 0 0.4rem 0; font-size: 0.95rem; color: var(--accent-cyan);">Standardní datové typy v UML</h3>
+              <p style="font-size: 0.83rem; color: var(--text-secondary); margin: 0 0 0.6rem 0;">
+                UML definuje univerzální primitivní typy, které se v různých jazycích mapují na odpovídající klíčová slova:
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.8rem;">
+                <div style="background: rgba(255,255,255,0.03); padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                  <strong style="color: #38bdf8;">Integer</strong> &rarr; Celé číslo (int)
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                  <strong style="color: #38bdf8;">Real / Float</strong> &rarr; Desetinné číslo
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                  <strong style="color: #38bdf8;">String</strong> &rarr; Textový řetězec
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                  <strong style="color: #38bdf8;">Boolean</strong> &rarr; Pravda / Nepravda
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                  <strong style="color: #38bdf8;">void</strong> &rarr; Metoda nevrací nic
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 0.4rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-subtle);">
+                  <strong style="color: #38bdf8;">List&lt;T&gt; / T[*]</strong> &rarr; Kolekce / pole
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h4 style="margin: 0 0 0.35rem 0; font-size: 0.9rem; color: var(--text-primary);">Uživatelské (vlastní) typy</h4>
+              <p style="margin: 0; font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55;">
+                Typem atributu může být <strong>jakákoli jiná třída</strong>! Např. <code>- birthDate: DateTime</code> nebo <code>- owner: Customer</code>. Takto vznikají asociace a vazby mezi objekty.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Statický obsah, Abstraktní třídy a Rozhraní
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Statika, Abstraktní třídy & Rozhraní">
+        <div class="slide-header">
+          <h2 class="slide-title">Statický obsah, Abstraktní třídy a Rozhraní</h2>
+          <p class="slide-subtitle">Jak v UML odlišit prvky patřící třídě, neúplné šablony a čisté kontrakty.</p>
+        </div>
+
+        <div class="content-grid-3">
+          <!-- 1. Statický obsah -->
+          <div class="content-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span class="tag cyan">Statický obsah</span>
+              <span class="concept-badge blue">Podtržení textu</span>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+              Členy patřící <strong>celé třídě</strong>, nikoli konkrétní instanci (např. matematické konstanty <code>UPPER_SNAKE_CASE</code>, pomocné tovární metody).
+            </p>
+
+            <div class="uml-class-box" style="margin-bottom: 0.6rem;">
+              <div class="uml-box-header">
+                <span class="uml-class-name">Calculator</span>
+              </div>
+              <div class="uml-box-section">
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name static-member">PI</span>: <span class="uml-type-tag">Float</span> = 3.1415
+                </div>
+              </div>
+              <div class="uml-box-section">
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name static-member">power</span>(base: <span class="uml-type-tag">Float</span>, exp: <span class="uml-type-tag">Float</span>): <span class="uml-type-tag">Float</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.76rem; color: var(--text-muted);">
+              <strong>Pravidlo UML:</strong> Statický atribut i metoda se zapisují <u>podtrženým písmem</u> nebo tagem <code>{static}</code>.
+            </div>
+          </div>
+
+          <!-- 2. Abstraktní třída -->
+          <div class="content-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span class="tag purple">Abstraktní třída</span>
+              <span class="concept-badge purple">Kurzíva textu</span>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+              Neúplná třída sloužící jako <strong>společný předek</strong>. Nelze z ní vytvořit instanci (operátorem <code>new</code>).
+            </p>
+
+            <div class="uml-class-box is-abstract" style="margin-bottom: 0.6rem;">
+              <div class="uml-box-header">
+                <span class="uml-stereotype">&lt;&lt;abstract&gt;&gt;</span>
+                <span class="uml-class-name abstract-text">Shape</span>
+              </div>
+              <div class="uml-box-section">
+                <div class="uml-line">
+                  <span class="uml-vis prot">#</span>
+                  <span class="uml-member-name">color</span>: <span class="uml-type-tag">String</span>
+                </div>
+              </div>
+              <div class="uml-box-section">
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name abstract-member">calculateArea</span>(): <span class="uml-type-tag">Float</span>
+                </div>
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name">render</span>(): <span class="uml-type-tag">void</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.76rem; color: var(--text-muted);">
+              <strong>Pravidlo UML:</strong> Název abstraktní třídy a neimplementovaných metod se píše <em>kurzívou</em> nebo se uvede <code>&lt;&lt;abstract&gt;&gt;</code>.
+            </div>
+          </div>
+
+          <!-- 3. Rozhraní (Interface) -->
+          <div class="content-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span class="tag emerald">Rozhraní (Interface)</span>
+              <span class="concept-badge emerald">&lt;&lt;interface&gt;&gt;</span>
+            </div>
+            <p style="font-size: 0.83rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+              Čistý kontrakt &ndash; předpis metod bez atributů a bez implementace, který se třídy zavazují splnit.
+            </p>
+
+            <div class="uml-class-box is-interface" style="margin-bottom: 0.6rem;">
+              <div class="uml-box-header">
+                <span class="uml-stereotype">&lt;&lt;interface&gt;&gt;</span>
+                <span class="uml-class-name">IExportable</span>
+              </div>
+              <div class="uml-box-section">
+                <div style="font-size: 0.72rem; color: var(--text-muted); font-style: italic;">
+                  &mdash; žádné atributy stavu &mdash;
+                </div>
+              </div>
+              <div class="uml-box-section">
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name">exportToJson</span>(): <span class="uml-type-tag">String</span>
+                </div>
+                <div class="uml-line">
+                  <span class="uml-vis pub">+</span>
+                  <span class="uml-member-name">exportToXml</span>(): <span class="uml-type-tag">String</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.76rem; color: var(--text-muted);">
+              <strong>Pravidlo UML:</strong> Označuje se stereotypem <code>&lt;&lt;interface&gt;&gt;</code>. Všechny metody jsou ze své podstaty veřejné a abstraktní.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Vztahy mezi třídami: Dědičnost & Implementace
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Vztahy mezi třídami (Dědičnost & Implementace)">
+        <div class="slide-header">
+          <h2 class="slide-title">Vztahy mezi třídami: Dědičnost &amp; Implementace</h2>
+          <p class="slide-subtitle">Vztahy na úrovni definice typů: klasifikační strom a závazné kontrakty.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- 1. Dědičnost -->
+          <div class="content-card" style="border-top: 4px solid #38bdf8;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h3 style="margin: 0; font-size: 1.05rem; color: #38bdf8;">1. Generalizace (Dědičnost)</h3>
+              <span class="tag cyan">Vztah IS-A</span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+              Potomek je specializovaným druhem předka. Dědí všechny jeho atributy a metody a může přidat své vlastní nebo existující přepsat (override).
+            </p>
+
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.8rem; text-align: center; margin-bottom: 0.8rem;">
+              <svg viewBox="0 0 320 80" width="100%" height="70">
+                <rect x="10" y="20" width="100" height="40" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="60" y="45" text-anchor="middle" fill="#f8fafc" font-size="12" font-family="monospace">Dog</text>
+                
+                <line x1="110" y1="40" x2="190" y2="40" stroke="#f8fafc" stroke-width="2"/>
+                <polygon points="210,40 190,32 190,48" fill="#0f172a" stroke="#f8fafc" stroke-width="2"/>
+                
+                <rect x="210" y="20" width="100" height="40" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="260" y="45" text-anchor="middle" fill="#f8fafc" font-size="12" font-family="monospace">Animal</text>
+              </svg>
+              <div style="font-size: 0.78rem; color: #38bdf8; font-weight: 600;">
+                Plná čára s velkým NEVYPLNĚNÝM trojúhelníkem směřujícím k předkovi
+              </div>
+            </div>
+
+            <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+              <strong>Klíčová slova v kódu:</strong> <code>class Dog extends Animal</code> (JS, PHP, Java, C#) nebo <code>class Dog(Animal):</code> (Python).
+            </div>
+          </div>
+
+          <!-- 2. Realizace -->
+          <div class="content-card" style="border-top: 4px solid #10b981;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h3 style="margin: 0; font-size: 1.05rem; color: #34d399;">2. Realizace (Implementace rozhraní)</h3>
+              <span class="tag emerald">Vztah CAN-DO</span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+              Třída se formálně zavazuje poskytnout těla všem metodám předepsaným v rozhraní (interface). Třída může implementovat i více rozhraní současně.
+            </p>
+
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.8rem; text-align: center; margin-bottom: 0.8rem;">
+              <svg viewBox="0 0 320 80" width="100%" height="70">
+                <rect x="10" y="20" width="100" height="40" rx="4" fill="#1e293b" stroke="#34d399" stroke-width="1.5"/>
+                <text x="60" y="45" text-anchor="middle" fill="#f8fafc" font-size="12" font-family="monospace">Car</text>
+                
+                <line x1="110" y1="40" x2="190" y2="40" stroke="#10b981" stroke-width="2" stroke-dasharray="6,4"/>
+                <polygon points="210,40 190,32 190,48" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+                
+                <rect x="210" y="16" width="100" height="48" rx="4" fill="#1e293b" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <text x="260" y="34" text-anchor="middle" fill="#6ee7b7" font-size="9" font-family="monospace">&lt;&lt;interface&gt;&gt;</text>
+                <text x="260" y="52" text-anchor="middle" fill="#f8fafc" font-size="11" font-family="monospace">IDrivable</text>
+              </svg>
+              <div style="font-size: 0.78rem; color: #34d399; font-weight: 600;">
+                ČÁRKOVANÁ čára s velkým NEVYPLNĚNÝM trojúhelníkem směřujícím k rozhraní
+              </div>
+            </div>
+
+            <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+              <strong>Klíčová slova v kódu:</strong> <code>class Car implements IDrivable</code> (PHP, TS, Java) nebo dědění z <code>ABC</code> abstraktní třídy (Python).
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 0.8rem; padding: 0.55rem 0.85rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 6px; font-size: 0.81rem; color: #fbbf24;">
+          <strong>Pozor na častou chybu:</strong> Šipka v obou případech <strong>vždy ukazuje směrem NA PŘEDKA (nebo na ROZHRANÍ)</strong>! Trojúhelník je vždy dutý (nevyplněný).
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Vztahy mezi objekty a instancemi
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Vztahy mezi instancemi & objekty">
+        <div class="slide-header">
+          <h2 class="slide-title">Vztahy mezi objekty: Kompozice, Agregace, Asociace</h2>
+          <p class="slide-subtitle">Jak spolu instance koexistují v paměti a jaký mají životní cyklus při zániku.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;">
+          <!-- 1. Kompozice -->
+          <div class="content-card" style="border-top: 4px solid #f43f5e;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem;">
+              <h3 style="margin: 0; font-size: 0.95rem; color: #fb7185;">Kompozice</h3>
+              <span class="tag rose">OWNS-A</span>
+            </div>
+            <div style="font-size: 0.78rem; color: #f43f5e; font-weight: 700; margin-bottom: 0.5rem;">
+              Pevné složení &bull; Plný kosočtverec ◆
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.6rem;">
+              Silná vazba vlastnictví. Součást vzniká uvnitř celku a <strong>nemůže bez něj existovat</strong>. Zánik celku automaticky zničí i součást.
+            </p>
+            <div style="background: rgba(15, 23, 42, 0.8); padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; color: var(--text-primary); font-family: var(--font-mono); border: 1px solid var(--border-subtle);">
+              Car ◆────── Engine<br>
+              Order ◆──── OrderItem
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.74rem; color: var(--text-muted);">
+              Engine vzniká uvnitř Car. Sešrotování auta = zničení motoru.
+            </div>
+          </div>
+
+          <!-- 2. Agregace -->
+          <div class="content-card" style="border-top: 4px solid #fbbf24;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem;">
+              <h3 style="margin: 0; font-size: 0.95rem; color: #fbbf24;">Agregace</h3>
+              <span class="tag amber">HAS-A</span>
+            </div>
+            <div style="font-size: 0.78rem; color: #fbbf24; font-weight: 700; margin-bottom: 0.5rem;">
+              Volné složení &bull; Prázdný kosočtverec ◇
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.6rem;">
+              Slabá vazba sdružení. Součást je vytvořena samostatně a do celku pouze přiřazena. <strong>Při zániku celku součást PŘEŽÍVÁ</strong>.
+            </p>
+            <div style="background: rgba(15, 23, 42, 0.8); padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; color: var(--text-primary); font-family: var(--font-mono); border: 1px solid var(--border-subtle);">
+              Department ◇──── Teacher<br>
+              Course ◇──── Student
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.74rem; color: var(--text-muted);">
+              Zrušení katedry neznamená zánik učitele. Existuje dál!
+            </div>
+          </div>
+
+          <!-- 3. Asociace a Závislost -->
+          <div class="content-card" style="border-top: 4px solid #a855f7;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem;">
+              <h3 style="margin: 0; font-size: 0.95rem; color: #c084fc;">Asociace &amp; Závislost</h3>
+              <span class="tag purple">KNOWS / USES</span>
+            </div>
+            <div style="font-size: 0.78rem; color: #c084fc; font-weight: 700; margin-bottom: 0.5rem;">
+              Spolupráce &bull; Čára / Šipka &bull; ──&gt; / - -&gt;
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.6rem;">
+              <strong>Asociace:</strong> Strukturální vztah (zná přes atribut).<br>
+              <strong>Závislost:</strong> Dočasné použití (objekt jako parametr metody či lokální proměnná).
+            </p>
+            <div style="background: rgba(15, 23, 42, 0.8); padding: 0.5rem; border-radius: 4px; font-size: 0.75rem; color: var(--text-primary); font-family: var(--font-mono); border: 1px solid var(--border-subtle);">
+              Order ──&gt; Customer<br>
+              Order - -&gt; EmailService
+            </div>
+            <div style="margin-top: 0.5rem; font-size: 0.74rem; color: var(--text-muted);">
+              Order zná Customer a dočasně zavolá EmailService.
+            </div>
+          </div>
+        </div>
+
+        <!-- Násobnosti (Kardinality) -->
+        <div class="content-card" style="margin-top: 0.85rem; padding: 0.6rem 0.85rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <span style="font-weight: 600; font-size: 0.84rem; color: var(--text-primary);">Násobnosti (Kardinalita) na koncích vazeb:</span>
+            <div style="display: flex; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.78rem;">
+              <span style="background: rgba(255,255,255,0.06); padding: 0.15rem 0.45rem; border-radius: 4px;"><strong style="color: #38bdf8;">1</strong> &ndash; právě jeden</span>
+              <span style="background: rgba(255,255,255,0.06); padding: 0.15rem 0.45rem; border-radius: 4px;"><strong style="color: #38bdf8;">0..1</strong> &ndash; nula nebo jeden</span>
+              <span style="background: rgba(255,255,255,0.06); padding: 0.15rem 0.45rem; border-radius: 4px;"><strong style="color: #38bdf8;">*</strong> / <strong style="color: #38bdf8;">0..*</strong> &ndash; libovolně mnoho</span>
+              <span style="background: rgba(255,255,255,0.06); padding: 0.15rem 0.45rem; border-radius: 4px;"><strong style="color: #38bdf8;">1..*</strong> &ndash; alespoň jeden</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Souhrnný příklad: Architektura E-shopu
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Příklad E-shop architektury">
+        <div class="slide-header">
+          <h2 class="slide-title">Komplexní ukázka: Architektura E-shopu</h2>
+          <p class="slide-subtitle">Všechny prvky v jednom diagramu: Rozhraní, abstraktní třída, dědičnost, statika, agregace i kompozice.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Levá část: SVG vizualizace třídního diagramu -->
+          <div class="uml-diagram-canvas">
+            <div class="uml-svg-wrapper">
+              <svg viewBox="0 0 780 460" width="100%" height="100%">
+                <!-- 1. Rozhraní IPayable -->
+                <rect x="25" y="30" width="195" height="75" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="2" stroke-dasharray="6,4"/>
+                <rect x="25" y="30" width="195" height="32" rx="6" fill="rgba(16, 185, 129, 0.15)"/>
+                <text x="122" y="44" text-anchor="middle" fill="#6ee7b7" font-size="10" font-family="monospace">&lt;&lt;interface&gt;&gt;</text>
+                <text x="122" y="56" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold" font-family="monospace">IPayable</text>
+                <line x1="25" y1="62" x2="220" y2="62" stroke="#334155" stroke-width="1.5"/>
+                <text x="35" y="86" fill="#94a3b8" font-size="10.5" font-family="monospace">+ pay(amount: Float): Boolean</text>
+
+                <!-- 2. Abstraktní třída User -->
+                <rect x="255" y="25" width="205" height="115" rx="6" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+                <rect x="255" y="25" width="205" height="34" rx="6" fill="rgba(168, 85, 247, 0.15)"/>
+                <text x="357" y="39" text-anchor="middle" fill="#c084fc" font-size="10" font-family="monospace">&lt;&lt;abstract&gt;&gt;</text>
+                <text x="357" y="53" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold" font-style="italic" font-family="monospace">User</text>
+                <line x1="255" y1="59" x2="460" y2="59" stroke="#334155" stroke-width="1.5"/>
+                <text x="267" y="75" fill="#f87171" font-size="10.5" font-family="monospace">- id: Integer</text>
+                <text x="267" y="91" fill="#fbbf24" font-size="10.5" font-family="monospace"># email: String</text>
+                <line x1="255" y1="97" x2="460" y2="97" stroke="#334155" stroke-width="1.5"/>
+                <text x="267" y="113" fill="#34d399" font-size="10.5" font-family="monospace">+ login(): Boolean</text>
+                <text x="267" y="129" fill="#c084fc" font-size="10.5" font-style="italic" font-family="monospace">+ getRole(): String</text>
+
+                <!-- 3. Třída Customer -->
+                <rect x="255" y="190" width="205" height="120" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="255" y="190" width="205" height="32" rx="6" fill="rgba(56, 189, 248, 0.15)"/>
+                <text x="357" y="211" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold" font-family="monospace">Customer</text>
+                <line x1="255" y1="222" x2="460" y2="222" stroke="#334155" stroke-width="1.5"/>
+                <text x="267" y="239" fill="#f87171" font-size="10.5" font-family="monospace">- name: String</text>
+                <text x="267" y="255" fill="#f87171" font-size="10.5" font-family="monospace">- credit: Float = 0.0</text>
+                <line x1="255" y1="262" x2="460" y2="262" stroke="#334155" stroke-width="1.5"/>
+                <text x="267" y="280" fill="#34d399" font-size="10.5" font-family="monospace">+ pay(amount: Float): Boolean</text>
+                <text x="267" y="298" fill="#34d399" font-size="10.5" font-family="monospace">+ getRole(): String</text>
+
+                <!-- Vazba 1: Realizace Customer -> IPayable -->
+                <line x1="255" y1="220" x2="122" y2="220" stroke="#10b981" stroke-width="2" stroke-dasharray="5,4"/>
+                <line x1="122" y1="220" x2="122" y2="120" stroke="#10b981" stroke-width="2" stroke-dasharray="5,4"/>
+                <polygon points="122,105 114,120 130,120" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+
+                <!-- Vazba 2: Generalizace Customer -> User -->
+                <line x1="357" y1="190" x2="357" y2="155" stroke="#f8fafc" stroke-width="2"/>
+                <polygon points="357,140 349,155 365,155" fill="#0f172a" stroke="#f8fafc" stroke-width="2"/>
+
+                <!-- 4. Třída Order -->
+                <rect x="505" y="170" width="255" height="155" rx="6" fill="#1e293b" stroke="#f43f5e" stroke-width="2"/>
+                <rect x="505" y="170" width="255" height="32" rx="6" fill="rgba(244, 63, 94, 0.15)"/>
+                <text x="632" y="191" text-anchor="middle" fill="#f8fafc" font-size="13" font-weight="bold" font-family="monospace">Order</text>
+                <line x1="505" y1="202" x2="760" y2="202" stroke="#334155" stroke-width="1.5"/>
+                <!-- Statický atribut s podtržením -->
+                <text x="517" y="218" fill="#38bdf8" font-size="10.5" font-family="monospace">+ createdCount: Integer</text>
+                <line x1="517" y1="221" x2="685" y2="221" stroke="#38bdf8" stroke-width="1.2"/>
+                <text x="517" y="234" fill="#f87171" font-size="10.5" font-family="monospace">- orderNumber: String</text>
+                <text x="517" y="250" fill="#f87171" font-size="10.5" font-family="monospace">- status: String = "NEW"</text>
+                <line x1="505" y1="257" x2="760" y2="257" stroke="#334155" stroke-width="1.5"/>
+                <!-- Statická metoda s podtržením -->
+                <text x="517" y="274" fill="#38bdf8" font-size="10" font-family="monospace">+ generateOrderNumber(): String</text>
+                <line x1="517" y1="277" x2="740" y2="277" stroke="#38bdf8" stroke-width="1.2"/>
+                <text x="517" y="292" fill="#34d399" font-size="10" font-family="monospace">+ addItem(item: OrderItem): void</text>
+                <text x="517" y="309" fill="#34d399" font-size="10" font-family="monospace">+ calculateTotal(): Float</text>
+
+                <!-- Vazba 3: Agregace Order -> Customer -->
+                <polygon points="505,240 493,233 481,240 493,247" fill="#0f172a" stroke="#fbbf24" stroke-width="1.8"/>
+                <line x1="481" y1="240" x2="460" y2="240" stroke="#fbbf24" stroke-width="2"/>
+                <text x="495" y="228" fill="#fbbf24" font-size="10.5" font-family="monospace">*</text>
+                <text x="465" y="228" fill="#fbbf24" font-size="10.5" font-family="monospace">1</text>
+
+                <!-- 5. Třída OrderItem -->
+                <rect x="505" y="365" width="255" height="80" rx="6" fill="#1e293b" stroke="#fda4af" stroke-width="2"/>
+                <rect x="505" y="365" width="255" height="26" rx="6" fill="rgba(253, 164, 175, 0.15)"/>
+                <text x="632" y="383" text-anchor="middle" fill="#f8fafc" font-size="12" font-weight="bold" font-family="monospace">OrderItem</text>
+                <line x1="505" y1="391" x2="760" y2="391" stroke="#334155" stroke-width="1.5"/>
+                <text x="517" y="407" fill="#f87171" font-size="10.5" font-family="monospace">- productName: String</text>
+                <text x="517" y="422" fill="#f87171" font-size="10.5" font-family="monospace">- unitPrice: Float</text>
+                <text x="517" y="437" fill="#f87171" font-size="10.5" font-family="monospace">- quantity: Integer = 1</text>
+
+                <!-- Vazba 4: Kompozice Order -> OrderItem -->
+                <polygon points="632,325 625,335 632,345 639,335" fill="#f43f5e" stroke="#f43f5e" stroke-width="1.8"/>
+                <line x1="632" y1="345" x2="632" y2="365" stroke="#f43f5e" stroke-width="2"/>
+                <text x="644" y="337" fill="#f43f5e" font-size="10.5" font-family="monospace">1</text>
+                <text x="644" y="358" fill="#fda4af" font-size="10.5" font-family="monospace">1..*</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Výklad k jednotlivým částem diagramu -->
+          <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+            <div class="content-card" style="padding: 0.75rem 0.9rem;">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: #38bdf8;">1. Rozhraní &amp; Realizace (Zelená vazba)</h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                <code>IPayable</code> předepisuje platební kontrakt metody <code>pay()</code>. Třída <code>Customer</code> jej realizuje čárkovanou šipkou s trojúhelníkem.
+              </p>
+            </div>
+
+            <div class="content-card" style="padding: 0.75rem 0.9rem;">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: #c084fc;">2. Abstraktní třída &amp; Dědičnost (Fialová / Bílá)</h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                <code>User</code> je abstraktní (kurzíva). Má chráněný atribut <code>#email</code> a abstraktní metodu <code>getRole()</code>. Třída <code>Customer</code> z ní dědí plnou čarou s trojúhelníkem.
+              </p>
+            </div>
+
+            <div class="content-card" style="padding: 0.75rem 0.9rem;">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: #fbbf24;">3. Agregace vs. Kompozice v objednávce</h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                <strong>Customer &larr;◇ Order:</strong> Agregace (prázdný kosočtverec). Zákazník existuje samostatně i po smazání objednávky.<br>
+                <strong>Order ◆&rarr; OrderItem:</strong> Kompozice (plný kosočtverec). Položky patří výhradně objednávce a zánikem objednávky zaniknou.
+              </p>
+            </div>
+
+            <div class="content-card" style="padding: 0.75rem 0.9rem;">
+              <h3 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: #38bdf8;">4. Statický obsah v Order</h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+                Atribut <code><u>createdCount</u></code> a metoda <code><u>generateOrderNumber()</u></code> jsou podtržené &ndash; patří třídě <code>Order</code>, nikoli jednotlivým instancím.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Interaktivní trenažér & Kódový generátor
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Interaktivní UML trenažér">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní UML trenažér &amp; Kódový generátor</h2>
+          <p class="slide-subtitle">Zvolte typ vazby, prohlédněte si notaci, otestujte zánik v paměti a porovnejte kód.</p>
+        </div>
+
+        <div class="uml-playground-container">
+          <!-- Levý panel: Výběr vztahu -->
+          <div class="uml-selector-pane">
+            <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">Zvolte typ vztahu:</span>
+
+            <button type="button" class="uml-rel-btn active" data-rel="composition">
+              <span>Kompozice</span>
+              <span class="rel-badge">◆ Silná</span>
+            </button>
+
+            <button type="button" class="uml-rel-btn" data-rel="aggregation">
+              <span>Agregace</span>
+              <span class="rel-badge">◇ Volná</span>
+            </button>
+
+            <button type="button" class="uml-rel-btn" data-rel="inheritance">
+              <span>Generalizace (Dědičnost)</span>
+              <span class="rel-badge">▷ IS-A</span>
+            </button>
+
+            <button type="button" class="uml-rel-btn" data-rel="realization">
+              <span>Realizace (Rozhraní)</span>
+              <span class="rel-badge">..▷ Kontrakt</span>
+            </button>
+
+            <button type="button" class="uml-rel-btn" data-rel="association">
+              <span>Asociace</span>
+              <span class="rel-badge">&rarr; Zná</span>
+            </button>
+
+            <button type="button" class="uml-rel-btn" data-rel="dependency">
+              <span>Závislost</span>
+              <span class="rel-badge">- -&gt; Používá</span>
+            </button>
+          </div>
+
+          <!-- Pravý panel: Vizuální scéna + Životní cyklus + Kód -->
+          <div class="uml-visualizer-pane">
+            <div class="uml-stage-box">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span class="concept-badge blue" id="umlSimConcept">OWNS-A („pevně vlastní součást")</span>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);" id="umlSimSymbol">Plná čára s plným kosočtvercem u celku</span>
+              </div>
+
+              <!-- Vykreslovací scéna pro SVG -->
+              <div id="umlSimStage" style="min-height: 160px; display: flex; align-items: center; justify-content: center;">
+                <!-- Vloženo skriptem -->
+              </div>
+
+              <!-- Simulátor zániku v paměti -->
+              <div class="uml-lifecycle-banner">
+                <div style="display: flex; flex-direction: column; gap: 0.2rem;">
+                  <span style="font-weight: 600;" id="umlSimWho">Celek (Order) ◆──── Součást (OrderItem)</span>
+                  <span style="font-size: 0.78rem; color: var(--text-muted);" id="umlSimLifecycle">Součást vzniká uvnitř celku a nemůže bez něj existovat.</span>
+                </div>
+                <button type="button" class="uml-sim-btn" id="umlSimDeleteBtn">
+                  <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  Smazat celek (GC delete)
+                </button>
+              </div>
+              <div id="umlSimDeleteResult" style="margin-top: 0.4rem; font-size: 0.78rem; color: var(--text-muted); text-align: center;">
+                Klikněte pro simulaci zániku celku v paměti
+              </div>
+            </div>
+
+            <!-- Kódový blok -->
+            <div class="code-tabs-container" id="umlPlaygroundCode" style="margin: 0;">
+              <div class="code-tabs-header">
+                <div class="code-tabs-nav">
+                  <button type="button" class="code-tab-btn active" data-lang="python">Python</button>
+                  <button type="button" class="code-tab-btn" data-lang="javascript">JavaScript</button>
+                  <button type="button" class="code-tab-btn" data-lang="php">PHP</button>
+                </div>
+                <span class="code-tabs-label">Ekvivalent v kódu</span>
+              </div>
+              <pre class="code-tab-pane active" data-lang="python" style="margin: 0; max-height: 140px; overflow-y: auto; font-size: 0.78rem;"></pre>
+              <pre class="code-tab-pane" data-lang="javascript" style="margin: 0; max-height: 140px; overflow-y: auto; font-size: 0.78rem;"></pre>
+              <pre class="code-tab-pane" data-lang="php" style="margin: 0; max-height: 140px; overflow-y: auto; font-size: 0.78rem;"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí tématu & Kvíz
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí & Kvíz">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí UML diagramů tříd &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Rychlý přehled klíčových prvků a ověření pochopení pro žáky SPŠ.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <!-- Přehledový tahák -->
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <h3 style="margin: 0; font-size: 0.95rem; color: var(--accent);">Rychlý tahák notace UML</h3>
+            
+            <table class="uml-table" style="font-size: 0.8rem;">
+              <thead>
+                <tr>
+                  <th>Pojem v UML</th>
+                  <th>Grafický symbol</th>
+                  <th>Význam &amp; Životní cyklus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Generalizace</strong></td>
+                  <td><span style="font-family: monospace; color: #38bdf8; font-weight: bold;">──────▷</span></td>
+                  <td>Dědičnost (IS-A), ukazuje na předka</td>
+                </tr>
+                <tr>
+                  <td><strong>Realizace</strong></td>
+                  <td><span style="font-family: monospace; color: #34d399; font-weight: bold;">- - - -▷</span></td>
+                  <td>Implementace rozhraní (kontrakt)</td>
+                </tr>
+                <tr>
+                  <td><strong>Kompozice</strong></td>
+                  <td><span style="font-family: monospace; color: #f43f5e; font-weight: bold;">◆──────</span></td>
+                  <td>Pevné vlastnictví (zánik celku = zánik části)</td>
+                </tr>
+                <tr>
+                  <td><strong>Agregace</strong></td>
+                  <td><span style="font-family: monospace; color: #fbbf24; font-weight: bold;">◇──────</span></td>
+                  <td>Volné sdružení (část přežije zánik celku)</td>
+                </tr>
+                <tr>
+                  <td><strong>Asociace</strong></td>
+                  <td><span style="font-family: monospace; color: #a855f7; font-weight: bold;">──────&gt;</span></td>
+                  <td>Strukturální reference (objekt zná objekt)</td>
+                </tr>
+                <tr>
+                  <td><strong>Závislost</strong></td>
+                  <td><span style="font-family: monospace; color: #06b6d4; font-weight: bold;">- - - -&gt;</span></td>
+                  <td>Dočasné použití v parametru metody</td>
+                </tr>
+                <tr>
+                  <td><strong>Statický člen</strong></td>
+                  <td><u>podtržený text</u></td>
+                  <td>Patří třídě, nikoli instanci</td>
+                </tr>
+                <tr>
+                  <td><strong>Abstraktní</strong></td>
+                  <td><em>kurzíva textu</em></td>
+                  <td>Neúplný předek / nepovinné tělo</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Kvízové rozklikávací otázky -->
+          <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+            <h3 style="margin: 0 0 0.2rem 0; font-size: 0.95rem; color: var(--text-primary);">Ověření znalostí (Klikněte pro odpověď)</h3>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Jaký je klíčový rozdíl mezi kompozicí a agregací?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                V životním cyklu součástí: Při kompozici (plný kosočtverec ◆) část nemůže existovat bez celku &ndash; pokud celek zanikne, zaniká i součást. U agregace (prázdný kosočtverec ◇) část existuje nezávisle a zánik celku přežije (např. student po zrušení třídy).
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. Jak v UML diagramu poznáme statický atribut nebo metodu?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Statický atribut i statická metoda jsou zapsány <strong>podtrženým textem</strong> (např. <code><u>createdCount: Integer</u></code>), případně označeny doplňkovým tagem <code>{static}</code>.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. Čím se v UML liší šipka dědičnosti od šipky rozhraní?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Obě mají velký prázdný trojúhelník ukazující na cíl, ale <strong>dědičnost (generalizace)</strong> používá <strong>plnou čáru</strong>, zatímco <strong>realizace rozhraní</strong> používá <strong>čárkovanou čáru</strong>.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. Co v UML označuje symbol mřížky (#) u atributu?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Značí modifikátor viditelnosti <strong>protected (chráněný)</strong>. K takovému členu mají přístup metody samotné třídy a všechny její odvozené dceřiné třídy (dědici), ale nikoli vnější okolní kód.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>5. Na které straně vztahu se kreslí kosočtverec u kompozice?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Kosočtverec (plný i prázdný) se vždy umisťuje na stranu <strong>CELKU (vlastníka)</strong>, nikoli na stranu části! Část je na opačném konci spojnice.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../052-Pokrocile-OOP/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 052 Pokročilé OOP (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../070-Teorie-grafu/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 070 Teorie grafů (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít přehled snímků">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: UML Class diagramy
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Globální prezentační engine SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+  <!-- Společný modul pro synchronizované přepínání jazyků kódu -->
+  <script src="../../assets/js/code-switcher.js"></script>
+  <!-- Lokální dedikovaný interaktivní trenažér pro téma 053 -->
+  <script src="uml-interactive.js"></script>
+</body>
+
+</html>
