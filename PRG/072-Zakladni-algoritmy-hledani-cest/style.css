@@ -1,0 +1,1457 @@
+/* ==========================================================================
+   Téma 072: Základní algoritmy hledání cest – Lokální styly
+   Předmět: PRG (Programování) • SPŠ
+   Standard: 100% Offline, Dark/Light Mode, Vektorové SVG, Žádná barevná emoji
+   ========================================================================== */
+
+:root {
+  --accent: #10b981;
+  --accent-glow: rgba(16, 185, 129, 0.28);
+  --accent-emerald: #10b981;
+  --accent-cyan: #06b6d4;
+  --accent-blue: #3b82f6;
+  --accent-purple: #a855f7;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+
+  --gradient-main: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%);
+  --gradient-text: linear-gradient(135deg, #34d399 0%, #38bdf8 50%, #818cf8 100%);
+}
+
+/* Ambientní světelné pozadí */
+.ambient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(95px);
+  opacity: 0.16;
+  animation: floatOrb 26s infinite alternate ease-in-out;
+}
+
+.ambient-orb-1 {
+  width: 580px;
+  height: 580px;
+  background: var(--accent-emerald);
+  top: -120px;
+  left: -100px;
+}
+
+.ambient-orb-2 {
+  width: 620px;
+  height: 620px;
+  background: var(--accent-cyan);
+  bottom: -150px;
+  right: -140px;
+  animation-duration: 30s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(45px, 35px) scale(1.08); }
+  100% { transform: translate(-35px, 55px) scale(0.95); }
+}
+
+[data-theme="light"] .ambient-orb {
+  opacity: 0.08;
+  filter: blur(100px);
+}
+
+/* Jemná mřížka v pozadí */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] .grid-overlay {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+/* Gradientní text */
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero Titulní slide */
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+
+[data-theme="light"] .title-badge {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.hero-description {
+  font-size: 1.22rem;
+  color: var(--text-secondary);
+  max-width: 820px;
+  line-height: 1.65;
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.hero-features {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.hero-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 0.92rem;
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+/* Slide Header */
+.slide-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 0.4rem !important;
+  margin-bottom: 1.35rem !important;
+  padding-bottom: 0.85rem !important;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+}
+
+.slide-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+.slide-subtitle {
+  font-size: 0.98rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 980px;
+}
+
+/* Mřížky a rozvržení */
+.content-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.content-grid-2-uneven {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.content-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 992px) {
+  .content-grid-2,
+  .content-grid-2-uneven,
+  .content-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Karty */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.35rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon svg,
+.card-icon .icon,
+.card-header-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor !important;
+  fill: none !important;
+  stroke-width: 2.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  display: block;
+}
+
+.card-icon svg *,
+.card-header-icon svg * {
+  stroke: currentColor !important;
+  fill: none !important;
+  stroke-width: 2.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+.card-icon.emerald {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.45) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+}
+
+.card-icon.cyan {
+  background: rgba(6, 182, 212, 0.2) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(6, 182, 212, 0.45) !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+}
+
+.card-icon.purple {
+  background: rgba(168, 85, 247, 0.2) !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(168, 85, 247, 0.45) !important;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+}
+
+.card-icon.amber {
+  background: rgba(245, 158, 11, 0.2) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.45) !important;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+}
+
+.card-icon.rose {
+  background: rgba(244, 63, 94, 0.2) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.45) !important;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.25);
+}
+
+.card-icon.blue {
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(59, 130, 246, 0.45) !important;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+}
+
+[data-theme="light"] .card-icon.emerald {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #059669 !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: none;
+}
+
+[data-theme="light"] .card-icon.cyan {
+  background: rgba(6, 182, 212, 0.12) !important;
+  color: #0284c7 !important;
+  border-color: rgba(6, 182, 212, 0.35) !important;
+  box-shadow: none;
+}
+
+[data-theme="light"] .card-icon.purple {
+  background: rgba(168, 85, 247, 0.12) !important;
+  color: #7c3aed !important;
+  border-color: rgba(168, 85, 247, 0.35) !important;
+  box-shadow: none;
+}
+
+[data-theme="light"] .card-icon.amber {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #d97706 !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+  box-shadow: none;
+}
+
+[data-theme="light"] .card-icon.rose {
+  background: rgba(244, 63, 94, 0.12) !important;
+  color: #e11d48 !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+  box-shadow: none;
+}
+
+[data-theme="light"] .card-icon.blue {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #2563eb !important;
+  border-color: rgba(59, 130, 246, 0.35) !important;
+  box-shadow: none;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.card-body {
+  font-size: 0.94rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.card-body p {
+  margin: 0 0 0.85rem;
+}
+
+.card-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tagy & Badges */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tag.emerald {
+  background: rgba(16, 185, 129, 0.14);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.tag.cyan {
+  background: rgba(6, 182, 212, 0.14);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+.tag.purple {
+  background: rgba(168, 85, 247, 0.14);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.tag.amber {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.tag.rose {
+  background: rgba(244, 63, 94, 0.14);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+}
+
+.tag.blue {
+  background: rgba(59, 130, 246, 0.14);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+/* Seznamy */
+.styled-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.styled-list li {
+  position: relative;
+  padding-left: 1.6rem;
+  line-height: 1.55;
+  font-size: 0.94rem;
+  color: var(--text-secondary);
+}
+
+.styled-list li::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.55rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 8px var(--accent-emerald);
+}
+
+.styled-list li strong {
+  color: var(--text-primary);
+}
+
+/* Porovnávací a informační boxy */
+.info-box {
+  background: rgba(15, 23, 42, 0.5);
+  border-left: 3px solid var(--accent-emerald);
+  border-radius: 0 10px 10px 0;
+  padding: 0.9rem 1.15rem;
+  margin: 0.85rem 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+[data-theme="light"] .info-box {
+  background: #f1f5f9;
+}
+
+.info-box.cyan {
+  border-left-color: var(--accent-cyan);
+}
+
+.info-box.amber {
+  border-left-color: var(--accent-amber);
+}
+
+.info-box.purple {
+  border-left-color: var(--accent-purple);
+}
+
+.info-box.rose {
+  border-left-color: var(--accent-rose);
+}
+
+/* Porovnání Dual Box */
+.compare-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.compare-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.compare-card.lifo {
+  border-top: 3px solid var(--accent-purple);
+}
+
+.compare-card.fifo {
+  border-top: 3px solid var(--accent-cyan);
+}
+
+.compare-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+/* ==========================================================================
+   Syntax zvýrazněné Python kódové bloky
+   ========================================================================== */
+.python-code-box {
+  background: #090d16;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.15rem 1.35rem;
+  font-family: var(--font-mono, 'Fira Code', Consolas, monospace);
+  font-size: 0.86rem;
+  line-height: 1.58;
+  color: #e2e8f0;
+  overflow-x: auto;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+  position: relative;
+  white-space: pre;
+  tab-size: 4;
+  -moz-tab-size: 4;
+}
+
+[data-theme="light"] .python-code-box {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1e293b;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.code-badge-py {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+/* Tokeny zvýraznění syntaxe */
+.py-kw { color: #f472b6; font-weight: 700; } /* def, return, while, for, in, if, else, elif, class, True, False, None */
+.py-fn { color: #60a5fa; font-weight: 600; } /* print, append, popleft, heappop, heappush, range, len, min */
+.py-self { color: #fb923c; font-style: italic; }
+.py-str { color: #a7f3d0; } /* řetězce */
+.py-num { color: #fbbf24; font-weight: 700; } /* čísla */
+.py-cmt { color: #64748b; font-style: italic; } /* komentáře */
+.py-op { color: #cbd5e1; } /* operátory */
+
+[data-theme="light"] .py-kw { color: #db2777; }
+[data-theme="light"] .py-fn { color: #2563eb; }
+[data-theme="light"] .py-self { color: #ea580c; }
+[data-theme="light"] .py-str { color: #059669; }
+[data-theme="light"] .py-num { color: #d97706; }
+[data-theme="light"] .py-cmt { color: #94a3b8; }
+
+/* In-line formule a zvýraznění */
+.formula-box {
+  background: rgba(15, 23, 42, 0.7);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 0.85rem 0;
+}
+
+[data-theme="light"] .formula-box {
+  background: #f1f5f9;
+}
+
+.formula-main {
+  font-family: var(--font-mono, 'Fira Code', Consolas, monospace);
+  font-size: 1.06rem;
+  font-weight: 700;
+  color: #34d399;
+  display: block;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.01em;
+}
+
+[data-theme="light"] .formula-main {
+  color: #059669;
+}
+
+.formula-main em,
+.formula-main i {
+  font-style: italic;
+  font-family: 'Times New Roman', Georgia, serif;
+  font-size: 1.14em;
+  padding: 0 1px;
+}
+
+.formula-main sub {
+  font-size: 0.72em;
+  bottom: -0.25em;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.formula-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.formula-desc em,
+.formula-desc i {
+  font-style: italic;
+  font-family: 'Times New Roman', Georgia, serif;
+  font-size: 1.1em;
+}
+
+.formula-desc sub {
+  font-size: 0.72em;
+  bottom: -0.2em;
+}
+
+/* ==========================================================================
+   Vizuální diagramy grafů (Statické i interaktivní)
+   ========================================================================== */
+.graph-display-wrapper {
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="light"] .graph-display-wrapper {
+  background: #f8fafc;
+}
+
+.graph-display-svg {
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+/* Rozhodovací strom / Flowchart */
+.flowchart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.15rem;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+[data-theme="light"] .flow-step {
+  background: #f8fafc;
+}
+
+.flow-badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  min-width: 90px;
+  text-align: center;
+}
+
+/* Srovnávací matice tabulka */
+.comparison-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.comparison-table th {
+  background: rgba(15, 23, 42, 0.8);
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+  white-space: nowrap;
+}
+
+[data-theme="light"] .comparison-table th {
+  background: #e2e8f0;
+}
+
+.comparison-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="light"] .comparison-table tr:hover td {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* ==========================================================================
+   Interaktivní vizualizátor (Snímek 11)
+   ========================================================================== */
+.simulator-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  width: 100%;
+}
+
+.simulator-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.algo-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.algo-tab-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.45rem 0.95rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.algo-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.algo-tab-btn.active {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: var(--accent-emerald);
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+}
+
+[data-theme="light"] .algo-tab-btn.active {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+
+.sim-selectors {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.sim-select-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sim-select {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+[data-theme="light"] .sim-select {
+  background: #ffffff;
+}
+
+/* Simulátor pracovní plocha (2 sloupce: vlevo Canvas, vpravo data a krok) */
+.simulator-workspace {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .simulator-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sim-canvas-box {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-height: 330px;
+}
+
+[data-theme="light"] .sim-canvas-box {
+  background: #f8fafc;
+}
+
+.sim-svg {
+  width: 100%;
+  height: 100%;
+  max-height: 320px;
+}
+
+/* SVG styly pro simulátor */
+.sim-node circle {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sim-node text {
+  font-family: var(--font-sans, sans-serif);
+  font-weight: 800;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sim-node .node-dist-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sim-edge path {
+  transition: all 0.3s ease;
+}
+
+.sim-edge-label rect {
+  transition: all 0.2s ease;
+}
+
+/* Stavy uzlů */
+.sim-node.state-idle circle {
+  fill: #1e293b;
+  stroke: #475569;
+  stroke-width: 2.5;
+}
+
+[data-theme="light"] .sim-node.state-idle circle {
+  fill: #f1f5f9;
+  stroke: #94a3b8;
+}
+
+.sim-node.state-queue circle {
+  fill: rgba(6, 182, 212, 0.25);
+  stroke: #38bdf8;
+  stroke-width: 3;
+}
+
+.sim-node.state-current circle {
+  fill: rgba(245, 158, 11, 0.3);
+  stroke: #fbbf24;
+  stroke-width: 4;
+  animation: pulseCurrent 1.4s infinite alternate;
+}
+
+@keyframes pulseCurrent {
+  0% { transform: scale(1); filter: drop-shadow(0 0 6px #fbbf24); }
+  100% { transform: scale(1.04); filter: drop-shadow(0 0 16px #fbbf24); }
+}
+
+.sim-node.state-visited circle {
+  fill: rgba(168, 85, 247, 0.2);
+  stroke: #c084fc;
+  stroke-width: 2.5;
+}
+
+.sim-node.state-path circle {
+  fill: rgba(16, 185, 129, 0.35);
+  stroke: #34d399;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.6));
+}
+
+/* Stavy hran */
+.sim-edge.edge-idle path {
+  stroke: #475569;
+  stroke-width: 2;
+  opacity: 0.6;
+}
+
+[data-theme="light"] .sim-edge.edge-idle path {
+  stroke: #cbd5e1;
+  opacity: 0.8;
+}
+
+.sim-edge.edge-exploring path {
+  stroke: #fbbf24;
+  stroke-width: 3.5;
+  opacity: 1;
+  stroke-dasharray: 6 3;
+  animation: dashEdge 1s linear infinite;
+}
+
+@keyframes dashEdge {
+  to { stroke-dashoffset: -18; }
+}
+
+.sim-edge.edge-failed path {
+  stroke: #fb7185;
+  stroke-width: 3.5;
+  opacity: 1;
+  stroke-dasharray: 5 4;
+}
+
+.sim-edge.edge-path path {
+  stroke: #34d399;
+  stroke-width: 4;
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6));
+}
+
+/* Pravý panel simulátoru */
+.sim-side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sim-status-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.sim-status-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sim-step-badge {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.15rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.sim-step-desc {
+  font-size: 0.94rem;
+  line-height: 1.55;
+  color: var(--text-primary);
+  min-height: 52px;
+}
+
+/* Vizualizace datové struktury (Fronta / Zásobník / Vzdálenosti) */
+.data-struct-display {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.85rem;
+  min-height: 85px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+[data-theme="light"] .data-struct-display {
+  background: #f1f5f9;
+}
+
+/* Duální úložiště pro BFS a DFS (K navštívení + visited) */
+.storage-dual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .storage-dual-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.storage-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] .storage-col {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.storage-col-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+
+.storage-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.storage-pill.cyan {
+  background: rgba(6, 182, 212, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+[data-theme="light"] .storage-pill.cyan {
+  background: rgba(6, 182, 212, 0.1);
+  color: #0284c7;
+}
+
+.storage-pill.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+[data-theme="light"] .storage-pill.purple {
+  background: rgba(168, 85, 247, 0.1);
+  color: #9333ea;
+}
+
+.storage-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-family: var(--font-mono, monospace);
+}
+
+.visited-chip {
+  padding: 0.2rem 0.5rem;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  color: #c084fc;
+  border-radius: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+[data-theme="light"] .visited-chip {
+  color: #9333ea;
+  background: rgba(147, 51, 234, 0.08);
+  border-color: rgba(147, 51, 234, 0.25);
+}
+
+.empty-state-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  padding: 0.25rem 0;
+}
+
+.tape-pointer {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.struct-elements-tape {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 32px;
+}
+
+.struct-item {
+  padding: 0.25rem 0.6rem;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  color: #38bdf8;
+  border-radius: 6px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+[data-theme="light"] .struct-item {
+  background: rgba(6, 182, 212, 0.1);
+  color: #0284c7;
+}
+
+.struct-item.head {
+  border-color: #fbbf24;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
+}
+
+[data-theme="light"] .struct-item.head {
+  border-color: #d97706;
+  color: #b45309;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+/* Tabulka vzdáleností a předchůdců */
+.dist-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.dist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.dist-table th {
+  padding: 0.35rem 0.45rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 700;
+}
+
+.dist-table th.table-corner,
+.dist-table td.table-row-header {
+  text-align: left;
+  padding-left: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  border-right: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.dist-table tr:not(:last-child) td {
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .dist-table tr:not(:last-child) td {
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+.dist-table td {
+  padding: 0.35rem 0.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: all 0.25s ease;
+}
+
+.dist-table td.dist-updated {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.16);
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+[data-theme="light"] .dist-table td.dist-updated {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.14);
+}
+
+.dist-table td.dist-rejected {
+  color: #fb7185;
+  background: rgba(244, 63, 94, 0.12);
+  border-radius: 4px;
+}
+
+[data-theme="light"] .dist-table td.dist-rejected {
+  color: #e11d48;
+  background: rgba(244, 63, 94, 0.1);
+}
+
+/* Štítky stavu uzlu v tabulce vzdáleností */
+.dist-status {
+  display: inline-block;
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.dist-status.visited {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.45);
+}
+
+[data-theme="light"] .dist-status.visited {
+  background: rgba(168, 85, 247, 0.12);
+  color: #7e22ce;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
+.dist-status.to-visit {
+  background: rgba(56, 189, 248, 0.18);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+[data-theme="light"] .dist-status.to-visit {
+  background: rgba(14, 165, 233, 0.12);
+  color: #0284c7;
+  border: 1px solid rgba(14, 165, 233, 0.35);
+}
+
+.dist-status.unreached {
+  background: rgba(148, 163, 184, 0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Styly štítků pod uzly v SVG */
+.sim-node .node-dist-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  fill: #38bdf8;
+  transition: fill 0.25s ease;
+}
+
+[data-theme="light"] .sim-node .node-dist-badge {
+  fill: #0284c7;
+}
+
+.sim-node .node-dist-badge.badge-updated {
+  fill: #34d399 !important;
+}
+
+[data-theme="light"] .sim-node .node-dist-badge.badge-updated {
+  fill: #059669 !important;
+}
+
+.sim-node .node-dist-badge.badge-rejected {
+  fill: #fb7185 !important;
+}
+
+[data-theme="light"] .sim-node .node-dist-badge.badge-rejected {
+  fill: #e11d48 !important;
+}
+
+.sim-node .node-dist-badge.badge-parent {
+  fill: #c084fc !important;
+}
+
+[data-theme="light"] .sim-node .node-dist-badge.badge-parent {
+  fill: #9333ea !important;
+}
+
+/* Ovládací lišta simulátoru */
+.sim-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.sim-btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-sim-action {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-sim-action:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-emerald);
+}
+
+.btn-sim-action.primary {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--accent-emerald);
+  color: #34d399;
+}
+
+.btn-sim-action.primary:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+.btn-sim-action:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Kvíz & Otázky k ověření znalostí (Snímek 12)
+   ========================================================================== */
+.questions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .questions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: all 0.25s ease;
+}
+
+.question-card:hover {
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.question-num {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-emerald);
+}
+
+.question-text {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.question-hint {
+  display: none;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  background: rgba(15, 23, 42, 0.5);
+  border-left: 3px solid var(--accent-emerald);
+  padding: 0.65rem 0.85rem;
+  border-radius: 0 6px 6px 0;
+  margin-top: 0.35rem;
+}
+
+[data-theme="light"] .question-hint {
+  background: #f1f5f9;
+}
+
+.question-hint.visible {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+
+.question-answer-btn {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.question-answer-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-emerald);
+}
+
+.question-answer-btn.open {
+  color: var(--accent-emerald);
+  border-color: var(--accent-emerald);
+  background: rgba(16, 185, 129, 0.08);
+}

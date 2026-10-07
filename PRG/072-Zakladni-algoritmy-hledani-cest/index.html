@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Výuková prezentace SPŠ: Základní algoritmy hledání cest. Dosažitelnost, prohledávání do šířky (BFS), do hloubky (DFS), Dijkstrův a Bellman-Fordův algoritmus.">
+  <title>072 Základní algoritmy hledání cest | Výukové materiály SPŠ</title>
+
+  <!-- Společné jádro frameworku (DRY strategie) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+
+  <!-- Lokální dedikované styly pro toto konkrétní téma -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentace -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Hlavní kontejner prezentace -->
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">072 Algoritmy hledání cest</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag emerald">Algoritmy &amp; Datové struktury</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Základní algoritmy hledání cest">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Předmět PRG &bull; Téma 072 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title" style="font-size: 2.85rem; margin-bottom: 1rem;">
+            Základní algoritmy <br><span class="gradient-text">hledání cest v grafech</span>
+          </h1>
+          <p class="hero-description">
+            Od jednoduchého testu existence cesty (dosažitelnost) přes prohledávání do šířky (BFS) a do hloubky (DFS) až po Dijkstrův a Bellman-Fordův algoritmus ve vážených sítích.
+          </p>
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag emerald">Existence</span>
+              <span>Test spojení &bull; True / False &bull; Visited</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag cyan">BFS &amp; DFS</span>
+              <span>Fronta vs. Zásobník &bull; LIFO / FIFO</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag amber">Dijkstra</span>
+              <span>Vážené sítě &bull; Relaxace &bull; Min-Heap</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">Bellman-Ford</span>
+              <span>Záporné váhy &bull; Detekce cyklů</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag blue">Interaktivní</span>
+              <span>Krokovací simulátor na grafu</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Co je cesta v grafu?
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Definice cesty a typy úloh">
+        <div class="slide-header">
+          <h2 class="slide-title">Co je cesta v grafu a jaké úlohy řešíme?</h2>
+          <p class="slide-subtitle">V grafových strukturách rozlišujeme mezi pouhou existencí spojení, minimálním počtem přestupů a nejlevnější váženou trasou.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div>
+            <div class="card" style="margin-bottom: 1.15rem;">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="6" r="3"></circle><line x1="8.5" y1="15.5" x2="15.5" y2="8.5"></line></svg>
+                </div>
+                <h3 class="card-title">Matematická a datová definice cesty</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  <strong>Cesta (Path)</strong> v grafu <em>G</em> = (<em>V</em>, <em>E</em>) je konečná posloupnost vrcholů (<em>v</em><sub>0</sub>, <em>v</em><sub>1</sub>, <em>v</em><sub>2</sub>, &hellip;, <em>v<sub>k</sub></em>), ve které mezi každými dvěma sousedními vrcholy existuje platná hrana:
+                </p>
+                <div class="formula-box">
+                  <span class="formula-main">(<em>v<sub>i</sub></em>, <em>v</em><sub><em>i</em>+1</sub>) &isin; <em>E</em> &emsp;&bull;&emsp; pro všechna <em>i</em> &isin; {0, 1, &hellip;, <em>k</em> &minus; 1}</span>
+                  <span class="formula-desc">Kde <em>v</em><sub>0</sub> je počáteční uzel (Start) a <em>v<sub>k</sub></em> je koncový cíl (Target).</span>
+                </div>
+                <ul class="styled-list">
+                  <li><strong>Prostá cesta (Simple Path):</strong> Cesta, ve které se žádný uzel neopakuje (neobsahuje vnitřní cykly).</li>
+                  <li><strong>Délka v neváženém grafu:</strong> Počet hran na cestě (<em>k</em>).</li>
+                  <li><strong>Cena ve váženém grafu:</strong> Součet vah všech hran &sum; <em>w</em>(<em>v<sub>i</sub></em>, <em>v</em><sub><em>i</em>+1</sub>).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="info-box cyan">
+              <strong>Základní programátorská zásada:</strong> Než začneme optimalizovat délku či cenu trasy, musíme nejprve umět spolehlivě odpovědět, zda trasa mezi uzly vůbec existuje.
+            </div>
+          </div>
+
+          <div>
+            <div class="graph-display-wrapper">
+              <svg viewBox="0 0 420 220" class="graph-display-svg" aria-label="Schéma cesty v grafu">
+                <defs>
+                  <marker id="arrowCyan" viewBox="0 0 10 10" refX="21" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#38bdf8"></path>
+                  </marker>
+                  <marker id="arrowPath" viewBox="0 0 10 10" refX="21" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#34d399"></path>
+                  </marker>
+                  <marker id="arrowMuted" viewBox="0 0 10 10" refX="21" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#475569"></path>
+                  </marker>
+                </defs>
+
+                <!-- Šedé běžné hrany -->
+                <path d="M 60 110 L 160 170" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrowMuted)"></path>
+                <path d="M 160 170 L 260 170" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrowMuted)"></path>
+
+                <!-- Zeleně zvýrazněná cesta: A -> B -> D -> E -->
+                <path d="M 60 110 L 160 50" fill="none" stroke="#34d399" stroke-width="3.5" marker-end="url(#arrowPath)"></path>
+                <path d="M 160 50 L 260 50" fill="none" stroke="#34d399" stroke-width="3.5" marker-end="url(#arrowPath)"></path>
+                <path d="M 260 50 L 360 110" fill="none" stroke="#34d399" stroke-width="3.5" marker-end="url(#arrowPath)"></path>
+
+                <!-- Uzly -->
+                <!-- A: Start -->
+                <circle cx="60" cy="110" r="18" fill="rgba(16, 185, 129, 0.25)" stroke="#34d399" stroke-width="3"></circle>
+                <text x="60" y="115" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">A</text>
+                <text x="60" y="142" text-anchor="middle" font-size="10" font-weight="700" fill="#34d399">START</text>
+
+                <!-- B -->
+                <circle cx="160" cy="50" r="18" fill="rgba(16, 185, 129, 0.25)" stroke="#34d399" stroke-width="3"></circle>
+                <text x="160" y="55" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">B</text>
+
+                <!-- C -->
+                <circle cx="160" cy="170" r="18" fill="#1e293b" stroke="#475569" stroke-width="2"></circle>
+                <text x="160" y="175" text-anchor="middle" font-size="13" font-weight="800" fill="#cbd5e1">C</text>
+
+                <!-- D -->
+                <circle cx="260" cy="50" r="18" fill="rgba(16, 185, 129, 0.25)" stroke="#34d399" stroke-width="3"></circle>
+                <text x="260" y="55" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">D</text>
+
+                <!-- C' -->
+                <circle cx="260" cy="170" r="18" fill="#1e293b" stroke="#475569" stroke-width="2"></circle>
+                <text x="260" y="175" text-anchor="middle" font-size="13" font-weight="800" fill="#cbd5e1">G</text>
+
+                <!-- E: Cíl -->
+                <circle cx="360" cy="110" r="18" fill="rgba(245, 158, 11, 0.25)" stroke="#fbbf24" stroke-width="3"></circle>
+                <text x="360" y="115" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">E</text>
+                <text x="360" y="142" text-anchor="middle" font-size="10" font-weight="700" fill="#fbbf24">CÍL</text>
+              </svg>
+            </div>
+
+            <div class="card" style="margin-top: 1rem;">
+              <div class="card-header-icon">
+                <div class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                </div>
+                <h3 class="card-title">3 základní otázky v praxi vývojáře</h3>
+              </div>
+              <div class="card-body">
+                <ol style="margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                  <li><strong>Dosažitelnost (Reachability):</strong> Existuje vůbec cesta z <em>A</em> do <em>E</em>? &rarr; Vrací boolean <code>True / False</code>.</li>
+                  <li><strong>Nejkratší nevážená cesta:</strong> Která trasa má nejméně mezikroků/přestupů? &rarr; Řeší algoritmus <strong>BFS</strong>.</li>
+                  <li><strong>Nejkratší vážená cesta:</strong> Která trasa má nejmenší čas, latenci či cenu? &rarr; Řeší <strong>Dijkstra</strong> a <strong>Bellman-Ford</strong>.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Test existence cesty (True/False)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Test existence cesty (Reachability)">
+        <div class="slide-header">
+          <h2 class="slide-title">Test existence cesty (Dosažitelnost v grafu)</h2>
+          <p class="slide-subtitle">Základní a nejrychlejší rozhodovací algoritmus: Je uzel <em>B</em> dosažitelný z uzlu <em>A</em>?</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div>
+            <div class="card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <h3 class="card-title">Problém cyklu a role množiny visited</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  V obecném grafu mohou hrany tvořit <strong>kružnice (cykly)</strong>. Kdybychom sousedy procházeli naivně bez paměti, program by navštívil <em>A</em> &rarr; <em>B</em> &rarr; <em>C</em> &rarr; <em>A</em> &rarr; <em>B</em> &hellip; a uvízl v <strong>nekonečné smyčce</strong>.
+                </p>
+                <div class="info-box rose">
+                  <strong>Pravidlo spolehlivého průchodu:</strong> Každý navštívený vrchol musíme okamžitě zaregistrovat do množiny <code>visited = set()</code> s přístupem v čase <em>O</em>(1)!
+                </div>
+                <p>
+                  <strong>Princip testu existence:</strong>
+                </p>
+                <ul class="styled-list">
+                  <li>Vložíme startovní uzel do zásobníku nebo fronty.</li>
+                  <li>Dokud zásobník není prázdný, vyjmeme uzel. Pokud je to hledaný cíl, ihned vrátíme <code>True</code>.</li>
+                  <li>Pokud cíl není, označíme uzel jako navštívený a na zásobník přidáme všechny jeho dosud nenavštívené sousedy.</li>
+                  <li>Vyprázdní-li se zásobník bez nalezení cíle, vrátíme <code>False</code>.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="python-code-box">
+              <span class="code-badge-py">Python 3</span>
+<span class="py-kw">def</span> <span class="py-fn">has_path</span>(graph, start, target):
+    <span class="py-str">"""
+    Vrátí True, pokud existuje jakákoli cesta ze start do target.
+    Jinak vrátí False.
+    """</span>
+    <span class="py-kw">if</span> start == target:
+        <span class="py-kw">return</span> <span class="py-kw">True</span>
+
+    <span class="py-cmt"># Množina již navštívených uzlů (zamezí zacyklení)</span>
+    visited = <span class="py-fn">set</span>()
+    <span class="py-cmt"># Zásobník pro uzly čekající na prozkoumání</span>
+    stack = [start]
+
+    <span class="py-kw">while</span> stack:
+        current = stack.<span class="py-fn">pop</span>()
+
+        <span class="py-kw">if</span> current == target:
+            <span class="py-kw">return</span> <span class="py-kw">True</span>
+
+        <span class="py-kw">if</span> current <span class="py-kw">not in</span> visited:
+            visited.<span class="py-fn">add</span>(current)
+
+            <span class="py-cmt"># Přidáme všechny sousedy, kteří ještě nebyli navštíveni</span>
+            <span class="py-kw">for</span> neighbor <span class="py-kw">in</span> graph.<span class="py-fn">get</span>(current, []):
+                <span class="py-kw">if</span> neighbor <span class="py-kw">not in</span> visited:
+                    stack.<span class="py-fn">append</span>(neighbor)
+
+    <span class="py-cmt"># Prošli jsme všechny dostupné uzly a cíl jsme nenašli</span>
+    <span class="py-kw">return</span> <span class="py-kw">False</span>
+            </div>
+
+            <div class="info-box emerald" style="margin-top: 1rem;">
+              <strong>Složitost testu existence:</strong> Časová složitost je <em>O</em>(|<em>V</em>| + |<em>E</em>|), paměťová složitost je <em>O</em>(|<em>V</em>|) pro evidenci navštívených vrcholů.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Prohledávání do hloubky (DFS)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Prohledávání do hloubky (DFS)">
+        <div class="slide-header">
+          <h2 class="slide-title">Prohledávání do hloubky (DFS – Depth-First Search)</h2>
+          <p class="slide-subtitle">Strategie: Jdi co nejhlouběji podél jedné větve. U slepé uličky se vrať na poslední křižovatku (Backtracking).</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div>
+            <div class="card" style="margin-bottom: 1.15rem;">
+              <div class="card-header-icon">
+                <div class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="7 8 3 12 7 16"></polyline><line x1="21" y1="12" x2="3" y2="12"></line></svg>
+                </div>
+                <h3 class="card-title">Princip LIFO &amp; Metafora bludiště</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  Algoritmus DFS funguje podobně jako průzkumník v neznámém labyrintu: vybere si jednu odbočku a kráčí stále kupředu, dokud nenarazí na konec. Jakmile narazí na slepou větev, <strong>couvne o krok zpět (Backtracking)</strong> a zkusí další možnou odbočku.
+                </p>
+                <ul class="styled-list">
+                  <li><strong>Datová struktura:</strong> <strong>Zásobník (Stack / LIFO)</strong> – poslední přidaný uzel je zkoumán jako první.</li>
+                  <li><strong>Implementace:</strong> Buď rekurzivně (využívá se systémový zásobník volání funkcí Call Stack), nebo iterativně s vlastním polem <code>stack = []</code>.</li>
+                  <li><strong>Klíčová vlastnost:</strong> DFS najde cestu rychle a paměťově úsporně, <strong>ALE NEGARANTUJE NEJKRATŠÍ CESTU</strong>! Může projít zbytečnou velkou oklikou.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="info-box purple">
+              <strong>Kdy použít DFS:</strong> Detekce cyklů v grafu, topologické uspořádání úloh, řešení hlavolamů a bludišť, prohledávání stavového prostoru šachových partií.
+            </div>
+          </div>
+
+          <div>
+            <div class="python-code-box">
+              <span class="code-badge-py">Python 3 (DFS Cesta)</span>
+<span class="py-kw">def</span> <span class="py-fn">dfs_path</span>(graph, start, target, visited=<span class="py-kw">None</span>):
+    <span class="py-str">"""
+    Nalezne libovolnou platnou cestu z uzlu start do target.
+    Vrací seznam vrcholů na cestě, nebo None pokud cesta neexistuje.
+    """</span>
+    <span class="py-kw">if</span> visited <span class="py-kw">is None</span>:
+        visited = <span class="py-fn">set</span>()
+
+    visited.<span class="py-fn">add</span>(start)
+
+    <span class="py-cmt"># Cíl dosažen -> cesta je tvořena tímto uzlem</span>
+    <span class="py-kw">if</span> start == target:
+        <span class="py-kw">return</span> [start]
+
+    <span class="py-cmt"># Rekurzivní zanoření do jednotlivých sousedů</span>
+    <span class="py-kw">for</span> neighbor <span class="py-kw">in</span> graph.<span class="py-fn">get</span>(start, []):
+        <span class="py-kw">if</span> neighbor <span class="py-kw">not in</span> visited:
+            sub_path = <span class="py-fn">dfs_path</span>(graph, neighbor, target, visited)
+            <span class="py-kw">if</span> sub_path <span class="py-kw">is not None</span>:
+                <span class="py-cmt"># Sestavíme cestu přidáním počátku na začátek</span>
+                <span class="py-kw">return</span> [start] + sub_path
+
+    <span class="py-cmt"># Z tohoto uzlu žádná cesta do cíle nevede</span>
+    <span class="py-kw">return</span> <span class="py-kw">None</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Prohledávání do šířky (BFS)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Prohledávání do šířky (BFS)">
+        <div class="slide-header">
+          <h2 class="slide-title">Prohledávání do šířky (BFS – Breadth-First Search)</h2>
+          <p class="slide-subtitle">Strategie: Prozkoumej všechny sousedy ve vzdálenosti 1, pak ve vzdálenosti 2, pak 3... Šíří se jako vlna na rybníku.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div>
+            <div class="card" style="margin-bottom: 1.15rem;">
+              <div class="card-header-icon">
+                <div class="card-icon cyan">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </div>
+                <h3 class="card-title">Princip FIFO &amp; Zlaté pravidlo BFS</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  BFS postupuje po soustředných vrstvách. Nejprve navštíví všechny přímé sousedy startu (vrstva 1), teprve poté jejich sousedy (vrstva 2) atd.
+                </p>
+                <div class="formula-box" style="border-left-color: var(--accent-cyan);">
+                  <span class="formula-main" style="color: #38bdf8;">Zlaté pravidlo BFS:</span>
+                  <span class="formula-desc">V neváženém grafu BFS VŽDY garantuje nalezení NEJKRATŠÍ CESTY (s minimálním počtem hran)!</span>
+                </div>
+                <ul class="styled-list">
+                  <li><strong>Datová struktura:</strong> <strong>Fronta (Queue / FIFO)</strong> – první vložený uzel je první zpracován. V Pythonu používáme <code>collections.deque</code> pro efektivní operaci <code>popleft()</code> v čase <em>O</em>(1).</li>
+                  <li><strong>Rekonstrukce cesty:</strong> Ukládáme si slovník předchůdců <code>parent[soused] = uzel</code>. Po dosažení cíle zrekonstruujeme trasu zpětným dohledáním.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="info-box cyan">
+              <strong>Kdy použít BFS:</strong> Vyhledání nejmenšího počtu přestupů v MHD, doporučení přátel 2. a 3. stupně (sociální sítě), web crawling, výpočet dosahu v tahových hrách.
+            </div>
+          </div>
+
+          <div>
+            <div class="python-code-box">
+              <span class="code-badge-py">Python 3 (BFS Nejkratší cesta)</span>
+<span class="py-kw">from</span> collections <span class="py-kw">import</span> deque
+
+<span class="py-kw">def</span> <span class="py-fn">bfs_shortest_path</span>(graph, start, target):
+    <span class="py-str">"""
+    Nalezne nejkratší cestu v neváženém grafu (min. hran).
+    """</span>
+    <span class="py-kw">if</span> start == target:
+        <span class="py-kw">return</span> [start]
+
+    <span class="py-cmt"># Fronta uchovává dvojice: (aktuální_uzel, dosavadní_cesta)</span>
+    queue = deque([ (start, [start]) ])
+    visited = <span class="py-fn">set</span>([start])
+
+    <span class="py-kw">while</span> queue:
+        current, path = queue.<span class="py-fn">popleft</span>()  <span class="py-cmt"># FIFO: bereme z čela fronty</span>
+
+        <span class="py-kw">for</span> neighbor <span class="py-kw">in</span> graph.<span class="py-fn">get</span>(current, []):
+            <span class="py-kw">if</span> neighbor == target:
+                <span class="py-cmt"># První nalezení cíle je zaručeně nejkratší cesta!</span>
+                <span class="py-kw">return</span> path + [neighbor]
+
+            <span class="py-kw">if</span> neighbor <span class="py-kw">not in</span> visited:
+                visited.<span class="py-fn">add</span>(neighbor)
+                queue.<span class="py-fn">append</span>((neighbor, path + [neighbor]))
+
+    <span class="py-kw">return</span> <span class="py-kw">None</span>  <span class="py-cmt"># Cíl není dosažitelný</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Srovnání DFS vs. BFS
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Srovnání: DFS vs. BFS">
+        <div class="slide-header">
+          <h2 class="slide-title">Srovnání v praxi: Hloubka (DFS) vs. Šířka (BFS)</h2>
+          <p class="slide-subtitle">Dva základní pilíře grafového prohledávání. Jak vybrat správný algoritmus pro konkrétní úlohu?</p>
+        </div>
+
+        <div class="compare-container" style="margin-bottom: 1.25rem;">
+          <div class="compare-card lifo">
+            <div class="compare-header">
+              <span class="tag purple">DFS • Hloubka</span>
+              <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 700;">Zásobník (LIFO)</span>
+            </div>
+            <ul class="styled-list">
+              <li><strong>Postup:</strong> Noří se do maximální hloubky jedné větve, pak se vrací (Backtracking).</li>
+              <li><strong>Záruka nejkratší cesty:</strong> <span style="color: #fb7185; font-weight: 700;">NE</span> – může najít zbytečně dlouhou okliku.</li>
+              <li><strong>Paměťová náročnost:</strong> <em>O</em>(hloubka) &le; <em>O</em>(|<em>V</em>|) &ndash; obvykle velmi šetrné k RAM.</li>
+              <li><strong>Typické využití:</strong>
+                <ul>
+                  <li>Hledání cyklů v grafech</li>
+                  <li>Topologické třídění závislostí (Make, npm)</li>
+                  <li>Generování a řešení bludišť</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div class="compare-card fifo">
+            <div class="compare-header">
+              <span class="tag cyan">BFS • Šířka</span>
+              <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 700;">Fronta (FIFO)</span>
+            </div>
+            <ul class="styled-list">
+              <li><strong>Postup:</strong> Prohledává graf po vlnách/vrstvách vzdálenosti od startu.</li>
+              <li><strong>Záruka nejkratší cesty:</strong> <span style="color: #34d399; font-weight: 700;">ANO</span> (v neváženém grafu s min. počtem hran).</li>
+              <li><strong>Paměťová náročnost:</strong> <em>O</em>(šířka) &le; <em>O</em>(|<em>V</em>|) &ndash; může v paměti držet mnoho uzlů naráz.</li>
+              <li><strong>Typické využití:</strong>
+                <ul>
+                  <li>Nejkratší cesta s minimem přestupů</li>
+                  <li>Stupně spojení v sociálních sítích</li>
+                  <li>Flood Fill (výplň barvou v grafických editorech)</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon">
+            <div class="card-icon emerald">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+            </div>
+            <h3 class="card-title">Časová a paměťová složitost při reprezentaci seznamem sousedů</h3>
+          </div>
+          <div class="card-body">
+            <p>
+              Pro oba algoritmy (BFS i DFS) je při reprezentaci pomocí <strong>seznamu sousedů (Adjacency List)</strong> časová složitost lineární:
+              <strong><em>O</em>(|<em>V</em>| + |<em>E</em>|)</strong>, kde |<em>V</em>| je počet uzlů a |<em>E</em>| je počet hran. Každý uzel navštívíme nejvýše jednou a každou hranu prozkoumáme nejvýše jednou.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Nejkratší cesta ve váženém grafu (Dijkstra)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Dijkstrův algoritmus: Princip">
+        <div class="slide-header">
+          <h2 class="slide-title">Vážené grafy a Dijkstrův algoritmus</h2>
+          <p class="slide-subtitle">V reálném světě nemají silnice stejnou délku a optická vlákna stejnou latenci. Hledáme trasu s minimálním součtem vah.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div>
+            <div class="card" style="margin-bottom: 1.15rem;">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <h3 class="card-title">Edsger W. Dijkstra (1956) &amp; Greedy přístup</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  Proč ve váženém grafu selže BFS? Jediná dálniční hrana může mít délku 120 km, zatímco cesta přes dvě okresní silnice má 30 + 40 = 70&nbsp;km. BFS by chybně vybralo dálnici, protože má méně hran.
+                </p>
+                <p>
+                  <strong>Princip Dijkstrova algoritmu:</strong>
+                </p>
+                <ol style="margin: 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                  <li>Nastav vzdálenost startu <em>dist</em>[start] = 0, všech ostatních uzlů <em>dist</em>[<em>v</em>] = &infin;.</li>
+                  <li>Vybírej vždy uzel <em>u</em> s <strong>nejmenší dosud známou vzdáleností</strong> (pomocí prioritní fronty / Min-Heap).</li>
+                  <li>Pro všechny sousedy <em>v</em> uzlu <em>u</em> otestuj <strong>relaxaci hrany</strong>.</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="info-box amber">
+              <strong>Kritická podmínka Dijkstrova algoritmu:</strong> Všechny váhy hran <strong>MUSÍ BÝT NEZÁPORNÉ (<em>w</em> &ge; 0)</strong>. Pokud by graf obsahoval záporné hrany, hladový předpoklad selže!
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <div class="card-header-icon">
+                <div class="card-icon cyan">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <h3 class="card-title">Klíčový koncept: Relaxace hrany</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  Srdcem výpočtu je otázka: <em>„Je levnější jít do uzlu v přímo, nebo vzít zkratku přes uzel u?‟</em>
+                </p>
+                <div class="formula-box">
+                  <span class="formula-main">Pokud <em>dist</em>[<em>u</em>] + <em>w</em>(<em>u</em>, <em>v</em>) &lt; <em>dist</em>[<em>v</em>]:</span>
+                  <span class="formula-desc"><em>dist</em>[<em>v</em>] = <em>dist</em>[<em>u</em>] + <em>w</em>(<em>u</em>, <em>v</em>) &emsp;&bull;&emsp; <em>parent</em>[<em>v</em>] = <em>u</em></span>
+                </div>
+                <p>
+                  Pokud je nová cesta kratší než dosavadní hodnota <em>dist</em>[<em>v</em>], přepíšeme ji novým minimem a aktualizujeme předchůdce.
+                </p>
+                <div class="info-box emerald">
+                  <strong>Efektivita s Min-Heap (Prioritní fronta):</strong> Využitím binární haldy (v Pythonu modul <code>heapq</code>) dosáhneme špičkové časové složitosti <strong><em>O</em>((|<em>V</em>| + |<em>E</em>|) &middot; log |<em>V</em>|)</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Implementace Dijkstry v Pythonu
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Dijkstrův algoritmus v Pythonu">
+        <div class="slide-header">
+          <h2 class="slide-title">Implementace Dijkstrova algoritmu v Pythonu</h2>
+          <p class="slide-subtitle">Využití standardního modulu heapq (binární halda) pro rychlé vyhledávání minima v čase O(log V).</p>
+        </div>
+
+        <div class="content-grid-2-uneven">
+          <div>
+            <div class="python-code-box">
+              <span class="code-badge-py">Python 3 (heapq)</span>
+<span class="py-kw">import</span> heapq
+
+<span class="py-kw">def</span> <span class="py-fn">dijkstra</span>(graph, start, target):
+    <span class="py-str">"""
+    graph: slovník { uzel: [(soused, vaha), ...] }
+    Vrací: (celkova_cena, nejkratsi_cesta)
+    """</span>
+    <span class="py-cmt"># 1. Pole vzdáleností: start má 0, ostatní nekonečno</span>
+    distances = {node: <span class="py-fn">float</span>(<span class="py-str">'inf'</span>) <span class="py-kw">for</span> node <span class="py-kw">in</span> graph}
+    distances[start] = <span class="py-num">0</span>
+    previous = {node: <span class="py-kw">None</span> <span class="py-kw">for</span> node <span class="py-kw">in</span> graph}
+
+    <span class="py-cmt"># 2. Prioritní fronta (Min-Heap): ukládá n-tice (vzdalenost, uzel)</span>
+    pq = [(<span class="py-num">0</span>, start)]
+
+    <span class="py-kw">while</span> pq:
+        curr_dist, u = heapq.<span class="py-fn">heappop</span>(pq)
+
+        <span class="py-cmt"># Pokud jsme v haldě našli zastaralý záznam s vyšší cenou, přeskočíme</span>
+        <span class="py-kw">if</span> curr_dist > distances[u]:
+            <span class="py-kw">continue</span>
+
+        <span class="py-kw">if</span> u == target:
+            <span class="py-kw">break</span>
+
+        <span class="py-cmt"># 3. Relaxace všech odchozích hran</span>
+        <span class="py-kw">for</span> v, weight <span class="py-kw">in</span> graph.<span class="py-fn">get</span>(u, []):
+            new_dist = curr_dist + weight
+
+            <span class="py-kw">if</span> new_dist < distances[v]:
+                distances[v] = new_dist
+                previous[v] = u
+                heapq.<span class="py-fn">heappush</span>(pq, (new_dist, v))
+
+    <span class="py-cmt"># 4. Rekonstrukce nalezené trasy od cíle ke startu</span>
+    path = []
+    curr = target
+    <span class="py-kw">while</span> curr <span class="py-kw">is not None</span>:
+        path.<span class="py-fn">append</span>(curr)
+        curr = previous[curr]
+    path.<span class="py-fn">reverse</span>()
+
+    <span class="py-kw">return</span> distances[target], path
+            </div>
+          </div>
+
+          <div>
+            <div class="card">
+              <div class="card-header-icon">
+                <div class="card-icon emerald">
+                  <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 class="card-title">Rozbor klíčových řádků</h3>
+              </div>
+              <div class="card-body">
+                <ul class="styled-list">
+                  <li><strong><code>heapq.heappush(pq, (dist, v))</code>:</strong> Ukládáme vzdálenost na první pozici n-tice, protože Python halda řadí prvky podle prvního členu.</li>
+                  <li><strong><code>curr_dist > distances[u]</code>:</strong> Rychlé přeskočení "mrtvých" záznamů v haldě. Vznikají, když uzel zlevníme podruhé.</li>
+                  <li><strong>Zpětná rekonstrukce:</strong> Pole <code>previous</code> umožňuje snadné dohledání trasy pozpátku v čase <em>O</em>(|<em>V</em>|).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="info-box cyan" style="margin-top: 1rem;">
+              <strong>Příklad výstupu:</strong>
+              Pro graf se startem <code>'A'</code> a cílem <code>'F'</code> funkce vrátí např. <code>(8, ['A', 'C', 'B', 'E', 'D', 'F'])</code>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Bellman-Fordův algoritmus
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Záporné váhy a Bellman-Ford">
+        <div class="slide-header">
+          <h2 class="slide-title">Záporné váhy a Bellman-Fordův algoritmus</h2>
+          <p class="slide-subtitle">Co když hrana představuje slevu či zisk energie se zápornou hodnotou? Zde Dijkstra selhává a nastupuje Bellman-Ford.</p>
+        </div>
+
+        <div class="content-grid-2">
+          <div>
+            <div class="card" style="margin-bottom: 1.15rem;">
+              <div class="card-header-icon">
+                <div class="card-icon rose">
+                  <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                </div>
+                <h3 class="card-title">Proč Dijkstra selže u záporných vah?</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  Dijkstra je <strong>hladový (Greedy)</strong> algoritmus. Jakmile uzel vyjme z prioritní fronty a označí za navštívený, považuje jeho vzdálenost za konečnou a již se k němu nikdy nevrátí.
+                </p>
+                <p>
+                  Pokud by se však za ním nacházela hrana se <strong>zápornou vahou (např. &minus;10)</strong>, celková trasa by mohla zlevnit, ale Dijkstra už to nezjistí!
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header-icon">
+                <div class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                </div>
+                <h3 class="card-title">Princip |<em>V</em>| &minus; 1 kol relaxace</h3>
+              </div>
+              <div class="card-body">
+                <p>
+                  Bellman-Ford nepoužívá hladový výběr. Místo toho provede:
+                </p>
+                <div class="formula-box">
+                  <span class="formula-main">Přesně (|<em>V</em>| &minus; 1) kol relaxace VŠECH hran</span>
+                  <span class="formula-desc">Nejdelší prostá cesta bez cyklu v grafu o |<em>V</em>| uzlech má nejvýše |<em>V</em>| &minus; 1 hran.</span>
+                </div>
+                <p>
+                  <strong>Detekce záporného cyklu:</strong> Pokud po (|<em>V</em>| &minus; 1) kolech provedeme ještě jedno kolo navíc a libovolná hrana stále dokáže zlevnit, graf obsahuje <strong>záporný cyklus</strong> (cesta by mohla zlevňovat donekonečna do &minus;&infin;).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="python-code-box">
+              <span class="code-badge-py">Python 3 (Bellman-Ford)</span>
+<span class="py-kw">def</span> <span class="py-fn">bellman_ford</span>(nodes, edges, start):
+    <span class="py-str">"""
+    edges: seznam n-tic [(odkud, kam, vaha), ...]
+    Vrací slovník nejkratších vzdáleností, nebo vyvolá výjimku při cyklu.
+    """</span>
+    dist = {node: <span class="py-fn">float</span>(<span class="py-str">'inf'</span>) <span class="py-kw">for</span> node <span class="py-kw">in</span> nodes}
+    dist[start] = <span class="py-num">0</span>
+
+    <span class="py-cmt"># 1. Provedeme (|V| - 1) kol relaxace</span>
+    <span class="py-kw">for</span> _ <span class="py-kw">in</span> <span class="py-fn">range</span>(<span class="py-fn">len</span>(nodes) - <span class="py-num">1</span>):
+        updated = <span class="py-kw">False</span>
+        <span class="py-kw">for</span> u, v, weight <span class="py-kw">in</span> edges:
+            <span class="py-kw">if</span> dist[u] != <span class="py-fn">float</span>(<span class="py-str">'inf'</span>) <span class="py-kw">and</span> dist[u] + weight < dist[v]:
+                dist[v] = dist[u] + weight
+                updated = <span class="py-kw">True</span>
+        <span class="py-kw">if not</span> updated:
+            <span class="py-kw">break</span>  <span class="py-cmt"># Předčasné ukončení při konvergenci</span>
+
+    <span class="py-cmt"># 2. Kontrola záporného cyklu (|V|-té kolo)</span>
+    <span class="py-kw">for</span> u, v, weight <span class="py-kw">in</span> edges:
+        <span class="py-kw">if</span> dist[u] != <span class="py-fn">float</span>(<span class="py-str">'inf'</span>) <span class="py-kw">and</span> dist[u] + weight < dist[v]:
+            <span class="py-kw">raise</span> <span class="py-fn">ValueError</span>(<span class="py-str">"Graf obsahuje záporný cyklus!"</span>)
+
+    <span class="py-kw">return</span> dist
+            </div>
+
+            <div class="info-box amber" style="margin-top: 1rem;">
+              <strong>Časová složitost:</strong> <em>O</em>(|<em>V</em>| &middot; |<em>E</em>|). Je pomalejší než Dijkstra, ale bezpečný pro finanční a arbitrážní modely se zápornými vahami.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Velký srovnávací rozcestník
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Rozcestník a srovnávací matice">
+        <div class="slide-header">
+          <h2 class="slide-title">Velký rozcestník: Který algoritmus zvolit?</h2>
+          <p class="slide-subtitle">Přehledné srovnání parametrů, složitostí a rozhodovací strom pro návrh optimálního řešení v praxi.</p>
+        </div>
+
+        <div class="comparison-table-wrapper" style="margin-bottom: 1.25rem;">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Algoritmus</th>
+                <th>Typ grafu</th>
+                <th>Váhy hran</th>
+                <th>Záporné váhy</th>
+                <th>Datová struktura</th>
+                <th>Časová složitost</th>
+                <th>Nejkratší cesta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Test existence</strong></td>
+                <td>Libovolný</td>
+                <td>Nevážený</td>
+                <td>Nerelevantní</td>
+                <td>Zásobník / Set</td>
+                <td><em>O</em>(|<em>V</em>| + |<em>E</em>|)</td>
+                <td>Pouze existence</td>
+              </tr>
+              <tr>
+                <td><strong>DFS</strong> (Hloubka)</td>
+                <td>Libovolný</td>
+                <td>Nevážený</td>
+                <td>Nerelevantní</td>
+                <td>Zásobník (LIFO)</td>
+                <td><em>O</em>(|<em>V</em>| + |<em>E</em>|)</td>
+                <td><span style="color:#fb7185;">Ne</span> (libovolná cesta)</td>
+              </tr>
+              <tr>
+                <td><strong>BFS</strong> (Šířka)</td>
+                <td>Nevážený</td>
+                <td>Všechny = 1</td>
+                <td>Ne</td>
+                <td>Fronta (FIFO)</td>
+                <td><em>O</em>(|<em>V</em>| + |<em>E</em>|)</td>
+                <td><span style="color:#34d399;">Ano</span> (min. počet hran)</td>
+              </tr>
+              <tr>
+                <td><strong>Dijkstra</strong></td>
+                <td>Vážený</td>
+                <td>Nezáporné</td>
+                <td><span style="color:#fb7185;">Zákaz (<em>w</em> &ge; 0)</span></td>
+                <td>Min-Heap (Prioritní)</td>
+                <td><em>O</em>((|<em>V</em>| + |<em>E</em>|) &middot; log |<em>V</em>|)</td>
+                <td><span style="color:#34d399;">Ano</span> (min. součet vah)</td>
+              </tr>
+              <tr>
+                <td><strong>Bellman-Ford</strong></td>
+                <td>Vážený</td>
+                <td>Libovolné</td>
+                <td><span style="color:#34d399;">Ano + detekce</span></td>
+                <td>Pole vzdáleností</td>
+                <td><em>O</em>(|<em>V</em>| &middot; |<em>E</em>|)</td>
+                <td><span style="color:#34d399;">Ano</span> (pokud není cyklus)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-header-icon">
+            <div class="card-icon emerald">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+            <h3 class="card-title">Rozhodovací strom programátora (Quick Guide)</h3>
+          </div>
+          <div class="card-body">
+            <div class="flowchart-container">
+              <div class="flow-step">
+                <span class="flow-badge" style="background: rgba(6, 182, 212, 0.15); color: #38bdf8;">Krok 1</span>
+                <div>Hledáš pouze informaci <strong>True/False</strong>, zda spojení existuje? &rarr; Použij jednoduchý <strong>Test existence / DFS</strong> s množinou <code>visited</code>.</div>
+              </div>
+              <div class="flow-step">
+                <span class="flow-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">Krok 2</span>
+                <div>Je graf <strong>nevážený</strong> (každý krok stojí stejně) a chceš nejméně kroků? &rarr; Použij <strong>BFS s frontou FIFO</strong>.</div>
+              </div>
+              <div class="flow-step">
+                <span class="flow-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Krok 3</span>
+                <div>Je graf <strong>vážený</strong> a všechny váhy jsou kladné (<em>w</em> &ge; 0)? &rarr; Použij <strong>Dijkstrův algoritmus s Min-Heap</strong>.</div>
+              </div>
+              <div class="flow-step">
+                <span class="flow-badge" style="background: rgba(244, 63, 94, 0.15); color: #fb7185;">Krok 4</span>
+                <div>Mohou se v síti vyskytovat <strong>záporné váhy hran</strong>? &rarr; Použij <strong>Bellman-Fordův algoritmus</strong> pro detekci cyklu a korektní relaxaci.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Interaktivní vizualizátor
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Interaktivní krokovací simulátor">
+        <div class="slide-header">
+          <h2 class="slide-title">Interaktivní simulátor: Algoritmy krok za krokem</h2>
+          <p class="slide-subtitle">Vyzkoušejte si chování algoritmů na reálném 6-uzlovém grafu. Sledujte změny fronty, zásobníku a relaxace hran v reálném čase.</p>
+        </div>
+
+        <div class="simulator-container">
+          <!-- Horní ovládací panel výběru -->
+          <div class="simulator-toolbar">
+            <div class="algo-tabs">
+              <button class="algo-tab-btn active" data-algo="dijkstra">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                Dijkstra
+              </button>
+              <button class="algo-tab-btn" data-algo="bfs">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                BFS (Šířka)
+              </button>
+              <button class="algo-tab-btn" data-algo="dfs">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="7 8 3 12 7 16"></polyline><line x1="21" y1="12" x2="3" y2="12"></line></svg>
+                DFS (Hloubka)
+              </button>
+              <button class="algo-tab-btn" data-algo="bellman_ford">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                Bellman-Ford
+              </button>
+            </div>
+
+            <div class="sim-selectors">
+              <label class="sim-select-label">
+                <span>Start:</span>
+                <select id="simStartSelect" class="sim-select">
+                  <option value="A" selected>Uzel A</option>
+                  <option value="B">Uzel B</option>
+                  <option value="C">Uzel C</option>
+                </select>
+              </label>
+
+              <label class="sim-select-label">
+                <span>Cíl:</span>
+                <select id="simTargetSelect" class="sim-select">
+                  <option value="F" selected>Uzel F</option>
+                  <option value="E">Uzel E</option>
+                  <option value="D">Uzel D</option>
+                </select>
+              </label>
+
+              <label class="sim-select-label">
+                <span>Rychlost:</span>
+                <select id="simSpeedSelect" class="sim-select">
+                  <option value="1400" selected>1&times; Normální</option>
+                  <option value="700">2&times; Rychlá</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <!-- Pracovní prostor simulátoru -->
+          <div class="simulator-workspace">
+            <!-- Vlevo: SVG plátno -->
+            <div class="sim-canvas-box">
+              <svg id="simGraphSvg" class="sim-svg" viewBox="0 0 520 225" aria-label="Interaktivní schéma grafu"></svg>
+            </div>
+
+            <!-- Vpravo: Stav, kroky, datová struktura -->
+            <div class="sim-side-panel">
+              <div class="sim-status-card">
+                <div class="sim-status-title">
+                  <span>Aktuální krok</span>
+                  <span class="sim-step-badge" id="simStepBadge">Krok 1 / 1</span>
+                </div>
+                <div class="sim-step-desc" id="simStepDesc">
+                  Inicializace algoritmu.
+                </div>
+              </div>
+
+              <div class="sim-status-card">
+                <div class="sim-status-title" id="simStructTitle">
+                  Stav datové struktury
+                </div>
+                <div class="data-struct-display" id="simStructContainer">
+                  <!-- Dynamicky plněno JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spodní ovládací lišta tlačítek -->
+          <div class="sim-controls-bar">
+            <div class="sim-btn-group">
+              <button class="btn-sim-action" id="simPrevBtn" title="Krok vzad">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Krok vzad
+              </button>
+              <button class="btn-sim-action primary" id="simPlayBtn" title="Automatické přehrávání">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Spustit
+              </button>
+              <button class="btn-sim-action" id="simNextBtn" title="Krok vpřed">
+                Krok vpřed
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+
+            <div>
+              <button class="btn-sim-action" id="simResetBtn" title="Resetovat na začátek">
+                <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><path d="M3 2v6h6"></path><path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path><path d="M21 22v-6h-6"></path><path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path></svg>
+                Resetovat
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí & Prověření znalostí
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Prověření znalostí</h2>
+          <p class="slide-subtitle">Zopakujte si klíčové koncepty a otestujte své znalosti grafových algoritmů před praktickým programováním.</p>
+        </div>
+
+        <div class="content-grid-3">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon emerald">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <h3 class="card-title">1. Klíčové poznatky</h3>
+            </div>
+            <div class="card-body">
+              <p>Množina <code>visited</code> je nezbytná prevence zacyklení v cyklických grafech. Všechny základní průchody mají složitost <em>O</em>(|<em>V</em>| + |<em>E</em>|).</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon cyan">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+              </div>
+              <h3 class="card-title">2. LIFO vs. FIFO</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>BFS s frontou</strong> vždy najde nejkratší cestu v neváženém grafu. <strong>DFS se zásobníkem</strong> jde do hloubky a hodí se pro detekci cyklů.</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="card-icon amber">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <h3 class="card-title">3. Vážené sítě</h3>
+            </div>
+            <div class="card-body">
+              <p><strong>Dijkstra</strong> s Min-Heap nabízí nejlepší rychlost <em>O</em>((|<em>V</em>| + |<em>E</em>|) &middot; log |<em>V</em>|) pro kladné váhy. <strong>Bellman-Ford</strong> bezpečně odhalí záporné cykly.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="questions-grid">
+          <div class="question-card">
+            <div class="question-num">Otázka 1 &bull; BFS Garance</div>
+            <div class="question-text">Proč BFS v neváženém grafu vždy zaručuje nejkratší cestu, zatímco DFS nikoliv?</div>
+            <div class="question-hint">BFS prozkoumává uzly systematicky po vrstvách (vzdálenost 1, pak 2, pak 3...). První nalezení cíle proto zaručeně proběhne přes minimální možný počet hran. DFS se naproti tomu noří do hloubky a může dorazit do cíle velkou oklikou.</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span>Zobrazit odpověď</span>
+            </button>
+          </div>
+
+          <div class="question-card">
+            <div class="question-num">Otázka 2 &bull; Dijkstrův limit</div>
+            <div class="question-text">Z jakého důvodu selže Dijkstrův algoritmus, pokud graf obsahuje hranu se zápornou váhou?</div>
+            <div class="question-hint">Dijkstra je hladový algoritmus (Greedy). Jakmile uzel vyjme z prioritní fronty a uzavře jej, předpokládá, že žádná další cesta již nemůže celkovou vzdálenost zmenšit. Záporná hrana by však mohla trasu dodatečně zlevnit, což již Dijkstra nedokáže zohlednit.</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span>Zobrazit odpověď</span>
+            </button>
+          </div>
+
+          <div class="question-card">
+            <div class="question-num">Otázka 3 &bull; Cykly a paměť</div>
+            <div class="question-text">Co se stane, pokud v testu existence cesty zapomeneme evidovat množinu navštívených uzlů (visited)?</div>
+            <div class="question-hint">V cyklickém grafu (kde existuje kružnice) začne algoritmus donekonečna přeskakovat mezi cyklickými uzly (A &rarr; B &rarr; C &rarr; A...). Dojde k nekonečné smyčce, zaplnění paměti (OutOfMemory) nebo pádu na RecursionError při rekurzi.</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span>Zobrazit odpověď</span>
+            </button>
+          </div>
+
+          <div class="question-card">
+            <div class="question-num">Otázka 4 &bull; Bellman-Ford cykly</div>
+            <div class="question-text">Proč Bellman-Ford potřebuje právě (|<em>V</em>| &minus; 1) kol relaxace a co znamená změna v |<em>V</em>|-tém kole?</div>
+            <div class="question-hint">Nejdelší možná prostá cesta bez opakování uzlů v grafu o |<em>V</em>| vrcholech může mít maximálně |<em>V</em>| &minus; 1 hran. Každé kolo garantuje propagaci nejkratší vzdálenosti o další hranu. Pokud i v |<em>V</em>|-tém kole lze vzdálenost snížit, znamená to přítomnost záporného cyklu.</div>
+            <button class="question-answer-btn">
+              <svg class="icon" viewBox="0 0 24 24" style="width: 13px; height: 13px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span>Zobrazit odpověď</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace (Controls Bar SPŠ) -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- Přechod mezi tématy a katalog předmětu -->
+      <a href="../071-Reprezentace-grafu/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 071 Reprezentace grafu v programování (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="#" class="control-btn disabled" id="nextLessonBtn" aria-disabled="true" tabindex="-1" title="Další téma (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- Posun po snímcích -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek (Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="slide-counter" id="slideCounter" title="Otevřít osnovu snímků">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek (Mezerník / Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+
+      <div class="controls-divider"></div>
+
+      <!-- Nástroje a přehled -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M/O)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+      </button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+      </button>
+    </nav>
+
+    <!-- 4. Postranní vysouvací panel osnovy (TOC) -->
+    <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
+      <div class="toc-drawer">
+        <div class="toc-header">
+          <h3 class="toc-title">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Osnova: Hledání cest v grafech
+          </h3>
+          <button class="toc-close" id="tocCloseBtn" title="Zavřít osnovu">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <ul class="toc-list" id="tocList"></ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Společný běhový JS engine pro prezentace SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- Lokální dedikovaný skript pro interaktivní vizualizátor hledání cest -->
+  <script src="pathfinding-visualizer.js"></script>
+
+</body>
+
+</html>
