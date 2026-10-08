@@ -63,12 +63,180 @@
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech PRG (např. grafy, stromy, dijkstra, složitost, algoritmy, OOP, BFS)..." autocomplete="off">
+      <input type="text" id="lessonSearch" class="search-input" placeholder="Hledat v tématech PRG (např. git, docker, algoritmy, IDE, syntaxe, OOP, grafy)..." autocomplete="off">
     </div>
 
     <!-- 4. Mřížka témat (Katalog témat SPŠ PRG) -->
     <div class="lessons-grid" id="lessonsGrid">
       
+      <!-- Téma 001: Úvod do programování -->
+      <div class="lesson-card" data-keywords="001 uvod do programovani hardware software cpu ram instrukcni cyklus fetch decode execute sdlc zivotni cyklus vyvoje analyza navrh implementace testovani nasazeni udrzba ada lovelace babbage turing von neumann historie prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); background: rgba(56, 189, 248, 0.12);">TÉMA 001</span>
+            <span class="lesson-exam-badge" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">Základy softwaru</span>
+          </div>
+          <h2>Úvod do programování</h2>
+          <p class="lesson-desc">
+            Hardware vs. software, instrukční cyklus CPU, klíčový pojmový aparát (program, algoritmus, zdrojový kód), inženýrský životní cyklus SDLC a fascinující historie od Ady Lovelace až po moderní éru cloudu a AI.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Základní téma &bull; 10 snímků &bull; Teorie &amp; SDLC</span>
+          <a href="001-Uvod-do-programovani/index.html" class="btn-launch-lesson" style="color: #38bdf8;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 002: Programovací jazyky -->
+      <div class="lesson-card" data-keywords="002 programovaci jazyky syntaxe semantika abstrakce kompilace interpretace jit bytecode virtualni stroj staticke dynamicke silne slabe typovani paradigmata oop funkcionalni proceduralni python javascript cpp csharp rust go prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #818cf8; border-color: rgba(129, 140, 248, 0.3); background: rgba(129, 140, 248, 0.12);">TÉMA 002</span>
+            <span class="lesson-exam-badge" style="color: #818cf8; background: rgba(129, 140, 248, 0.12); border-color: rgba(129, 140, 248, 0.3);">Jazyky &amp; Paradigmata</span>
+          </div>
+          <h2>Programovací jazyky</h2>
+          <p class="lesson-desc">
+            Formální syntaxe vs. sémantika, nízkoúrovňový vs. vysokoúrovňový svět, kompilace, interpretace a JIT, matice typových systémů, programovací paradigmata a přímé srovnání syntaxe stejné úlohy ve 4 jazycích.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Základní téma &bull; 11 snímků &bull; Srovnání syntaxe</span>
+          <a href="002-Programovaci-jazyky/index.html" class="btn-launch-lesson" style="color: #818cf8;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 003: Algoritmus -->
+      <div class="lesson-card" data-keywords="003 algoritmus algoritmizace definice vlastnosti finitnost konecnost determinovanost obecnost hromadnost rezultativnost korektnost vyvojove diagramy sekvence selekce iterace big-o slozitost binarni vyhledavani prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #10b981; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.12);">TÉMA 003</span>
+            <span class="lesson-exam-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3);">Algoritmy &amp; Logika</span>
+          </div>
+          <h2>Algoritmus a algoritmizace</h2>
+          <p class="lesson-desc">
+            Exaktní definice a etymologie, kanonické vlastnosti algoritmu (finitnost, determinovanost), formy vyjádření, standardní značky vývojových diagramů dle ISO, 3 řídicí konstrukce a asymptotická Big-O složitost.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 10 snímků &bull; Vývojové diagramy</span>
+          <a href="003-Algoritmus/index.html" class="btn-launch-lesson" style="color: #10b981;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 010: Developerské nástroje -->
+      <div class="lesson-card" data-keywords="010 developerske nastroje ide visual studio code jetbrains pycharm intellij lintery formattovace prettier eslint ruff lsp breakpointy debugging terminal powershell blokove programovani ai agenti copilot prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3); background: rgba(245, 158, 11, 0.12);">TÉMA 010</span>
+            <span class="lesson-exam-badge" style="color: #f59e0b; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.3);">Vývojové prostředí &amp; IDE</span>
+          </div>
+          <h2>Developerské nástroje</h2>
+          <p class="lesson-desc">
+            Anatomie moderního IDE (VS Code, JetBrains), protokol LSP, lintery a automatické formátovače, terminál, práce s debuggerem a breakpointy, blokové vizuální skládání a nová éra programování s AI agenty.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Praktické téma &bull; 10 snímků &bull; IDE &amp; Debugging</span>
+          <a href="010-Developerske-nastroje/index.html" class="btn-launch-lesson" style="color: #f59e0b;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 011: Git -->
+      <div class="lesson-card" data-keywords="011 git distribuovane verzovani historie commity sha hash snapshot staging area working directory vetve branching merging konflikty github repozitare issues pull requests pr code review actions pages prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.3); background: rgba(244, 63, 94, 0.12);">TÉMA 011</span>
+            <span class="lesson-exam-badge" style="color: #f43f5e; background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.3);">Verzování &amp; GitHub</span>
+          </div>
+          <h2>Git a distribuované verzování</h2>
+          <p class="lesson-desc">
+            Proč verzovat, distribuovaný model od Linuse Torvaldse, 3 zóny souborů (Working Tree, Staging Area, Repo), lehký mechanismus větví a ekosystém GitHubu: Pull Requests, Code Review, GitHub Actions CI/CD a Pages.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 10 snímků &bull; Git &amp; GitHub</span>
+          <a href="011-Git/index.html" class="btn-launch-lesson" style="color: #f43f5e;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 012: Git příkazy -->
+      <div class="lesson-card" data-keywords="012 git prikazy cli git init git clone git status git add git commit git push git pull git switch git checkout git merge konflikt git stash git restore git revert cheatsheet prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #f97316; border-color: rgba(249, 115, 22, 0.3); background: rgba(249, 115, 22, 0.12);">TÉMA 012</span>
+            <span class="lesson-exam-badge" style="color: #f97316; background: rgba(249, 115, 22, 0.12); border-color: rgba(249, 115, 22, 0.3);">CLI &amp; Praktický tahák</span>
+          </div>
+          <h2>Git v příkazové řádce</h2>
+          <p class="lesson-desc">
+            Průvodce reálnými scénáři: konfigurace identity, start projektu s .gitignore, cyklus add &amp; commit, odeslání na GitHub, klonování a pull, tvorba větví s git switch, řešení konfliktů a záchranné brzdy (stash, restore).
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Praktické téma &bull; 11 snímků &bull; CLI Scénáře</span>
+          <a href="012-Git-prikazy/index.html" class="btn-launch-lesson" style="color: #f97316;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 013: Docker -->
+      <div class="lesson-card" data-keywords="013 docker kontejnerizace virtualni stroj vm vs container docker image container daemon docker hub dockerfile vrstvy unionfs port forwarding volumes uloziste docker desktop prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #0284c7; border-color: rgba(2, 132, 199, 0.3); background: rgba(2, 132, 199, 0.12);">TÉMA 013</span>
+            <span class="lesson-exam-badge" style="color: #0284c7; background: rgba(2, 132, 199, 0.12); border-color: rgba(2, 132, 199, 0.3);">Kontejnerizace &amp; DevOps</span>
+          </div>
+          <h2>Docker a kontejnerizace</h2>
+          <p class="lesson-desc">
+            Problém závislostí, proč jsou kontejnery efektivnější než virtuální stroje, 4 pilíře Dockeru (Image, Container, Engine, Hub), rozbor instrukcí v Dockerfile, vrstvové cachování, mapování portů a perzistence s Volumes.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Klíčové téma &bull; 10 snímků &bull; Kontejnerizace</span>
+          <a href="013-Docker/index.html" class="btn-launch-lesson" style="color: #0284c7;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Téma 014: Docker demo projekt -->
+      <div class="lesson-card" data-keywords="014 docker demo projekt prakticky workshop windows wsl2 linux mac nodejs dockerfile dockerignore build run logs exec porty docker compose yml multi container prg">
+        <div>
+          <div class="lesson-card-top">
+            <span class="lesson-num" style="color: #06b6d4; border-color: rgba(6, 182, 212, 0.3); background: rgba(6, 182, 212, 0.12);">TÉMA 014</span>
+            <span class="lesson-exam-badge" style="color: #06b6d4; background: rgba(6, 182, 212, 0.12); border-color: rgba(6, 182, 212, 0.3);">Workshop &bull; Win / Linux / Mac</span>
+          </div>
+          <h2>Docker v praxi: Demo projekt</h2>
+          <p class="lesson-desc">
+            Kompletní tutoriál krok za krokem: příprava prostředí pro Windows, Linux i Mac, lehká webová aplikace, optimalizovaný Alpine Dockerfile a .dockerignore, build, run s portem 3000, inspekce logů a kompozice s docker-compose.
+          </p>
+        </div>
+        <div class="lesson-footer">
+          <span class="lesson-time">Workshop &bull; 11 snímků &bull; Krok za krokem</span>
+          <a href="014-Docker-demo-projekt/index.html" class="btn-launch-lesson" style="color: #06b6d4;">
+            Spustit prezentaci
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
       <!-- Téma 050: Objektově orientované programování -->
       <div class="lesson-card" data-keywords="050 oop objektove orientovane programovani paradigma historie proc oop pilire abstrakce zapouzdreni dedicnost polymorfismus trida objekt instance uml class diagram vztahy asociace kompozice agregace python javascript php prg">
         <div>

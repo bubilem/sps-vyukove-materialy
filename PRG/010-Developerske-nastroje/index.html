@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>010 Developerské nástroje | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Developerské nástroje. Vývojová prostředí (IDE vs. textové editory), pluginy, lintery, terminál, ladění kódu, blokové programování, psaní kódu a AI asistenti.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 010 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">010 Developerské nástroje</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.35); background: rgba(245, 158, 11, 0.12);">Vývojové prostředí &amp; Nástroje</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Developerské nástroje">
+        <div class="slide-content">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            Předmět PRG &bull; Téma 010 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title">
+            Developerské <br><span class="gradient-text">nástroje a IDE</span>
+          </h1>
+          <p class="hero-description">
+            Od jednoduchých textových editorů k mocným integrovaným prostředím. Poznejte <strong>anatomii moderního IDE</strong>, protokol LSP pro našeptávání kódu, statické lintery, terminál, profesionální debugger s breakpointy a novou éru kooperace s autonomními AI vývojovými agenty.
+          </p>
+
+          <!-- Vizuální miniatura toku: Editor -> LSP/Linter -> Debugger/CLI -->
+          <div class="hero-blueprint-card">
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Vývojové rozhraní</span>
+              <span class="chip-name">VS Code / JetBrains</span>
+            </div>
+
+            <div class="mini-flow-connector">
+              <span class="connector-label">Statická kontrola</span>
+              <svg viewBox="0 0 70 20" width="70" height="20">
+                <line x1="5" y1="10" x2="60" y2="10" stroke="#f59e0b" stroke-width="2"></line>
+                <polygon points="56,6 64,10 56,14" fill="#f59e0b"></polygon>
+              </svg>
+              <span class="connector-sub">LSP &bull; Linter</span>
+            </div>
+
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Diagnostika &amp; Běh</span>
+              <span class="chip-name">Debugger &amp; CLI</span>
+            </div>
+
+            <div class="mini-flow-connector">
+              <span class="connector-label">Kooperace</span>
+              <svg viewBox="0 0 70 20" width="70" height="20">
+                <line x1="5" y1="10" x2="60" y2="10" stroke="#10b981" stroke-width="2"></line>
+                <polygon points="56,6 64,10 56,14" fill="#10b981"></polygon>
+              </svg>
+              <span class="connector-sub">AI Asistent</span>
+            </div>
+
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Kvalitní kód</span>
+              <span class="chip-name">Otestovaný Build</span>
+            </div>
+          </div>
+
+          <!-- 4 Pilíře tématu v propracovaných kartách -->
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag amber">Prostředí</span>
+              <div class="feature-title">Moderní IDE</div>
+              <div class="feature-desc">VS Code vs. specializovaná IDE od JetBrains (PyCharm, WebStorm) a Microsoft Visual Studio.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag cyan">Kvalita</span>
+              <div class="feature-title">LSP &amp; Lintery</div>
+              <div class="feature-desc">Language Server Protocol, formátovače (Prettier, Black) a statická analýza chyb dříve, než kód spustíte.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag purple">Diagnostika</span>
+              <div class="feature-title">Debugger &amp; Ladění</div>
+              <div class="feature-desc">Breakpointy, inspekce paměti, Call Stack a systematické krokování programu namísto printování.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag emerald">Trendy</span>
+              <div class="feature-title">Styly vývoje &amp; AI</div>
+              <div class="feature-desc">Vizuální blokový kód (Scratch, Blueprints), čistý text a nová éra programování s AI agenty.</div>
+            </div>
+          </div>
+
+          <!-- Spodní lišta metadat modulu -->
+          <div class="hero-meta-bar">
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              10 výukových snímků
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+              Střední průmyslová škola (SPŠ)
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              Vývojová prostředí &amp; Inženýrské nástroje
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              100% Offline &bull; Interaktivní kvíz
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Co je vývojové prostředí (IDE)
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Co je IDE">
+        <div class="slide-header">
+          <h2 class="slide-title">Textový editor vs. Code Editor vs. Plnohodnotné IDE</h2>
+          <p class="slide-subtitle">Rozdíl mezi psaním textu a komplexním inženýrským prostředím.</p>
+        </div>
+
+        <div class="grid-3col" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          <div class="card">
+            <span class="tag cyan">Základní editor</span>
+            <h3 style="font-size: 1rem; font-weight: 700; margin-top: 0; margin-bottom: 0.35rem;">Textový editor</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.5rem;">
+              Poznámkový blok, Notepad++, Gedit. Umí pracovat s prostým textem, možná má jednoduché zvýraznění syntaxe.
+            </p>
+            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: auto; padding-top: 0.5rem;">
+              Neobsahuje kompilátor, ladič ani porozumění vztahům v projektu.
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="tag amber">Modulární editor</span>
+            <h3 style="font-size: 1rem; font-weight: 700; margin-top: 0; margin-bottom: 0.35rem;">Kódový editor (VS Code)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.5rem;">
+              Lehký editor s obrovským trhem rozšíření (Extensions). Lze jej nakonfigurovat pro jakýkoli jazyk na míru.
+            </p>
+            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: auto; padding-top: 0.5rem;">
+              Rychlý start, univerzální použití na web, skripty i mikroslužby.
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="tag emerald">All-in-One balík</span>
+            <h3 style="font-size: 1rem; font-weight: 700; margin-top: 0; margin-bottom: 0.35rem;">Plnohodnotné IDE</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.5rem;">
+              Integrované vývojové prostředí (JetBrains, Visual Studio). Obsahuje kompletní sadu nástrojů přímo po instalaci.
+            </p>
+            <div style="font-size: 0.78rem; color: #94a3b8; margin-top: auto; padding-top: 0.5rem;">
+              Hluboká statická analýza, refaktoringy, profilery a integrované GUI designéry.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Přehled moderních vývojových prostředí
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Přehled IDE">
+        <div class="slide-header">
+          <h2 class="slide-title">Katalog klíčových nástrojů dnešního vývojáře</h2>
+          <p class="slide-subtitle">Srovnání nejvýznamnějších prostředí, se kterými se setkáte ve škole i v průmyslové praxi.</p>
+        </div>
+
+        <div class="tools-grid">
+          <!-- Karta 1: VS Code -->
+          <div class="tool-card">
+            <div class="tool-header">
+              <span class="tool-title">Visual Studio Code</span>
+              <span class="tag cyan">Univerzální standard</span>
+            </div>
+            <div class="tool-meta">Microsoft • Open-Source jádro (Code - OSS) • Multiplatformní (Win / Mac / Linux)</div>
+            <p class="tool-desc">
+              Lehký modulární kódový editor, který díky své rychlosti, obrovské komunitě a ekosystému rozšíření zcela ovládl moderní vývoj.
+            </p>
+            <ul class="tool-features">
+              <li><strong>Trh rozšíření (Marketplace):</strong> Desítky tisíc doplňků pro libovolný jazyk (Python, C++, Rust, PHP, web).</li>
+              <li><strong>Integrovaný Git &amp; Terminál:</strong> Rychlé commitování, větvení a práce v příkazovém řádku přímo v editoru.</li>
+              <li><strong>Vzdálený vývoj (Remote):</strong> Práce přes SSH na serveru, v Docker kontejnerech i přímo ve Windows Subsystem for Linux (WSL).</li>
+            </ul>
+            <div class="tool-footer">
+              <strong>Typické nasazení:</strong> Webový frontend &amp; backend (Node.js, React), Python, skripty a cloudové mikroslužby.
+            </div>
+          </div>
+
+          <!-- Karta 2: JetBrains -->
+          <div class="tool-card">
+            <div class="tool-header">
+              <span class="tool-title">Rodina JetBrains IDE</span>
+              <span class="tag purple">Špičková specializace</span>
+            </div>
+            <div class="tool-meta">JetBrains • Komerční licence (pro studenty a školy zdarma) • Multiplatformní</div>
+            <p class="tool-desc">
+              Vrcholná specializovaná vývojová prostředí pro jednotlivé technologie s bezkonkurenčním porozuměním struktuře celého projektu.
+            </p>
+            <ul class="tool-features">
+              <li><strong>Specializované edice:</strong> IntelliJ IDEA (Java/Kotlin), PyCharm (Python), WebStorm (JS/TS), Rider (C#), CLion (C++).</li>
+              <li><strong>Hloubkový refaktoring:</strong> Bezpečné přejmenovávání, extrakce metod a automatické vyhledávání logických chyb.</li>
+              <li><strong>Hotové all-in-one balíky:</strong> Obsahují databázového klienta, profilery i testovací frameworky ihned po instalaci.</li>
+            </ul>
+            <div class="tool-footer">
+              <strong>Typické nasazení:</strong> Velké podnikové (enterprise) aplikace, datová věda, výuka objektově orientovaného programování.
+            </div>
+          </div>
+
+          <!-- Karta 3: Visual Studio -->
+          <div class="tool-card">
+            <div class="tool-header">
+              <span class="tool-title">Microsoft Visual Studio</span>
+              <span class="tag emerald">C# / .NET / C++ Windows</span>
+            </div>
+            <div class="tool-meta">Microsoft • Community edice zdarma pro výuku • Primárně systém Windows</div>
+            <p class="tool-desc">
+              Mohutné průmyslové IDE navržené pro gigantické podnikové korporátní systémy, grafické desktopové programy a výkonný nativní kód.
+            </p>
+            <ul class="tool-features">
+              <li><strong>Nativní .NET &amp; C++:</strong> Plná podpora pro moderní C#, WPF, WinUI, Azure cloud a herní vývoj v Unreal Engine.</li>
+              <li><strong>Vizuální GUI designéry:</strong> WYSIWYG návrháře formulářů a oken usnadňující tvorbu tradičních desktopových aplikací.</li>
+              <li><strong>Prvotřídní diagnostika:</strong> Pokročilé profilery spotřeby paměti, zkoumání procesorových vláken a IntelliTrace ladění.</li>
+            </ul>
+            <div class="tool-footer">
+              <strong>Typické nasazení:</strong> Windows desktopové aplikace, bankovní informační systémy, herní engine AAA tituly.
+            </div>
+          </div>
+
+          <!-- Karta 4: Mobilní vendor IDE -->
+          <div class="tool-card">
+            <div class="tool-header">
+              <span class="tool-title">Android Studio &amp; Apple Xcode</span>
+              <span class="tag amber">Mobilní platformy</span>
+            </div>
+            <div class="tool-meta">Google &amp; Apple • Oficiální certifikovaná vendor prostředí • Google / Apple OS</div>
+            <p class="tool-desc">
+              Nezbytné specializované nástroje tvůrců mobilních operačních systémů pro tvorbu, ladění a oficiální distribuci aplikací do obchodů.
+            </p>
+            <ul class="tool-features">
+              <li><strong>Android Studio (Google / JetBrains):</strong> Tvorba aplikací v Kotlinu, vizuální Layout Editor a emulátory desítek telefonů.</li>
+              <li><strong>Xcode (Apple / macOS):</strong> Výhradní nástroj pro Swift/SwiftUI, vývoj pro iPhone, iPad, Apple Watch i Mac počítače.</li>
+              <li><strong>Kompletní distribuční řetězec:</strong> Od podepisování bezpečnostních certifikátů po přímou publikaci na Google Play a App Store.</li>
+            </ul>
+            <div class="tool-footer">
+              <strong>Typické nasazení:</strong> Nativní mobilní aplikace s přímým přístupem k senzorům (kamera, GPS, akcelerometr, Bluetooth).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Rozšíření, Lintery a Formátovače
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Rozšíření & Lintery">
+        <div class="slide-header">
+          <h2 class="slide-title">Kvalita kódu: Lintery, Formátovače a LSP</h2>
+          <p class="slide-subtitle">Nástroje, které hlídají čistotu zápisu a předcházejí chybám dříve, než kód vůbec spustíte.</p>
+        </div>
+
+        <div class="grid-3col" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="concept-icon-box cyan">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Language Server Protocol (LSP)</h3>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Otevřený standard od Microsoftu oddělující chytré funkce jazyka (našeptávání, skok na definici) od samotného editoru.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="concept-icon-box purple">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              </div>
+              <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Lintery (Statická analýza)</h3>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Hlídají potenciální chyby, nepoužité proměnné a nedodržení konvencí: <strong>ESLint</strong> (JS), <strong>Flake8/Ruff</strong> (Python), <strong>Clippy</strong> (Rust).
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="concept-icon-box emerald">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+              </div>
+              <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Formátovače (Code Formatters)</h3>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Automaticky zarovnávají mezery, odsazení a zalamování řádků při každém uložení souboru: <strong>Prettier</strong>, <strong>Black</strong>, <strong>Clang-Format</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Terminál a CLI nástroje
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Terminál & CLI">
+        <div class="slide-header">
+          <h2 class="slide-title">Terminál a příkazový řádek (CLI)</h2>
+          <p class="slide-subtitle">Proč profesionální vývojář tráví tolik času v textovém terminálu?</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem;">Výhody práce v CLI</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Rychlost a automatizace:</strong> Složité operace lze provést jedním příkazem a zřetězit do skriptu.</li>
+              <li><strong>Správa serverů a cloudu:</strong> Produkční linuxové servery nemají žádné grafické okenní prostředí; ovládají se výhradně přes SSH terminál.</li>
+              <li><strong>Nástroje:</strong> Kompilátory, balíčkovací manažery (npm, pip), verzování (Git) a Docker se primárně konfigurují přes CLI.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">Prostředí na různých systémech</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Linux &amp; macOS:</strong> Bash nebo Zsh – standardní unixové shelly s bohatou sadou nástrojů (grep, awk, curl).</li>
+              <li><strong>Windows:</strong> Moderní <strong>PowerShell</strong> (objektový shell) a <strong>WSL2 (Windows Subsystem for Linux)</strong>, který umožňuje nativní běh plného Linuxu přímo ve Windows.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Ladění kódu a Debugger
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Ladění a Debugger">
+        <div class="slide-header">
+          <h2 class="slide-title">Systematické hledání chyb: Debugger</h2>
+          <p class="slide-subtitle">Konec zoufalého vypisování desítek <code>print("tady 1")</code> po celém kódu.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Základní prvky ladiče</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Breakpoint (Bod přerušení):</strong> Červená tečka u řádku kódu. Když procesor na tento řádek dorazí, program se okamžitě pozastaví.</li>
+              <li><strong>Inspekce proměnných (Variables / Watch):</strong> Přímý pohled do paměti – vidíte aktuální hodnoty všech polí, objektů a proměnných v daném zlomku sekundy.</li>
+              <li><strong>Call Stack (Zásobník volání):</strong> Přehled, jaké funkce byly postupně zavolány, než program dospěl k aktuálnímu řádku.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #a855f7; margin-bottom: 0.5rem;">Krokování programu za běhu</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Step Over (Překročit):</strong> Vykoná aktuální řádek a posune se na další. Pokud řádek volá funkci, proběhne celá naráz.</li>
+              <li><strong>Step Into (Vstoupit):</strong> Vstoupí dovnitř volané funkce a umožní ji krokovat řádek po řádku.</li>
+              <li><strong>Step Out (Vystoupit):</strong> Dokončí zbytek aktuální funkce a zastaví se hned po návratu do volajícího kódu.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Způsoby tvorby I: Vizuální a blokové programování
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Blokové programování">
+        <div class="slide-header">
+          <h2 class="slide-title">Způsoby programování I: Vizuální a blokový kód</h2>
+          <p class="slide-subtitle">Skládání logiky jako stavebnice Lego bez rizika syntaktických překlepů.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">Princip a kde se využívá</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Příkazy, podmínky a cykly jsou reprezentovány barevnými bloky se zámky. Pokud do sebe bloky nepasují, nelze je spojit.
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li><strong>Výuka logiky:</strong> Scratch, Blockly, MakeCode pro micro:bit.</li>
+              <li><strong>Průmysl a hry:</strong> Unreal Engine Blueprints (profesionální herní logika), Node-RED (IoT automatizace).</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem;">Výhody vs. Limity</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Výhoda:</strong> Okamžité pochopení logiky bez stresu ze zapomenutých středníků a závorek.</li>
+              <li><strong>Limit:</strong> Při desítkách tisíc řádků se grafická plátna mění v nepřehlednou „špagetovou změť“.</li>
+              <li><strong>Verzování:</strong> Vizuální grafy se velmi obtížně porovnávají a slučují v Gitu.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Způsoby tvorby II: Psaní textového kódu
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Psaní zdrojového kódu">
+        <div class="slide-header">
+          <h2 class="slide-title">Způsoby programování II: Psaní textového kódu</h2>
+          <p class="slide-subtitle">Standard globálního softwarového inženýrství pro komplexní systémy.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Proč vládne čistý text?</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Univerzálnost:</strong> Čistý text je nezávislý na platformě, nezastarává a je úsporný na disku.</li>
+              <li><strong>Verzovatelnost v Gitu:</strong> Každý přidaný či smazaný řádek je přesně evidován v historii změn (git diff).</li>
+              <li><strong>Škálovatelnost:</strong> Umožňuje členit projekty do tisíců souborů, modulů a balíčků.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #818cf8; margin-bottom: 0.5rem;">Inženýrská hygiena psaní</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Konzistentní konvence:</strong> CamelCase, snake_case, standardizované pojmenování proměnných v angličtině.</li>
+              <li><strong>Principy DRY &amp; KISS:</strong> Don't Repeat Yourself (neopakuj stejný kód) &amp; Keep It Simple, Stupid (jednoduchost má přednost před překombinovaností).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Způsoby tvorby III: AI Agenti a asistenti
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Vývoj s AI agenty">
+        <div class="slide-header">
+          <h2 class="slide-title">Způsoby programování III: Vývoj s podporou AI</h2>
+          <p class="slide-subtitle">Od automatického našeptávání řádků k autonomním agentům řešícím celé úkoly.</p>
+        </div>
+
+        <div class="approach-grid">
+          <div class="approach-card">
+            <span class="tag cyan">AI Kopiloti</span>
+            <h3>Inteligentní našeptávač</h3>
+            <p>GitHub Copilot, Tabnine. Na základě kontextu vašeho souboru předpovídá a doplňuje celé funkce či testy přímo během psaní.</p>
+          </div>
+
+          <div class="approach-card">
+            <span class="tag purple">AI Editory</span>
+            <h3>Konverzační vývoj</h3>
+            <p>Cursor, Windsurf. Prohledávají celý projekt, chápou architekturu a dokáží na požádání refaktorovat více souborů naráz.</p>
+          </div>
+
+          <div class="approach-card">
+            <span class="tag emerald">AI Agenti</span>
+            <h3>Autonomní asistence</h3>
+            <p>Pokročilé systémy, které samostatně spouštějí příkazy, čtou chyby v terminálu, píší testy a opravují bugy v cyklu.</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 0.85rem; border-left: 4px solid var(--accent);">
+          <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--accent); margin-bottom: 0.25rem;">Varování pro budoucí vývojáře:</h4>
+          <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+            AI může generovat kód obsahující skryté bezpečnostní slabiny, logické chyby či zastaralé postupy (tzv. halucinace). Programátor 21. století musí kódu dokonale rozumět, aby byl schopen výsledky AI kriticky zkontrolovat a převzít za ně plnou odpovědnost.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí tématu & Kontrolní kvíz
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí & Otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Ověřte si porozumění vývojovým nástrojům, ladění a stylům programování.</p>
+        </div>
+
+        <div class="quiz-container">
+          <div class="card" style="margin-bottom: 1rem; background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.2);">
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem;">Klíčové shrnutí:</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Moderní vývoj stojí na efektivních nástrojích: IDE (VS Code, JetBrains), statické analýze (LSP, lintery), příkazovém řádku a debuggeru s breakpointy. Programovat lze vizuálně, textově i s podporou AI agentů – klíčem však vždy zůstává lidské porozumění algoritmické logice.
+            </p>
+          </div>
+
+          <div class="quiz-list">
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Jaký je rozdíl mezi linterem a automatickým formátovačem kódu?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Linter (např. ESLint, Flake8) provádí statickou analýzu a hledá potenciální logické chyby, nepoužité proměnné či anti-vzory. Formátovač (např. Prettier, Black) řeší pouze vizuální úpravu a odsazení kódu podle jednotných typografických pravidel.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. Co způsobí nastavení breakpointu při spuštění programu v debuggeru?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Běh programu se přesně na daném řádku pozastaví dříve, než se tento řádek vykoná. Vývojář pak může zkontrolovat stav všech proměnných v paměti a pokračovat krok za krokem.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. K čemu slouží protokol LSP (Language Server Protocol)?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Umožňuje oddělit jazykový server (který analyzuje kód, našeptává autocompletion a hledá chyby) od klientského editoru. Díky tomu stačí vytvořit jeden server pro daný jazyk a může jej využívat VS Code, Neovim i další editory.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. Jaké je hlavní riziko nekritického přebírání kódu od AI asistentů?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                AI může vygenerovat kód, který na první pohled vypadá funkčně, ale obsahuje zákeřné bezpečnostní díry, halucinované neexistující knihovny nebo logické chyby na okrajových vstupech (edge cases).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../003-Algoritmus/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 003 Algoritmus (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../011-Git/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 011 Git (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+</body>
+
+</html>

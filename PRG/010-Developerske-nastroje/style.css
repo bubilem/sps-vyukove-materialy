@@ -1,0 +1,614 @@
+/* ==========================================================================
+   Téma 010: Developerské nástroje – Lokální styly
+   Předmět: PRG (Programování) • SPŠ
+   ========================================================================== */
+
+:root {
+  --accent: #f59e0b;
+  --accent-glow: rgba(245, 158, 11, 0.25);
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-purple: #a855f7;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+
+  --gradient-main: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
+  --gradient-text: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #f97316 100%);
+}
+
+.ambient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.16;
+  animation: floatOrb 26s infinite alternate ease-in-out;
+}
+
+.ambient-orb-1 {
+  width: 550px;
+  height: 550px;
+  background: var(--accent);
+  top: -110px;
+  left: -80px;
+}
+
+.ambient-orb-2 {
+  width: 610px;
+  height: 610px;
+  background: var(--accent-purple);
+  bottom: -150px;
+  right: -120px;
+  animation-duration: 32s;
+  animation-direction: alternate-reverse;
+}
+
+.ambient-orb-3 {
+  width: 430px;
+  height: 430px;
+  background: var(--accent-blue);
+  top: 35%;
+  left: 60%;
+  opacity: 0.1;
+  animation-duration: 28s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(35px, 30px) scale(1.05); }
+  100% { transform: translate(-30px, 40px) scale(0.95); }
+}
+
+[data-theme="light"] .ambient-orb {
+  opacity: 0.08;
+  filter: blur(100px);
+}
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] .grid-overlay {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   Hero & Slide 1 Blueprint & Features Cards
+   ========================================================================== */
+
+.slide--title {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100% !important;
+  text-align: center !important;
+}
+
+.slide--title .slide-content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  max-width: 1040px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 1.05rem;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #22d3ee;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.9rem;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.15);
+}
+
+[data-theme="light"] .title-badge {
+  background: rgba(6, 182, 212, 0.08);
+  color: #0891b2;
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.hero-title {
+  font-size: 2.75rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.15 !important;
+  margin: 0 0 0.65rem 0 !important;
+  color: #f8fafc !important;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .hero-title {
+  color: #0f172a !important;
+  text-shadow: none;
+}
+
+.hero-description {
+  font-size: 1.02rem !important;
+  color: var(--text-secondary) !important;
+  max-width: 860px !important;
+  line-height: 1.55 !important;
+  margin: 0 auto 1.1rem auto !important;
+  text-align: center !important;
+}
+
+.hero-description strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Vizuální miniatura schématu na Snímku 1 */
+.hero-blueprint-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px dashed var(--accent);
+  border-radius: 14px;
+  padding: 0.75rem 1.25rem;
+  margin: 0 auto 1.1rem auto;
+  max-width: 880px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .hero-blueprint-card {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: var(--accent);
+}
+
+.mini-flow-chip {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .mini-flow-chip {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+
+.mini-flow-chip .chip-sub {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.mini-flow-chip .chip-name {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  margin-top: 0.15rem;
+}
+
+.mini-flow-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mini-flow-connector .connector-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: -2px;
+}
+
+.mini-flow-connector .connector-sub {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  margin-top: -2px;
+}
+
+/* 4 Pilíře - Hero Features Grid */
+.hero-features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  max-width: 980px;
+  width: 100%;
+  margin: 0 auto 0.9rem auto;
+}
+
+@media (max-width: 900px) {
+  .hero-features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.hero-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 0.75rem 0.95rem;
+  background: rgba(17, 24, 39, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  text-align: left;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-feature-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 30px -4px var(--accent-glow);
+}
+
+[data-theme="light"] .hero-feature-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.hero-feature-item .feature-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.hero-feature-item .feature-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* Spodní metadata lišta */
+.hero-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.hero-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hero-meta-item svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+
+/* Karta nástrojů – rozložení 2 + 2 */
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  margin: 0.4rem 0 0 0;
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tool-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.tool-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.tool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+.tool-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tool-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.tool-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.tool-features {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.tool-features li {
+  position: relative;
+  padding-left: 0.85rem;
+}
+
+.tool-features li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.tool-features li strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.tool-footer {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.35rem;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  line-height: 1.35;
+}
+
+.tool-footer strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Tagy a štítky kategorií (Badges) */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.tag.cyan {
+  background: rgba(6, 182, 212, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.tag.amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.tag.purple {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.tag.emerald {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.tag.rose {
+  background: rgba(244, 63, 94, 0.12);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.tag.indigo {
+  background: rgba(99, 102, 241, 0.12);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.tag.blue {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="light"] .tag.cyan { background: rgba(2, 132, 199, 0.1); color: #0284c7; border-color: rgba(2, 132, 199, 0.3); }
+[data-theme="light"] .tag.amber { background: rgba(217, 119, 6, 0.1); color: #b45309; border-color: rgba(217, 119, 6, 0.3); }
+[data-theme="light"] .tag.purple { background: rgba(147, 51, 234, 0.1); color: #7e22ce; border-color: rgba(147, 51, 234, 0.3); }
+[data-theme="light"] .tag.emerald { background: rgba(16, 185, 129, 0.1); color: #047857; border-color: rgba(16, 185, 129, 0.3); }
+[data-theme="light"] .tag.rose { background: rgba(225, 29, 72, 0.1); color: #be123c; border-color: rgba(225, 29, 72, 0.3); }
+[data-theme="light"] .tag.indigo { background: rgba(79, 70, 229, 0.1); color: #4338ca; border-color: rgba(79, 70, 229, 0.3); }
+[data-theme="light"] .tag.blue { background: rgba(37, 99, 235, 0.1); color: #1d4ed8; border-color: rgba(37, 99, 235, 0.3); }
+
+.card > .tag,
+.approach-card > .tag {
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+/* Srovnání způsobů programování */
+.approach-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+@media (max-width: 900px) {
+  .approach-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.approach-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.approach-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.approach-card p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Quiz accordion */
+.quiz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.quiz-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-card:hover {
+  border-color: var(--accent);
+}
+
+.quiz-question {
+  padding: 0.9rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+
+.quiz-question svg {
+  transition: transform 0.2s ease;
+}
+
+.quiz-card.open .quiz-question svg {
+  transform: rotate(180deg);
+}
+
+.quiz-answer {
+  display: none;
+  padding: 0 1.2rem 1rem 1.2rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.quiz-card.open .quiz-answer {
+  display: block;
+  padding-top: 0.75rem;
+}

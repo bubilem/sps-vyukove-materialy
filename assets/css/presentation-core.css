@@ -684,11 +684,79 @@ input.calc-input {
 .tag {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
   padding: 0.2rem 0.65rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  width: fit-content;
+  white-space: nowrap;
 }
+
+.tag.pill {
+  border-radius: 9999px;
+}
+
+.tag.cyan {
+  background: rgba(6, 182, 212, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.tag.amber,
+.tag.orange {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.tag.purple,
+.tag.violet {
+  background: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.tag.emerald,
+.tag.green {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.tag.rose,
+.tag.pink,
+.tag.red {
+  background: rgba(244, 63, 94, 0.12);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.tag.indigo {
+  background: rgba(99, 102, 241, 0.12);
+  color: #818cf8;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.tag.blue {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="light"] .tag.cyan { background: rgba(2, 132, 199, 0.1); color: #0284c7; border-color: rgba(2, 132, 199, 0.3); }
+[data-theme="light"] .tag.amber,
+[data-theme="light"] .tag.orange { background: rgba(217, 119, 6, 0.1); color: #b45309; border-color: rgba(217, 119, 6, 0.3); }
+[data-theme="light"] .tag.purple,
+[data-theme="light"] .tag.violet { background: rgba(147, 51, 234, 0.1); color: #7e22ce; border-color: rgba(147, 51, 234, 0.3); }
+[data-theme="light"] .tag.emerald,
+[data-theme="light"] .tag.green { background: rgba(16, 185, 129, 0.1); color: #047857; border-color: rgba(16, 185, 129, 0.3); }
+[data-theme="light"] .tag.rose,
+[data-theme="light"] .tag.pink,
+[data-theme="light"] .tag.red { background: rgba(225, 29, 72, 0.1); color: #be123c; border-color: rgba(225, 29, 72, 0.3); }
+[data-theme="light"] .tag.indigo { background: rgba(79, 70, 229, 0.1); color: #4338ca; border-color: rgba(79, 70, 229, 0.3); }
+[data-theme="light"] .tag.blue { background: rgba(37, 99, 235, 0.1); color: #1d4ed8; border-color: rgba(37, 99, 235, 0.3); }
 
 .tag-exam {
   background: rgba(16, 185, 129, 0.15);
@@ -1049,8 +1117,14 @@ input.calc-input {
 .split-layout > div.content-card,
 .grid-2 > .card,
 .grid-2 > .content-card,
+.grid-2-col > .card,
+.grid-2-col > .content-card,
+.grid-2col > .card,
+.grid-2col > .content-card,
 .content-grid-2 > .card,
-.content-grid-2 > .content-card {
+.content-grid-2 > .content-card,
+[class*="grid-"] > .card,
+[class*="grid-"] > .content-card {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -1060,26 +1134,47 @@ input.calc-input {
 .split-layout > .content-card > .info-box:last-child,
 .split-layout > .content-card > .comparison-table:last-child,
 .grid-2 > .content-card > .info-box:last-child,
-.grid-2 > .content-card > .comparison-table:last-child {
+.grid-2 > .content-card > .comparison-table:last-child,
+.grid-2col > .content-card > .info-box:last-child,
+.grid-2col > .card > .info-box:last-child {
   margin-top: auto;
+}
+
+.grid-2,
+.grid-2-col,
+.grid-2col,
+.content-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+  width: 100%;
 }
 
 .grid-3,
 .grid-3-col,
+.grid-3col,
 .content-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
+  align-items: stretch;
   width: 100%;
 }
 
 .grid-4,
 .grid-4-col,
+.grid-4col,
 .content-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.15rem;
+  align-items: stretch;
   width: 100%;
+}
+
+[class*="grid-"] {
+  align-items: stretch;
 }
 
 .questions-grid {
@@ -1090,9 +1185,9 @@ input.calc-input {
 }
 
 @media (max-width: 1024px) {
-  .grid-2, .grid-2-col, .content-grid-2,
-  .grid-3, .grid-3-col, .content-grid-3,
-  .grid-4, .grid-4-col, .content-grid-4,
+  .grid-2, .grid-2-col, .grid-2col, .content-grid-2,
+  .grid-3, .grid-3-col, .grid-3col, .content-grid-3,
+  .grid-4, .grid-4-col, .grid-4col, .content-grid-4,
   .questions-grid {
     grid-template-columns: 1fr;
   }
@@ -1192,27 +1287,165 @@ input.calc-input {
 .grid-2 > .content-card,
 .grid-2-col > .card,
 .grid-2-col > .content-card,
+.grid-2col > .card,
+.grid-2col > .content-card,
 .content-grid-2 > .card,
 .content-grid-2 > .content-card,
 .grid-3 > .card,
 .grid-3 > .content-card,
 .grid-3-col > .card,
 .grid-3-col > .content-card,
+.grid-3col > .card,
+.grid-3col > .content-card,
 .content-grid-3 > .card,
 .content-grid-3 > .content-card,
 .grid-4 > .card,
 .grid-4 > .content-card,
 .grid-4-col > .card,
 .grid-4-col > .content-card,
+.grid-4col > .card,
+.grid-4col > .content-card,
 .content-grid-4 > .card,
 .content-grid-4 > .content-card,
 .summary-grid > .card,
 .summary-grid > .content-card,
-.questions-grid > .question-card {
+.questions-grid > .question-card,
+[class*="grid-"] > .card,
+[class*="grid-"] > .content-card {
   margin-top: 0 !important;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+}
+
+/* ==========================================================================
+   Hlavičky karet s ikonou (.card-header-icon, .card-icon, .concept-icon-box)
+   ========================================================================== */
+.card-header-icon {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  margin-bottom: 0.85rem !important;
+  width: 100% !important;
+}
+
+.card-header-icon h3,
+.card-header-icon h4,
+.card-header-icon .card-title,
+.card > div[style*="display: flex"]:first-child h3,
+.card > div[style*="display: flex"]:first-child h4,
+.content-card > div[style*="display: flex"]:first-child h3,
+.content-card > div[style*="display: flex"]:first-child h4 {
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  color: var(--text-primary);
+}
+
+.card-icon,
+.concept-icon-box {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  border: 1px solid currentColor;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon svg,
+.card-icon .icon,
+.concept-icon-box svg,
+.concept-icon-box .icon {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: currentColor !important;
+  fill: none !important;
+  stroke-width: 2.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  display: block;
+}
+
+/* Barevné varianty ikon a rámečků karet */
+.card-icon.blue, .concept-icon-box.blue {
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(59, 130, 246, 0.35) !important;
+}
+
+.card-icon.purple, .concept-icon-box.purple,
+.card-icon.violet, .concept-icon-box.violet {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border: 1px solid rgba(168, 85, 247, 0.35) !important;
+}
+
+.card-icon.cyan, .concept-icon-box.cyan {
+  background: rgba(6, 182, 212, 0.15) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(6, 182, 212, 0.35) !important;
+}
+
+.card-icon.emerald, .concept-icon-box.emerald,
+.card-icon.green, .concept-icon-box.green {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+}
+
+.card-icon.amber, .concept-icon-box.amber,
+.card-icon.orange, .concept-icon-box.orange {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+}
+
+.card-icon.rose, .concept-icon-box.rose,
+.card-icon.red, .concept-icon-box.red,
+.card-icon.pink, .concept-icon-box.pink {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.35) !important;
+}
+
+[data-theme="light"] .card-icon.blue, [data-theme="light"] .concept-icon-box.blue {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #2563eb !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+[data-theme="light"] .card-icon.purple, [data-theme="light"] .concept-icon-box.purple {
+  background: rgba(168, 85, 247, 0.1) !important;
+  color: #7c3aed !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+
+[data-theme="light"] .card-icon.cyan, [data-theme="light"] .concept-icon-box.cyan {
+  background: rgba(6, 182, 212, 0.1) !important;
+  color: #0284c7 !important;
+  border-color: rgba(6, 182, 212, 0.3) !important;
+}
+
+[data-theme="light"] .card-icon.emerald, [data-theme="light"] .concept-icon-box.emerald {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #059669 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="light"] .card-icon.amber, [data-theme="light"] .concept-icon-box.amber {
+  background: rgba(245, 158, 11, 0.1) !important;
+  color: #d97706 !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+[data-theme="light"] .card-icon.rose, [data-theme="light"] .concept-icon-box.rose {
+  background: rgba(244, 63, 94, 0.1) !important;
+  color: #e11d48 !important;
+  border-color: rgba(244, 63, 94, 0.3) !important;
 }
 
 /* ==========================================================================
@@ -2878,6 +3111,34 @@ kbd {
 .formula sub {
   font-size: 0.72em;
   line-height: 1;
+}
+
+/* ==========================================================================
+   Titulní odznak úvodního snímku (Title Badge)
+   ========================================================================== */
+.title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.42rem 1.15rem;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 9999px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #38bdf8;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.15);
+}
+
+[data-theme="light"] .title-badge {
+  background: rgba(2, 132, 199, 0.08);
+  color: #0284c7;
+  border-color: rgba(2, 132, 199, 0.3);
 }
 
 /* ==========================================================================

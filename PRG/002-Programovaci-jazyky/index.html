@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>002 Programovací jazyky | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Programovací jazyky. Co je jazyk, syntaxe vs. sémantika, typové systémy, kompilace vs. interpretace, paradigmata a srovnání hlavních jazyků.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 002 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">002 Programovací jazyky</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #818cf8; border-color: rgba(129, 140, 248, 0.35); background: rgba(129, 140, 248, 0.12);">Jazyky &amp; Paradigmata</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Programovací jazyky">
+        <div class="slide-content">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            Předmět PRG &bull; Téma 002 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title">
+            Programovací <br><span class="gradient-text">jazyky</span>
+          </h1>
+          <p class="hero-description">
+            Od nízkoúrovňového strojového kódu k expresivním jazykům moderního vývoje. Poznejte <strong>syntaxi a sémantiku</strong>, kompilaci do nativního kódu vs. JIT bytecode, matici typových systémů a naučte se zvolit ideální jazyk pro libovolný inženýrský úkol.
+          </p>
+
+          <!-- Vizuální miniatura toku: Zdroják -> Překlad -> Výkon -->
+          <div class="hero-blueprint-card">
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Čitelný zápis</span>
+              <span class="chip-name">Zdrojový kód (.py / .ts)</span>
+            </div>
+
+            <div class="mini-flow-connector">
+              <span class="connector-label">Kompilace / JIT</span>
+              <svg viewBox="0 0 70 20" width="70" height="20">
+                <line x1="5" y1="10" x2="60" y2="10" stroke="#818cf8" stroke-width="2"></line>
+                <polygon points="56,6 64,10 56,14" fill="#818cf8"></polygon>
+              </svg>
+              <span class="connector-sub">Bytecode / ASM</span>
+            </div>
+
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Výpočetní jádro</span>
+              <span class="chip-name">Virtuální stroj / CPU</span>
+            </div>
+
+            <div class="mini-flow-connector">
+              <span class="connector-label">Exekuce</span>
+              <svg viewBox="0 0 70 20" width="70" height="20">
+                <line x1="5" y1="10" x2="60" y2="10" stroke="#c084fc" stroke-width="2"></line>
+                <polygon points="56,6 64,10 56,14" fill="#c084fc"></polygon>
+              </svg>
+              <span class="connector-sub">Běh procesu</span>
+            </div>
+
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Výsledek</span>
+              <span class="chip-name">Nativní instrukce</span>
+            </div>
+          </div>
+
+          <!-- 4 Pilíře tématu v propracovaných kartách -->
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag cyan">Stavba</span>
+              <div class="feature-title">Syntaxe vs. Sémantika</div>
+              <div class="feature-desc">Gramatická pravidla a lexikální analýza oproti logickému smyslu a chování programu.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag purple">Běh</span>
+              <div class="feature-title">Kompilace &amp; JIT</div>
+              <div class="feature-desc">Nativní překlad (C++, Rust) vs. interpretace a hybridní bytecode v JVM či Node.js V8.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag emerald">Typy</span>
+              <div class="feature-title">Typové systémy</div>
+              <div class="feature-desc">Statické vs. dynamické a silné vs. slabé typování v přehledné matici s příklady chyb.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag amber">Srovnání</span>
+              <div class="feature-title">Srovnání syntaxe</div>
+              <div class="feature-desc">Přímé srovnání identické úlohy v 6 jazycích: Python, JS, PHP, C++, C# a Ruby.</div>
+            </div>
+          </div>
+
+          <!-- Spodní lišta metadat modulu -->
+          <div class="hero-meta-bar">
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              11 výukových snímků
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+              Střední průmyslová škola (SPŠ)
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              Python &bull; JS &bull; C++ &bull; C# &bull; Rust
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              100% Offline &bull; Interaktivní kvíz
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Co je programovací jazyk & Syntaxe vs. Sémantika
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Co je jazyk & Syntaxe">
+        <div class="slide-header">
+          <h2 class="slide-title">Co je programovací jazyk?</h2>
+          <p class="slide-subtitle">Formální komunikační systém s přísnými pravidly pro vyjádření algoritmů a výpočtů.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem;">
+              <span class="tag cyan">Formální pravidla</span>
+              <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Syntaxe (Forma kódu)</h3>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              <strong>Syntaxe</strong> určuje gramatická a pravopisná pravidla jazyka – jaké symboly, klíčová slova, závorky a interpunkce smějí být použity a v jakém pořadí.
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; margin-top: auto;">
+              <span style="color: #ef4444;">// Syntaktická chyba (SyntaxError):</span><br>
+              if x &gt; 5 { &nbsp;<span style="color: #64748b;">// Chybí závorka podmínky v C/JS</span><br>
+              &nbsp;&nbsp;print "Ahoj" &nbsp;<span style="color: #64748b;">// Překladač kód odmítne</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem;">
+              <span class="tag purple">Logický význam</span>
+              <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0;">Sémantika (Význam kódu)</h3>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              <strong>Sémantika</strong> vyjadřuje logický smysl operací – co program ve skutečnosti dělá během svého běhu. Kód může být syntakticky 100% v pořádku, ale sémanticky chybný (obsahuje logický bug).
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; margin-top: auto;">
+              <span style="color: #f59e0b;">// Sémantická chyba (Logický bug):</span><br>
+              <span style="color: #38bdf8;">function</span> calculateAverage(a, b) {<br>
+              &nbsp;&nbsp;<span style="color: #c084fc;">return</span> a + b / 2; &nbsp;<span style="color: #64748b;">// Chybí závorky: (a + b) / 2</span><br>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Úrovně abstrakce
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Úrovně abstrakce">
+        <div class="slide-header">
+          <h2 class="slide-title">Dělení podle úrovně abstrakce</h2>
+          <p class="slide-subtitle">Čím vyšší úroveň abstrakce, tím blíže je jazyk lidskému myšlení a dále od konkrétních křemíkových registrů.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card" style="border-left: 4px solid #f59e0b;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-top: 0; margin-bottom: 0.4rem;">Nízkoúrovňové jazyky (Low-Level)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.65rem;">
+              Přímo svázané s fyzickou architekturou daného procesoru (x86_64, ARM, RISC-V).
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li><strong>Strojový kód:</strong> Přímé binární instrukce čtené řadičem CPU (např. <code>01001000 10001001</code>).</li>
+              <li><strong>Jazyk symbolických adres (Assembler):</strong> Mnemotechnické instrukce (<code>MOV</code>, <code>ADD</code>, <code>JMP</code>) přímo manipulující s registry CPU a adresami RAM.</li>
+              <li><strong>Výhody / Nevýhody:</strong> Maximální kontrola a rychlost, ale nulová přenositelnost na jiný procesor a extrémní složitost psaní.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 4px solid #38bdf8;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-top: 0; margin-bottom: 0.4rem;">Vysokoúrovňové jazyky (High-Level)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.65rem;">
+              Odpoutané od hardware detailů. Vývojář pracuje s proměnnými, třídami, funkcemi a strukturami.
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li><strong>Systémové &amp; střední:</strong> C, C++, Rust – umožňují přímou práci s pamětí (ukazatele), ale nabízejí bohaté abstrakce.</li>
+              <li><strong>Aplikační &amp; skriptovací:</strong> Python, JavaScript, C#, Java, Go – automatická správa paměti (Garbage Collector), vysoká produktivita.</li>
+              <li><strong>Výhody:</strong> Snadná čitelnost, přenositelnost mezi operačními systémy a obrovská rychlost vývoje.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Kompilace vs. Interpretace vs. JIT
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Kompilace a Interpretace">
+        <div class="slide-header">
+          <h2 class="slide-title">Jak se kód vykonává: Překladače a Interprety</h2>
+          <p class="slide-subtitle">Jakým způsobem se lidsky čitelný text promění v běh na procesoru.</p>
+        </div>
+
+        <div class="grid-3col" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          <div class="card">
+            <span class="tag emerald" style="margin-bottom: 0.5rem; display: inline-block;">Kompilace (AOT)</span>
+            <h3 style="font-size: 1rem; font-weight: 700; margin-top: 0; margin-bottom: 0.35rem;">Kompilované jazyky</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.65rem;">
+              Celý zdrojový kód se před spuštěním naráz přeloží kompilátorem do nativního binárního spustitelného souboru (<code>.exe</code>, ELF).
+            </p>
+            <div style="font-size: 0.78rem; color: #94a3b8; font-family: var(--font-mono); background: rgba(0,0,0,0.2); padding: 0.4rem; border-radius: 6px; margin-top: auto;">
+              C, C++, Rust, Go<br>
+              &bull; Bleskový běh, ale závislost na OS
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="tag amber" style="margin-bottom: 0.5rem; display: inline-block;">Čistá interpretace</span>
+            <h3 style="font-size: 1rem; font-weight: 700; margin-top: 0; margin-bottom: 0.35rem;">Interpretované jazyky</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.65rem;">
+              Program čte přímo interpret řádek po řádku za běhu a okamžitě jej vykonává bez předchozího uložení do binárního souboru.
+            </p>
+            <div style="font-size: 0.78rem; color: #94a3b8; font-family: var(--font-mono); background: rgba(0,0,0,0.2); padding: 0.4rem; border-radius: 6px; margin-top: auto;">
+              Bash, starý Basic, Ruby<br>
+              &bull; Okamžitý start, ale pomalejší běh
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="tag cyan" style="margin-bottom: 0.5rem; display: inline-block;">Hybridní model &amp; JIT</span>
+            <h3 style="font-size: 1rem; font-weight: 700; margin-top: 0; margin-bottom: 0.35rem;">Bytecode &amp; Virtuální stroj</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.65rem;">
+              Kód se přeloží do univerzálního <em>bytecode</em>, který pak virtuální stroj (JVM, .NET CLR, V8) za běhu dynamicky optimalizuje (Just-In-Time).
+            </p>
+            <div style="font-size: 0.78rem; color: #94a3b8; font-family: var(--font-mono); background: rgba(0,0,0,0.2); padding: 0.4rem; border-radius: 6px; margin-top: auto;">
+              Java, C#, Python, JavaScript<br>
+              &bull; Skvělá přenositelnost a vysoký výkon
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Typové systémy
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Typové systémy">
+        <div class="slide-header">
+          <h2 class="slide-title">Typové systémy: Statické vs. Dynamické, Silné vs. Slabé</h2>
+          <p class="slide-subtitle">Jak jazyk zachází s informací o tom, jaká data jsou uložena v proměnné.</p>
+        </div>
+
+        <div class="type-matrix">
+          <div class="type-cell" style="border-top: 3px solid #38bdf8;">
+            <span class="type-cell-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Statické + Silné</span>
+            <h3>C#, Java, Rust, TypeScript</h3>
+            <p>Typ každé proměnné je znám v době kompilace. Překladač nedovolí nesmyslné operace a vyžaduje explicitní přetypování.</p>
+            <span class="type-cell-examples">int age = 20; // age = "ahoj" způsobí chybu</span>
+          </div>
+
+          <div class="type-cell" style="border-top: 3px solid #a855f7;">
+            <span class="type-cell-badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">Dynamické + Silné</span>
+            <h3>Python, Ruby</h3>
+            <p>Typ proměnné se zjišťuje až za běhu programu. Jazyk však nedovolí automatické sčítání nekompatibilních typů.</p>
+            <span class="type-cell-examples">x = 10; x = "text" (OK) | 5 + "10" &rarr; TypeError!</span>
+          </div>
+
+          <div class="type-cell" style="border-top: 3px solid #f59e0b;">
+            <span class="type-cell-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Statické + Slabé</span>
+            <h3>C, C++ (částečně)</h3>
+            <p>Typy jsou kontrolovány kompilátorem, ale programátor může pomocí přetypování ukazatelů přepsat data bez varování.</p>
+            <span class="type-cell-examples">float *p = (float*)&amp;intVal; // nebezpečný re-cast</span>
+          </div>
+
+          <div class="type-cell" style="border-top: 3px solid #f43f5e;">
+            <span class="type-cell-badge" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e;">Dynamické + Slabé</span>
+            <h3>JavaScript, PHP (historicky)</h3>
+            <p>Typy jsou proměnlivé a runtime provádí automatické implicitní přetypování (type coercion), což může vést k překvapením.</p>
+            <span class="type-cell-examples">"5" + 2 &rarr; "52" | "5" - 2 &rarr; 3</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Programovací paradigmata
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Programovací paradigmata">
+        <div class="slide-header">
+          <h2 class="slide-title">Programovací paradigmata: Styl myšlení</h2>
+          <p class="slide-subtitle">Paradigma určuje základní přístup k modelování problému a strukturování kódu.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #60a5fa; margin-bottom: 0.5rem;">Imperativní přístup (JAK to udělat)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Programátor krok za krokem diktuje sekvenci operací a explicitně mění stav paměti počítače.
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Procedurální (C, Pascal):</strong> Kód je organizován do funkcí a procedur manipulujících se sdílenými daty.</li>
+              <li><strong>Objektově orientované (Java, C#, C++):</strong> Svět se modeluje jako komunikující objekty spojující stav (atributy) a chování (metody).</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #c084fc; margin-bottom: 0.5rem;">Deklarativní přístup (CO má být výsledkem)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Programátor popisuje požadovanou vlastnost výsledku a engine jazyka sám určí nejvhodnější postup.
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Funkcionální (Haskell, Elixir, Lisp):</strong> Výpočet je chápán jako vyhodnocení matematických funkcí bez vedlejších efektů (neměnnost dat / immutability).</li>
+              <li><strong>Dotazovací &amp; Značkovací (SQL, HTML/CSS):</strong> <code>SELECT * FROM users WHERE active = 1;</code> – motor databáze sám zvolí optimální algoritmus indexu.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Přehled klíčových moderních jazyků
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Přehled jazyků">
+        <div class="slide-header">
+          <h2 class="slide-title">Katalog dominantních jazyků dneška</h2>
+          <p class="slide-subtitle">Každý jazyk vyniká v jiné doméně. Univerzální „nejlepší“ jazyk neexistuje.</p>
+        </div>
+
+        <div class="lang-catalog-grid">
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">Python</span>
+              <span class="tag cyan">AI / Data / Skripty</span>
+            </div>
+            <p class="lang-use">Extrémně čitelná syntaxe, gigantická vědecká komunita (NumPy, PyTorch). Standard pro umělou inteligenci a automatizaci.</p>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">JavaScript &amp; TS</span>
+              <span class="tag amber">Web / Frontend / Node</span>
+            </div>
+            <p class="lang-use">Jediný nativní jazyk všech webových prohlížečů. TypeScript přidává silné typování pro rozsáhlé aplikace.</p>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">PHP (8+)</span>
+              <span class="tag indigo">Web / Backend / Moderní 8+</span>
+            </div>
+            <p class="lang-use">Pohání přes 75 % webu. Ve verzi <strong>8+</strong> prošlo renesancí: <strong>JIT kompilátor</strong>, striktní typový systém, match výrazy a readonly třídy. Páteř enterprise frameworků (Laravel, Symfony).</p>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">C# &amp; Java</span>
+              <span class="tag emerald">Enterprise / Backend</span>
+            </div>
+            <p class="lang-use">Robustní virtuální stroje, skvělé IDE nástroje, obrovské bankovní a podnikové systémy, Android (Kotlin/Java).</p>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">C &amp; C++</span>
+              <span class="tag purple">Systémy / Hry / IoT</span>
+            </div>
+            <p class="lang-use">Maximální výkon a nízká latence. Jádra operačních systémů, herní enginy (Unreal), embedded mikrokontroléry.</p>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">Rust</span>
+              <span class="tag rose">Memory Safety / Sys</span>
+            </div>
+            <p class="lang-use">Garantuje bezpečnost paměti bez Garbage Collectoru díky konceptu vlastnictví (Borrow checker). Nahrazuje C++ v jádru Linuxu.</p>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">Go (Golang)</span>
+              <span class="tag blue">Cloud / Mikroslužby</span>
+            </div>
+            <p class="lang-use">Jednoduchá syntaxe od Googlu navržená pro masivní konkurentní sítě (Goroutines). Napsán v něm Docker i Kubernetes.</p>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-card-header">
+              <span class="lang-name">Kotlin &amp; Swift</span>
+              <span class="tag amber">Mobilní aplikace / Nativní</span>
+            </div>
+            <p class="lang-use">Moderní typově bezpečné jazyky s elegantní syntaxí pro smartphony. Kotlin vládne nativnímu Androidu, Swift je standardem pro iOS a Apple ekosystém.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Přímé srovnání syntaxe v praxi
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Srovnání syntaxe">
+        <div class="slide-header">
+          <h2 class="slide-title">Přímé srovnání syntaxe: Stejná úloha v 6 jazycích</h2>
+          <p class="slide-subtitle">Podmínka a cyklus vypisující sudá čísla od 1 do 10 – sledujte odlišnosti v zápisu proměnných, bloků a výstupu.</p>
+        </div>
+
+        <div class="syntax-compare-grid">
+          <div class="syntax-box">
+            <div class="syntax-box-header">
+              <span>Python (Odsazení namísto složených závorek)</span>
+              <span style="color: #38bdf8;">.py</span>
+            </div>
+            <pre><code><span style="color: #64748b;"># Čistý zápis bez středníků</span>
+<span style="color: #c084fc;">for</span> number <span style="color: #c084fc;">in</span> range(1, 11):
+    <span style="color: #c084fc;">if</span> number % 2 == 0:
+        print(f"Sude: {number}")</code></pre>
+          </div>
+
+          <div class="syntax-box">
+            <div class="syntax-box-header">
+              <span>JavaScript (C-style syntaxe, složené závorky)</span>
+              <span style="color: #f59e0b;">.js</span>
+            </div>
+            <pre><code><span style="color: #64748b;">// Bloky vymezeny { } a středníky</span>
+<span style="color: #c084fc;">for</span> (<span style="color: #38bdf8;">let</span> number = 1; number &lt;= 10; number++) {
+  <span style="color: #c084fc;">if</span> (number % 2 === 0) {
+    console.log(`Sude: ${number}`);
+  }
+}</code></pre>
+          </div>
+
+          <div class="syntax-box">
+            <div class="syntax-box-header">
+              <span>PHP (Prefix $ u proměnných, echo a interpolace)</span>
+              <span style="color: #818cf8;">.php</span>
+            </div>
+            <pre><code><span style="color: #64748b;">// Proměnné vždy začínají znakem $ a výstup echo</span>
+<span style="color: #c084fc;">for</span> (<span style="color: #38bdf8;">$number</span> = 1; <span style="color: #38bdf8;">$number</span> &lt;= 10; <span style="color: #38bdf8;">$number</span>++) {
+    <span style="color: #c084fc;">if</span> (<span style="color: #38bdf8;">$number</span> % 2 === 0) {
+        echo "Sude: $number\n";
+    }
+}</code></pre>
+          </div>
+
+          <div class="syntax-box">
+            <div class="syntax-box-header">
+              <span>C++ (Statické typy, přímé I/O streamy)</span>
+              <span style="color: #a855f7;">.cpp</span>
+            </div>
+            <pre><code>#include &lt;iostream&gt;
+<span style="color: #38bdf8;">int</span> main() {
+    <span style="color: #c084fc;">for</span> (<span style="color: #38bdf8;">int</span> number = 1; number &lt;= 10; ++number) {
+        <span style="color: #c084fc;">if</span> (number % 2 == 0) {
+            std::cout &lt;&lt; "Sude: " &lt;&lt; number &lt;&lt; "\n";
+        }
+    }
+    <span style="color: #c084fc;">return</span> 0;
+}</code></pre>
+          </div>
+
+          <div class="syntax-box">
+            <div class="syntax-box-header">
+              <span>C# (.NET, objektový obal a jmenný prostor)</span>
+              <span style="color: #34d399;">.cs</span>
+            </div>
+            <pre><code><span style="color: #64748b;">// .NET, interpolovaný řetězec $""</span>
+<span style="color: #c084fc;">for</span> (<span style="color: #38bdf8;">int</span> number = 1; number &lt;= 10; number++) {
+    <span style="color: #c084fc;">if</span> (number % 2 == 0) {
+        Console.WriteLine($"Sude: {number}");
+    }
+}</code></pre>
+          </div>
+
+          <div class="syntax-box">
+            <div class="syntax-box-header">
+              <span>Ruby (Objektový rozsah, blok do..end, postfix if)</span>
+              <span style="color: #fb7185;">.rb</span>
+            </div>
+            <pre><code><span style="color: #64748b;"># Výrazová elegance bez závorek a středníků</span>
+(1..10).each <span style="color: #c084fc;">do</span> |number|
+  puts "Sude: #{number}" <span style="color: #c084fc;">if</span> number.even?
+<span style="color: #c084fc;">end</span></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Ekosystém jazyka a balíčkovací manažery
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Ekosystém a balíčky">
+        <div class="slide-header">
+          <h2 class="slide-title">Jazyk je víc než syntaxe: Síla ekosystému</h2>
+          <p class="slide-subtitle">V dnešní době nikdo nepíše vše od nuly. Vývoj stojí na hotových knihovnách.</p>
+        </div>
+
+        <div class="grid-3col" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="concept-icon-box cyan">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              </div>
+              <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Balíčkovací manažery</h3>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Nástroje pro automatické stahování, aktualizaci a řešení závislostí:
+            </p>
+            <ul style="padding-left: 1rem; font-size: 0.78rem; color: var(--accent); margin-top: auto; font-family: var(--font-mono); display: flex; flex-direction: column; gap: 0.25rem; padding-top: 0.5rem;">
+              <li>npm (Node / JavaScript)</li>
+              <li>Composer (PHP)</li>
+              <li>pip (Python)</li>
+              <li>NuGet (C# / .NET)</li>
+              <li>Cargo (Rust)</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="concept-icon-box purple">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              </div>
+              <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Standardní knihovna</h3>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Sada předpřipravených modulů dodávaných přímo s jazykem (práce se soubory, sítě, matematika, datum a čas).
+            </p>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: auto; padding-top: 0.5rem;">
+              Např. princip Pythonu <em>„Batteries Included“</em>.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-header-icon">
+              <div class="concept-icon-box emerald">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <h3 style="font-size: 1rem; font-weight: 700; margin: 0;">Komunita &amp; Podpora</h3>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Aktivní vývojáři píšící návody, zodpovídající dotazy na fórech (Stack Overflow, GitHub) a udržující frameworky.
+            </p>
+            <div style="margin-top: auto; padding-top: 0.5rem; font-size: 0.78rem; color: var(--text-muted);">
+              Globální ekosystém otevřených repozitářů a knihoven.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Jak vybrat správný jazyk pro projekt?
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Výběr jazyka">
+        <div class="slide-header">
+          <h2 class="slide-title">Jak zvolit správný jazyk pro konkrétní úlohu?</h2>
+          <p class="slide-subtitle">Profesionální programátor se neptá „co je nejlepší“, ale „co nejlépe vyhovuje zadání“.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: #38bdf8;">Klíčová kritéria pro rozhodování</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Cílová platforma:</strong> Prohlížeč vyžaduje JS/TS; mikrokontrolér STM32 vyžaduje C/C++; iOS vyžaduje Swift.</li>
+              <li><strong>Nároky na výkon a paměť:</strong> Herní grafický engine potřebuje C++/Rust; webový dashboard zvládne Python nebo Node.js.</li>
+              <li><strong>Rychlost dodání (Time to Market):</strong> Skriptovací jazyky umožňují vytvořit funkční prototyp za hodiny.</li>
+              <li><strong>Typová bezpečnost:</strong> U velkých týmů se stovkami tisíc řádků kódu chrání statické typy (TS, C#, Java) před hloupými překlepy.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: #a855f7;">Doporučení pro žáky SPŠ</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Jakmile se naučíte principy algoritmizace a objektového návrhu v jednom jazyce, přechod na další jazyk zabere jen pár týdnů:
+            </p>
+            <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.75rem; border: 1px solid var(--border-color); font-size: 0.82rem; color: var(--text-secondary);">
+              <strong>Zlaté pravidlo:</strong> Učte se principy a logické myšlení, ne nazpaměť konkrétní syntaxi. Syntaxi vám napoví editor a dokumentace, ale logiku musíte vymyslet vy.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Exotické & ezoterické jazyky (Esolangs)
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Ezoterické jazyky">
+        <div class="slide-header">
+          <h2 class="slide-title">Odlehčení pro pobavení: Exotické &amp; ezoterické jazyky (Esolangs)</h2>
+          <p class="slide-subtitle">Programování nemusí být jen seriózní inženýrství. Vývojáři stvořili desítky bizarních jazyků pro recesi, umění i zkoumání limitů algoritmizace.</p>
+        </div>
+
+        <div class="esolang-grid">
+          <!-- 1. Brainfuck -->
+          <div class="esolang-card">
+            <div class="esolang-card-header">
+              <h3 class="esolang-title">Brainfuck</h3>
+              <span class="tag rose">Minimalismus</span>
+            </div>
+            <p class="esolang-desc">
+              Vytvořen v roce 1993 s cílem mít co nejmenší možný překladač (měl 240 bajtů). Obsahuje pouze <strong>8 znaků</strong>: <code>&gt;</code> <code>&lt;</code> <code>+</code> <code>-</code> <code>.</code> <code>,</code> <code>[</code> <code>]</code> pro posun na pásce bajtů.
+            </p>
+            <div class="esolang-code-box">
+              <span style="color: #64748b;">// Program "Hello World!":</span><br>
+              <span style="color: #fb7185;">++++++++[&gt;++++[&gt;++&gt;+++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;+&gt;+&gt;-&gt;&gt;+[&lt;]&lt;-]&gt;&gt;.&gt;---.+++++++..+++.&gt;&gt;.&lt;-.&lt;.+++.------.--------.&gt;&gt;+.&gt;++.</span>
+            </div>
+          </div>
+
+          <!-- 2. Rockstar -->
+          <div class="esolang-card">
+            <div class="esolang-card-header">
+              <h3 class="esolang-title">Rockstar</h3>
+              <span class="tag purple">Rocková balada</span>
+            </div>
+            <p class="esolang-desc">
+              Kód je navržen tak, aby se četl jako <strong>text heavymetalové balady</strong> z 80. let. Délka slov určuje čísla (poetické literály), proměnné jsou postavy a operace jsou rockové verše.
+            </p>
+            <div class="esolang-code-box">
+              <span style="color: #64748b;">// Skutečný spustitelný kód:</span><br>
+              <span style="color: #c084fc;">Midnight takes your heart</span><br>
+              <span style="color: #38bdf8;">While</span> your heart is high<br>
+              &nbsp;&nbsp;Put your heart into fire<br>
+              <span style="color: #38bdf8;">Give back</span> your heart
+            </div>
+          </div>
+
+          <!-- 3. Whitespace -->
+          <div class="esolang-card">
+            <div class="esolang-card-header">
+              <h3 class="esolang-title">Whitespace</h3>
+              <span class="tag cyan">Neviditelný kód</span>
+            </div>
+            <p class="esolang-desc">
+              Ignoruje veškeré viditelné znaky (písmena i čísla). Instrukcemi jsou výhradně <strong>mezery (Space), tabulátory (Tab) a odřádkování (LF)</strong>. Kód lze skrýt do jiného souboru!
+            </p>
+            <div class="esolang-code-box">
+              <span style="color: #64748b;">// Prohlížeč vidí prázdno:</span><br>
+              <span style="color: #38bdf8;">[Space][Space][Space][Tab]</span><br>
+              <span style="color: #34d399;">[Tab][LF][Space][Space]</span><br>
+              <span style="color: #fbbf24;">[Tab][LF][Tab][Space]</span><br>
+              <span style="color: #64748b;">(Na obrazovce 100% neviditelný)</span>
+            </div>
+          </div>
+
+          <!-- 4. Piet -->
+          <div class="esolang-card">
+            <div class="esolang-card-header">
+              <h3 class="esolang-title">Piet</h3>
+              <span class="tag amber">Abstraktní obraz</span>
+            </div>
+            <p class="esolang-desc">
+              Pojmenován po malíři Pietu Mondrianovi. Kódem není text, ale <strong>bitmapový obrázek (PNG)</strong> s 20 barvami. Instrukce jsou definovány přechody odstínů a jasu mezi sousedními pixely.
+            </p>
+            <div class="esolang-code-box">
+              <span style="color: #64748b;">// Grafická mozaika pixelů:</span><br>
+              <span style="color: #fbbf24;">Instrukce = &Delta; Odstín + &Delta; Jas</span><br>
+              Ukazatel bloudí po plátně.<br>
+              <span style="color: #34d399;">Kód vypadá jako obraz na zeď!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spodní didaktická pointa -->
+        <div class="card" style="margin-top: 0.85rem; border-left: 4px solid var(--accent); padding: 0.75rem 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <span style="font-size: 0.84rem; font-weight: 700; color: var(--accent);">
+              Proč ezoterické jazyky existují?
+            </span>
+            <span style="font-size: 0.82rem; color: var(--text-secondary);">
+              Slouží v teoretické informatice k výzkumu syntaktické analýzy (parserů) a limitů <strong>Turingovy úplnosti</strong>. Mezi další slavné patří <strong>Chef</strong> (kód maskovaný za recept na čokoládový dort), <strong>Befunge</strong> (2D kód čtený všemi směry) či <strong>Shakespeare</strong> (kód jako divadelní hra).
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: Shrnutí tématu & Kontrolní kvíz
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí & Otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Ověřte si porozumění typovým systémům, kompilaci a paradigmatům.</p>
+        </div>
+
+        <div class="quiz-container">
+          <div class="card" style="margin-bottom: 1rem; background: rgba(129, 140, 248, 0.05); border-color: rgba(129, 140, 248, 0.2);">
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem;">Shrnutí klíčových bodů:</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Programovací jazyky se dělí podle abstrakce (nízko vs. vysokoúrovňové), způsobu překladu (kompilace vs. interpretace vs. JIT bytecode) a typového systému (statické vs. dynamické, silné vs. slabé). Žádný jazyk není univerzálně nejlepší; každý je optimalizován pro jinou doménu.
+            </p>
+          </div>
+
+          <div class="quiz-list">
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Jaký je rozdíl mezi staticky a dynamicky typovaným jazykem?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Ve staticky typovaném jazyce (C#, Java, C++) se typy proměnných ověřují v době překladu (kompilace). V dynamicky typovaném jazyce (Python, JS) se typ proměnné váže na hodnotu a kontroluje se až za běhu programu.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. Co znamená, když má jazyk Just-In-Time (JIT) kompilátor?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Zdrojový kód je přeložen do mezikódu (bytecode). Virtuální stroj během běhu analyzuje často volané části programu a za běhu (Just In Time) je zkompiluje do nativního strojového kódu CPU pro dosažení vysokého výkonu.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. Proč JavaScript vyhodnotí výraz "5" + 2 jako "52", ale Python vyvolá chybu?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                JavaScript má slabý typový systém a provede implicitní přetypování (číslo 2 převede na řetězec a spojí je). Python je silně typovaný jazyk a odmítne sčítat číslo s textovým řetězcem bez explicitní konverze <code>str()</code> nebo <code>int()</code>.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. K čemu slouží balíčkovací manažery jako npm, pip nebo NuGet?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Umožňují vývojářům snadno instalovat, sdílet a spravovat knihovny a moduly třetích stran, včetně řešení jejich vzájemných verzí a závislostí.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../001-Uvod-do-programovani/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 001 Úvod do programování (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../003-Algoritmus/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 003 Algoritmus (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+</body>
+
+</html>

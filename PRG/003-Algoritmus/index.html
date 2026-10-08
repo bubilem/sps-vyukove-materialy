@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>003 Algoritmus | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Algoritmus a algoritmizace. Definice, vlastnosti algoritmu, způsoby vyjádření, vývojové diagramy, řídicí struktury, klasifikace a asymptotická složitost Big-O.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 003 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">003 Algoritmus</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #10b981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12);">Teoretická informatika</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Algoritmus & Logika">
+        <div class="slide-content">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Předmět PRG &bull; Téma 003 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title">
+            Algoritmus a <br><span class="gradient-text">algoritmizace</span>
+          </h1>
+          <p class="hero-description">
+            Od nejednoznačného lidského popisu k nekompromisní exaktnosti stroje. Poznejte <strong>kanonické vlastnosti algoritmu</strong>, mezinárodní standard vývojových diagramů ISO, tři základní řídicí konstrukce a vyhodnocování časové i paměťové asymptotické složitosti v Big-O notaci.
+          </p>
+
+          <!-- Vizuální miniatura toku: Vstup -> Algoritmus -> Výstup -->
+          <div class="hero-blueprint-card">
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Definovaná data</span>
+              <span class="chip-name">Vstup (Input)</span>
+            </div>
+
+            <div class="mini-flow-connector">
+              <span class="connector-label">Elementární kroky</span>
+              <svg viewBox="0 0 70 20" width="70" height="20">
+                <line x1="5" y1="10" x2="60" y2="10" stroke="#10b981" stroke-width="2"></line>
+                <polygon points="56,6 64,10 56,14" fill="#10b981"></polygon>
+              </svg>
+              <span class="connector-sub">Determinismus</span>
+            </div>
+
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Řídicí logika</span>
+              <span class="chip-name">Sekvence &bull; IF &bull; Cyklus</span>
+            </div>
+
+            <div class="mini-flow-connector">
+              <span class="connector-label">Finitní běh</span>
+              <svg viewBox="0 0 70 20" width="70" height="20">
+                <line x1="5" y1="10" x2="60" y2="10" stroke="#34d399" stroke-width="2"></line>
+                <polygon points="56,6 64,10 56,14" fill="#34d399"></polygon>
+              </svg>
+              <span class="connector-sub">Konečný čas</span>
+            </div>
+
+            <div class="mini-flow-chip">
+              <span class="chip-sub">Správné řešení</span>
+              <span class="chip-name">Výstup (Output)</span>
+            </div>
+          </div>
+
+          <!-- 4 Pilíře tématu v propracovaných kartách -->
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag emerald">Definice</span>
+              <div class="feature-title">Vlastnosti algoritmu</div>
+              <div class="feature-desc">Finitnost, determinovanost, elementárnost, obecnost (hromadnost) a korektnost.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag cyan">Vizuál</span>
+              <div class="feature-title">Vývojové diagramy</div>
+              <div class="feature-desc">Norma ISO 5807: mezní ovály, bloky zpracování, rozhodovací kosočtverce a toky.</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag purple">Struktura</span>
+              <div class="feature-title">3 Řídicí konstrukce</div>
+              <div class="feature-desc">Böhm-Jacopini: sekvence příkazů, větvení (IF/ELSE) a iterace (cykly WHILE a FOR).</div>
+            </div>
+
+            <div class="hero-feature-item">
+              <span class="tag amber">Efektivita</span>
+              <div class="feature-title">Big-O složitost</div>
+              <div class="feature-desc">Časová a prostorová náročnost, O(1) až O(n²) a porovnání lineárního vs. binárního hledání.</div>
+            </div>
+          </div>
+
+          <!-- Spodní lišta metadat modulu -->
+          <div class="hero-meta-bar">
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              10 výukových snímků
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+              Střední průmyslová škola (SPŠ)
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              Teoretická informatika &amp; Logika
+            </span>
+            <span class="hero-meta-item">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              100% Offline &bull; Interaktivní kvíz
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Definice algoritmu & Princip fungování
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Definice algoritmu">
+        <div class="slide-header">
+          <h2 class="slide-title">Co je algoritmus?</h2>
+          <p class="slide-subtitle">Srdce každého počítačového programu a základní stavební kámen informatiky.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #10b981; margin-top: 0; margin-bottom: 0.65rem;">Formální definice</h3>
+            <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.85rem;">
+              <strong>Algoritmus</strong> je přesně definovaná posloupnost konečného množství elementárních kroků, která pro libovolný platný vstup vede v konečném čase k jednoznačnému a správnému výstupu.
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.82rem; color: var(--text-secondary); margin-top: auto;">
+              <strong>Původ slova:</strong> Pojem pochází ze jména perského matematika 9. století: <em>Muhammad ibn Músá al-Chwárizmí</em> (jeho latinizované jméno znělo <em>Algoritmi</em>).
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #38bdf8; margin-top: 0; margin-bottom: 0.65rem;">Model „Černá skříňka“ (I-P-O)</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.85rem;">
+              Každý algoritmus lze chápat jako transformaci dat v modelu Input &rarr; Process &rarr; Output:
+            </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius-sm); padding: 0.75rem 1rem; text-align: center; margin-top: auto;">
+              <div>
+                <span class="tag cyan" style="font-size: 0.75rem;">VSTUP</span>
+                <div style="font-size: 0.8rem; margin-top: 0.25rem;">Definovaná data</div>
+              </div>
+              <svg class="icon" viewBox="0 0 24 24" style="color: var(--accent);"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <div>
+                <span class="tag emerald" style="font-size: 0.75rem;">ALGORITMUS</span>
+                <div style="font-size: 0.8rem; margin-top: 0.25rem;">Exaktní logika</div>
+              </div>
+              <svg class="icon" viewBox="0 0 24 24" style="color: var(--accent);"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <div>
+                <span class="tag purple" style="font-size: 0.75rem;">VÝSTUP</span>
+                <div style="font-size: 0.8rem; margin-top: 0.25rem;">Správný výsledek</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Základní vlastnosti algoritmu
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Vlastnosti algoritmu">
+        <div class="slide-header">
+          <h2 class="slide-title">Kanonické vlastnosti algoritmu</h2>
+          <p class="slide-subtitle">Aby mohl být libovolný postup prohlášen za algoritmus, musí striktně splňovat následující atributy.</p>
+        </div>
+
+        <div class="properties-grid">
+          <div class="prop-card">
+            <span class="prop-badge">1. Vlastnost</span>
+            <h3>Elementárnost</h3>
+            <p>Každý jednotlivý krok musí být zcela jednoduchý a proveditelný pro daný vykonavatel (počítač / člověk) bez nutnosti dalšího dělení.</p>
+          </div>
+
+          <div class="prop-card">
+            <span class="prop-badge">2. Vlastnost</span>
+            <h3>Konečnost (Finitnost)</h3>
+            <p>Výpočet musí po konečném počtu kroků skončit pro libovolný přípustný vstup. Nekonečný cyklus není korektní algoritmus.</p>
+          </div>
+
+          <div class="prop-card">
+            <span class="prop-badge">3. Vlastnost</span>
+            <h3>Determinovanost</h3>
+            <p>V každém okamžiku výpočtu je jednoznačně určeno, jaký krok následuje. Stejná vstupní data musí vždy vést k identickému průběhu.</p>
+          </div>
+
+          <div class="prop-card">
+            <span class="prop-badge">4. Vlastnost</span>
+            <h3>Obecnost (Hromadnost)</h3>
+            <p>Algoritmus neřeší pouze jeden konkrétní izolovaný případ (např. 2 + 3), ale celou třídu úloh se shodnou strukturou (a + b pro libovolná čísla).</p>
+          </div>
+
+          <div class="prop-card">
+            <span class="prop-badge">5. Vlastnost</span>
+            <h3>Rezultativnost</h3>
+            <p>Po skončení algoritmu vždy získáme konkrétní výsledek (číslo, pole, zprávu o neřešitelnosti úlohy).</p>
+          </div>
+
+          <div class="prop-card">
+            <span class="prop-badge">6. Vlastnost</span>
+            <h3>Korektnost</h3>
+            <p>Algoritmus nesmí vracet chybné výsledky; pro všechny přípustné vstupy musí vyprodukovat správné řešení definovaného problému.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Způsoby vyjádření algoritmu
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Způsoby vyjádření">
+        <div class="slide-header">
+          <h2 class="slide-title">Jak lze algoritmus vyjádřit a zapsat?</h2>
+          <p class="slide-subtitle">Od konceptuálního lidského myšlení až po spustitelný kód na stroji.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.4rem;">1. Slovní popis přirozeným jazykem</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.75rem;">
+              Text v češtině či angličtině. Snadno srozumitelný lidem, ale často trpí nejednoznačností a mnohovýznamovostí slov.
+            </p>
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #a855f7; margin-bottom: 0.4rem;">2. Pseudokód</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Strukturovaný neformální zápis kombinující přirozený jazyk s programátorskými klíčovými slovy (<code>IF</code>, <code>WHILE</code>, <code>REPEAT</code>). Ignoruje syntaktické detaily konkrétního jazyka.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.4rem;">3. Grafický vývojový diagram (Flowchart)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.75rem;">
+              Vizuální schéma využívající standardizované geometrické tvary a spojnice se šipkami pro znázornění toku řízení.
+            </p>
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.4rem;">4. Konkrétní programovací jazyk</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4;">
+              Přísný zápis v Pythonu, C++, JS atd., který je přímo srozumitelný kompilátoru nebo interpretu a spustitelný na procesoru.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Vývojové diagramy (Flowcharts)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Vývojové diagramy">
+        <div class="slide-header">
+          <h2 class="slide-title">Standardní symboly vývojových diagramů (ISO 5807)</h2>
+          <p class="slide-subtitle">Vizuální jazyk algoritmizace používaný pro přehledný návrh i dokumentaci.</p>
+        </div>
+
+        <div class="flowchart-symbols">
+          <div class="fc-symbol-card">
+            <svg class="fc-shape-svg" viewBox="0 0 100 50">
+              <rect x="5" y="8" width="90" height="34" rx="17" fill="none" stroke="#10b981" stroke-width="2.5"></rect>
+              <text x="50" y="30" fill="#10b981" font-size="11" text-anchor="middle" font-weight="bold">START / STOP</text>
+            </svg>
+            <div class="fc-symbol-name">Mezní značka</div>
+            <div class="fc-symbol-desc">Oválný tvar označující začátek nebo konec algoritmu.</div>
+          </div>
+
+          <div class="fc-symbol-card">
+            <svg class="fc-shape-svg" viewBox="0 0 100 50">
+              <polygon points="20,10 95,10 80,40 5,40" fill="none" stroke="#38bdf8" stroke-width="2.5"></polygon>
+              <text x="50" y="30" fill="#38bdf8" font-size="11" text-anchor="middle" font-weight="bold">VSTUP / VÝSTUP</text>
+            </svg>
+            <div class="fc-symbol-name">Vstup a výstup dat</div>
+            <div class="fc-symbol-desc">Kosodélník pro načtení hodnoty od uživatele či tisk.</div>
+          </div>
+
+          <div class="fc-symbol-card">
+            <svg class="fc-shape-svg" viewBox="0 0 100 50">
+              <rect x="10" y="10" width="80" height="30" fill="none" stroke="#818cf8" stroke-width="2.5"></rect>
+              <text x="50" y="29" fill="#818cf8" font-size="11" text-anchor="middle" font-weight="bold">ZPRACOVÁNÍ</text>
+            </svg>
+            <div class="fc-symbol-name">Příkaz / Operace</div>
+            <div class="fc-symbol-desc">Obdélník pro výpočet, přiřazení do proměnné (x = a + b).</div>
+          </div>
+
+          <div class="fc-symbol-card">
+            <svg class="fc-shape-svg" viewBox="0 0 100 50">
+              <polygon points="50,6 92,25 50,44 8,25" fill="none" stroke="#f59e0b" stroke-width="2.5"></polygon>
+              <text x="50" y="29" fill="#f59e0b" font-size="10" text-anchor="middle" font-weight="bold">PODMÍNKA ?</text>
+            </svg>
+            <div class="fc-symbol-name">Rozhodování (Větvení)</div>
+            <div class="fc-symbol-desc">Kosočtverec s výstupními větvemi ANO (Platí) a NE (Neplatí).</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Základní algoritmické konstrukce
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Řídicí konstrukce">
+        <div class="slide-header">
+          <h2 class="slide-title">Böhm-Jacopiniho teorém: 3 základní konstrukce</h2>
+          <p class="slide-subtitle">Každý libovolně složitý algoritmus lze sestavit z pouhých tří elementárních struktur.</p>
+        </div>
+
+        <div class="grid-3col" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+          <div class="card">
+            <span class="tag cyan" style="margin-bottom: 0.5rem; display: inline-block;">1. Sekvence</span>
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem;">Lineární posloupnost</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              Kroky jsou vykonávány přesně v pořadí, jak jsou zapsány, jeden po druhém shora dolů. Žádné větvení ani skoky.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag amber" style="margin-bottom: 0.5rem; display: inline-block;">2. Selekce (Větvení)</span>
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem;">Podmíněné větvení</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              Rozhodovací bod. Na základě pravdivosti booleovského výrazu se tok výpočtu vydá větví <code>IF</code> nebo větví <code>ELSE</code>.
+            </p>
+          </div>
+
+          <div class="card">
+            <span class="tag emerald" style="margin-bottom: 0.5rem; display: inline-block;">3. Iterace (Cyklus)</span>
+            <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem;">Opakování bloku</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              Opakované provádění těla cyklu. Cyklus s podmínkou na začátku (<code>while</code>), na konci (<code>do-while</code>) nebo s čítačem (<code>for</code>).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Klasifikace a druhy algoritmů
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Druhy algoritmů">
+        <div class="slide-header">
+          <h2 class="slide-title">Klasifikace algoritmů podle paradigmatu návrhu</h2>
+          <p class="slide-subtitle">Různé strategie přístupu k řešení náročných problémů.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Základní strategie řešení</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Rozděl a panuj (Divide and Conquer):</strong> Rozdělení problému na menší podúlohy, jejich vyřešení a sloučení výsledků (např. Merge Sort, Binární vyhledávání).</li>
+              <li><strong>Hladové algoritmy (Greedy):</strong> V každém kroku volí lokálně nejvýhodnější volbu s nadějí na globální optimum (např. Dijkstrův algoritmus, mincovní problém).</li>
+              <li><strong>Rekurzivní algoritmy:</strong> Funkce pro vyřešení úlohy volá přímo sama sebe s menším argumentem (např. faktoriál, průchod stromem).</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #a855f7; margin-bottom: 0.5rem;">Pokročilé a heuristické metody</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Dynamické programování:</strong> Ukládání dílčích mezivýsledků do paměti (memoizace), aby se nepočítaly opakovaně.</li>
+              <li><strong>Prohledávání do hloubky s návratem (Backtracking):</strong> Zkoušení možností s možností vrátit se zpět, pokud větev nikam nevede (např. Sudoku, problém osmi dam).</li>
+              <li><strong>Heuristiky a aproximační algoritmy:</strong> U NP-těžkých problémů (problém obchodního cestujícího) hledají velmi dobré řešení v reálném čase namísto absolutního optima.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Složitost algoritmů a Big-O notace
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Složitost & Big-O">
+        <div class="slide-header">
+          <h2 class="slide-title">Efektivita a složitost: Asymptotická Big-O notace</h2>
+          <p class="slide-subtitle">Proč nestačí měřit rychlost algoritmu stopkami v sekundách?</p>
+        </div>
+
+        <div class="card">
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+            Rychlost v sekundách závisí na hardwaru, taktu procesoru a vytížení OS. <strong>Big-O notace</strong> měří teoretický nárůst počtu operací (časová složitost) nebo spotřebované paměti (prostorová složitost) v závislosti na velikosti vstupu <code>n</code>.
+          </p>
+
+          <table class="bigo-table">
+            <thead>
+              <tr>
+                <th>Notace</th>
+                <th>Název třídy složitosti</th>
+                <th>Typický zástupce</th>
+                <th>Chování při zvětšení n</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="bigo-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">O(1)</span></td>
+                <td>Konstantní</td>
+                <td>Čtení prvku pole dle indexu, hashovací tabulka</td>
+                <td>Bleskové, nezávisí na velikosti dat</td>
+              </tr>
+              <tr>
+                <td><span class="bigo-badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">O(log n)</span></td>
+                <td>Logaritmická</td>
+                <td>Binární vyhledávání v seřazeném poli</td>
+                <td>Vynikající – pro 1 000 000 prvků jen 20 kroků!</td>
+              </tr>
+              <tr>
+                <td><span class="bigo-badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">O(n)</span></td>
+                <td>Lineární</td>
+                <td>Průchod polem, lineární hledání</td>
+                <td>Přímo úměrné velikosti dat (2× větší n = 2× delší čas)</td>
+              </tr>
+              <tr>
+                <td><span class="bigo-badge" style="background: rgba(129, 140, 248, 0.2); color: #818cf8;">O(n log n)</span></td>
+                <td>Linearitmická</td>
+                <td>Efektivní řazení (Merge Sort, QuickSort)</td>
+                <td>Matematicky optimální limit pro univerzální porovnávací řazení</td>
+              </tr>
+              <tr>
+                <td><span class="bigo-badge" style="background: rgba(249, 115, 22, 0.2); color: #fb923c;">O(n²)</span></td>
+                <td>Kvadratická</td>
+                <td>Vnořené cykly, Bubble Sort, Selection Sort</td>
+                <td>Pomalé – při 1 000 prvcích vyžaduje už 1 000 000 operací!</td>
+              </tr>
+              <tr>
+                <td><span class="bigo-badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">O(2ⁿ)</span></td>
+                <td>Exponenciální</td>
+                <td>Naivní rekurzivní Fibonacci, Hanojské věže, hrubá síla (Brute Force)</td>
+                <td>Katastrofální – každé zvýšení n o 1 zdvojnásobí čas výpočtu!</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="margin-top: 0.85rem; padding: 0.65rem 1rem; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <span style="font-size: 0.82rem; font-weight: 700; color: #f87171;">
+              Pozor na exponenciální explozi O(2ⁿ):
+            </span>
+            <span style="font-size: 0.8rem; color: var(--text-secondary);">
+              Zatímco logaritmický algoritmus <strong>O(log n)</strong> zvládne miliardu prvků za 30 kroků, exponenciální algoritmus <strong>O(2ⁿ)</strong> pro pouhých n = 60 by na nejrychlejším superpočítači běžel miliardy let!
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Příklad z praxe: Hledání v poli
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Lineární vs. Binární vyhledávání">
+        <div class="slide-header">
+          <h2 class="slide-title">Praktické srovnání: Lineární vs. Binární hledání</h2>
+          <p class="slide-subtitle">Jak volba správného algoritmu zrychlí výpočet z minut na mikrosekundy.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b;">Lineární vyhledávání</h3>
+              <span class="bigo-badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">O(n)</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.75rem;">
+              Prochází prvky postupně jeden po druhém od indexu 0. Funguje i na neseřazených datech.
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-size: 0.8rem; font-family: var(--font-mono); color: #94a3b8;">
+              <span style="color: #64748b;">// V nejhorším případě projde celé pole:</span><br>
+              Pro n = 1 000 000 prvků &rarr; až 1 000 000 porovnání!
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981;">Binární vyhledávání</h3>
+              <span class="bigo-badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">O(log n)</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.75rem;">
+              Vyžaduje <strong>seřazená data</strong>. V každém kroku porovná hledanou hodnotu s prostředním prvkem a zahodí celou polovinu intervalu.
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-size: 0.8rem; font-family: var(--font-mono); color: #94a3b8;">
+              <span style="color: #64748b;">// Půlení intervalu:</span><br>
+              Pro n = 1 000 000 prvků &rarr; maximálně <strong>20 porovnání</strong>!
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí tématu & Kontrolní kvíz
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí & Otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Ověřte si porozumění algoritmům, vývojovým diagramům a Big-O notaci.</p>
+        </div>
+
+        <div class="quiz-container">
+          <div class="card" style="margin-bottom: 1rem; background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);">
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem;">Shrnutí klíčových poznatků:</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Algoritmus je konečný, determinovaný, elementární a obecný postup transformace vstupu na správný výstup. Každou logiku lze vyjádřit pomocí sekvence, selekce a iterace. Efektivitu posuzujeme pomocí Big-O asymptotické složitosti, která vyjadřuje škálovatelnost algoritmu.
+            </p>
+          </div>
+
+          <div class="quiz-list">
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Proč nekonečný cyklus (Infinite Loop) nesplňuje definici algoritmu?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Porušuje základní vlastnost finitnosti (konečnosti). Algoritmus musí pro libovolný korektní vstup skončit po konečném počtu kroků a odevzdat výsledek.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. Co znamená vlastnost determinovanosti algoritmu?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Znamená jednoznačnost: v každém okamžiku výpočtu je zcela přesně určeno, jaký krok následuje. Pro identická vstupní data projde algoritmus vždy stejnými kroky a dá identický výsledek.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. Jaký geometrický tvar se ve vývojovém diagramu používá pro podmínku?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Kosočtverec (rozhodovací blok). Má jeden vstup a minimálně dva výstupy (typicky větve označené ANO / NE resp. TRUE / FALSE).
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. Co vyjadřuje složitost O(n²) a jaký typ kódu k ní obvykle vede?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Vyjadřuje kvadratickou časovou složitost – při desetinásobném zvětšení vstupu vzroste počet operací stonásobně (10²). Typicky k ní vedou dva do sebe vnořené cykly procházející stejná data.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../002-Programovaci-jazyky/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 002 Programovací jazyky (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../010-Developerske-nastroje/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 010 Developerské nástroje (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+</body>
+
+</html>

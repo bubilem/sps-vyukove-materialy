@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>012 Git příkazy | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Git příkazy v praxi. Scénáře použití: konfigurace, git init, add, commit, push na GitHub, clone, větve, merge konflikty a záchranné operace.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 012 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">012 Git příkazy</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #f97316; border-color: rgba(249, 115, 22, 0.35); background: rgba(249, 115, 22, 0.12);">CLI &amp; Praktické workflow</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Git příkazy v praxi">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            Předmět PRG &bull; Téma 012 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title">
+            Git příkazy: <br><span class="gradient-text">Praktický průvodce</span>
+          </h1>
+          <p class="hero-description">
+            Od konfigurace identity přes každodenní cyklus commitů až po synchronizaci s GitHubem, práci s větvemi a elegantní řešení merge konfliktů.
+          </p>
+
+          <!-- Interaktivní showcase model příkazového toku -->
+          <div class="hero-blueprint-card">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                <span>git init / status</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>add & commit</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
+                <span>git switch -c feature</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>push -u origin</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <span>origin/main (GitHub)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 klíčové pilíře výuky -->
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag amber">1. Setup & Init</span>
+              <span class="feature-title">Konfigurace a start</span>
+              <span class="feature-desc">Identita vývojáře, inicializace prázdného repozitáře a pravidla ignorování souborů v .gitignore.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag cyan">2. Pracovní cyklus</span>
+              <span class="feature-title">Denní rutina CLI</span>
+              <span class="feature-desc">Kontrola stavu přes git status, staging změn s git add a atomické commity s jasnou zprávou.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">3. Větve & Vzdálenost</span>
+              <span class="feature-title">Clone, Pull & Větve</span>
+              <span class="feature-desc">Přepínání větví, stahování změn z GitHubu pomocí git pull a publikování větví přes git push.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag rose">4. Záchranný kruh</span>
+              <span class="feature-title">Konflikty a návrat</span>
+              <span class="feature-desc">Řešení kolizí při sloučení větví, odložení práce pomocí git stash a bezpečné vracení chybných změn.</span>
+            </div>
+          </div>
+
+          <div class="hero-meta-bar">
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              cca 3 vyučovací hodiny
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              8 výukových bloků + CLI
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Praktická cvičení v terminálu
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Úvodní konfigurace prostředí
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Konfigurace prostředí">
+        <div class="slide-header">
+          <h2 class="slide-title">Krok 0: První nastavení identity vývojáře</h2>
+          <p class="slide-subtitle">Před prvním commitem je nutné říct Gitu, kdo jste, aby byl autor správně podepsán.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div>
+            <div class="cli-box">
+              <div class="cli-header">
+                <span>TERMINÁL / BASH</span>
+                <span>Jednorázové nastavení</span>
+              </div>
+              <div class="cli-body">
+                <div><span class="cli-prompt">$</span>git config --global user.name "Jan Novak"</div>
+                <div><span class="cli-prompt">$</span>git config --global user.email "jan.novak@skola.cz"</div>
+                <div><span class="cli-prompt">$</span>git config --global init.defaultBranch main</div>
+                <div><span class="cli-prompt">$</span>git config --list <span class="cli-comment"># ověření</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f97316; margin-bottom: 0.5rem;">Důležité souvislosti</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Přepínač <code>--global</code>:</strong> Nastavení se uloží do domovského adresáře (<code>~/.gitconfig</code>) a platí pro všechny vaše projekty na tomto počítači.</li>
+              <li><strong>E-mail musí odpovídat GitHubu:</strong> Pokud použijete stejný e-mail jako na vašem GitHub účtu, GitHub commity automaticky spáruje s vaším profilem.</li>
+              <li><strong>Konec řádků (CRLF vs. LF):</strong> Na Windows se doporučuje nastavit <code>git config --global core.autocrlf true</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Scénář 1: Start nového projektu
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Scénář 1: Nový projekt">
+        <div class="slide-header">
+          <h2 class="slide-title">Scénář 1: Založení nového projektu na disku</h2>
+          <p class="slide-subtitle">Vytvoření prázdného repozitáře a nastavení ignorovaných souborů.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div>
+            <div class="cli-box">
+              <div class="cli-header">
+                <span>TERMINÁL</span>
+                <span>Inicializace</span>
+              </div>
+              <div class="cli-body">
+                <div><span class="cli-prompt">$</span>mkdir muj-projekt &amp;&amp; cd muj-projekt</div>
+                <div><span class="cli-prompt">$</span>git init</div>
+                <div class="cli-comment"># Vytvoří skrytou složku .git</div>
+                <div><span class="cli-prompt">$</span>echo "# Můj projekt" &gt; README.md</div>
+                <div><span class="cli-prompt">$</span>git status</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.4rem;">Kriticky důležitý soubor: <code>.gitignore</code></h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.65rem;">
+              Soubor, který říká Gitu, které složky a soubory <strong>nikdy nesmí commitovat</strong> (hesla, dočasné buildy, obrovské knihovny):
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.6rem; font-family: var(--font-mono); font-size: 0.78rem; color: #94a3b8;">
+              node_modules/<br>
+              .env &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ef4444;"># tajné API klíče a hesla!</span><br>
+              dist/ / bin/<br>
+              .DS_Store
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Scénář 2: Cyklus každodenní práce
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Scénář 2: Cyklus práce">
+        <div class="slide-header">
+          <h2 class="slide-title">Scénář 2: Každodenní cyklus změn (Status &rarr; Add &rarr; Commit)</h2>
+          <p class="slide-subtitle">Základní rituál, který budete provádět desítkykrát denně.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div>
+            <div class="cli-box">
+              <div class="cli-header">
+                <span>TERMINÁL</span>
+                <span>Pracovní cyklus</span>
+              </div>
+              <div class="cli-body">
+                <div><span class="cli-prompt">$</span>git status <span class="cli-comment"># zkontroluj změny</span></div>
+                <div><span class="cli-prompt">$</span>git diff <span class="cli-comment"># prohlédni řádkové změny</span></div>
+                <div><span class="cli-prompt">$</span>git add . <span class="cli-comment"># přidej vše do Stage</span></div>
+                <div><span class="cli-prompt">$</span>git commit -m "feat: add user login form"</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Konvence commit zpráv (Conventional Commits)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.65rem;">
+              V profesionálních týmech se používají standardizované prefixy:
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.8rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li><code>feat:</code> nová funkce pro uživatele</li>
+              <li><code>fix:</code> oprava existující chyby / bugu</li>
+              <li><code>docs:</code> změny v dokumentaci či README</li>
+              <li><code>style:</code> formátování mezer bez změny logiky</li>
+              <li><code>refactor:</code> úprava kódu bez změny chování</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Scénář 3: Propojení s GitHubem a Push
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Scénář 3: Push na GitHub">
+        <div class="slide-header">
+          <h2 class="slide-title">Scénář 3: Propojení s GitHubem a první Push</h2>
+          <p class="slide-subtitle">Odeslání vaší lokální práce do cloudu na GitHub.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div>
+            <div class="cli-box">
+              <div class="cli-header">
+                <span>TERMINÁL</span>
+                <span>Propojení a odeslání</span>
+              </div>
+              <div class="cli-body">
+                <div><span class="cli-prompt">$</span>git remote add origin https://github.com/uzivatel/repo.git</div>
+                <div><span class="cli-prompt">$</span>git branch -M main</div>
+                <div><span class="cli-prompt">$</span>git push -u origin main</div>
+                <div class="cli-comment"># Každý další push už jen:</div>
+                <div><span class="cli-prompt">$</span>git push</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f97316; margin-bottom: 0.5rem;">Co tyto příkazy dělají?</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong><code>remote add origin URL</code>:</strong> Pojmenuje vzdálený server zkratkou <code>origin</code> a uloží si jeho URL adresu.</li>
+              <li><strong><code>branch -M main</code>:</strong> Přejmenuje výchozí větev na standardní název <code>main</code>.</li>
+              <li><strong><code>push -u origin main</code>:</strong> Odešle commity a parametr <code>-u</code> (upstream) nastaví trvalé sledování větve. Příště stačí napsat jen <code>git push</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Scénář 4: Klonování a stahování změn
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Scénář 4: Clone & Pull">
+        <div class="slide-header">
+          <h2 class="slide-title">Scénář 4: Klonování a stahování práce kolegů</h2>
+          <p class="slide-subtitle">Jak začít pracovat na existujícím projektu z GitHubu.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div>
+            <div class="cli-box">
+              <div class="cli-header">
+                <span>TERMINÁL</span>
+                <span>Klonování a Pull</span>
+              </div>
+              <div class="cli-body">
+                <div><span class="cli-prompt">$</span>git clone https://github.com/skola/projekt.git</div>
+                <div><span class="cli-prompt">$</span>cd projekt</div>
+                <div class="cli-comment"># Stáhnutí novinek od kolegů:</div>
+                <div><span class="cli-prompt">$</span>git pull</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #a855f7; margin-bottom: 0.5rem;">Rozdíl: <code>git fetch</code> vs. <code>git pull</code></h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong><code>git fetch</code>:</strong> Zjistí a stáhne nové commity ze vzdáleného serveru do pozadí, ale <strong>nesahá</strong> na vaše rozpracované soubory. Bezpečné pro inspekci.</li>
+              <li><strong><code>git pull</code>:</strong> Provede <code>fetch</code> a okamžitě automaticky provede <code>merge</code> do vaší aktuální větve.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Scénář 5: Práce s větvemi (Branching)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Scénář 5: Větvení">
+        <div class="slide-header">
+          <h2 class="slide-title">Scénář 5: Tvorba a přepínání větví (Branching)</h2>
+          <p class="slide-subtitle">Moderní příkaz <code>git switch</code> pro čistou práci s větvemi.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div>
+            <div class="cli-box">
+              <div class="cli-header">
+                <span>TERMINÁL</span>
+                <span>Správa větví</span>
+              </div>
+              <div class="cli-body">
+                <div><span class="cli-prompt">$</span>git branch <span class="cli-comment"># seznam větví</span></div>
+                <div><span class="cli-prompt">$</span>git switch -c feature/login <span class="cli-comment"># vytvoří a přepne</span></div>
+                <div class="cli-comment"># ... editace souborů a commity ...</div>
+                <div><span class="cli-prompt">$</span>git switch main <span class="cli-comment"># zpět na hlavní</span></div>
+                <div><span class="cli-prompt">$</span>git merge feature/login <span class="cli-comment"># sloučení změn</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">Proč používat <code>git switch</code> místo <code>checkout</code>?</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              V minulosti příkaz <code>git checkout</code> dělal dvě nesouvisející věci: přepínal větve i zahazoval změny v souborech. Od verze Git 2.23 byl rozdělen na přehledné a bezpečné příkazy:
+            </p>
+            <div style="font-size: 0.8rem; font-family: var(--font-mono); margin-top: 0.5rem; color: var(--accent);">
+              &bull; git switch (přepínání větví)<br>
+              &bull; git restore (zahazování změn v souborech)
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Scénář 6: Řešení merge konfliktů
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Scénář 6: Merge konflikty">
+        <div class="slide-header">
+          <h2 class="slide-title">Scénář 6: Řešení merge konfliktů krok za krokem</h2>
+          <p class="slide-subtitle">Když dva vývojáři přepíší tentýž řádek: jak konflikt bezpečně vyřešit.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.25rem;">
+          <div>
+            <div class="cli-box">
+              <div class="cli-header">
+                <span>SOUBOR V KONFLIKTU</span>
+                <span>Značky Gitu</span>
+              </div>
+              <div class="cli-body">
+                <span style="color: #38bdf8;">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD (Vaše aktuální větev)</span><br>
+                const port = 3000;<br>
+                <span style="color: #f59e0b;">======= (Dělící čára)</span><br>
+                const port = 8080;<br>
+                <span style="color: #a855f7;">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/login (Slučovaná větev)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f43f5e; margin-bottom: 0.5rem;">Postup vyřešení v 3 krocích:</h3>
+            <ol style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Ruční úprava v editoru:</strong> Rozhodněte, která hodnota má platit (např. <code>const port = 3000;</code>) a odmažte pomocné značky <code>&lt;&lt;&lt;</code>, <code>===</code>, <code>&gt;&gt;&gt;</code>.</li>
+              <li><strong>Označení za vyřešené:</strong> Napište <code>git add nazev-souboru.js</code>.</li>
+              <li><strong>Dokončení merge:</strong> Zadejte <code>git commit</code> a uložte merge commit.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Scénář 7: Záchranné brzdy a historie
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Scénář 7: Záchranné brzdy">
+        <div class="slide-header">
+          <h2 class="slide-title">Scénář 7: Záchranné operace (Stash, Restore, Revert)</h2>
+          <p class="slide-subtitle">Jak napravit chyby a bezpečně odložit rozdělanou práci.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Odložení rozdělané práce (Stash)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.4; margin-bottom: 0.5rem;">
+              Potřebujete rychle opravit bug v jiné větvi, ale máte rozpracované neuložené změny?
+            </p>
+            <div class="cli-box" style="margin: 0;">
+              <div class="cli-body" style="font-size: 0.78rem;">
+                <div><span class="cli-prompt">$</span>git stash <span class="cli-comment"># schová změny do kapsy</span></div>
+                <div><span class="cli-prompt">$</span>git switch main <span class="cli-comment"># oprava</span></div>
+                <div><span class="cli-prompt">$</span>git switch feature</div>
+                <div><span class="cli-prompt">$</span>git stash pop <span class="cli-comment"># vrátí změny zpět</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f43f5e; margin-bottom: 0.5rem;">Zahození a vrácení změn</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong><code>git restore soubor.js</code>:</strong> Zahodí neuložené změny v souboru a vrátí jej do stavu posledního commitu.</li>
+              <li><strong><code>git revert &lt;hash&gt;</code>:</strong> Bezpečné vrácení: vytvoří <em>nový commit</em>, který přesně obrátí změny starého commitu (vhodné pro veřejný GitHub).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Rychlý cheatsheet příkazů
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Rychlý Cheatsheet">
+        <div class="slide-header">
+          <h2 class="slide-title">Rychlý tahák nejčastějších příkazů</h2>
+          <p class="slide-subtitle">Všechny klíčové příkazy na jednom přehledném místě.</p>
+        </div>
+
+        <div class="card">
+          <table class="cheatsheet-table">
+            <thead>
+              <tr>
+                <th>Příkaz</th>
+                <th>Účel / Význam</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="cheatsheet-cmd">git init</span></td>
+                <td>Inicializuje nový lokální Git repozitář v aktuální složce.</td>
+              </tr>
+              <tr>
+                <td><span class="cheatsheet-cmd">git clone &lt;url&gt;</span></td>
+                <td>Stáhne existující vzdálený repozitář včetně kompletní historie.</td>
+              </tr>
+              <tr>
+                <td><span class="cheatsheet-cmd">git status</span></td>
+                <td>Zobrazí stav pracovní zóny, změněné a sledované soubory.</td>
+              </tr>
+              <tr>
+                <td><span class="cheatsheet-cmd">git add .</span></td>
+                <td>Přidá všechny změny z pracovního adresáře do Staging Area.</td>
+              </tr>
+              <tr>
+                <td><span class="cheatsheet-cmd">git commit -m "zpráva"</span></td>
+                <td>Uloží připravené změny do historie jako nový trvalý snapshot.</td>
+              </tr>
+              <tr>
+                <td><span class="cheatsheet-cmd">git push</span></td>
+                <td>Odešle lokální commity do vzdáleného repozitáře (např. na GitHub).</td>
+              </tr>
+              <tr>
+                <td><span class="cheatsheet-cmd">git pull</span></td>
+                <td>Stáhne a sloučí nejnovější změny ze vzdáleného repozitáře.</td>
+              </tr>
+              <tr>
+                <td><span class="cheatsheet-cmd">git switch -c &lt;vetev&gt;</span></td>
+                <td>Vytvoří novou větev a okamžitě se do ní přepne.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 11: Shrnutí tématu & Kontrolní kvíz
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Shrnutí & Otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Ověřte si praktickou znalost Git příkazů v terminálu.</p>
+        </div>
+
+        <div class="quiz-container">
+          <div class="card" style="margin-bottom: 1rem; background: rgba(249, 115, 22, 0.05); border-color: rgba(249, 115, 22, 0.2);">
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem;">Shrnutí klíčových bodů:</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Základem práce v Gitu je cyklus <code>git status</code> &rarr; <code>git add</code> &rarr; <code>git commit</code>. Synchronizace se provádí pomocí <code>git push</code> a <code>git pull</code>. Pro izolaci vývoje slouží větve (<code>git switch -c</code>) a při konfliktech pomáhají vizuální oddělovače a následný merge commit.
+            </p>
+          </div>
+
+          <div class="quiz-list">
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Jaký je rozdíl mezi příkazy git add a git commit?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                <code>git add</code> připravuje vybrané soubory do tzv. Staging Area (ještě nic trvale nezapisuje do historie). <code>git commit</code> vezme vše připravené ve Staging Area a vytvoří trvalý, podepsaný snapshot v historii repozitáře.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. K čemu slouží soubor .gitignore a proč je nebezpečné commitnout soubor .env?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                <code>.gitignore</code> definuje pravidla pro soubory, které Git ignoruje. Soubor <code>.env</code> často obsahuje tajná hesla k databázím či privátní API tokeny. Pokud jej omylem commitnete na veřejný GitHub, útočníci roboticky prohledávající commity mohou během sekund ukrást vaše data nebo zneužít placené služby.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. Jaký moderní příkaz slouží k vytvoření a okamžitému přepnutí do nové větve?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                <code>git switch -c &lt;nazev-vetve&gt;</code> (případně starší zápis <code>git checkout -b &lt;nazev-vetve&gt;</code>).
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. Co provede příkaz git stash a kdy je ideální jej použít?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Dočasně „odloží“ veškeré rozpracované a necommitnuté změny do skrytého zásobníku a uvede pracovní adresář do čistého stavu. Je ideální, když potřebujete narychlo přepnout do jiné větve vyřešit urgentní úkol a nechcete tvořit nedokončený „polovičatý“ commit.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../011-Git/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 011 Git (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../013-Docker/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 013 Docker (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 11</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+</body>
+
+</html>

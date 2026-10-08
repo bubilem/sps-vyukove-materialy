@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>011 Git | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Git a distribuované verzování. Proč verzovat, princip Gitu, 3 zóny souborů, větvení a mergování, ekosystém GitHubu (repozitáře, Issues, Pull Requests, Actions, Pages).">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 011 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">011 Git</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #f43f5e; border-color: rgba(244, 63, 94, 0.35); background: rgba(244, 63, 94, 0.12);">Verzování &amp; Kolaborace</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Git & GitHub">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg>
+            Předmět PRG &bull; Téma 011 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title">
+            Git a distribuované <br><span class="gradient-text">verzování</span>
+          </h1>
+          <p class="hero-description">
+            Konec složkám jako „projekt_final_v2_opravdu.zip“. Poznejte moderní distribuovaný systém Git, 3 zóny souborů, bezpečné větvení a platformu GitHub pro týmový vývoj a CI/CD automatizaci.
+          </p>
+
+          <!-- Interaktivní showcase model tří zón Gitu -->
+          <div class="hero-blueprint-card">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Working Tree (Disk)</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>git add</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg>
+                <span>Staging Area (Index)</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>git commit</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
+                <span>Git Repo (SHA-1)</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>git push</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <span>GitHub (Remote)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 klíčové pilíře výuky -->
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag rose">1. Proč verzovat</span>
+              <span class="feature-title">Bezpečí a historie</span>
+              <span class="feature-desc">Konec chaosu se zálohami ZIP. Návrat v čase k libovolné verzi a ochrana před přepsáním práce.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag cyan">2. Model 3 zón</span>
+              <span class="feature-title">Struktura repozitáře</span>
+              <span class="feature-desc">Pracovní adresář, připravené změny (Staging Area) a trvalé neměnné snímky v lokálním repozitáři.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">3. Větve & Merging</span>
+              <span class="feature-title">Paralelní vývoj</span>
+              <span class="feature-desc">Tvorba izolovaných funkcí v feature branch, řešení konfliktů a bezpečné začlenění kódu.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag emerald">4. GitHub Cloud</span>
+              <span class="feature-title">Tým a automatizace</span>
+              <span class="feature-desc">Vzdálené repozitáře, Pull Requesty, Issue tracking a CI/CD buildy v GitHub Actions.</span>
+            </div>
+          </div>
+
+          <div class="hero-meta-bar">
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              cca 3 vyučovací hodiny
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              8 výukových kapitol
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Základ týmového vývoje
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Proč verzovat kód?
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Proč verzovat">
+        <div class="slide-header">
+          <h2 class="slide-title">Proč verzovat? Noční můra bez verzovacího systému</h2>
+          <p class="slide-subtitle">Jak vypadá práce bez Gitu a jakým fatálním chybám verzování předchází.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card" style="border-left: 4px solid #ef4444;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f87171; margin-bottom: 0.5rem;">Světy bez Gitu (ZIP chaos)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Ztráta funkčního stavu:</strong> Uděláte úpravu, aplikace přestane fungovat a vy už nevíte, co přesně jste před hodinou přepsali.</li>
+              <li><strong>Přepisování práce kolegů:</strong> Dva lidé upraví stejný soubor na flashdisku nebo Google Disku – ten, kdo uloží soubor jako druhý, nevratně smaže práci prvního.</li>
+              <li><strong>Nulový kontext:</strong> Nikdo netuší, proč v kódu existuje podivná podmínka na řádku 150 a kdo ji tam před půl rokem přidal.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 4px solid #10b981;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #34d399; margin-bottom: 0.5rem;">Co přináší systém Git</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Stroj času:</strong> Kdykoli se můžete vrátit k libovolné funkční verzi z minulosti s přesností na jediný řádek.</li>
+              <li><strong>Audit a odpovědnost:</strong> U každého řádku víte, kdo jej napsal, kdy a s jakou zprávou vysvětlující důvod.</li>
+              <li><strong>Nezávislé experimentování:</strong> Ve větvi můžete vyzkoušet nový nápad; pokud se nepovede, větev jednoduše zahodíte bez rizika pro funkční kód.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Co je Git & Distribuovaný model
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Distribuovaný model">
+        <div class="slide-header">
+          <h2 class="slide-title">Co je Git a jak funguje distribuovaný model?</h2>
+          <p class="slide-subtitle">Vytvořil Linus Torvalds v roce 2005 pro potřeby vývoje jádra operačního systému Linux.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem;">Starý centralizovaný model (SVN, CVS)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Existoval jediný centrální server. Každý vývojář si stáhl pouze aktuální verzi.
+            </p>
+            <div style="font-size: 0.8rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 0.65rem; border-radius: var(--radius-sm);">
+              Bez internetu nešlo ukládat commity, prohlížet historii ani přepínat větve. Výpadek centrálního serveru ochromil celou firmu.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">Moderní distribuovaný model (Git)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Každý klon repozitáře na počítači kteréhokoli vývojáře obsahuje <strong>kompletní 100% historii projektu</strong>.
+            </p>
+            <div style="font-size: 0.8rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 0.65rem; border-radius: var(--radius-sm);">
+              Plná práce offline ve vlaku či letadle (commity, větvení, diff). Servery jako GitHub slouží primárně jako spolehlivé synchronizační body.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Commit a strom historie
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Commit & Historie">
+        <div class="slide-header">
+          <h2 class="slide-title">Anatomie commitu: Snapshot, ne rozdíl</h2>
+          <p class="slide-subtitle">Jak Git vnitřně reprezentuje historii a data vašeho projektu.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f43f5e; margin-bottom: 0.5rem;">Co obsahuje jeden Commit?</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Kompletní snapshot souborů:</strong> Git ukládá stav celého projektu v daný moment (nezměněné soubory sdílí odkazem, šetří místo).</li>
+              <li><strong>Kryptografický Hash (SHA-1 / SHA-256):</strong> 40místný unikátní identifikátor (např. <code>7f3a9e1...</code>), který garantuje integritu. Obsah commitu nelze zpětně zfalšovat.</li>
+              <li><strong>Metadata:</strong> Autor, e-mail, datum, čas a smysluplná popisná zpráva (commit message).</li>
+              <li><strong>Rodičovský commit (Parent):</strong> Odkaz na předchozí commit – tím vzniká orientovaný acyklický graf historie.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #818cf8; margin-bottom: 0.5rem;">Zlaté pravidlo commitování</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Commit by měl být <strong>atomický</strong> – má představovat jednu logickou, ucelenou a otestovanou změnu (např. <em>„Přidání validace e-mailu ve formuláři“</em>).
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.65rem; font-size: 0.8rem; font-family: var(--font-mono); color: #f87171;">
+              Špatně: "zmeny", "oprava", "asdfasdf"<br>
+              <span style="color: #34d399;">Správně: "Fix: resolve null pointer in user auth"</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Tři stavy a zóny souborů
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Tři zóny Gitu">
+        <div class="slide-header">
+          <h2 class="slide-title">Tři zóny Gitu: Cesta souboru do repozitáře</h2>
+          <p class="slide-subtitle">Klíč k pochopení toho, proč Git neukládá soubory okamžitě, ale v promyšlených fázích.</p>
+        </div>
+
+        <div class="git-zones">
+          <div class="zone-card">
+            <span class="tag amber">1. Zóna</span>
+            <h3>Working Directory</h3>
+            <p>Vaše běžné soubory na pevném disku, které upravujete v editoru. Zde soubory vznikají a mění se.</p>
+            <div class="zone-cmd">git status (zobrazí změny)</div>
+          </div>
+
+          <div class="zone-card">
+            <span class="tag cyan">2. Zóna</span>
+            <h3>Staging Area (Index)</h3>
+            <p>Přípravná zóna pro příští commit. Pečlivě vybíráte pouze ty soubory a řádky, které chcete zahrnout do dalšího snapshotu.</p>
+            <div class="zone-cmd">git add index.html</div>
+          </div>
+
+          <div class="zone-card">
+            <span class="tag emerald">3. Zóna</span>
+            <h3>Git Repository (.git)</h3>
+            <p>Trvalá databáze commitů. Data jsou bezpečně zapsána do historie a opatřena neměnným hashem.</p>
+            <div class="zone-cmd">git commit -m "Popis"</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Větvení a spojování (Branching & Merging)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Větvení & Spojování">
+        <div class="slide-header">
+          <h2 class="slide-title">Větvení (Branching) a spojování (Merging)</h2>
+          <p class="slide-subtitle">Větve v Gitu jsou lehké, bleskové a umožňují paralelní práci tisíců vývojářů naráz.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">Co je to větev (Branch)?</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Větev v Gitu je pouhý <strong>pohyblivý ukazatel</strong> na konkrétní commit. Vytvoření větve nezabírá žádné místo na disku a trvá méně než milisekundu!
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li><strong>Hlavní větev (main):</strong> Obsahuje stabilní, otestovaný a nasaditelný produkční kód.</li>
+              <li><strong>Vývojové větve (feature/*):</strong> Každá nová funkce či oprava se vyvíjí ve vlastní větvi odděleně od ostatních.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #a855f7; margin-bottom: 0.5rem;">Spojování a Merge konflikty</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Jakmile je nová funkce hotová, sloučí se zpět do hlavní větve (<strong>Merge</strong>).
+            </p>
+            <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.75rem; border: 1px solid var(--border-color); font-size: 0.82rem; color: var(--text-secondary);">
+              <strong>Merge konflikt:</strong> Nastane pouze tehdy, když dva vývojáři ve stejné době upravili <em>přesně tytéž řádky</em> ve stejném souboru. Git tehdy zastaví proces a vyzve vývojáře k ručnímu výběru správné varianty.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Git vs. GitHub / GitLab / Bitbucket
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Git vs. GitHub">
+        <div class="slide-header">
+          <h2 class="slide-title">Git vs. GitHub: Časté nedorozumění</h2>
+          <p class="slide-subtitle">Zásadní rozdíl mezi lokálním nástrojem a cloudovou službou.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #f43f5e; margin-bottom: 0.65rem;">Git (Nástroj &amp; Protokol)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li>Příkazový řádkový program běžící lokálně na vašem počítači.</li>
+              <li>Zdarma, open-source, nevyžaduje žádné předplatné ani připojení k internetu.</li>
+              <li>Spravuje commity, historii, větve a slučování v lokální složce <code>.git</code>.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.65rem;">GitHub / GitLab / Bitbucket (Hosting)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li>Webová cloudová služba provozovaná na vzdálených serverech.</li>
+              <li>Uchovává vzdálené kopie vašich repozitářů (Remote repositories).</li>
+              <li>Poskytuje nástroje pro řízení týmu: webové rozhraní pro prohlížení kódu, diskuze, řízení přístupových práv, CI/CD automatizace.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Ekosystém GitHubu do hloubky
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Ekosystém GitHubu">
+        <div class="slide-header">
+          <h2 class="slide-title">Ekosystém GitHubu: Spolupráce v praxi</h2>
+          <p class="slide-subtitle">Jak moderní technologické firmy a open-source projekty řídí vývoj.</p>
+        </div>
+
+        <div class="gh-grid">
+          <div class="gh-feature-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              Repozitáře (Public / Private)
+            </h3>
+            <p>Veřejné (otevřené světu pro open source) nebo soukromé projekty s přesně nastavenými právy pro členy týmu.</p>
+          </div>
+
+          <div class="gh-feature-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              Issues &amp; Projects
+            </h3>
+            <p>Hlášení chyb, náměty na nové funkce a kanbanové tabule pro přehledné plánování úkolů ve sprintu.</p>
+          </div>
+
+          <div class="gh-feature-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M6 21V9a9 9 0 0 0 9 9"></path></svg>
+              Pull Requests (PR)
+            </h3>
+            <p>Žádost o začlenění kódu z vaší větve. Umožňuje <strong>Code Review</strong> – kolegové kód projdou, okomentují řádky a schválí sloučení.</p>
+          </div>
+
+          <div class="gh-feature-card">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              Branch Protection
+            </h3>
+            <p>Ochrana produkční větve <code>main</code>: nikdo nesmí posílat změny přímo, sloučení vyžaduje projití testů a schválení seniorním vývojářem.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: GitHub Actions a GitHub Pages
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Actions & Pages">
+        <div class="slide-header">
+          <h2 class="slide-title">Automatizace a hosting: GitHub Actions &amp; Pages</h2>
+          <p class="slide-subtitle">Od pushnutí kódu až po živý běžící web na internetu během desítek sekund.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">GitHub Actions (CI/CD Pipeline)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Automatizační robot řízený předpisem v <code>.github/workflows/*.yml</code>. Při každém pushi nebo pull requestu v cloudu nastartuje virtuální stroj:
+            </p>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.35rem;">
+              <li>Spustí automatické testy a ověří, že kód funguje.</li>
+              <li>Zkontroluje formátování linterem.</li>
+              <li>V případě úspěchu zkompiluje projekt a nasadí jej na server.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">GitHub Pages (Statický hosting)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Bezplatný webhosting pro statické weby (HTML, CSS, JS, obrázky) přímo z vybrané větve vašeho repozitáře.
+            </p>
+            <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--border-color); font-size: 0.82rem; color: var(--accent); font-family: var(--font-mono);">
+              https://vase-jmeno.github.io/nazev-projektu/
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">
+              Ideální pro školní projekty, portfolio žáka i tyto výukové materiály SPŠ!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí tématu & Kontrolní kvíz
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí & Otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Ověřte si porozumění principům verzování v Gitu a platformě GitHub.</p>
+        </div>
+
+        <div class="quiz-container">
+          <div class="card" style="margin-bottom: 1rem; background: rgba(244, 63, 94, 0.05); border-color: rgba(244, 63, 94, 0.2);">
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem;">Shrnutí klíčových bodů:</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Git je distribuovaný verzovací systém uchovávající kompletní historii jako graf commitů. Změny putují přes 3 zóny: Working Directory &rarr; Staging Area &rarr; Repository. Větvení umožňuje bezpečnou paralelní práci a GitHub poskytuje týmové nástroje (Pull Requests, Issues, Actions, Pages).
+            </p>
+          </div>
+
+          <div class="quiz-list">
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Jaký je rozdíl mezi Staging Area a samotným commitem?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Staging Area (Index) je přípravná plocha, kam pomocí <code>git add</code> přidáváme soubory k zabalení. Samotný commit je až trvale zapsaný neměnný snapshot stavu v databázi repozitáře opatřený autorem a popisem.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. Proč je Git označován jako „distribuovaný“ verzovací systém?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Protože každý naklonovaný repozitář na lokálním počítači obsahuje plnohodnotnou kopii celé historie a všech větví. Vývojář není závislý na dostupnosti centrálního serveru a může plnohodnotně pracovat offline.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. Kdy přesně vzniká tzv. Merge konflikt?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Pouze tehdy, pokud v obou slučovaných větvích došlo ke změně na stejném místě (stejných řádcích) stejného souboru a Git nemůže automaticky rozhodnout, která verze má mít přednost.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. Co je to Pull Request na GitHubu a k čemu slouží Code Review?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Pull Request je formální návrh na začlenění změn z jedné větve do druhé. Code Review je proces, kdy ostatní programátoři kód před sloučením zkontrolují, navrhnou vylepšení a odhalí případné chyby.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../010-Developerske-nastroje/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 010 Developerské nástroje (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../012-Git-prikazy/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 012 Git příkazy (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="cs" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>013 Docker | PRG • SPŠ</title>
+  <meta name="description" content="Výuková prezentace SPŠ: Docker a kontejnerizace. Virtuální stroj vs. kontejner, Docker Image, Container, Dockerfile, vrstvy UnionFS, porty, volumes a Docker CLI.">
+
+  <!-- Společné jádro prezentačního frameworku SPŠ (DRY) -->
+  <link rel="stylesheet" href="../../assets/css/presentation-core.css">
+  <!-- Dedikované lokální styly pro téma 013 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Ambientní dynamické pozadí -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+  </div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Horní indikátor postupu prezentací -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <div class="presentation-container">
+
+    <!-- 1. Horní záhlaví s drobečkovou navigací SPŠ -->
+    <header class="presentation-header">
+      <div class="header-left">
+        <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
+          <a href="../../index.html" class="breadcrumb-link" title="Centrální rozcestník SPŠ">
+            <svg class="icon" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Rozcestník SPŠ
+          </a>
+          <span class="breadcrumb-separator">/</span>
+          <a href="../index.html" class="breadcrumb-link" title="Předmět PRG">PRG</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">013 Docker</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <span class="tag tag-exam" style="color: #0284c7; border-color: rgba(2, 132, 199, 0.35); background: rgba(2, 132, 199, 0.12);">Kontejnerizace &amp; DevOps</span>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Přepnout motiv (Dark / Light)">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. Hlavní zobrazovací rám snímků -->
+    <main class="slide-viewport">
+
+      <!-- ==========================================
+           SNÍMEK 1: Titulní snímek
+           ========================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Docker & Kontejnerizace">
+        <div class="slide-content" style="text-align: center;">
+          <div class="title-badge">
+            <svg class="icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            Předmět PRG &bull; Téma 013 &bull; Výukový modul SPŠ
+          </div>
+          <h1 class="hero-title">
+            Docker a <br><span class="gradient-text">kontejnerizace</span>
+          </h1>
+          <p class="hero-description">
+            Konec slavné větě: „U mě to funguje!“. Jak Docker zabalí celou aplikaci včetně systémových závislostí, proč jsou kontejnery efektivnější než virtuální stroje a jak napsat svůj první Dockerfile.
+          </p>
+
+          <!-- Interaktivní showcase model životního cyklu Dockeru -->
+          <div class="hero-blueprint-card">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+                <span>Dockerfile (Předpis)</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>docker build</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                <span>Docker Image (Šablona)</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>docker run -p</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <span>Běžící Kontejner</span>
+              </div>
+              <div class="mini-flow-connector">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span>push/pull</span>
+              </div>
+              <div class="mini-flow-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <span>Docker Hub (Registry)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 klíčové pilíře výuky -->
+          <div class="hero-features">
+            <div class="hero-feature-item">
+              <span class="tag cyan">1. Princip izolace</span>
+              <span class="feature-title">VM vs. Kontejner</span>
+              <span class="feature-desc">Sdílení jádra OS (Linux Kernel) oproti těžkopádné virtualizaci hardwaru celých operačních systémů.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag purple">2. Čtyři pilíře</span>
+              <span class="feature-title">Engine, Image, Hub</span>
+              <span class="feature-desc">Architektura démona Dockeru, vztah mezi neměnnou šablonou (Image) a běžícím procesem (Container).</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag emerald">3. Stavba Image</span>
+              <span class="feature-title">Dockerfile & Vrstvy</span>
+              <span class="feature-desc">Instrukce FROM, WORKDIR, COPY, RUN, EXPOSE a CMD. Inteligentní vrstvené cachování pro rychlý build.</span>
+            </div>
+            <div class="hero-feature-item">
+              <span class="tag amber">4. Propojení & Data</span>
+              <span class="feature-title">Porty a Volume disky</span>
+              <span class="feature-desc">Mapování síťových portů (-p 8080:80) a perzistentní ukládání databází na hostitelský disk (-v).</span>
+            </div>
+          </div>
+
+          <div class="hero-meta-bar">
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              cca 3 vyučovací hodiny
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              8 výukových témat
+            </span>
+            <span class="hero-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Základ DevOps a Cloud computingu
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 2: Problém: „U mě to fungovalo!“
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Problém závislostí">
+        <div class="slide-header">
+          <h2 class="slide-title">Problém: „Na mém počítači to fungovalo!“</h2>
+          <p class="slide-subtitle">Klasické noční můry nasazování softwaru do produkčního prostředí.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card" style="border-left: 4px solid #ef4444;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f87171; margin-bottom: 0.5rem;">Matice pekel (Dependency Hell)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><strong>Různé verze runtime:</strong> Vývojář má na notebooku Python 3.12 s novou syntaxí; produkční server má starý Python 3.8.</li>
+              <li><strong>Chybějící systémové balíčky:</strong> Aplikace potřebuje systémovou knihovnu <code>libpng</code> nebo <code>openssl</code>, která na serveru chybí.</li>
+              <li><strong>Konflikty mezi projekty:</strong> Projekt A potřebuje Node 16, zatímco Projekt B na stejném serveru vyžaduje Node 20.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-left: 4px solid #0284c7;">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">Řešení: Kontejner jako námořní přepravník</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Před vynálezem normalizovaných lodních kontejnerů se zboží nakládalo pytel po pytli a každá loď potřebovala jinou manipulaci. Kontejner standardizoval rozměr: jeřábu je jedno, zda je uvnitř káva nebo auta.
+            </p>
+            <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--border-color); font-size: 0.82rem; color: var(--text-secondary);">
+              <strong>Docker v IT:</strong> Zabalí kód, runtime, systémové nástroje a konfiguraci do jediného standardizovaného balíčku, který běží 100% stejně na Windows, Macu i linuxovém clusteru.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: Virtuální stroj vs. Kontejner
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="VM vs. Kontejner">
+        <div class="slide-header">
+          <h2 class="slide-title">Virtuální stroj (VM) vs. Kontejner</h2>
+          <p class="slide-subtitle">Proč kontejnery nahradily těžkopádnou plnou virtualizaci.</p>
+        </div>
+
+        <div class="compare-container-grid">
+          <div class="compare-box">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b;">Virtuální stroj (VMware / VirtualBox)</h3>
+            <div class="compare-stack">
+              <div class="stack-layer" style="background: rgba(245, 158, 11, 0.25); color: #fbbf24;">Aplikace A &amp; B</div>
+              <div class="stack-layer" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Knihovny a binárky</div>
+              <div class="stack-layer" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">Celý Guest OS (desítky GB!)</div>
+              <div class="stack-layer" style="background: rgba(255, 255, 255, 0.05);">Hypervisor (Type 1 / 2)</div>
+              <div class="stack-layer" style="background: rgba(255, 255, 255, 0.03);">Hostitelský OS + Fyzický HW</div>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">
+              Těžkopádné: start trvá minuty, emuluje virtuální hardware, spotřebovává gigabajty RAM na vlastní operační systém.
+            </p>
+          </div>
+
+          <div class="compare-box">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #0284c7;">Docker Kontejner</h3>
+            <div class="compare-stack">
+              <div class="stack-layer" style="background: rgba(2, 132, 199, 0.35); color: #38bdf8;">Aplikace A &amp; B (Procesy)</div>
+              <div class="stack-layer" style="background: rgba(2, 132, 199, 0.18); color: #0284c7;">Knihovny a binárky</div>
+              <div class="stack-layer" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Docker Daemon / Engine</div>
+              <div class="stack-layer" style="background: rgba(255, 255, 255, 0.05);">Sdílené jádro (Linux Kernel)</div>
+              <div class="stack-layer" style="background: rgba(255, 255, 255, 0.03);">Fyzický hardware</div>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted);">
+              Bleskové: start v milisekundách, sdílí přímo jádro hostitele (namespaces &amp; cgroups), nulová režie na duplicitní OS.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: Základní pilíře Dockeru
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Pilíře Dockeru">
+        <div class="slide-header">
+          <h2 class="slide-title">Klíčový pojmový aparát Dockeru</h2>
+          <p class="slide-subtitle">Čtyři základní entity, které musíte rozlišovat.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.4rem;">Docker Image (Obraz)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Neměnná šablona (blueprint) pro vytvoření kontejneru. Obsahuje souborový systém se všemi nainstalovanými balíčky, kódem a metadaty. Jako třída v OOP.
+            </p>
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.4rem;">Docker Container (Kontejner)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              Běžící, živá instance vytvořená z obrazu. Má vlastní procesový prostor, síťové rozhraní a tenkou zapisovatelnou vrstvu. Jako objekt v OOP.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #a855f7; margin-bottom: 0.4rem;">Docker Engine / Daemon</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Služba běžící na pozadí operačního systému, která se stará o sestavování obrazů, spouštění kontejnerů a správu sítí a disků.
+            </p>
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.4rem;">Docker Hub (Registr)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+              Veřejný cloudový katalog (obdoba GitHubu pro obrazy), odkud si můžete stáhnout hotové oficiální obrazy: <code>python</code>, <code>node</code>, <code>nginx</code>, <code>postgres</code>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: Dockerfile pod mikroskopem
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Dockerfile pod lupou">
+        <div class="slide-header">
+          <h2 class="slide-title">Dockerfile pod mikroskopem: Kuchařka pro Image</h2>
+          <p class="slide-subtitle">Jednoduchý textový soubor bez přípony, který krok za krokem definuje sestavení obrazu.</p>
+        </div>
+
+        <div class="dockerfile-grid">
+          <div class="df-card">
+            <span class="df-cmd">FROM node:20-alpine</span>
+            <span class="df-desc">Bázový obraz. Stavíme na oficiálním odlehčeném Linuxu s Node.js 20.</span>
+          </div>
+
+          <div class="df-card">
+            <span class="df-cmd">WORKDIR /app</span>
+            <span class="df-desc">Nastaví pracovní adresář uvnitř kontejneru pro všechny další příkazy.</span>
+          </div>
+
+          <div class="df-card">
+            <span class="df-cmd">COPY package*.json ./</span>
+            <span class="df-desc">Zkopíruje soubory definující závislosti z vašeho počítače do kontejneru.</span>
+          </div>
+
+          <div class="df-card">
+            <span class="df-cmd">RUN npm install</span>
+            <span class="df-desc">Spustí příkaz v průběhu sestavení (nainstaluje knihovny).</span>
+          </div>
+
+          <div class="df-card">
+            <span class="df-cmd">COPY . .</span>
+            <span class="df-desc">Zkopíruje zbytek zdrojového kódu aplikace do obrazu.</span>
+          </div>
+
+          <div class="df-card">
+            <span class="df-cmd">EXPOSE 3000</span>
+            <span class="df-desc">Informativní dokumentace portu, na kterém aplikace uvnitř naslouchá.</span>
+          </div>
+
+          <div class="df-card" style="grid-column: 1 / -1; border-color: var(--accent);">
+            <span class="df-cmd">CMD ["node", "server.js"]</span>
+            <span class="df-desc">Výchozí příkaz, který se spustí, když kontejner nastartuje (ne při sestavování!).</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: Vrstvy v Dockeru & Caching
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Vrstvy a Caching">
+        <div class="slide-header">
+          <h2 class="slide-title">Vrstvová architektura souborů a Cache</h2>
+          <p class="slide-subtitle">Proč se druhý build vašeho Docker obrazu dokončí za 1 sekundu.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Vrstvový souborový systém (UnionFS)</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.75rem;">
+              Každý řádek v Dockerfile (<code>FROM</code>, <code>COPY</code>, <code>RUN</code>) vytvoří novou samostatnou <strong>pouze pro čtení (read-only)</strong> vrstvu.
+            </p>
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-size: 0.82rem; color: var(--text-secondary);">
+              Pokud se změní pouze jeden řádek kódu v <code>server.js</code>, Docker znovu sestaví pouze poslední vrstvu. Všechny předchozí vrstvy (např. stažení Linuxu a instalace balíčků) vezme z <strong>cache</strong>!
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem;">Doporučený trik: Oddělení závislostí</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Vždy nejprve kopírujte definici balíčků (<code>package.json</code> nebo <code>requirements.txt</code>) a spusťte instalaci, a až potom zkopírujte zdrojový kód aplikace.
+            </p>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">
+              Díky tomu se obrovské balíčky nebudou stahovat znovu při každé drobné úpravě HTML nebo JS souboru!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: Základní Docker CLI příkazy
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Docker CLI">
+        <div class="slide-header">
+          <h2 class="slide-title">Základní příkazy v Docker CLI</h2>
+          <p class="slide-subtitle">Přehled nejpoužívanějších příkazů pro každodenní správu.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.5rem;">Práce s obrazy (Images)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><code>docker build -t moje-app .</code> &ndash; sestaví obraz z aktuálního Dockerfile a pojmenuje jej.</li>
+              <li><code>docker images</code> &ndash; vypíše všechny stažené a sestavené obrazy na vašem disku.</li>
+              <li><code>docker rmi &lt;id&gt;</code> &ndash; smaže nepoužívaný obraz.</li>
+              <li><code>docker pull nginx</code> &ndash; stáhne hotový obraz z Docker Hubu.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Práce s kontejnery (Containers)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.82rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li><code>docker run -d -p 8080:80 nginx</code> &ndash; spustí kontejner na pozadí a namapuje port.</li>
+              <li><code>docker ps</code> &ndash; seznam aktuálně běžících kontejnerů.</li>
+              <li><code>docker stop &lt;id&gt;</code> &ndash; zastaví běžící kontejner.</li>
+              <li><code>docker logs &lt;id&gt;</code> &ndash; zobrazí výstup konzole zevnitř kontejneru.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: Sítě, Port Forwarding a Volumes
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Porty a Perzistence">
+        <div class="slide-header">
+          <h2 class="slide-title">Porty a perzistence dat (Docker Volumes)</h2>
+          <p class="slide-subtitle">Jak komunikovat s kontejnerem zvenčí a nepřijít o data v databázi.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.4rem;">Mapování portů: <code>-p 8080:80</code></h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Kontejner má vlastní virtuální síťovou kartu. Aby byl dostupný ve vašem prohlížeči, musíte propojit port hostitele s portem kontejneru:
+            </p>
+            <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--border-color); font-size: 0.82rem; font-family: var(--font-mono); color: var(--accent);">
+              -p &lt;PORT_HOSTITELE&gt;:&lt;PORT_KONTEJNERU&gt;<br>
+              <span style="color: #94a3b8;">Např. -p 8080:80 &rarr; prohlížeč: http://localhost:8080</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.4rem;">Perzistence a svazky: <code>-v</code></h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.65rem;">
+              Kontejnery jsou <strong>efemérní (bezstavové)</strong> – jakmile kontejner smažete, všechna nově vytvořená data uvnitř zaniknou!
+            </p>
+            <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--border-color); font-size: 0.82rem; font-family: var(--font-mono); color: #34d399;">
+              -v moje-data:/var/lib/postgresql/data<br>
+              <span style="color: #94a3b8;">Trvalá data databáze se ukládají na disk hostitele mimo kontejner.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 9: Docker Desktop vs. Headless Server
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Docker Desktop vs Server">
+        <div class="slide-header">
+          <h2 class="slide-title">Prostředí: Docker Desktop vs. Linux Server</h2>
+          <p class="slide-subtitle">Jak se liší vývojářské prostředí od ostrého produkčního nasazení.</p>
+        </div>
+
+        <div class="grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #0284c7; margin-bottom: 0.5rem;">Docker Desktop (Windows &amp; macOS)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li>Grafická aplikace s přehledem kontejnerů, logů a využití RAM/CPU.</li>
+              <li>Jelikož Windows ani macOS nemají Linux kernel, Docker Desktop spouští odlehčenou linuxovou virtualizaci (<strong>WSL2</strong> na Windows, Virtualization framework na Macu).</li>
+              <li>Určeno pro lokální vývoj a ladění.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">Headless Docker Engine (Linux servery)</h3>
+            <ul style="padding-left: 1.2rem; font-size: 0.84rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <li>Běží nativně přímo na linuxovém jádře bez jakékoli virtualizační vrstvy.</li>
+              <li>Žádné grafické rozhraní; ovládá se přes terminál nebo orchestrátory (Docker Swarm, Kubernetes).</li>
+              <li>Maximální výkon, minimální spotřeba paměti a provoz 24/7.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 10: Shrnutí tématu & Kontrolní kvíz
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Shrnutí & Otázky">
+        <div class="slide-header">
+          <h2 class="slide-title">Shrnutí tématu &amp; Kontrolní otázky</h2>
+          <p class="slide-subtitle">Ověřte si porozumění základům kontejnerizace v Dockeru.</p>
+        </div>
+
+        <div class="quiz-container">
+          <div class="card" style="margin-bottom: 1rem; background: rgba(2, 132, 199, 0.05); border-color: rgba(2, 132, 199, 0.2);">
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem;">Shrnutí klíčových bodů:</h3>
+            <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45;">
+              Docker kontejner sdílí jádro hostitelského OS, díky čemuž startuje bleskově a spotřebovává zlomek prostředků oproti virtuálnímu stroji. Docker Image vzniká ze souboru Dockerfile, využívá cachování vrstev a při spuštění se konfigurují porty a trvalé svazky (Volumes).
+            </p>
+          </div>
+
+          <div class="quiz-list">
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>1. Jaký je hlavní architektonický rozdíl mezi kontejnerem a virtuálním strojem?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Virtuální stroj obsahuje kompletní vlastní operační systém (Guest OS) a běží nad hypervisorem emulujícím hardware. Kontejner sdílí jádro (kernel) hostitelského operačního systému a izoluje pouze procesy a knihovny aplikace, což šetří gigabajty paměti a procesorový čas.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>2. K čemu slouží instrukce WORKDIR v souboru Dockerfile?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Nastavuje výchozí pracovní adresář uvnitř kontejneru pro všechny následující instrukce (<code>COPY</code>, <code>RUN</code>, <code>CMD</code>). Pokud složka neexistuje, automaticky ji vytvoří.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>3. Co přesně znamená parametr -p 8080:80 při spuštění příkazu docker run?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Mapuje síťový port 8080 na vašem fyzickém počítači (hostiteli) na vnitřní port 80 uvnitř izolovaného kontejneru. Do aplikace v kontejneru se pak dostanete přes webový prohlížeč na adrese <code>http://localhost:8080</code>.
+              </div>
+            </div>
+
+            <div class="quiz-card" onclick="this.classList.toggle('open')">
+              <div class="quiz-question">
+                <span>4. Proč jsou pro databáze v Dockeru nezbytné Docker Volumes?</span>
+                <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <div class="quiz-answer">
+                Kontejnery jsou ze své podstaty efemérní (bezstavové) a jakákoli data zapsaná přímo do kontejneru se při jeho smazání nevratně ztratí. Docker Volume přesměruje ukládání dat na trvalé úložiště hostitelského počítače, takže data přežijí i restart nebo aktualizaci kontejneru.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 3. Standardní ovládací lišta prezentace SPŠ -->
+    <nav class="controls-bar" aria-label="Ovládání prezentace">
+      <!-- PŘECHOD MEZI TÉMATY A KATALOG PŘEDMĚTU -->
+      <a href="../012-Git-prikazy/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 012 Git příkazy (Ctrl+Šipka vlevo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+      </a>
+      <a href="../index.html" class="control-btn" id="moduleBtn" title="Katalog předmětu PRG">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+      </a>
+      <a href="../014-Docker-demo-projekt/index.html" class="control-btn" id="nextLessonBtn" title="Další téma: 014 Docker demo projekt (Ctrl+Šipka vpravo)">
+        <svg class="icon" viewBox="0 0 24 24"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg>
+      </a>
+
+      <div class="controls-divider"></div>
+
+      <!-- POSUN PO SNÍMCÍCH -->
+      <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <span class="slide-counter" id="slideCounter">1 / 10</span>
+      <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+
+      <div class="controls-divider"></div>
+
+      <!-- NÁSTROJE -->
+      <button class="control-btn" id="tocToggleBtn" title="Osnova tématu (M)"><svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+      <button class="control-btn" id="fullscreenBtn" title="Celá obrazovka (F)"><svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+      <button class="control-btn" id="helpToggleBtn" title="Klávesové zkratky (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
+    </nav>
+
+  </div>
+
+  <!-- Společný JS engine prezentací SPŠ -->
+  <script src="../../assets/js/presentation-core.js"></script>
+</body>
+
+</html>
