@@ -569,21 +569,15 @@
       text-align: center;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
+    .site-footer a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 3px;
       transition: color 0.2s;
     }
 
-    .footer-links a:hover {
-      color: #06b6d4;
+    .site-footer a:hover {
+      color: var(--accent-kyme);
     }
 
     /* Responzivita */
@@ -641,7 +635,7 @@
         </div>
         <div class="brand-text">
           <h1>Výukové materiály SPŠ</h1>
-          <p>Střední průmyslová škola &bull; Kybernetika, Mechatronika a Informační technologie</p>
+          <p>VOŠ, SPŠ a SOŠ Varnsdorf &bull; Kybernetika, Mechatronika a Informační technologie</p>
         </div>
       </a>
 
@@ -980,13 +974,7 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <div class="footer-links">
-        <a href="KYME/index.html">Předmět KYME (Kybernetika a mechatronika)</a>
-        <a href="KYME/040-Booleova-algebra/index.html">Téma 040: Booleova algebra</a>
-        <a href="KYME/041-Karnaughovy-mapy/index.html">Applet 041: Karnaughovy mapy</a>
-        <a href="docs/presentation-framework-guide.md">Metodický standard frameworku</a>
-      </div>
-      <p>Střední průmyslová škola &copy; 2026 &bull; Výukové materiály pro technické a kybernetické obory</p>
+      <p><a href="https://www.skolavdf.cz/" target="_blank" rel="noopener noreferrer">VOŠ, SPŠ a SOŠ Varnsdorf</a> &copy; 2026 &bull; Výukové materiály pro technické a kybernetické obory</p>
     </footer>
   </div>
 
