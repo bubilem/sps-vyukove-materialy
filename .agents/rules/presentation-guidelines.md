@@ -80,11 +80,13 @@ Při vytváření nebo úpravách výukových materiálů a prezentací v tomto 
    - Prezentace nejsou omezeny na 45 minut ani na 5–8 slidů; pokrývají ucelená odborná témata SPŠ, která se vyučují i několik vyučovacích hodin a mohou obsahovat desítky propracovaných snímků.
    - Obsahuje Titulní slide s metadaty modulu, teoretický základ, interaktivní ukázky a schémata, praktické aplikace a závěrečný slide se strukturovaným shrnutím a opakovacími kontrolními otázkami. V materiálech neuvádět propojení na maturity ani označení „Maturitní okruh“ (maturity zatím nejsou definovány).
 
-7. **Cílová skupina a student-first obsah (15–19 let):**
-   - Webové prezentace i katalogy jsou primárně určeny **žákům středních průmyslových škol (SPŠ) ve věku 15 až 19 let**.
-   - Styl, jazyk a vizuální prvky musí být moderní, poutavé, vysoce profesionální a motivující.
-   - **Přísný zákaz meta-informací pro autory/vývojáře:** Na veřejných stránkách žáka nezajímají vývojářské instrukce (jak jsou číslovány složky, konvence kroků po 10, interní návody na framework). Stránky musí obsahovat výhradně věcné, didakticky hodnotné informace k danému předmětu a tématu.
-   - V patičkách katalogů uvádět pouze čistou navigaci (např. tlačítko návratu na rozcestník SPŠ) bez zbytečných a náhodných odkazů na dílčí témata či interní technickou dokumentaci.
+7. **Cílová skupina a přiměřená odbornost (žáci SPŠ 15–19 let, obor IT):**
+   - Webové prezentace i katalogy jsou primárně určeny **žákům středních průmyslových škol (typicky obor Informační technologie ve věku 15 až 19 let)**.
+   - **Žáci ještě nemají za sebou kompletní aparát středoškolské ani vysokoškolské fyziky, elektrotechniky či vyšší matematiky.**
+   - Látka proto **nesmí být příliš odborná ani přehlcená akademickou hantýrkou**. Výklad musí být srozumitelný, laický, lidský a názorný, stavějící na intuitivních přirovnáních z běžného života (auta, mobily, počítačové hry).
+   - U každé interaktivní animace či simulace musí být studentovi naprosto jasně vysvětleno: **jaký praktický problém daná technologie řeší, co přesně se v animaci děje a proč**.
+   - **Přísný zákaz meta-informací pro autory/vývojáře:** Na stránkách žáka nezajímají vývojářské instrukce (jak jsou číslovány složky, konvence kroků po 10, interní návody na framework). Stránky musí obsahovat výhradně věcné, didakticky hodnotné informace k danému předmětu a tématu.
+   - V patičkách katalogů uvádět pouze čistou navigaci bez zbytečných a náhodných odkazů na dílčí témata či interní technickou dokumentaci.
 
 8. **Lokální dedikované skripty a styly tématu:**
    - Jakékoli skripty (např. interaktivní simulátory, laboratorní demonstrace, canvas kalkulátory) a doplňkové styly specifické pro konkrétní téma se ukládají v samostatných souborech přímo v lokální složce dané prezentace (např. `style.css`, `graph-playground.js`).

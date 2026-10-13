@@ -4,20 +4,495 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Téma 030: Užití mechatroniky | KYME &bull; SPŠ</title>
+  <title>Téma 030: Užití mechatroniky v praxi | KYME &bull; SPŠ</title>
   
+  <!-- Centrální jádro prezentačního frameworku SPŠ -->
   <link rel="stylesheet" href="../../assets/css/presentation-core.css">
   <style>
     :root {
       --accent: #06b6d4;
       --accent-glow: rgba(6, 182, 212, 0.25);
+      --accent-rgb: 6, 182, 212;
+    }
+
+    /* Vlastní specifické rozvržení pro téma 030: Užití mechatroniky */
+    .hero-subtitle {
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+      max-width: 860px;
+      line-height: 1.65;
+      margin: 0 auto 1.4rem;
+    }
+
+    .title-badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .action-btn {
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      line-height: 1.3;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .action-btn .icon {
+      width: 16px !important;
+      height: 16px !important;
+      flex-shrink: 0;
+    }
+
+    .action-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .action-btn.active {
+      background: var(--accent);
+      color: #041017;
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Didaktické boxy s vysvětlením 'Jak to funguje v praxi' */
+    .how-it-works-box {
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 1rem;
+      margin-top: 0.65rem;
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+
+    .how-it-works-box strong {
+      color: var(--accent);
+    }
+
+    /* Telemetrické odznaky a panely */
+    .tele-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      min-height: 28px;
+      margin-bottom: 0.4rem;
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .tele-badge {
+      background: rgba(6, 182, 212, 0.1);
+      color: var(--accent);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .tele-badge.alert {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+
+    .tele-badge.success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .tele-badge.warning {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    /* Prevence horizontálního scrollbaru */
+    .slide {
+      overflow-x: hidden !important;
+    }
+
+    .slide-content {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden !important;
+    }
+
+    /* Simulátory a interaktivní plátna */
+    .sim-layout-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 1.25rem;
+      align-items: start;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .sim-panel {
+      background: #070b14;
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: var(--radius-md);
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 0 50px rgba(6, 182, 212, 0.04);
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .sim-panel {
+      background: #f1f5f9;
+      border-color: rgba(6, 182, 212, 0.4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .sim-controls-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .sim-controls-panel .action-btn {
+      white-space: normal !important;
+      height: auto !important;
+      min-height: 2.3rem;
+      padding: 0.4rem 0.25rem !important;
+      line-height: 1.25 !important;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .slider-row {
+      display: grid;
+      grid-template-columns: auto minmax(50px, 1fr) auto;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .slider-row input[type="range"] {
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    .slider-label {
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .slider-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      text-align: right;
+      color: var(--accent);
+      white-space: nowrap;
+      font-size: 0.82rem;
+    }
+
+    /* Interaktivní hub pilířů (Slide 1) */
+    .pillar-selector {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      margin-top: 1.25rem;
+    }
+
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      text-align: left;
+    }
+
+    .pillar-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pillar-card.active {
+      border-color: var(--accent);
+      background: rgba(6, 182, 212, 0.12);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .pillar-card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Diagram ABS cyklu */
+    .abs-cycle-diagram {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .abs-cycle-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .abs-cycle-step:hover,
+    .abs-cycle-step.active {
+      border-color: var(--accent);
+      background: rgba(6, 182, 212, 0.1);
+    }
+
+    /* Kvízové komponenty */
+    .quiz-container {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 1.25rem;
+      margin-top: 0.75rem;
+      min-height: 380px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .quiz-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .quiz-nav-btn {
+      padding: 0.7rem 0.9rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .quiz-nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .quiz-nav-btn.active {
+      border-color: var(--accent);
+      background: rgba(6, 182, 212, 0.12);
+      color: var(--text-primary);
+    }
+
+    .quiz-nav-btn.answered-correct {
+      border-color: #10b981;
+      color: #34d399;
+    }
+
+    .quiz-nav-btn.answered-wrong {
+      border-color: #ef4444;
+      color: #f87171;
+    }
+
+    .quiz-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin: 1rem 0;
+    }
+
+    .quiz-opt-btn {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-primary);
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .quiz-opt-btn:hover:not(:disabled) {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+      transform: translateX(3px);
+    }
+
+    .quiz-opt-btn.correct {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: #10b981 !important;
+      color: #34d399 !important;
+    }
+
+    .quiz-opt-btn.wrong {
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: #ef4444 !important;
+      color: #f87171 !important;
+    }
+
+    /* Accordion pro nápovědy k otázkám */
+    .qa-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+
+    .qa-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .qa-header {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .qa-header:hover {
+      background: var(--bg-card-hover);
+      color: var(--accent);
+    }
+
+    .qa-body {
+      padding: 0 1rem 0.85rem;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: none;
+    }
+
+    .qa-item.open .qa-body {
+      display: block;
+    }
+
+    .qa-item.open .qa-icon {
+      transform: rotate(180deg);
+    }
+
+    .qa-icon {
+      transition: transform 0.2s ease;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 900px) {
+      .pillar-selector {
+        grid-template-columns: 1fr 1fr;
+      }
+      .quiz-container {
+        grid-template-columns: 1fr;
+      }
+      .sim-layout-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="app-background">
-    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, transparent 70%);"></div>
+    <div class="bg-glow-1" style="background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);"></div>
     <div class="bg-glow-2" style="background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);"></div>
     <div class="bg-grid-overlay"></div>
   </div>
@@ -28,6 +503,7 @@
 
   <div class="presentation-container">
     
+    <!-- ZÁHLAVÍ S DROBEČKOVOU NAVIGACÍ -->
     <header class="presentation-header">
       <div class="header-left">
         <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
@@ -51,114 +527,982 @@
       </div>
     </header>
 
+    <!-- POHLEDOVÝ PROSTOR SNÍMKŮ -->
     <main class="slide-viewport">
 
-      <section class="slide slide--title active" id="slide-1" data-title="Úvod do aplikací mechatroniky">
+      <!-- ==================================================================
+           Snímek 1: Titulní slide & Aplikační domény
+           ================================================================== -->
+      <section class="slide slide--title active" id="slide-1" data-title="Kde všude potkáte mechatroniku?">
         <div class="slide-content">
           <div class="title-badge-group">
             <span class="badge badge-accent">Předmět KYME &bull; Téma 030</span>
-            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge">Mechatronika v běžném životě</span>
+            <span class="badge">Interaktivní ukázky</span>
           </div>
-          <h1 class="hero-title">Užití mechatronických systémů v praxi</h1>
+          <h1 class="hero-title">Kde všude potkáte mechatroniku?</h1>
           <p class="hero-subtitle">
-            Praktické aplikace mechatroniky v automobilové technice, výrobních CNC strojích, biomedicíně a inteligentních budovách.
+            Co to vlastně je mechatronika? Jednoduše řečeno: <strong>když mechanický stroj dostane mozek</strong>. Spojení mechanických součástek, elektronických čidel a počítačového programu, který bleskově reaguje na okolní svět.
           </p>
-          <div class="summary-grid" style="margin-top: 2rem;">
-            <div class="content-card">
-              <h4>Automobilový průmysl</h4>
-              <p>Protiblokovací systémy (ABS), stabilizace podvozku (ESP), adaptivní tempomaty a drive-by-wire systémy.</p>
+
+          <!-- Interaktivní rozcestník 4 pilířů -->
+          <div class="pillar-selector" id="pillarSelector">
+            <div class="pillar-card active" data-pillar="auto">
+              <div class="pillar-card-icon">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+              </div>
+              <h4>V autech</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Proč auto v zimě na ledu neuklouzne a stále poslouchá volant?</p>
             </div>
-            <div class="content-card">
-              <h4>Obráběcí CNC stroje</h4>
-              <p>Interpolátory polohy, optická pravítka, lineární motory a aktivní kompenzace vibrací.</p>
+
+            <div class="pillar-card" data-pillar="cnc">
+              <div class="pillar-card-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              </div>
+              <h4>V továrnách a CNC</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Jak dokáže stroj vyfrézovat součástku tenčí než lidský vlas?</p>
             </div>
+
+            <div class="pillar-card" data-pillar="bio">
+              <div class="pillar-card-icon">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              </div>
+              <h4>Ve zdravotnictví</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Robotičtí chirurgové bez třesu rukou a umělé bionické ruce.</p>
+            </div>
+
+            <div class="pillar-card" data-pillar="mems">
+              <div class="pillar-card-icon">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <h4>V mobilu a doma</h4>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Jak mobil vyfotí ostrou fotku v noci a dům sám ušetří za topení?</p>
+            </div>
+          </div>
+
+          <!-- Dynamický detail pilíře -->
+          <div class="content-card" id="pillarDetailBox" style="margin-top: 1rem; border-left: 3px solid var(--accent); padding: 1rem 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong id="pillarDetailTitle" style="color: var(--accent); font-size: 1rem;">Co řeší mechatronika v autě?</strong>
+              <span class="badge" id="pillarDetailBadge">Blesková reakce</span>
+            </div>
+            <p id="pillarDetailText" style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem; line-height: 1.5;">
+              Když na namrzlé silnici v rychlosti 90 km/h dupnete na brzdu, obyčejné auto bez elektroniky se kousne, zablokuje kola a klouže jako sáně – vůbec nejde zatočit! Mechatronický systém (ABS) dokáže brzdu sám „přerušovaně mačkat a povolovat“ až 20× za jedinou sekundu. To žádný člověk nohou nedokáže.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 2: Automobilová mechatronika: ABS & ESP (Srozumitelně)
+           ================================================================== -->
+      <section class="slide" id="slide-2" data-title="Proč auto ve smyku nezatáčí?">
+        <div class="slide-content">
+          <h2>Proč auto ve smyku nezatáčí? (Princip ABS)</h2>
+          <p class="slide-lead">Znáte ten pocit na kole nebo koloběžce, když vezmete za brzdu moc zprudka? Kolo se kousne, přestane se točit, guma se utrhne do smyku a vy okamžitě ztratíte kontrolu nad řízením.</p>
+
+          <div class="grid-2">
             <div class="content-card">
-              <h4>Zdravotnictví a spotřební sféra</h4>
-              <p>Robotická chirurgie (systém da Vinci), inteligentní protézy, kardanové stabilizátory kamer (Gimbal).</p>
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+                Záhada zablokovaného kola
+              </h3>
+              <p style="font-size: 0.88rem; line-height: 1.55; color: var(--text-secondary); margin-top: 0.4rem;">
+                Když pneumatika na silnici rotuje, dokáže přenášet síly do všech stran – auto brzdí i zatáčí. Jakmile ale kolo úplně zastavíte (zablokujete):
+              </p>
+              <ul class="styled-list" style="font-size: 0.85rem; margin-top: 0.4rem;">
+                <li><strong>Guma se taví a klouže:</strong> Mezi kolem a asfaltem vznikne horký film. Brzdná dráha na mokru nebo ledu se dramaticky prodlouží.</li>
+                <li><strong>Volant je k ničemu:</strong> Auto jede rovně dál podle fyziky setrvačnosti, i když točíte volantem na plný rejd!</li>
+                <li><strong>Cíl mechatroniky:</strong> Udržet kolo na hraně – brzdit co nejvíc to jde, ale <em>nenechat ho úplně zastavit</em>.</li>
+              </ul>
+              
+              <div class="how-it-works-box">
+                <strong>Zlaté pravidlo:</strong> Nejlépe auto brzdí, když se kolo točí jen o trošku pomaleji, než jede auto (prokluz cca 15–20 %). V tu chvíli má guma maximální přilnavost a auto stále poslechne volant!
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Jak to chytrá krabička (ABS) dělá?
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem;">
+                Kliknutím prozkoumejte 3 jednoduché kroky, které elektronický hydraulický ventil provádí 15× až 20× za sekundu:
+              </p>
+
+              <div class="abs-cycle-diagram" id="absCycleTabs">
+                <div class="abs-cycle-step active" data-step="build">
+                  <strong style="color: #38bdf8; font-size: 0.85rem;">1. Brzdi!</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">Tlak roste</div>
+                </div>
+                <div class="abs-cycle-step" data-step="hold">
+                  <strong style="color: #fbbf24; font-size: 0.85rem;">2. Pozor, neblokuj!</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">Držet tlak</div>
+                </div>
+                <div class="abs-cycle-step" data-step="dump">
+                  <strong style="color: #f87171; font-size: 0.85rem;">3. Povol a znovu!</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">Odpustit a znova</div>
+                </div>
+              </div>
+
+              <div id="absCycleDesc" style="background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.75rem; font-size: 0.84rem; line-height: 1.5; border: 1px solid var(--border-subtle);">
+                <strong>Krok 1 – Brzdi naplno:</strong> Řidič dupne na brzdový pedál. Olej proudí do brzdového třmenu a destičky tisknou kotouč. Kolo prudce zpomaluje.
+              </div>
+
+              <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+                Řidič cítí jen rychlé vibrování brzdového pedálu pod nohou – to je důkaz, že mechatronika právě zachraňuje situaci.
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="slide" id="slide-2" data-title="Automobilová mechatronika">
+      <!-- ==================================================================
+           Snímek 3: [INTERAKTIVNÍ TRENAŽÉR] Simulátor brzdění ABS
+           ================================================================== -->
+      <section class="slide" id="slide-3" data-title="Simulátor: Zastav před překážkou!">
         <div class="slide-content">
-          <h2>Mechatronika v moderních automobilech</h2>
-          <div class="grid-2">
-            <div class="content-card">
-              <h3>Systém ABS &amp; ESP</h3>
-              <p>Senzory otáček kol (Hallovy sondy) posílají data do ECU 100× za sekundu. Rychlé hydraulické ventily regulují tlak v brzdovém okruhu a zabraňují smyku kol nezávisle na řidiči.</p>
+          <h2>Simulátor: Zastav před překážkou s ABS a bez něj</h2>
+          <p class="slide-lead">Představte si, že vám do cesty skočí zvíře nebo spadne strom. Zkuste zabrzdit na suchu, mokru a ledu. Pozorujte, co se stane s autem!</p>
+
+          <div class="sim-layout-grid">
+            
+            <!-- Plátno simulace jízdy a brzdění -->
+            <div class="sim-panel">
+              <div class="tele-bar">
+                <span class="tele-badge" id="teleAbsState">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#22c55e;"></span>
+                  ABS PŘIPRAVENO
+                </span>
+                <span class="tele-badge" id="teleSpeed">Rychlost: 90.0 km/h</span>
+                <span class="tele-badge" id="teleDistance">Ujetá dráha: 0.0 m</span>
+                <span class="tele-badge" id="teleSlip">Stav kol: Volně se točí</span>
+              </div>
+
+              <canvas id="absTrackCanvas" width="600" height="240" style="width: 100%; border-radius: 6px; background: #040810; display: block;"></canvas>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; font-size: 0.78rem; color: var(--text-muted);">
+                <span>Červená zábrana stojí na 65 metrech</span>
+                <span id="absResultStatus" style="font-weight: 700; color: #38bdf8;">Čeká na sešlápnutí brzdy</span>
+              </div>
             </div>
-            <div class="content-card">
-              <h3>Technologie X-by-Wire</h3>
-              <p>Nahrazení mechanických hřídelí a lanovodů elektrickými signály a servomotory (Steer-by-Wire, Brake-by-Wire). Přináší nižší hmotnost, vyšší aktivní bezpečnost (rychlejší a přesnější zásah systému) a umožňuje autonomní řízení.</p>
+
+            <!-- Ovládací panel parametrů -->
+            <div class="sim-controls-panel">
+              <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+                Nastavení testu
+              </div>
+
+              <!-- Výběr povrchu vozovky -->
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 0.3rem;">
+                  Jaký je stav silnice?
+                </label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.35rem;">
+                  <button class="action-btn active" id="btnSurfaceDry" style="padding: 0.35rem 0.2rem; font-size: 0.75rem;">
+                    Suchý asfalt
+                  </button>
+                  <button class="action-btn" id="btnSurfaceWet" style="padding: 0.35rem 0.2rem; font-size: 0.75rem;">
+                    Mokro po dešti
+                  </button>
+                  <button class="action-btn" id="btnSurfaceIce" style="padding: 0.35rem 0.2rem; font-size: 0.75rem;">
+                    Náledí a sníh
+                  </button>
+                </div>
+              </div>
+
+              <!-- Posuvník počáteční rychlosti -->
+              <div class="slider-row">
+                <span class="slider-label">Rychlost:</span>
+                <input type="range" id="sliderAbsSpeed" min="40" max="130" value="90" step="5">
+                <span class="slider-val" id="valAbsSpeed">90 km/h</span>
+              </div>
+
+              <!-- Přepínač mechatroniky ABS ON/OFF -->
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: 0.6rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.82rem; font-weight: 600;">Asistent ABS:</span>
+                <button class="action-btn active" id="btnToggleAbs" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">
+                  ZAPNUTO
+                </button>
+              </div>
+
+              <!-- Tlačítko brzdy a resetu -->
+              <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
+                <button class="action-btn" id="btnBrakeAction" style="flex: 1.5; background: #dc2626; color: #fff; border-color: #ef4444; font-size: 0.85rem; padding: 0.6rem;">
+                  <svg class="icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  DUPNOUT NA BRZDU!
+                </button>
+                <button class="action-btn" id="btnResetAbs" style="flex: 1; font-size: 0.82rem;">
+                  Reset
+                </button>
+              </div>
+
+              <div id="absComparisonNote" style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; background: rgba(6,182,212,0.06); padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(6,182,212,0.15);">
+                <strong>Vyzkoušejte:</strong> Přepněte na <em>Mokro</em> nebo <em>Náledí</em> a vypněte ABS. Kola se okamžitě kousnou, auto klouže a narazí přímo do zábrany! Se zapnutým ABS bezpečně zastaví.
+              </div>
             </div>
+
           </div>
         </div>
       </section>
 
-      <section class="slide" id="slide-3" data-title="Výrobní technika a CNC">
+      <!-- ==================================================================
+           Snímek 4: Automobilová mechatronika: Technologie X-by-Wire
+           ================================================================== -->
+      <section class="slide" id="slide-4" data-title="Řízení 'po drátě' (X-by-Wire)">
         <div class="slide-content">
-          <h2>CNC obráběcí stroje a automatizované linky</h2>
-          <div class="grid-2">
+          <h2>Řízení „po drátě“: Konec mechanických tyčí a lanek</h2>
+          <p class="slide-lead">V tradičním autě je volant spojen s koly těžkou kovovou tyčí. Co když ji ale úplně vyndáme a nahradíme kabelem?</p>
+
+          <div class="grid-3">
             <div class="content-card">
-              <h3>Přesné polohování os</h3>
-              <p>Kombinace kuličkového šroubu, servopohonu a inkrementálního/absolutního optického pravítka umožňuje polohování obrobků s přesností na tisíciny milimetru ($1\ \mu\text{m}$).</p>
+              <h3 style="color: var(--accent); font-size: 1.05rem;">Zatáčení po drátě (Steer-by-Wire)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.5;">
+                Volant funguje podobně jako špičkový herní volant k PC. Měří, jak moc jste otočili rukama, a elektromotorek vám klade do dlaní realistický odpor. Kola dole natáčí samostatný servomotor.
+              </p>
+              <div style="margin-top: 0.6rem; font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px;">
+                <strong style="color: #38bdf8;">Super výhoda:</strong> Při parkování stačí otočit volantem jen o kousek a kola zatočí naplno. Při čelním nárazu vás tyč řízení nezraní.
+              </div>
             </div>
+
             <div class="content-card">
-              <h3>Aktivní tlumení a adaptivní posuv</h3>
-              <p>Snímače vibrací a zatížení vřetene v reálném čase přizpůsobují posuvovou rychlost a chrání nástroj před ulomením nebo tepelným poškozením.</p>
+              <h3 style="color: #a855f7; font-size: 1.05rem;">Brzdy po drátě (Brake-by-Wire)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.5;">
+                Šlápnutí na brzdový pedál nemaká s kapalinou v trubkách přes celé auto. Pedál jen pošle elektrický signál a u každého kola stiskne destičky bleskový servomotor.
+              </p>
+              <div style="margin-top: 0.6rem; font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px;">
+                <strong style="color: #c084fc;">Super výhoda:</strong> Reaguje okamžitě během milisekund a u elektromobilů hladce přepíná mezi rekuperací a brzdami.
+              </div>
             </div>
+
+            <div class="content-card">
+              <h3 style="color: #34d399; font-size: 1.05rem;">Plyn po drátě (Drive-by-Wire)</h3>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.5;">
+                To už má dnes téměř každé auto. Z pedálu plynu nevede k motoru ocelové lanko, ale drát. Počítač motoru sám dávkuje palivo tak, aby motor necukal a měl co nejnižší spotřebu.
+              </p>
+              <div style="margin-top: 0.6rem; font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 0.5rem; border-radius: 4px;">
+                <strong style="color: #6ee7b7;">Super výhoda:</strong> Bez toho by nefungoval adaptivní tempomat ani automatické nouzové zabrzdění.
+              </div>
+            </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 1rem; border-left: 3px solid #f59e0b;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="color: #fbbf24; font-size: 0.95rem;">Častá otázka: A co když vypadne kabel nebo se sekne počítač?</strong>
+              <span class="badge">Bezpečnost 24/7</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem; line-height: 1.5;">
+              V autě nesmí dojít k situaci, že volant přestane reagovat! Proto se tyto systémy staví <strong>dvojitě až trojitě (redundance)</strong>. Jsou tam dva nezávislé počítače, dvoje kabely a motor má zdvojené vinutí. Kdyby jeden systém selhal, druhý okamžitě bez mrknutí oka převezme řízení.
+            </p>
           </div>
         </div>
       </section>
 
-      <section class="slide" id="slide-4" data-title="Biomedicínská mechatronika">
+      <!-- ==================================================================
+           Snímek 5: Výrobní technika a CNC: Mikrometrické polohování
+           ================================================================== -->
+      <section class="slide" id="slide-5" data-title="Jak CNC trefí tisícinu milimetru?">
         <div class="slide-content">
-          <h2>Medicínské a asistenční mechatronické systémy</h2>
-          <div class="grid-2">
-            <div class="content-card">
-              <h3>Chirurgické robotické systémy</h3>
-              <p>Lékař ovládá mikro-nástroje přes konzoli s 3D zobrazením operačního pole. Systém filtruje fyziologický třes rukou chirurga a umožňuje minimálně invazivní zákroky – chirurg se přitom musí spoléhat převážně na zrak, protože běžné komerční systémy (např. da Vinci) haptickou zpětnou vazbu neposkytují.</p>
+          <h2>Jak CNC stroje trefí tisícinu milimetru?</h2>
+          <p class="slide-lead">Představte si součástku do leteckého motoru nebo chytrého telefonu. Kdyby se nástroj sekl o tloušťku lidského vlasu (cca 0.05 mm), motor by se zadřel.</p>
+
+          <!-- Úvod pro studenty, kteří nikdy neviděli frézku -->
+          <div class="content-card" style="margin-bottom: 0.9rem; border-left: 3px solid var(--accent); padding: 0.8rem 1rem; background: rgba(6, 182, 212, 0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <strong style="color: var(--accent); font-size: 0.95rem;">💡 Co je to vlastně CNC frézka pro ty, co ji nikdy neviděli?</strong>
+              <span class="badge">Základní představa</span>
             </div>
-            <div class="content-card">
-              <h3>Bionické protézy (Myoelektrické řízení)</h3>
-              <p>Elektromyografické senzory (EMG) na kůži snímají elektrické impulzy zbývajících svalů a mikrokontrolér je převádí na přirozený úchop umělé ruky.</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.3rem; line-height: 1.55;">
+              Znáte <strong>3D tiskárnu</strong>? Ta součástku vyrábí tak, že roztavený plast postupně <em>přidává</em> vrstvu po vrstvě. <strong>CNC frézka funguje přesně naopak:</strong> do stroje se upne masivní kvádr surového kovu (<strong>obrobek</strong>) a vysokou rychlostí rotující ocelový válec s břity (<strong>fréza</strong>) z něj ořezává špony do všech stran, dokud nevznikne přesný díl (třeba motor auta nebo hliníkové tělo MacBooku).
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.5rem; font-size: 0.8rem;">
+              <div style="background: rgba(0,0,0,0.2); padding: 0.45rem 0.65rem; border-radius: 4px;">
+                <strong style="color: #38bdf8;">🔧 Nástroj (fréza):</strong> Rotující řezák ve vřetenu (15 000 ot/min). Na rozdíl od vrtačky nevrtá jen svisle dolů, ale vykrajuje tvary i do stran!
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 0.45rem 0.65rem; border-radius: 4px;">
+                <strong style="color: #fbbf24;">🧱 Obrobek:</strong> Surový kovový blok pevně upnutý na stole, ze kterého se vyřezává finální výrobek.
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 0.45rem 0.65rem; border-radius: 4px;">
+                <strong style="color: #f87171;">💥 Řezná síla:</strong> Ocel je tvrdá! Když se do ní fréza zakousne, kov klade odpor a tlačí vší silou <em>proti pohybu frézy</em> zpět.
+              </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      <section class="slide" id="slide-5" data-title="Smart Home a spotřební technika">
-        <div class="slide-content">
-          <h2>Spotřební elektronika a chytré budovy</h2>
           <div class="grid-2">
             <div class="content-card">
-              <h3>Optická stabilizace obrazu (OIS)</h3>
-              <p>Gyroskopické MEMS senzory ve smartphonech detekují chvění a miniaturní cívky pohybují čočkou v protisměru během zlomku milisekundy.</p>
-            </div>
-            <div class="content-card">
-              <h3>Inteligentní HVAC a stínění</h3>
-              <p>Automatické řízení rekuperace, servopohonů žaluzií a tepelných čerpadel v závislosti na slunečním svitu, větru a přítomnosti osob v místnosti.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="slide" id="slide-6" data-title="Shrnutí a přechod k logice">
-        <div class="slide-content">
-          <h2>Shrnutí a přechod k číslicové logice</h2>
-          <div class="grid-2">
-            <div class="content-card">
-              <h3>Kontrolní otázky k tématu 030</h3>
-              <ul class="styled-list">
-                <li>Vysvětlete funkci mechatronického systému ABS/ESP v automobilu.</li>
-                <li>Jaké snímače a akční členy se uplatňují v CNC obráběcích strojích?</li>
-                <li>Co je to myoelektrická protéza a jak snímá signál?</li>
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><line x1="3" y1="12" x2="9" y2="12"></line><line x1="15" y1="12" x2="21" y2="12"></line><line x1="12" y1="3" x2="12" y2="9"></line><line x1="12" y1="15" x2="12" y2="21"></line></svg>
+                Z čeho se skládá přesná osa CNC stroje?
+              </h3>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.88rem;">
+                <li><strong>Silné servo:</strong> Precizní elektromotor, který dokáže zabrat obrovskou silou a otočit se přesně o zlomek stupně.</li>
+                <li><strong>Kuličkový šroub:</strong> Obyčejný šroub v matici má vůli (viklá se). Kuličkový šroub má v závitu ocelové kuličky jako v ložisku – jezdí naprosto hladce a bez viklání.</li>
+                <li><strong>Skleněné optické pravítko:</strong> Skleněná lišta s mikroskopickými ryskami (jako digitální šuplera). Světelné čidlo čte, kde stůl přesně stojí, přímo na tisíciny milimetru ($1\,\mu\text{m}$).</li>
               </ul>
             </div>
+
             <div class="content-card">
-              <h3>Následující téma: 040 Booleova algebra</h3>
-              <p>Všechny tyto řídicí jednotky vyhodnocují logické stavy. V dalším tématu <strong>040: Booleova algebra</strong> rozebereme matematický aparát číslicových rozhodovacích obvodů.</p>
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line></svg>
+                Proč motoru samotnému nestačí věřit?
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Mohli bychom si říct: <em>„Motor ví, kolikrát se otočil, tak přece ví, kde je!“</em> V praxi to ale nestačí:
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem;">
+                <div style="background: rgba(0,0,0,0.2); padding: 0.65rem; border-radius: var(--radius-sm); border-left: 3px solid #ef4444;">
+                  <strong style="color: #f87171; font-size: 0.85rem;">Odpor kovu šroub prohýbá a stlačuje:</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">
+                    Když fréza zařízne do oceli, odpor materiálu (400 N) zatlačí do nástroje. Ocelový šroub se stlačí jako tuhá pružina a fréza se ocitne o 0.04 mm jinde!
+                  </p>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.65rem; border-radius: var(--radius-sm); border-left: 3px solid #34d399;">
+                  <strong style="color: #34d399; font-size: 0.85rem;">Pravítko to odhalí (Zpětná vazba):</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">
+                    Optické pravítko měří skutečnou polohu suportu přímo proti rámu stroje. Okamžitě nahlásí odchylku a servo zabere větší silou, aby polohu udrželo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 6: [INTERAKTIVNÍ PLAYGROUND] Simulátor CNC osy a zpětné vazby
+           ================================================================== -->
+      <section class="slide" id="slide-6" data-title="Simulátor CNC osy a pravítka">
+        <div class="slide-content">
+          <h2>Playground: Co se stane, když fréza narazí na tvrdý kov?</h2>
+          <p class="slide-lead">Představte si frézování jako krájení zmrzlého másla: nástroj tlačí dopředu, ale materiál klade odpor a tlačí vší silou zpět. Sledujte, jak se s tím mechatronika vypořádá.</p>
+
+          <div class="sim-layout-grid">
+            
+            <div class="sim-panel">
+              <div class="tele-bar">
+                <span class="tele-badge" id="teleCncMode">Režim: UZAVŘENÁ SMYČKA</span>
+                <span class="tele-badge" id="teleCncTarget">Chci polohu: 25.000 mm</span>
+                <span class="tele-badge" id="teleCncActual">Skutečná: 25.000 mm</span>
+                <span class="tele-badge success" id="teleCncError">Chyba: 0 µm</span>
+              </div>
+
+              <!-- Vizuální schéma suportu, vřetena, frézy, obrobku a optického pravítka -->
+              <svg id="cncAxisSvg" viewBox="0 0 600 280" style="width: 100%; border-radius: 6px; background: #050811; display: block;"></svg>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; font-size: 0.78rem; color: var(--text-muted);">
+                <span>Vlevo: Servomotor | Uprostřed: Vřeteno s frézou | Vpravo: Ocelový obrobek | Dole: Optické pravítko</span>
+                <span id="cncTorqueText" style="font-family: var(--font-mono); color: var(--accent);">Zátěž motoru: Běžná</span>
+              </div>
+            </div>
+
+            <div class="sim-controls-panel">
+              <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+                Ovládání osy stroje
+              </div>
+
+              <!-- Posuvník polohy -->
+              <div class="slider-row">
+                <span class="slider-label">Posuv osy X:</span>
+                <input type="range" id="sliderCncPos" min="0" max="50" value="25" step="0.5">
+                <span class="slider-val" id="valCncPos">25.0 mm</span>
+              </div>
+
+              <!-- Přepínač smyčky -->
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Měření polohy (zpětná vazba):</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem;">
+                  <button class="action-btn" id="btnCncOpenLoop" style="padding: 0.45rem 0.2rem; font-size: 0.75rem; text-align: center; line-height: 1.25;">
+                    Bez pravítka<br><span style="font-size: 0.67rem; opacity: 0.75;">(slepé řízení)</span>
+                  </button>
+                  <button class="action-btn active" id="btnCncClosedLoop" style="padding: 0.45rem 0.2rem; font-size: 0.75rem; text-align: center; line-height: 1.25;">
+                    S pravítkem<br><span style="font-size: 0.67rem; opacity: 0.75;">(zpětná vazba)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Simulace řezné síly -->
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                  <span style="font-size: 0.82rem; font-weight: 600;">Kontakt s materiálem:</span>
+                  <span id="cncForceLabel" style="font-family: var(--font-mono); font-size: 0.78rem; color: #f87171;">Volný pohyb</span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem;">
+                  <button class="action-btn active" id="btnCncForceZero" style="font-size: 0.75rem; padding: 0.45rem 0.2rem; text-align: center; line-height: 1.25;">
+                    Ve vzduchu<br><span style="font-size: 0.67rem; opacity: 0.75;">(naprázdno 0 N)</span>
+                  </button>
+                  <button class="action-btn" id="btnCncForceLoad" style="font-size: 0.75rem; padding: 0.45rem 0.2rem; text-align: center; line-height: 1.25;">
+                    Řezání oceli<br><span style="font-size: 0.67rem; opacity: 0.75;">(v záběru 400 N)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Laický tahák -->
+              <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: 0.6rem; border: 1px solid var(--border-color); font-size: 0.78rem; line-height: 1.45;">
+                <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.25rem;">Tahák pro laiky (co vidíte):</div>
+                <p style="margin: 0 0 0.25rem; color: var(--text-secondary);"><strong>🔧 Nástroj (fréza):</strong> Ocelový válec se zuby rotující ve vřetenu (15 000 ot/min). Odkrajuje špony z kovu.</p>
+                <p style="margin: 0 0 0.25rem; color: var(--text-secondary);"><strong>🧱 Obrobek:</strong> Blok surového kovu upnutý na stole, ze kterého fréza vykrajuje tvar.</p>
+                <p style="margin: 0; color: var(--text-secondary);"><strong>💥 Směr síly:</strong> Fréza jede doprava do kovu ➔ tvrdá ocel klade odpor a tlačí vší silou <em>zpět doleva (⬅)</em>!</p>
+              </div>
+
+              <div id="cncStatusExplain" style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; background: rgba(6,182,212,0.06); padding: 0.55rem; border-radius: 4px; border: 1px solid rgba(6,182,212,0.15);">
+                <strong>Co sledovat:</strong> Při <em>Řezání oceli</em> odpor materiálu stlačí mechaniku o 42 µm doleva. Bez pravítka vznikne nepřesný zmetek. S pravítkem servo okamžitě zabere větší silou a chybu dorovná na nulu!
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 7: CNC: Adaptivní řízení posuvu (ACC) & Lineární pohony
+           ================================================================== -->
+      <section class="slide" id="slide-7" data-title="Chytré frézování a magnetické motory">
+        <div class="slide-content">
+          <h2>Chytré frézování a motory na magnetickém polštáři</h2>
+          <p class="slide-lead">Dva moderní příklady, jak mechatronika zrychluje výrobu a chrání drahé nástroje před zlomením.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M2 12h20"></path><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"></path><path d="M12 2v10"></path></svg>
+                Chytré hlídání zátěže (Stroj sám zpomalí)
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Představte si, že frézka řeže ocelový blok. Uvnitř kovu může být tvrdší vrstva. Hloupý stroj by jel dál stejnou rychlostí – fréza by se přehřála a praskla (škoda za desítky tisíc korun).
+              </p>
+              <div class="how-it-works-box">
+                <strong>Jak to řeší mechatronika:</strong> Čidla vibrací a proudu poznají, že se fréza trápí. Počítač během zlomku sekundy sám mírně přibrzdí posuv. Až tvrdé místo překoná, zase zrychlí.
+              </div>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                Výsledek: Nástroje se nelámou a součástka je hotová o třetinu dříve.
+              </p>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Lineární motory (Magnetický rychlovlak ve stroji)
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Co kdybychom vyhodili i samotný kuličkový šroub? Představte si elektromotor, který narovnáte do přímé dráhy:
+              </p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.84rem;">
+                <li><strong>Žádné tření šroubů:</strong> Stůl se pohybuje přímo magnetickým polem, podobně jako rychlovlak Maglev.</li>
+                <li><strong>Brutální zrychlení:</strong> Z nuly na plnou rychlost vystřelí za zlomek sekundy (zrychlení až $15\,\text{G}$).</li>
+                <li><strong>Nulové opotřebení:</strong> Žádné ozubené kolo ani závit, který by se časem vyviklal.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 8: Biomedicína: Chirurgický robot da Vinci
+           ================================================================== -->
+      <section class="slide" id="slide-8" data-title="Chirurgický robot da Vinci">
+        <div class="slide-content">
+          <h2>Biomedicína: Chirurgický robot da Vinci</h2>
+          <p class="slide-lead">Doktor nesedí přímo nad pacientem se skalpelem v ruce, ale sedí u ovládací konzole s 3D brýlemi. Jak to funguje a proč zachraňuje životy?</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Operace přes 4 malé dírky
+              </h3>
+              <p style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Dříve znamenala velká operace břicha obrovskou ránu přes celé tělo, spoustu krve a týdny bolestivého hojení. S robotem da Vinci stačí do břicha udělat 4 drobné dírky o průměru tužky:
+              </p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li><strong>Jednou dírkou</strong> se vsune miniaturní 3D kamera s obrovským zvětšením.</li>
+                <li><strong>Zbylými dírkami</strong> projdou robotické mikro-kleštičky a nůžky.</li>
+                <li>Pacient jde často už za pár dní domů a má jen drobné jizvičky.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                2 superschopnosti mechatroniky pro lékaře
+              </h3>
+              <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem;">
+                <div style="background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 4px; border-left: 3px solid #06b6d4;">
+                  <strong style="color: #06b6d4; font-size: 0.85rem;">1. Vymazání třesu rukou:</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                    I ten nejlepší chirurg na světě má přirozený mikrotřes v prstech (kolem 8 kmitů za sekundu). Počítač v robotu tento třes matematicky vymaže.
+                  </p>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 4px; border-left: 3px solid #34d399;">
+                  <strong style="color: #34d399; font-size: 0.85rem;">2. Zmenšení pohybu (5:1):</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                    Když doktor na konzoli pohne prstem o 1 centimetr, robotický nástroj v těle pacienta se posune jen o pouhé 2 milimetry! Lékař tak může bezpečně zašít i cévu tenkou jako nit.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 9: [INTERAKTIVNÍ VÝZVA] Simulátor teleoperace & Tremor Filtr
+           ================================================================== -->
+      <section class="slide" id="slide-9" data-title="Výzva: Udržíš ruku bez třesu?">
+        <div class="slide-content">
+          <h2>Výzva: Dokážete operovat bez třesu ruky?</h2>
+          <p class="slide-lead">Zkuste myší nebo prstem provést skalpel úzkou uličkou mezi cévami. Porovnejte lidskou ruku s robotem da Vinci!</p>
+
+          <div class="sim-layout-grid">
+            
+            <div class="sim-panel">
+              <div class="tele-bar">
+                <span class="tele-badge" id="teleTremorMode">MÓD: PŘIROZENÁ RUKA (BEZ FILTRU)</span>
+                <span class="tele-badge" id="teleTremorScore">Úspěšnost: 100 %</span>
+                <span class="tele-badge alert" id="teleTremorCollisions">Dotyk stěny cévy: 0×</span>
+              </div>
+
+              <!-- Plátno operačního pole -->
+              <canvas id="tremorCanvas" width="560" height="230" style="width: 100%; border-radius: 6px; background: #060913; cursor: crosshair; display: block;"></canvas>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; font-size: 0.78rem; color: var(--text-muted);">
+                <span>Vjeďte kurzorem do tmavého pruhu a jeďte zleva doprava</span>
+                <span id="tremorInstruction" style="color: var(--accent); font-weight: 600;">Pohybujte myší / prstem uvnitř koridoru</span>
+              </div>
+            </div>
+
+            <div class="sim-controls-panel">
+              <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+                Volba asistenta
+              </div>
+
+              <!-- Přepínač mechatroniky robota -->
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Jak operujete:</label>
+                <button class="action-btn active" id="btnTremorOff" style="justify-content: flex-start; font-size: 0.8rem; padding: 0.5rem 0.75rem;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#ef4444; margin-right:6px;"></span>
+                  1. Obyčejná ruka (přirozený třes)
+                </button>
+                <button class="action-btn" id="btnTremorOn" style="justify-content: flex-start; font-size: 0.8rem; padding: 0.5rem 0.75rem;">
+                  <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#22c55e; margin-right:6px;"></span>
+                  2. Robot da Vinci (vymazaný třes)
+                </button>
+              </div>
+
+              <!-- Posuvník intenzity třesu -->
+              <div class="slider-row">
+                <span class="slider-label">Třes ruky:</span>
+                <input type="range" id="sliderTremorAmp" min="2" max="14" value="6" step="1">
+                <span class="slider-val" id="valTremorAmp">±0.6 mm</span>
+              </div>
+
+              <button class="action-btn" id="btnResetTremor" style="font-size: 0.82rem; margin-top: 0.25rem;">
+                Resetovat pokus
+              </button>
+
+              <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; background: rgba(6,182,212,0.06); padding: 0.55rem; border-radius: 4px; border: 1px solid rgba(6,182,212,0.15);">
+                <strong>Fyziologický třes:</strong> Lidská ruka se přirozeně chvěje o cca ±0,5 až ±1,5 mm. Na operačním sále je to ale rozdíl mezi zdravou a propíchnutou cévou! Robot da Vinci tento třes odfiltruje a pohyb nástroje dokonale vyhladí.
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 10: Biomedicína: Bionické myoelektrické protézy
+           ================================================================== -->
+      <section class="slide" id="slide-10" data-title="Bionické ruce a svalové signály">
+        <div class="slide-content">
+          <h2>Jak mozek ovládá umělou bionickou ruku?</h2>
+          <p class="slide-lead">Když člověk po úrazu přijde o ruku, jak může ovládat umělé prsty z plastu a kovu, když v nich nemá žádné své kosti ani šlachy?</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                Tělo stále vysílá signály (Princip EMG)
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                I když člověku chybí dlaň, svaly v předloktí mu v těle zůstaly!
+              </p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.85rem;">
+                <li>Když si člověk v hlavě řekne: <em>„Chci zatnout pěst“</em>, mozek pošle nervy signál do svalů předloktí.</li>
+                <li>Zatnutý sval vygeneruje na kůži mikroskopické elektrické napětí (v mikrovoltech $\mu\text{V}$), které zachytí elektrody na kůži.</li>
+                <li><strong>Proč potřebujeme více elektrod:</strong> Na předloktí máme různé svaly – ohýbače prstů (spodní strana) i natahovače (horní strana). Protéza má proto na paži věnec elektrod, aby měřila více svalů najednou.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                Jak protéza pozná, jaké gesto chci?
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Jediný senzor by poznal jen „zapnuto / vypnuto“. Jak se tedy pozná pěst, pinzeta nebo ukazovák?
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                <div style="background: rgba(0,0,0,0.2); padding: 0.55rem; border-radius: 4px; font-size: 0.82rem; border-left: 3px solid #34d399;">
+                  <strong style="color: #34d399;">Rozpoznávání vzorců (AI klasifikace):</strong> Každé gesto napne jinou kombinaci svalů! Pěst = zabere spodní sval. Rozevření = zabere horní sval. Pinzeta (špetka) = jemně zaberou oba svaly současně.
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.55rem; border-radius: 4px; font-size: 0.82rem; border-left: 3px solid #38bdf8;">
+                  <strong style="color: #38bdf8;">Mikromotorky v prstech:</strong> Mikročip v dlani poměr signálů bleskově dešifruje a pošle proud do motorků konkrétních prstů. Čidla proudu navíc hlídají, aby ruka nerozmáčkla křehký předmět!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 11: [INTERAKTIVNÍ TRENAŽÉR] Myoelektrická ruka & EMG
+           ================================================================== -->
+      <section class="slide" id="slide-11" data-title="Trenažér: Ovládání bionické ruky">
+        <div class="slide-content">
+          <h2>Trenažér: Jak bionická ruka pozná, jaké gesto chci?</h2>
+          <p class="slide-lead">Zvolte myšlenku (gesto), sledujte rozdíl signálů ze dvou různých svalů předloktí na osciloskopu a podívejte se, jak mikročip gesto dešifruje.</p>
+
+          <div class="sim-layout-grid">
+            
+            <div class="sim-panel">
+              <div class="tele-bar">
+                <span class="tele-badge" id="teleEmgA" style="color: #38bdf8; border-color: rgba(6,182,212,0.4);">Senzor A (Ohýbač): 25 µV</span>
+                <span class="tele-badge" id="teleEmgB" style="color: #fb923c; border-color: rgba(249,115,22,0.4);">Senzor B (Natahovač): 20 µV</span>
+                <span class="tele-badge success" id="teleEmgDecoded">AI Dekodér: KLID</span>
+              </div>
+
+              <!-- Osciloskop EMG a animace ruky vedle sebe -->
+              <div style="display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 0.75rem; align-items: center; width: 100%;">
+                <canvas id="emgScopeCanvas" width="360" height="200" style="width: 100%; border-radius: 6px; background: #040810; display: block;"></canvas>
+                <svg id="bionicHandSvg" viewBox="0 0 200 220" style="width: 100%; height: 200px; border-radius: 6px; background: #070b15;"></svg>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.4rem; font-size: 0.78rem; color: var(--text-muted);">
+                <span>🟦 Tyrkysová: Spodní sval (ohýbač) | 🟧 Oranžová: Horní sval (natahovač)</span>
+                <span id="emgActionStatus" style="color: #38bdf8; font-weight: 600;">Svaly uvolněny</span>
+              </div>
+            </div>
+
+            <div class="sim-controls-panel">
+              <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+                Volba svalového pokynu mozku
+              </div>
+
+              <!-- Volba gesta -->
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Jaké gesto si člověk představí:</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem;">
+                  <button class="action-btn active" id="btnGripPower" data-grip="power">
+                    ✊ 1. Pěst<br><span style="font-size: 0.67rem; opacity: 0.75;">(zabere spodní sval A)</span>
+                  </button>
+                  <button class="action-btn" id="btnGripPinch" data-grip="pinch">
+                    🤏 2. Pinzeta<br><span style="font-size: 0.67rem; opacity: 0.75;">(oba svaly A + B zaráz)</span>
+                  </button>
+                  <button class="action-btn" id="btnGripPoint" data-grip="point">
+                    ☝️ 3. Ukazovák<br><span style="font-size: 0.67rem; opacity: 0.75;">(převaha horního B)</span>
+                  </button>
+                  <button class="action-btn" id="btnGripOpen" data-grip="open">
+                    🖐️ 4. Otevřít dlaň<br><span style="font-size: 0.67rem; opacity: 0.75;">(zabere horní sval B)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Posuvník síly zatnutí -->
+              <div class="slider-row">
+                <span class="slider-label">Síla zatnutí:</span>
+                <input type="range" id="sliderEmgEffort" min="0" max="100" value="85" step="5">
+                <span class="slider-val" id="valEmgEffort">85 %</span>
+              </div>
+
+              <!-- Tlačítko uvolnění svalů -->
+              <button class="action-btn" id="btnEmgRelax" style="font-size: 0.78rem; padding: 0.4rem;">
+                💤 Uvolnit svaly (Klidový stav)
+              </button>
+
+              <!-- Tahák pro laiky -->
+              <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: 0.55rem; border: 1px solid var(--border-color); font-size: 0.78rem; line-height: 1.45;">
+                <div style="font-weight: 700; color: var(--accent); margin-bottom: 0.25rem;">Jak se pozná, co chci?</div>
+                <p style="margin: 0 0 0.25rem; color: var(--text-secondary);"><strong>1 elektroda nestačí:</strong> Jediný senzor by poznal jen zapnuto/vypnuto.</p>
+                <p style="margin: 0 0 0.25rem; color: var(--text-secondary);"><strong>2 různé svaly:</strong> Spodní sval (🟦 tyrkysová) zavírá prsty. Horní sval (🟧 oranžová) je natahuje.</p>
+                <p style="margin: 0; color: var(--text-secondary);"><strong>Vzorec signálů:</strong> Pěst = 🟦 silný. Otevření = 🟧 silný. Pinzeta = 🟦 i 🟧 zaberou jemně současně!</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 12: MEMS a Optická stabilizace obrazu (OIS)
+           ================================================================== -->
+      <section class="slide" id="slide-12" data-title="Jak mobil vyfotí ostrou fotku v noci?">
+        <div class="slide-content">
+          <h2>Jak mobil vyfotí ostrou fotku v noci? (MEMS a OIS)</h2>
+          <p class="slide-lead">Určitě to znáte: večer v šeru chcete vyfotit kamaráda, pohnete rukou a výsledkem je rozmazaná šmouha. Jak to mechatronika řeší?</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+                Pohybové čidlo na čipu (MEMS)
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Uvnitř každého smartphonu je křemíkový čip velký sotva 2 milimetry:
+              </p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.84rem;">
+                <li>Uvnitř čipu jsou mikroskopické křemíkové vidličky, které kmitají tisíckrát za sekundu.</li>
+                <li>Když telefonem zatřesete nebo ho nakloníte, mikroskopická závažíčka se vychýlí.</li>
+                <li>Čip tak s přesností na zlomky milisekund ví: <em>„Telefon se právě klepe doprava dolů rychlostí 5 stupňů za sekundu!“</em></li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path></svg>
+                Optická stabilizace (OIS – Plavající čočka)
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Čočka foťáku v mobilu není přilepená napevno! Visí na pružinkách a kolem ní jsou miniaturní elektromagnety:
+              </p>
+              <div class="how-it-works-box">
+                <strong>Zásah za 1 milisekundu:</strong> Když vám ruka ujede dolů, elektromagnet bleskově posune čočku nahoru. Obraz na snímači tak zůstane stát na stejném místě a fotka je ostrá jako břitva!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 13: [INTERAKTIVNÍ DEMONSTRACE] Simulátor OIS stabilizace
+           ================================================================== -->
+      <section class="slide" id="slide-13" data-title="Simulátor stabilizace fotoaparátu">
+        <div class="slide-content">
+          <h2>Simulátor: Vyzkoušejte stabilizaci foťáku při chvění</h2>
+          <p class="slide-lead">Sledujte, kam dopadá světelný paprsek na snímač obrazu, když se vám třese ruka – s vypnutou a zapnutou stabilizací OIS.</p>
+
+          <div class="sim-layout-grid">
+            
+            <div class="sim-panel">
+              <div class="tele-bar">
+                <span class="tele-badge" id="teleOisState">STABILIZACE: AKTIVNÍ (OIS ZAPNUTO)</span>
+                <span class="tele-badge" id="teleOisGyro">Pohyb ruky: 0.0 °/s</span>
+                <span class="tele-badge" id="teleOisCoil">Magnet čočky: Aktivní</span>
+                <span class="tele-badge success" id="teleOisBlur">Rozmazání: 2 % (Ostré)</span>
+              </div>
+
+              <!-- Plátno optiky: Laserový paprsek, čočka a senzor -->
+              <canvas id="oisCanvas" width="560" height="220" style="width: 100%; border-radius: 6px; background: #050812; display: block;"></canvas>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.4rem; font-size: 0.78rem; color: var(--text-muted);">
+                <span>Vlevo: Pohyblivá čočka | Vpravo: Snímač obrazu (zelený rámeček)</span>
+                <span id="oisStatusNote" style="color: #38bdf8; font-weight: 600;">Ostrý bod uprostřed senzoru</span>
+              </div>
+            </div>
+
+            <div class="sim-controls-panel">
+              <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem;">
+                Ovládání stabilizace OIS
+              </div>
+
+              <!-- Přepínač OIS -->
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: 0.6rem; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.82rem; font-weight: 600;">Stabilizace OIS:</span>
+                <button class="action-btn active" id="btnToggleOis" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">
+                  ZAPNUTO
+                </button>
+              </div>
+
+              <!-- Posuvník vibrace -->
+              <div class="slider-row">
+                <span class="slider-label">Třes mobilu:</span>
+                <input type="range" id="sliderShakeAmp" min="0" max="25" value="12" step="1">
+                <span class="slider-val" id="valShakeAmp">±1.2°</span>
+              </div>
+
+              <!-- Tlačítko silného otřesu -->
+              <button class="action-btn" id="btnOisImpulse" style="font-size: 0.82rem;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Zatřást mobilem (krok při chůzi)
+              </button>
+
+              <div style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; background: rgba(6,182,212,0.06); padding: 0.55rem; border-radius: 4px; border: 1px solid rgba(6,182,212,0.15);">
+                <strong>Co znamená hodnota v °:</strong> Telefon v ruce se při focení přirozeně chvěje v úhlu cca ±1° až ±2°. Gyroskop tento úhlový pohyb bleskově změří a magnetické cívky pohnou čočkou přesně proti němu, takže světelný bod na senzoru stojí jako přibitý!
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 14: Inteligentní budovy (Smart Home) & HVAC
+           ================================================================== -->
+      <section class="slide" id="slide-14" data-title="Chytré domy a úspora energie">
+        <div class="slide-content">
+          <h2>Chytré domy: Proč moderní budovy větrají a stíní samy?</h2>
+          <p class="slide-lead">Znáte vydýchanou třídu ve staré škole, kde po obědě všichni usínají? V moderní budově se o čerstvý vzduch i příjemnou teplotu stará mechatronika.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Vydýchaný vzduch? Dům sám vyvětrá
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                V každé místnosti je nenápadná krabička s čidlem oxidu uhličitého ($CO_2$):
+              </p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.84rem;">
+                <li>Jakmile do třídy vejde 30 žáků a začnou dýchat, hodnota $CO_2$ stoupá.</li>
+                <li>Čidlo pošle signál a servomotorky v potrubí tiše pootevřou vzduchotechniku.</li>
+                <li>Čerstvý vzduch se ohřeje o ten odcházející (rekuperace), takže se v zimě neztrácí drahocenné teplo.</li>
+              </ul>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></svg>
+                Žaluzie, které myslí dopředu
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.55;">
+                Venkovní žaluzie neřídí pouhý časovač, ale meteostanice na střeše:
+              </p>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.6rem;">
+                <div style="background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 4px; font-size: 0.82rem; border-left: 3px solid #f59e0b;">
+                  <strong style="color: #fbbf24;">V létě (Chlazení zdarma):</strong> Jakmile vyjde prudké slunce, motorky naklopí lamely. Teplo se odrazí ještě před oknem, takže klimatizace nemusí běžet na plný výkon a ušetří se spousta elektřiny.
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 4px; font-size: 0.82rem; border-left: 3px solid #38bdf8;">
+                  <strong style="color: #38bdf8;">Při vichřici:</strong> Větrné čidlo pozná silný vítr a automaticky žaluzie vytáhne nahoru, aby je orkán nepolámal.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 15: [INTERAKTIVNÍ KVÍZ] Prověření znalostí
+           ================================================================== -->
+      <section class="slide" id="slide-15" data-title="Kvíz: Rozumíte mechatronice?">
+        <div class="slide-content">
+          <h2>Kvíz: Zvládnete odpovědět jako budoucí technik?</h2>
+          <p class="slide-lead">Otestujte si, zda jste pochopili, co jednotlivé mechatronické vychytávky v praxi vlastně dělají.</p>
+
+          <div class="quiz-container">
+            <!-- Navigace kvízu -->
+            <div class="quiz-nav" id="quizNav">
+              <button class="quiz-nav-btn active" data-q="0">
+                <span>1. Brzdy ABS</span>
+                <span class="quiz-status-pill">?</span>
+              </button>
+              <button class="quiz-nav-btn" data-q="1">
+                <span>2. Pravítko na CNC</span>
+                <span class="quiz-status-pill">?</span>
+              </button>
+              <button class="quiz-nav-btn" data-q="2">
+                <span>3. Robot da Vinci</span>
+                <span class="quiz-status-pill">?</span>
+              </button>
+              <button class="quiz-nav-btn" data-q="3">
+                <span>4. Bionická ruka</span>
+                <span class="quiz-status-pill">?</span>
+              </button>
+              <button class="quiz-nav-btn" data-q="4">
+                <span>5. Stabilizace OIS</span>
+                <span class="quiz-status-pill">?</span>
+              </button>
+            </div>
+
+            <!-- Tělo vybrané otázky -->
+            <div class="quiz-card">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span class="badge badge-accent" id="quizQBadge">Otázka 1 z 5</span>
+                  <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);" id="quizScoreText">Skóre: 0 / 5</span>
+                </div>
+                <h3 id="quizQuestionTitle" style="color: var(--text-primary); font-size: 1.1rem; line-height: 1.4;">
+                  Proč systém ABS nedovolí, aby se kola při prudkém brzdění úplně zasekla (zablokovala)?
+                </h3>
+
+                <div class="quiz-options" id="quizOptionsBox">
+                  <!-- Možnosti generovány JavaScriptem -->
+                </div>
+              </div>
+
+              <div id="quizFeedbackBox" style="display: none; background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: 0.75rem; border: 1px solid var(--border-color); font-size: 0.85rem; line-height: 1.5;">
+                <!-- Zpětná vazba a vysvětlení -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           Snímek 16: Shrnutí a přechod k číslicové logice
+           ================================================================== -->
+      <section class="slide" id="slide-16" data-title="Shrnutí a co nás čeká příště">
+        <div class="slide-content">
+          <h2>Shrnutí: Co jsme se dozvěděli &amp; Co nás čeká příště</h2>
+          <p class="slide-lead">Mechatronika není žádné kouzlo – je to chytrá spolupráce mechaniky, senzorů a počítačového čipu, který se rozhoduje podle programu.</p>
+
+          <div class="grid-2">
+            <div class="content-card">
+              <h3 style="color: var(--accent); display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                Otázky k zamyšlení (rozklikněte nápovědu)
+              </h3>
+              
+              <div class="qa-accordion" id="qaAccordion">
+                <div class="qa-item">
+                  <div class="qa-header">
+                    <span>1. Proč je v autě lepší mít řízení po drátě než pevnou ocelovou tyč?</span>
+                    <svg class="icon qa-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                  <div class="qa-body">
+                    Při čelní nehodě tyč neprobodne kabinu řidiče. Navíc při parkování stačí otočit volantem jen o kousek a kola zatočí naplno, a v budoucnu se volant může v samořídícím autě sám schovat do palubní desky.
+                  </div>
+                </div>
+
+                <div class="qa-item">
+                  <div class="qa-header">
+                    <span>2. Proč nestačí věřit počtu otáček motoru u přesného CNC stroje?</span>
+                    <svg class="icon qa-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                  <div class="qa-body">
+                    Protože ocelový šroub se třením zahřeje a roztáhne, nebo má vůli v závitu. Skleněné optické pravítko měří přímo stůl a tyto chyby okamžitě odhalí a napraví.
+                  </div>
+                </div>
+
+                <div class="qa-item">
+                  <div class="qa-header">
+                    <span>3. Jak bionická ruka pozná, co chce člověk udělat?</span>
+                    <svg class="icon qa-icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                  <div class="qa-body">
+                    Člověku v předloktí zůstaly svaly. Když se pokusí ruku pomyslně sevřít, svaly vytvoří slaboučký elektrický signál (EMG). Čidla na kůži ho zachytí a počítač zapne motorky v prstech.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <h3 style="color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                Jak se ty čipy vlastně rozhodují? (Téma 040)
+              </h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.4rem; line-height: 1.6;">
+                Ať už je to ABS v autě, robot da Vinci nebo bionická ruka – uvnitř každého mikročipu probíhají blesková logická rozhodnutí typu:
+                <em>„Je překročena rychlost A ZÁROVEŇ kolo stojí?“</em> nebo <em>„Je sval zatnutý NEBO bylo stisknuto tlačítko?“</em>
+              </p>
+              <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-sm); padding: 0.85rem; margin-top: 0.8rem; border-left: 3px solid var(--accent);">
+                <strong style="color: var(--accent); font-size: 0.95rem;">Navazující téma 040: Booleova algebra</strong>
+                <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: 0.25rem;">
+                  V dalším tématu se podíváme na základní logická pravidla (AND, OR, NOT, pravdivostní tabulky), podle kterých přemýšlí všechny počítače na světě.
+                </p>
+                <div style="margin-top: 0.75rem;">
+                  <a href="../040-Booleova-algebra/index.html" class="action-btn active" style="font-size: 0.82rem; padding: 0.45rem 1rem;">
+                    Přejít na Téma 040: Booleova algebra &rarr;
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -166,6 +1510,7 @@
 
     </main>
 
+    <!-- OVLÁDACÍ LIŠTA PREZENTACE (CONTROLS BAR) -->
     <nav class="controls-bar" aria-label="Ovládání prezentace">
       <a href="../020-Robotika/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 020 Robotika">
         <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
@@ -180,7 +1525,7 @@
       <div class="controls-divider"></div>
 
       <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-      <span class="slide-counter" id="slideCounter">1 / 6</span>
+      <span class="slide-counter" id="slideCounter">1 / 16</span>
       <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
 
       <div class="controls-divider"></div>
@@ -190,6 +1535,7 @@
       <button class="control-btn" id="helpToggleBtn" title="Nápověda (?)"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="8" x2="6.01" y2="8"></line><line x1="10" y1="8" x2="10.01" y2="8"></line><line x1="14" y1="8" x2="14.01" y2="8"></line><line x1="18" y1="8" x2="18.01" y2="8"></line><line x1="6" y1="12" x2="6.01" y2="12"></line><line x1="10" y1="12" x2="10.01" y2="12"></line><line x1="14" y1="12" x2="14.01" y2="12"></line><line x1="18" y1="12" x2="18.01" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg></button>
     </nav>
 
+    <!-- OSNOVA PREZENTACE (TOC) -->
     <aside class="toc-overlay" id="tocOverlay" aria-hidden="true">
       <div class="toc-drawer">
         <div class="toc-header">
@@ -205,7 +1551,1425 @@
 
   </div>
 
+  <!-- CENTRÁLNÍ ENGINE PREZENTAČNÍHO FRAMEWORKU -->
   <script src="../../assets/js/presentation-core.js"></script>
+
+  <!-- LOKÁLNÍ SKRIPTY PRO INTERAKTIVNÍ SIMULACE TÉMATU 030 -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ====================================================================
+         1. PILÍŘOVÝ ROZCESTNÍK (Slide 1)
+         ==================================================================== */
+      const pillarCards = document.querySelectorAll('.pillar-card');
+      const pillarTitle = document.getElementById('pillarDetailTitle');
+      const pillarBadge = document.getElementById('pillarDetailBadge');
+      const pillarText = document.getElementById('pillarDetailText');
+
+      const pillarData = {
+        auto: {
+          title: 'Co řeší mechatronika v autě?',
+          badge: 'Blesková reakce',
+          text: 'Když na namrzlé silnici v rychlosti 90 km/h dupnete na brzdu, obyčejné auto bez elektroniky se kousne, zablokuje kola a klouže jako sáně – vůbec nejde zatočit! Mechatronický systém (ABS) dokáže brzdu sám „přerušovaně mačkat a povolovat“ až 20× za jedinou sekundu. To žádný člověk nohou nedokáže.'
+        },
+        cnc: {
+          title: 'Co řeší mechatronika v továrně a CNC?',
+          badge: 'Přesnost na 1 mikrometr',
+          text: 'Když nůž nebo fréza řeže tvrdou ocel, vzniká obrovský tlak a teplo. Kovový šroub stroje se může nepatrně ohnout nebo teplem roztáhnout. Optické skleněné pravítko na stroji ale funguje jako neviditelná digitální šuplera, která okamžitě řekne motoru: „Pozor, jsi o kousek vedle, přitlač!“, takže součástka sedí s přesností na tisícinu milimetru.'
+        },
+        bio: {
+          title: 'Co řeší mechatronika v medicíně?',
+          badge: 'Pomoc lidskému tělu',
+          text: 'Lidská ruka se přirozeně nepatrně chvěje. Pro běžný život to nevadí, ale v mikrochirurgii může chvění poškodit cévu. Robot da Vinci tento třes vymaže a navíc zmenší pohyb: když doktor pohne rukou o centimetr, nástroj v těle se pohne jen o dva milimetry. U bionických protéz zase mikročip čte slabé elektrické signály ze zatnutých svalů a podle toho hýbe umělými prsty.'
+        },
+        mems: {
+          title: 'Co řeší mechatronika v mobilu a doma?',
+          badge: 'Miniaturní stroje na čipu',
+          text: 'Uvnitř vašeho telefonu jsou miniaturní křemíková kyvadélka velká sotva pár mikrometrů. Pozznají, když se vám třese ruka při focení v noci. Malé elektromagnetické cívky okamžitě pohnou čočkou foťáku v protisměru, takže paprsek světla dopadá stále na stejné místo a fotka je dokonale ostrá!'
+        }
+      };
+
+      pillarCards.forEach(card => {
+        card.addEventListener('click', () => {
+          pillarCards.forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          const p = card.dataset.pillar;
+          if (pillarData[p]) {
+            pillarTitle.textContent = pillarData[p].title;
+            pillarBadge.textContent = pillarData[p].badge;
+            pillarText.textContent = pillarData[p].text;
+          }
+        });
+      });
+
+      /* ====================================================================
+         2. DIAGRAM CYKLU ABS (Slide 2)
+         ==================================================================== */
+      const absCycleSteps = document.querySelectorAll('.abs-cycle-step');
+      const absCycleDesc = document.getElementById('absCycleDesc');
+
+      const absStepInfo = {
+        build: '<strong>Krok 1 – Brzdi naplno:</strong> Řidič dupne na brzdový pedál. Olej proudí do brzdového třmenu a destičky tisknou kotouč. Kolo prudce zpomaluje.',
+        hold: '<strong>Krok 2 – Pozor, kolo se začíná kousat!</strong> Čidlo u kola pozná, že by se kolo mohlo za zlomek sekundy úplně zastavit a jít do smyku. Počítač okamžitě uzavře ventil a udrží tlak na bezpečné hranici.',
+        dump: '<strong>Krok 3 – Povolit a znova!</strong> Ventil na zlomek sekundy odpustí brzdnou kapalinu. Kolo se pootočí, obnoví se přilnavost k silnici a cyklus okamžitě začíná nanovo. A to 15× až 20× za sekundu!'
+      };
+
+      absCycleSteps.forEach(step => {
+        step.addEventListener('click', () => {
+          absCycleSteps.forEach(s => s.classList.remove('active'));
+          step.classList.add('active');
+          const k = step.dataset.step;
+          if (absStepInfo[k]) {
+            absCycleDesc.innerHTML = absStepInfo[k];
+          }
+        });
+      });
+
+      /* ====================================================================
+         3. SIMULÁTOR BRZDNÉ DRÁHY ABS (Slide 3)
+         ==================================================================== */
+      const absCanvas = document.getElementById('absTrackCanvas');
+      const absCtx = absCanvas ? absCanvas.getContext('2d') : null;
+      const teleAbsState = document.getElementById('teleAbsState');
+      const teleSpeed = document.getElementById('teleSpeed');
+      const teleDistance = document.getElementById('teleDistance');
+      const teleSlip = document.getElementById('teleSlip');
+      const absResultStatus = document.getElementById('absResultStatus');
+      const btnSurfaceDry = document.getElementById('btnSurfaceDry');
+      const btnSurfaceWet = document.getElementById('btnSurfaceWet');
+      const btnSurfaceIce = document.getElementById('btnSurfaceIce');
+      const sliderAbsSpeed = document.getElementById('sliderAbsSpeed');
+      const valAbsSpeed = document.getElementById('valAbsSpeed');
+      const btnToggleAbs = document.getElementById('btnToggleAbs');
+      const btnBrakeAction = document.getElementById('btnBrakeAction');
+      const btnResetAbs = document.getElementById('btnResetAbs');
+
+      let absMu = 0.90; // Suchý asfalt
+      let absEnabled = true;
+      let initV0 = 90; // km/h
+      let currentV = 90; // km/h
+      let simDistance = 0; // metry
+      let isBraking = false;
+      let hasFinished = false;
+      let animFrameId = null;
+      let absPulsePhase = 0;
+
+      function updateSurfaceButtons(activeBtn, muVal) {
+        [btnSurfaceDry, btnSurfaceWet, btnSurfaceIce].forEach(b => b.classList.remove('active'));
+        activeBtn.classList.add('active');
+        absMu = muVal;
+        resetAbsSim();
+      }
+
+      if (btnSurfaceDry) btnSurfaceDry.addEventListener('click', () => updateSurfaceButtons(btnSurfaceDry, 0.90));
+      if (btnSurfaceWet) btnSurfaceWet.addEventListener('click', () => updateSurfaceButtons(btnSurfaceWet, 0.50));
+      if (btnSurfaceIce) btnSurfaceIce.addEventListener('click', () => updateSurfaceButtons(btnSurfaceIce, 0.12));
+
+      if (sliderAbsSpeed) {
+        sliderAbsSpeed.addEventListener('input', (e) => {
+          initV0 = parseInt(e.target.value, 10);
+          valAbsSpeed.textContent = `${initV0} km/h`;
+          resetAbsSim();
+        });
+      }
+
+      if (btnToggleAbs) {
+        btnToggleAbs.addEventListener('click', () => {
+          absEnabled = !absEnabled;
+          btnToggleAbs.textContent = absEnabled ? 'ZAPNUTO' : 'VYPNUTO';
+          btnToggleAbs.className = `action-btn ${absEnabled ? 'active' : ''}`;
+          if (!absEnabled) {
+            btnToggleAbs.style.background = '#ef4444';
+            btnToggleAbs.style.color = '#fff';
+            btnToggleAbs.style.borderColor = '#ef4444';
+          } else {
+            btnToggleAbs.style.background = '';
+            btnToggleAbs.style.color = '';
+            btnToggleAbs.style.borderColor = '';
+          }
+          resetAbsSim();
+        });
+      }
+
+      function resetAbsSim() {
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        currentV = initV0;
+        simDistance = 0;
+        isBraking = false;
+        hasFinished = false;
+        absPulsePhase = 0;
+        if (teleAbsState) {
+          teleAbsState.className = 'tele-badge';
+          teleAbsState.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#22c55e;"></span> ABS ${absEnabled ? 'PŘIPRAVENO' : 'VYPNUTO'}`;
+        }
+        if (teleSpeed) teleSpeed.textContent = `Rychlost: ${currentV.toFixed(1)} km/h`;
+        if (teleDistance) teleDistance.textContent = `Ujetá dráha: 0.0 m`;
+        if (teleSlip) teleSlip.textContent = `Stav kol: Volně se točí`;
+        if (absResultStatus) {
+          absResultStatus.textContent = 'Čeká na sešlápnutí brzdy';
+          absResultStatus.style.color = 'var(--accent)';
+        }
+        drawAbsTrack();
+      }
+
+      function drawAbsTrack() {
+        if (!absCanvas || !absCtx) return;
+        const w = absCanvas.width;
+        const h = absCanvas.height;
+        absCtx.clearRect(0, 0, w, h);
+
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+        // 1. Pozadí a vozovka
+        const roadY = h * 0.48;
+        const roadHeight = 70;
+
+        // Okolní terén
+        absCtx.fillStyle = isDark ? '#070d18' : '#e2e8f0';
+        absCtx.fillRect(0, 0, w, roadY);
+        absCtx.fillRect(0, roadY + roadHeight, w, h - (roadY + roadHeight));
+
+        // Asfalt vozovky podle povrchu
+        if (absMu > 0.7) {
+          absCtx.fillStyle = isDark ? '#141824' : '#334155'; // Suchý asfalt
+        } else if (absMu > 0.3) {
+          absCtx.fillStyle = isDark ? '#0c1a29' : '#1e293b'; // Mokrý lesklý asfalt
+        } else {
+          absCtx.fillStyle = isDark ? '#1a2c3d' : '#94a3b8'; // Zledovatělý sníh
+        }
+        absCtx.fillRect(0, roadY, w, roadHeight);
+
+        // Vodorovné značení dráhy
+        absCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.7)';
+        absCtx.lineWidth = 2;
+        absCtx.setLineDash([15, 12]);
+        absCtx.beginPath();
+        absCtx.moveTo(0, roadY + roadHeight / 2);
+        absCtx.lineTo(w, roadY + roadHeight / 2);
+        absCtx.stroke();
+        absCtx.setLineDash([]);
+
+        // Krajnice
+        absCtx.strokeStyle = '#ef4444';
+        absCtx.lineWidth = 3;
+        absCtx.beginPath();
+        absCtx.moveTo(0, roadY);
+        absCtx.lineTo(w, roadY);
+        absCtx.moveTo(0, roadY + roadHeight);
+        absCtx.lineTo(w, roadY + roadHeight);
+        absCtx.stroke();
+
+        // 2. Cílová překážka (červená zábrana na 65 m)
+        const meterScale = (w - 120) / 100; // px na metr
+        const startX = 60;
+        const barrierDist = 65; // metrů
+        const barrierX = startX + barrierDist * meterScale;
+
+        // Vykreslení bariéry
+        absCtx.fillStyle = '#dc2626';
+        absCtx.fillRect(barrierX, roadY + 8, 12, roadHeight - 16);
+        absCtx.fillStyle = '#ffffff';
+        absCtx.fillRect(barrierX + 3, roadY + 14, 6, 8);
+        absCtx.fillRect(barrierX + 3, roadY + 30, 6, 8);
+        absCtx.fillRect(barrierX + 3, roadY + 46, 6, 8);
+
+        // Popisek bariéry
+        absCtx.font = '10px monospace';
+        absCtx.fillStyle = '#f87171';
+        absCtx.textAlign = 'center';
+        absCtx.fillText(`ZÁBRANA ${barrierDist} m`, barrierX + 6, roadY - 6);
+
+        // 3. Pozice vozidla (vztaženo k přednímu nárazníku auta)
+        const carFrontX = Math.min(barrierX, startX + simDistance * meterScale);
+        const carY = roadY + roadHeight / 2;
+
+        // Stopy brzdění za autem (vycházejí od zadních kol)
+        if (simDistance > 0) {
+          absCtx.strokeStyle = (!absEnabled || absMu < 0.2) ? 'rgba(0,0,0,0.85)' : 'rgba(6,182,212,0.45)';
+          absCtx.lineWidth = 3;
+          absCtx.beginPath();
+          absCtx.moveTo(startX - 32, carY - 10);
+          absCtx.lineTo(carFrontX - 32, carY - 10);
+          absCtx.moveTo(startX - 32, carY + 10);
+          absCtx.lineTo(carFrontX - 32, carY + 10);
+          absCtx.stroke();
+        }
+
+        // Vektorové vozidlo (přední nárazník je na souřadnici carFrontX)
+        absCtx.save();
+        absCtx.translate(carFrontX, carY);
+
+        // Tělo auta (karoserie kreslená směrem dozadu: od x = -38 do x = 0)
+        absCtx.fillStyle = absEnabled ? '#06b6d4' : '#ef4444';
+        absCtx.beginPath();
+        absCtx.roundRect(-38, -13, 38, 26, 4);
+        absCtx.fill();
+        absCtx.strokeStyle = '#ffffff';
+        absCtx.lineWidth = 1.5;
+        absCtx.stroke();
+
+        // Čelní a zadní sklo
+        absCtx.fillStyle = isDark ? '#0b1322' : '#1e293b';
+        absCtx.fillRect(-15, -9, 8, 18);
+        absCtx.fillRect(-32, -9, 7, 18);
+
+        // Kola
+        absCtx.fillStyle = '#0f172a';
+        absCtx.fillRect(-32, -15, 9, 3);
+        absCtx.fillRect(-11, -15, 9, 3);
+        absCtx.fillRect(-32, 12, 9, 3);
+        absCtx.fillRect(-11, 12, 9, 3);
+
+        // Světla na předním nárazníku (těsně před x = 0)
+        absCtx.fillStyle = isBraking ? '#ef4444' : '#fbbf24';
+        absCtx.fillRect(-3, -10, 3, 5);
+        absCtx.fillRect(-3, 5, 3, 5);
+
+        absCtx.restore();
+
+        // 4. Měřítko metrů na spodním okraji
+        absCtx.fillStyle = isDark ? '#64748b' : '#475569';
+        absCtx.font = '10px monospace';
+        absCtx.textAlign = 'center';
+        for (let m = 0; m <= 100; m += 20) {
+          const tickX = startX + m * meterScale;
+          absCtx.beginPath();
+          absCtx.moveTo(tickX, roadY + roadHeight + 4);
+          absCtx.lineTo(tickX, roadY + roadHeight + 10);
+          absCtx.strokeStyle = isDark ? '#334155' : '#cbd5e1';
+          absCtx.stroke();
+          absCtx.fillText(`${m}m`, tickX, roadY + roadHeight + 20);
+        }
+      }
+
+      function stepAbsSim() {
+        if (!isBraking || hasFinished) return;
+
+        let effectiveMu = absMu;
+        if (!absEnabled) {
+          effectiveMu = absMu * (absMu > 0.7 ? 0.85 : 0.55); // zablokované kolo má horší skluz
+        }
+
+        const g = 9.81;
+        const deceleration = effectiveMu * g;
+
+        const dt = 0.022;
+
+        let vMs = (currentV * 1000) / 3600;
+        vMs = Math.max(0, vMs - deceleration * dt);
+        currentV = (vMs * 3600) / 1000;
+
+        simDistance += vMs * dt;
+        absPulsePhase += 0.35;
+
+        // Telemetrie
+        if (teleSpeed) teleSpeed.textContent = `Rychlost: ${currentV.toFixed(1)} km/h`;
+        if (teleDistance) teleDistance.textContent = `Ujetá dráha: ${simDistance.toFixed(1)} m`;
+
+        if (absEnabled) {
+          if (teleSlip) teleSlip.textContent = `Stav kol: Řízené odvalování (stále zatáčí)`;
+          if (teleAbsState) {
+            const isRelease = Math.sin(absPulsePhase) > 0;
+            teleAbsState.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#06b6d4;"></span> ${isRelease ? 'ABS: POVOLUJE BRZDU' : 'ABS: PŘIBRZĎUJE'}`;
+          }
+        } else {
+          if (teleSlip) teleSlip.textContent = `Stav kol: ZABLOKOVÁNO! (Auto nezatáčí)`;
+          if (teleAbsState) {
+            teleAbsState.className = 'tele-badge alert';
+            teleAbsState.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#ef4444;"></span> SMYK! KOLA SE KOUSLA`;
+          }
+        }
+
+        // Kontrola zastavení nebo nárazu do bariéry (65 m)
+        const barrierDist = 65;
+        if (simDistance >= barrierDist && currentV > 0) {
+          hasFinished = true;
+          isBraking = false;
+          simDistance = barrierDist;
+          if (teleDistance) teleDistance.textContent = `Ujetá dráha: ${barrierDist.toFixed(1)} m`;
+          if (absResultStatus) {
+            absResultStatus.innerHTML = `<span style="color:#ef4444; font-weight:700;">BUM! NÁRAZ DO PŘEKÁŽKY! (v rychlosti ${currentV.toFixed(1)} km/h)</span>`;
+          }
+        } else if (currentV <= 0.1) {
+          currentV = 0;
+          hasFinished = true;
+          isBraking = false;
+          const stoppedBefore = barrierDist - simDistance;
+          if (absResultStatus) {
+            absResultStatus.innerHTML = `<span style="color:#34d399; font-weight:700;">BEZPEČNĚ ZASTAVENO! Zbývá ${stoppedBefore.toFixed(1)} m před zábranou</span>`;
+          }
+          if (teleAbsState) {
+            teleAbsState.className = 'tele-badge success';
+            teleAbsState.innerHTML = `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#22c55e;"></span> VŮZ ZASTAVIL`;
+          }
+        }
+
+        drawAbsTrack();
+
+        if (isBraking && !hasFinished) {
+          animFrameId = requestAnimationFrame(stepAbsSim);
+        }
+      }
+
+      if (btnBrakeAction) {
+        btnBrakeAction.addEventListener('click', () => {
+          if (hasFinished) resetAbsSim();
+          isBraking = true;
+          if (animFrameId) cancelAnimationFrame(animFrameId);
+          stepAbsSim();
+        });
+      }
+
+      if (btnResetAbs) {
+        btnResetAbs.addEventListener('click', resetAbsSim);
+      }
+
+      drawAbsTrack();
+
+      /* ====================================================================
+         4. PLAYGROUND CNC OSY A OPTICKÉHO PRAVÍTKA (Slide 6)
+         ==================================================================== */
+      const cncSvg = document.getElementById('cncAxisSvg');
+      const teleCncMode = document.getElementById('teleCncMode');
+      const teleCncTarget = document.getElementById('teleCncTarget');
+      const teleCncActual = document.getElementById('teleCncActual');
+      const teleCncError = document.getElementById('teleCncError');
+      const cncTorqueText = document.getElementById('cncTorqueText');
+      const sliderCncPos = document.getElementById('sliderCncPos');
+      const valCncPos = document.getElementById('valCncPos');
+      const btnCncOpenLoop = document.getElementById('btnCncOpenLoop');
+      const btnCncClosedLoop = document.getElementById('btnCncClosedLoop');
+      const btnCncForceZero = document.getElementById('btnCncForceZero');
+      const btnCncForceLoad = document.getElementById('btnCncForceLoad');
+      const cncForceLabel = document.getElementById('cncForceLabel');
+
+      let cncTargetMm = 25.0;
+      let cncClosedLoop = true;
+      let cncCuttingForceN = 0;
+
+      function renderCncSvg() {
+        if (!cncSvg) return;
+
+        let positionErrorUm = 0;
+
+        if (!cncClosedLoop) {
+          // Bez pravítka
+          if (cncCuttingForceN > 0) {
+            positionErrorUm = -42.5; // odtlačení frézy odporem materiálu doleva
+          } else {
+            positionErrorUm = 8.0; // drobná vůle šroubu
+          }
+        } else {
+          // S pravítkem (uzavřená smyčka dorovná odchylku na mikrometr)
+          if (cncCuttingForceN > 0) {
+            positionErrorUm = 0.8; // pod 1 mikrometr
+          } else {
+            positionErrorUm = 0.2;
+          }
+        }
+
+        const actualMm = cncTargetMm + positionErrorUm / 1000;
+
+        // Telemetrie
+        if (teleCncMode) teleCncMode.textContent = `Režim: ${cncClosedLoop ? 'S PRAVÍTKEM (CNC)' : 'BEZ PRAVÍTKA (KROKOVÝ)'}`;
+        if (teleCncTarget) teleCncTarget.textContent = `Chci polohu: ${cncTargetMm.toFixed(3)} mm`;
+        if (teleCncActual) teleCncActual.textContent = `Skutečná: ${actualMm.toFixed(3)} mm`;
+        if (teleCncError) {
+          teleCncError.textContent = `Odchylka: ${positionErrorUm > 0 ? '+' : ''}${positionErrorUm.toFixed(1)} µm`;
+          teleCncError.className = Math.abs(positionErrorUm) < 3 ? 'tele-badge success' : 'tele-badge alert';
+        }
+        if (cncTorqueText) {
+          cncTorqueText.textContent = cncCuttingForceN > 0 && cncClosedLoop 
+            ? 'Servo vyvinulo tah 400 N a polohu udrželo!' 
+            : (cncCuttingForceN > 0 ? 'Odpor oceli odtlačil frézu doleva o 42.5 µm!' : 'Běh naprázdno (žádný odpor)');
+        }
+
+        const cncStatusExplain = document.getElementById('cncStatusExplain');
+        if (cncStatusExplain) {
+          if (cncCuttingForceN > 0) {
+            if (!cncClosedLoop) {
+              cncStatusExplain.innerHTML = '<strong style="color:#ef4444;">🔴 CHYBA:</strong> Ocel klade odpor 400 N a stlačila kuličkový šroub o 42.5 µm zpět doleva! Řídicí systém bez pravítka nic nepozná a myslí si, že stojí přesně. Vyrobená součástka je zmetek.';
+            } else {
+              cncStatusExplain.innerHTML = '<strong style="color:#10b981;">🟢 PŘESNÉ DOROVNÁNÍ:</strong> Ocel tlačí 400 N doleva, ale optické pravítko odchylku ihned naměřilo. Servomotor okamžitě zvýšil proud a odpor kovu přetlačil. Skutečná odchylka je pouhých 0.8 µm!';
+            }
+          } else {
+            cncStatusExplain.innerHTML = '<strong style="color:#38bdf8;">⚪ BĚH NAPRÁZNO:</strong> Fréza se točí ve vzduchu, žádný kov neklade odpor. Zkuste přepnout na <em>Řezání oceli (tlak 400 N)</em> a sledujte, co odpor kovu provede bez pravítka a s pravítkem.';
+          }
+        }
+
+        // Přepočet do SVG: actualMm je 0 až 50 mm
+        const toolX = 160 + actualMm * 5.0;
+        const carriageX = toolX - 25;
+        const isCut = cncCuttingForceN > 0;
+        const workpieceStartX = 140;
+        const workpieceEndX = 560;
+
+        cncSvg.innerHTML = `
+          <defs>
+            <pattern id="steelHatch" width="10" height="10" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+            </pattern>
+          </defs>
+
+          <!-- 1. ZÁKLADNA A RÁM STROJE (Litinové lože) -->
+          <rect x="15" y="215" width="570" height="25" rx="3" fill="#0b1120" stroke="#334155" stroke-width="1.5"/>
+          <rect x="20" y="208" width="560" height="7" fill="#475569" stroke="#64748b" stroke-width="1"/>
+          <text x="35" y="231" fill="#64748b" font-size="7.5" font-family="monospace">RÁM STROJE</text>
+
+          <!-- Pracovní stůl pro obrobek -->
+          <rect x="90" y="192" width="485" height="16" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+          <line x1="100" y1="200" x2="565" y2="200" stroke="#0f172a" stroke-width="2"/>
+
+          <!-- 2. KOVOVÝ OBROBEK (Ocelový blok upnutý na stole) -->
+          <!-- Již vyfrézovaná drážka vlevo od nástroje -->
+          <rect x="${workpieceStartX}" y="174" width="${Math.max(0, toolX - workpieceStartX)}" height="18" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+          <rect x="${workpieceStartX}" y="174" width="${Math.max(0, toolX - workpieceStartX)}" height="18" fill="url(#steelHatch)"/>
+          ${toolX > 220 ? `<text x="${(workpieceStartX + toolX) / 2}" y="186" fill="#64748b" font-size="7" font-family="monospace" text-anchor="middle">vyfrézovaná drážka</text>` : ''}
+
+          <!-- Surový neobrobený kov vpravo od nástroje (plný masiv) -->
+          <rect x="${toolX}" y="148" width="${Math.max(0, workpieceEndX - toolX)}" height="44" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+          <rect x="${toolX}" y="148" width="${Math.max(0, workpieceEndX - toolX)}" height="44" fill="url(#steelHatch)"/>
+
+          <!-- Upínky obrobku ke stolu -->
+          <rect x="120" y="182" width="18" height="10" rx="2" fill="#64748b" stroke="#94a3b8"/>
+          <rect x="546" y="182" width="18" height="10" rx="2" fill="#64748b" stroke="#94a3b8"/>
+
+          <!-- Popisky obrobku -->
+          <text x="495" y="166" fill="#cbd5e1" font-size="8.5" font-family="monospace" text-anchor="middle" font-weight="bold">OCELOVÝ OBROBEK</text>
+          <text x="495" y="178" fill="#94a3b8" font-size="7.5" font-family="monospace" text-anchor="middle">(kovový blok na stole)</text>
+
+          <!-- 3. SERVOMOTOR A KULIČKOVÝ ŠROUB -->
+          <!-- Servomotor vlevo -->
+          <rect x="15" y="60" width="60" height="85" rx="4" fill="#042f2e" stroke="#06b6d4" stroke-width="2"/>
+          <line x1="20" y1="78" x2="70" y2="78" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+          <line x1="20" y1="96" x2="70" y2="96" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+          <line x1="20" y1="114" x2="70" y2="114" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+          <text x="45" y="75" fill="#38bdf8" font-size="8.5" font-family="monospace" text-anchor="middle" font-weight="bold">SERVO</text>
+          <text x="45" y="88" fill="#38bdf8" font-size="8.5" font-family="monospace" text-anchor="middle" font-weight="bold">MOTOR</text>
+          <text x="45" y="108" fill="#94a3b8" font-size="7.5" font-family="monospace" text-anchor="middle">osa X</text>
+          <text x="45" y="132" fill="${isCut && cncClosedLoop ? '#34d399' : '#38bdf8'}" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">${isCut && cncClosedLoop ? 'Proud 14.8 A ⚡' : 'Proud 3.2 A'}</text>
+
+          <!-- Spojka motoru -->
+          <rect x="75" y="94" width="16" height="22" fill="#475569" stroke="#94a3b8" stroke-width="1"/>
+
+          <!-- Kuličkový šroub -->
+          <line x1="91" y1="105" x2="560" y2="105" stroke="#94a3b8" stroke-width="8" stroke-dasharray="6,4"/>
+          <circle cx="560" cy="105" r="7" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+
+          <!-- 4. VOZÍK POJEZDU (Suport osy X) -->
+          <rect x="${carriageX - 32}" y="65" width="64" height="75" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+          <rect x="${carriageX - 16}" y="95" width="32" height="20" rx="2" fill="#334155" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="${carriageX}" y="124" fill="#38bdf8" font-size="7.5" font-family="monospace" text-anchor="middle">VOZÍK X</text>
+          <text x="${carriageX}" y="134" fill="#f1f5f9" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">${actualMm.toFixed(2)} mm</text>
+
+          <!-- 5. VERTIKÁLNÍ VŘETENO (Motor nástroje) -->
+          <rect x="${toolX - 15}" y="12" width="30" height="58" rx="3" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+          <line x1="${toolX - 12}" y1="28" x2="${toolX + 12}" y2="28" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+          <line x1="${toolX - 12}" y1="42" x2="${toolX + 12}" y2="42" stroke="#06b6d4" stroke-width="1" opacity="0.4"/>
+          <text x="${toolX}" y="24" fill="#06b6d4" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">VŘETENO</text>
+          <text x="${toolX}" y="36" fill="#94a3b8" font-size="7" font-family="monospace" text-anchor="middle">15 000 RPM</text>
+
+          <!-- Kleština / Upínač nástroje -->
+          <polygon points="${toolX - 11},70 ${toolX + 11},70 ${toolX + 6},88 ${toolX - 6},88" fill="#64748b" stroke="#94a3b8"/>
+
+          <!-- 6. FRÉZA (Rotující ocelový řezný nástroj) -->
+          <rect x="${toolX - 5}" y="88" width="10" height="86" fill="#e2e8f0" stroke="#94a3b8"/>
+          <!-- Spirálové břity frézy -->
+          <path d="M${toolX-5},105 Q${toolX},110 ${toolX+5},105 M${toolX-5},120 Q${toolX},125 ${toolX+5},120 M${toolX-5},135 Q${toolX},140 ${toolX+5},135 M${toolX-5},150 Q${toolX},155 ${toolX+5},150 M${toolX-5},165 Q${toolX},170 ${toolX+5},165" stroke="#0284c7" stroke-width="1.5" fill="none"/>
+          <text x="${toolX + 18}" y="98" fill="#fbbf24" font-size="7.5" font-family="monospace" font-weight="bold">FRÉZA (nástroj)</text>
+          <text x="${toolX + 18}" y="109" fill="#f59e0b" font-size="7" font-family="monospace">↺ rotace 15k</text>
+
+          <!-- 7. ŠIPKY SIL A REAKCÍ -->
+          <!-- Šipka posuvu stroje (➔ doprava) -->
+          <path d="M${toolX - 25},6 L${toolX + 15},6 M${toolX + 7},2 L${toolX + 15},6 L${toolX + 7},10" stroke="#10b981" stroke-width="2.5" fill="none"/>
+          <text x="${toolX - 5}" y="-1" fill="#34d399" font-size="7" font-family="monospace" text-anchor="middle" font-weight="bold">POSUV DOPŘEDU ➔</text>
+
+          ${isCut ? `
+            <!-- Odpor oceli / Řezná síla (⬅ doleva zpět) -->
+            <path d="M${toolX + 80},162 L${toolX + 6},162 M${toolX + 18},155 L${toolX + 6},162 L${toolX + 18},169" stroke="#ef4444" stroke-width="3.5" fill="none"/>
+            <rect x="${toolX + 22}" y="139" width="145" height="18" rx="3" fill="rgba(239,68,68,0.3)" stroke="#ef4444" stroke-width="1"/>
+            <text x="${toolX + 94}" y="151" fill="#f87171" font-size="8" font-family="monospace" text-anchor="middle" font-weight="bold">⬅ ODPOR KOVU: 400 N ZPĚT!</text>
+
+            <!-- Odletující špony a jiskry v místě záběru -->
+            <circle cx="${toolX + 8}" cy="154" r="2.5" fill="#fbbf24"/>
+            <circle cx="${toolX + 14}" cy="148" r="1.8" fill="#f59e0b"/>
+            <circle cx="${toolX + 10}" cy="168" r="2.2" fill="#ef4444"/>
+            <circle cx="${toolX + 20}" cy="156" r="1.5" fill="#facc15"/>
+            <path d="M${toolX + 5},158 Q${toolX + 12},145 ${toolX + 18},148" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+            <path d="M${toolX + 6},166 Q${toolX + 16},162 ${toolX + 22},169" stroke="#f59e0b" stroke-width="1.5" fill="none"/>
+          ` : `
+            <text x="${toolX + 18}" y="155" fill="#64748b" font-size="7.5" font-family="monospace">Běh naprázdno (bez záběru)</text>
+          `}
+
+          <!-- Štítek přesnosti na suportu -->
+          ${!cncClosedLoop && isCut ? `
+            <rect x="${carriageX - 45}" y="48" width="90" height="15" rx="3" fill="rgba(239,68,68,0.95)"/>
+            <text x="${carriageX}" y="59" fill="#ffffff" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">⚠ ODCHYLKA -42.5 µm</text>
+          ` : (cncClosedLoop && isCut ? `
+            <rect x="${carriageX - 45}" y="48" width="90" height="15" rx="3" fill="rgba(16,185,129,0.95)"/>
+            <text x="${carriageX}" y="59" fill="#ffffff" font-size="7.5" font-family="monospace" text-anchor="middle" font-weight="bold">✓ PŘESNĚ (0.8 µm)</text>
+          ` : '')}
+
+          <!-- 8. SKLENĚNÉ OPTICKÉ PRAVÍTKO DOLE -->
+          <rect x="100" y="246" width="370" height="12" rx="2" fill="#042f2e" stroke="#10b981" stroke-width="1.5"/>
+          <line x1="105" y1="252" x2="465" y2="252" stroke="#34d399" stroke-width="3" stroke-dasharray="2,2"/>
+          <text x="285" y="272" fill="#34d399" font-size="8" font-family="monospace" text-anchor="middle" font-weight="bold">SKLENĚNÉ OPTICKÉ PRAVÍTKO (Pevně na rámu • čte polohu čidla přímo na 1 µm)</text>
+
+          <!-- Čtecí hlava (senzor) spojená s vozíkem -->
+          <rect x="${carriageX - 6}" y="140" width="12" height="100" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+          <rect x="${carriageX - 14}" y="240" width="28" height="18" rx="2" fill="${cncClosedLoop ? '#065f46' : '#1e293b'}" stroke="${cncClosedLoop ? '#34d399' : '#64748b'}" stroke-width="1.5"/>
+          <circle cx="${carriageX}" cy="252" r="3" fill="${cncClosedLoop ? '#22c55e' : '#64748b'}"/>
+          <text x="${carriageX}" y="235" fill="${cncClosedLoop ? '#34d399' : '#94a3b8'}" font-size="7" font-family="monospace" text-anchor="middle">${cncClosedLoop ? 'Čidlo (čte)' : 'Čidlo (vypnuto)'}</text>
+        `;
+      }
+
+      if (sliderCncPos) {
+        sliderCncPos.addEventListener('input', (e) => {
+          cncTargetMm = parseFloat(e.target.value);
+          valCncPos.textContent = `${cncTargetMm.toFixed(1)} mm`;
+          renderCncSvg();
+        });
+      }
+
+      if (btnCncOpenLoop && btnCncClosedLoop) {
+        btnCncOpenLoop.addEventListener('click', () => {
+          cncClosedLoop = false;
+          btnCncOpenLoop.classList.add('active');
+          btnCncClosedLoop.classList.remove('active');
+          renderCncSvg();
+        });
+        btnCncClosedLoop.addEventListener('click', () => {
+          cncClosedLoop = true;
+          btnCncClosedLoop.classList.add('active');
+          btnCncOpenLoop.classList.remove('active');
+          renderCncSvg();
+        });
+      }
+
+      if (btnCncForceZero && btnCncForceLoad) {
+        btnCncForceZero.addEventListener('click', () => {
+          cncCuttingForceN = 0;
+          btnCncForceZero.classList.add('active');
+          btnCncForceLoad.classList.remove('active');
+          cncForceLabel.textContent = 'Ve vzduchu (0 N)';
+          renderCncSvg();
+        });
+        btnCncForceLoad.addEventListener('click', () => {
+          cncCuttingForceN = 400;
+          btnCncForceLoad.classList.add('active');
+          btnCncForceZero.classList.remove('active');
+          cncForceLabel.textContent = 'Řezání oceli (400 N)';
+          renderCncSvg();
+        });
+      }
+
+      renderCncSvg();
+
+      /* ====================================================================
+         5. VÝZVA TREMOR FILTR CHIRURGICKÉHO ROBOTA (Slide 9)
+         ==================================================================== */
+      const tremorCanvas = document.getElementById('tremorCanvas');
+      const tremorCtx = tremorCanvas ? tremorCanvas.getContext('2d') : null;
+      const teleTremorMode = document.getElementById('teleTremorMode');
+      const teleTremorScore = document.getElementById('teleTremorScore');
+      const teleTremorCollisions = document.getElementById('teleTremorCollisions');
+      const btnTremorOff = document.getElementById('btnTremorOff');
+      const btnTremorOn = document.getElementById('btnTremorOn');
+      const sliderTremorAmp = document.getElementById('sliderTremorAmp');
+      const valTremorAmp = document.getElementById('valTremorAmp');
+      const btnResetTremor = document.getElementById('btnResetTremor');
+
+      let tremorFilterActive = false;
+      let tremorAmplitude = 6;
+      let mouseX = 80;
+      let mouseY = 115;
+      let toolActualX = 80;
+      let toolActualY = 115;
+      let collisionsCount = 0;
+      let samplesCount = 0;
+      let tremorAnimPhase = 0;
+
+      function updateTremorMode(active) {
+        tremorFilterActive = active;
+        btnTremorOff.classList.toggle('active', !active);
+        btnTremorOn.classList.toggle('active', active);
+        if (teleTremorMode) {
+          teleTremorMode.textContent = active ? 'MÓD: ROBOT da Vinci (TREMOR FILTR AKTIVNÍ)' : 'MÓD: PŘIROZENÁ RUKA (BEZ FILTRU)';
+          teleTremorMode.className = active ? 'tele-badge success' : 'tele-badge alert';
+        }
+      }
+
+      if (btnTremorOff) btnTremorOff.addEventListener('click', () => updateTremorMode(false));
+      if (btnTremorOn) btnTremorOn.addEventListener('click', () => updateTremorMode(true));
+
+      if (sliderTremorAmp) {
+        sliderTremorAmp.addEventListener('input', (e) => {
+          tremorAmplitude = parseInt(e.target.value, 10);
+          valTremorAmp.textContent = `±${(tremorAmplitude * 0.1).toFixed(1)} mm`;
+        });
+      }
+
+      if (btnResetTremor) {
+        btnResetTremor.addEventListener('click', () => {
+          collisionsCount = 0;
+          samplesCount = 0;
+          if (teleTremorScore) teleTremorScore.textContent = 'Úspěšnost: 100 %';
+          if (teleTremorCollisions) teleTremorCollisions.textContent = 'Dotyk stěny cévy: 0×';
+        });
+      }
+
+      if (tremorCanvas) {
+        tremorCanvas.addEventListener('mousemove', (e) => {
+          const rect = tremorCanvas.getBoundingClientRect();
+          mouseX = (e.clientX - rect.left) * (tremorCanvas.width / rect.width);
+          mouseY = (e.clientY - rect.top) * (tremorCanvas.height / rect.height);
+        });
+
+        tremorCanvas.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0) {
+            const rect = tremorCanvas.getBoundingClientRect();
+            mouseX = (e.touches[0].clientX - rect.left) * (tremorCanvas.width / rect.width);
+            mouseY = (e.touches[0].clientY - rect.top) * (tremorCanvas.height / rect.height);
+          }
+        }, { passive: true });
+      }
+
+      function drawTremorScene() {
+        if (!tremorCanvas || !tremorCtx) return;
+        const w = tremorCanvas.width;
+        const h = tremorCanvas.height;
+        tremorCtx.clearRect(0, 0, w, h);
+
+        tremorAnimPhase += 0.22;
+
+        const corridorTop = 60;
+        const corridorBottom = 170;
+
+        // Zakázaná tkáň
+        tremorCtx.fillStyle = 'rgba(239, 68, 68, 0.12)';
+        tremorCtx.fillRect(0, 0, w, corridorTop);
+        tremorCtx.fillRect(0, corridorBottom, w, h - corridorBottom);
+
+        // Hranice cévní stěny
+        tremorCtx.strokeStyle = '#ef4444';
+        tremorCtx.lineWidth = 2;
+        tremorCtx.beginPath();
+        tremorCtx.moveTo(0, corridorTop);
+        tremorCtx.lineTo(w, corridorTop);
+        tremorCtx.moveTo(0, corridorBottom);
+        tremorCtx.lineTo(w, corridorBottom);
+        tremorCtx.stroke();
+
+        // Bezpečná osa řezu
+        tremorCtx.strokeStyle = 'rgba(6,182,212,0.3)';
+        tremorCtx.setLineDash([8, 8]);
+        tremorCtx.beginPath();
+        tremorCtx.moveTo(0, (corridorTop + corridorBottom) / 2);
+        tremorCtx.lineTo(w, (corridorTop + corridorBottom) / 2);
+        tremorCtx.stroke();
+        tremorCtx.setLineDash([]);
+
+        // Popisky
+        tremorCtx.font = '10px monospace';
+        tremorCtx.fillStyle = '#f87171';
+        tremorCtx.fillText('ZAKÁZANÁ ZÓNA (STĚNA CÉVY - ZÁKAZ DOTYKU)', 15, 25);
+        tremorCtx.fillText('ZAKÁZANÁ ZÓNA (CITLIVÝ NERV)', 15, h - 15);
+        tremorCtx.fillStyle = '#38bdf8';
+        tremorCtx.fillText('BEZPEČNÝ PRŮCHOD PRO NÁSTROJ', 15, (corridorTop + corridorBottom) / 2 - 10);
+
+        // Pozice nástroje
+        if (!tremorFilterActive) {
+          // Lidský třes
+          const noiseY = Math.sin(tremorAnimPhase * 2.8) * tremorAmplitude + Math.cos(tremorAnimPhase * 4.1) * (tremorAmplitude * 0.7);
+          const noiseX = Math.cos(tremorAnimPhase * 3.3) * (tremorAmplitude * 0.5);
+          toolActualX = mouseX + noiseX;
+          toolActualY = mouseY + noiseY;
+        } else {
+          // Vyhlazený pohyb da Vinci
+          toolActualX += (mouseX - toolActualX) * 0.18;
+          toolActualY += (mouseY - toolActualY) * 0.18;
+        }
+
+        // Kolize
+        const isCollision = toolActualY <= corridorTop + 4 || toolActualY >= corridorBottom - 4;
+        if (mouseX > 40 && mouseX < w - 40) {
+          samplesCount++;
+          if (isCollision) {
+            collisionsCount++;
+          }
+          const accPct = Math.max(0, 100 - (collisionsCount / Math.max(1, samplesCount)) * 300);
+          if (teleTremorScore) teleTremorScore.textContent = `Úspěšnost: ${accPct.toFixed(0)} %`;
+          if (teleTremorCollisions) teleTremorCollisions.textContent = `Dotyk stěny cévy: ${collisionsCount}×`;
+        }
+
+        // Vykreslení skalpelu
+        tremorCtx.save();
+        tremorCtx.translate(toolActualX, toolActualY);
+
+        tremorCtx.fillStyle = isCollision ? '#ef4444' : (tremorFilterActive ? '#10b981' : '#06b6d4');
+        tremorCtx.beginPath();
+        tremorCtx.moveTo(0, 0);
+        tremorCtx.lineTo(-25, -6);
+        tremorCtx.lineTo(-25, 6);
+        tremorCtx.closePath();
+        tremorCtx.fill();
+
+        tremorCtx.fillStyle = '#64748b';
+        tremorCtx.fillRect(-70, -3, 45, 6);
+
+        tremorCtx.beginPath();
+        tremorCtx.arc(0, 0, 4, 0, Math.PI * 2);
+        tremorCtx.fillStyle = isCollision ? '#f87171' : '#38bdf8';
+        tremorCtx.fill();
+
+        tremorCtx.restore();
+
+        requestAnimationFrame(drawTremorScene);
+      }
+      drawTremorScene();
+
+      /* ====================================================================
+         6. TRENAŽÉR MYOELEKTRICKÉ BIONICKÉ RUKY (Slide 11) - 2 KANÁLY EMG + AI
+         ==================================================================== */
+      const emgCanvas = document.getElementById('emgScopeCanvas');
+      const emgCtx = emgCanvas ? emgCanvas.getContext('2d') : null;
+      const handSvg = document.getElementById('bionicHandSvg');
+      const teleEmgA = document.getElementById('teleEmgA');
+      const teleEmgB = document.getElementById('teleEmgB');
+      const teleEmgDecoded = document.getElementById('teleEmgDecoded');
+      const emgActionStatus = document.getElementById('emgActionStatus');
+      const btnGripPower = document.getElementById('btnGripPower');
+      const btnGripPinch = document.getElementById('btnGripPinch');
+      const btnGripPoint = document.getElementById('btnGripPoint');
+      const btnGripOpen = document.getElementById('btnGripOpen');
+      const btnEmgRelax = document.getElementById('btnEmgRelax');
+      const sliderEmgEffort = document.getElementById('sliderEmgEffort');
+      const valEmgEffort = document.getElementById('valEmgEffort');
+
+      let currentIntent = 'power'; // 'power' | 'pinch' | 'point' | 'open' | 'relax'
+      let effortMultiplier = 0.85;
+
+      let envA = 25; // Senzor A (Ohýbač / spodní sval) v µV
+      let envB = 20; // Senzor B (Natahovač / horní sval) v µV
+      const historyLength = 70;
+      let historyA = new Array(historyLength).fill(0);
+      let historyB = new Array(historyLength).fill(0);
+
+      // Úhly prstů pro plynulé animace (0 = natažený, 1 = plně sevřený)
+      let fingerFlex = { thumb: 0.2, index: 0.2, middle: 0.2, ring: 0.2, pinky: 0.2 };
+
+      const gripButtons = [btnGripPower, btnGripPinch, btnGripPoint, btnGripOpen];
+
+      function setIntent(intent, activeBtn) {
+        currentIntent = intent;
+        gripButtons.forEach(b => { if (b) b.classList.remove('active'); });
+        if (btnEmgRelax) btnEmgRelax.classList.remove('active');
+        if (activeBtn) activeBtn.classList.add('active');
+      }
+
+      if (btnGripPower) btnGripPower.addEventListener('click', () => setIntent('power', btnGripPower));
+      if (btnGripPinch) btnGripPinch.addEventListener('click', () => setIntent('pinch', btnGripPinch));
+      if (btnGripPoint) btnGripPoint.addEventListener('click', () => setIntent('point', btnGripPoint));
+      if (btnGripOpen) btnGripOpen.addEventListener('click', () => setIntent('open', btnGripOpen));
+      if (btnEmgRelax) btnEmgRelax.addEventListener('click', () => {
+        setIntent('relax', null);
+        btnEmgRelax.classList.add('active');
+      });
+
+      if (sliderEmgEffort && valEmgEffort) {
+        sliderEmgEffort.addEventListener('input', (e) => {
+          effortMultiplier = parseInt(e.target.value, 10) / 100;
+          valEmgEffort.textContent = `${e.target.value} %`;
+        });
+      }
+
+      function drawEmgScopeAndHand() {
+        if (!emgCanvas || !emgCtx) return;
+        const w = emgCanvas.width;
+        const h = emgCanvas.height;
+        emgCtx.clearRect(0, 0, w, h);
+
+        // 1. Výpočet cílového elektrického potenciálu pro oba senzory podle myšlenky
+        let targetA = 22; // Šum v klidu
+        let targetB = 18;
+
+        if (currentIntent === 'power') {
+          // Pěst: silný signál na ohýbači A, klid na natahovači B
+          targetA = (380 + Math.random() * 80) * effortMultiplier;
+          targetB = 25 + Math.random() * 20;
+        } else if (currentIntent === 'open') {
+          // Otevření dlaně: silný signál na natahovači B, klid na ohýbači A
+          targetA = 22 + Math.random() * 18;
+          targetB = (370 + Math.random() * 80) * effortMultiplier;
+        } else if (currentIntent === 'pinch') {
+          // Pinzeta (kokontrakce): oba svaly zabírají vyváženě současně
+          targetA = (250 + Math.random() * 50) * effortMultiplier;
+          targetB = (230 + Math.random() * 50) * effortMultiplier;
+        } else if (currentIntent === 'point') {
+          // Ukazovák: převaha natahovače B pro natažení ukazováku s lehkou stabilizací A
+          targetA = (150 + Math.random() * 40) * effortMultiplier;
+          targetB = (340 + Math.random() * 60) * effortMultiplier;
+        } else if (currentIntent === 'relax') {
+          targetA = 20 + Math.random() * 15;
+          targetB = 18 + Math.random() * 15;
+        }
+
+        // Plynulé vyhlazování obálky svalového napětí
+        envA += (targetA - envA) * 0.16;
+        envB += (targetB - envB) * 0.16;
+
+        // Okamžitý oscilační EMG signál (svalové akční potenciály jsou bipolární a velmi rychlé)
+        const rawA = (Math.random() - 0.5) * (envA * 1.5);
+        const rawB = (Math.random() - 0.5) * (envB * 1.5);
+
+        historyA.push(rawA);
+        if (historyA.length > historyLength) historyA.shift();
+        historyB.push(rawB);
+        if (historyB.length > historyLength) historyB.shift();
+
+        // 2. Vykreslení osciloskopu
+        // Mřížka
+        emgCtx.strokeStyle = 'rgba(6, 182, 212, 0.08)';
+        emgCtx.lineWidth = 1;
+        for (let x = 0; x < w; x += 30) {
+          emgCtx.beginPath();
+          emgCtx.moveTo(x, 0);
+          emgCtx.lineTo(x, h);
+          emgCtx.stroke();
+        }
+        for (let y = 0; y < h; y += 25) {
+          emgCtx.beginPath();
+          emgCtx.moveTo(0, y);
+          emgCtx.lineTo(w, y);
+          emgCtx.stroke();
+        }
+
+        // Žlutá čárkovaná linie prahu aktivace (150 µV)
+        const maxVolt = 500;
+        const vuWidth = 42;
+        const scopeWidth = w - vuWidth - 10;
+        const midY = h * 0.5;
+        const scaleY = (h * 0.42) / maxVolt;
+
+        const threshUpperY = midY - 150 * scaleY;
+        const threshLowerY = midY + 150 * scaleY;
+
+        emgCtx.strokeStyle = 'rgba(245, 158, 11, 0.6)';
+        emgCtx.setLineDash([4, 4]);
+        emgCtx.lineWidth = 1;
+        emgCtx.beginPath();
+        emgCtx.moveTo(0, threshUpperY);
+        emgCtx.lineTo(scopeWidth, threshUpperY);
+        emgCtx.moveTo(0, threshLowerY);
+        emgCtx.lineTo(scopeWidth, threshLowerY);
+        emgCtx.stroke();
+        emgCtx.setLineDash([]);
+
+        emgCtx.fillStyle = '#fbbf24';
+        emgCtx.font = '9px monospace';
+        emgCtx.fillText('PRÁH SEPNUTÍ 150 µV', 6, threshUpperY - 3);
+
+        // Křivka Senzoru A (🟦 Tyrkysová - Ohýbač)
+        emgCtx.strokeStyle = '#06b6d4';
+        emgCtx.lineWidth = 1.8;
+        emgCtx.beginPath();
+        const dx = scopeWidth / (historyA.length - 1);
+        for (let i = 0; i < historyA.length; i++) {
+          const y = midY - historyA[i] * scaleY;
+          if (i === 0) emgCtx.moveTo(0, y);
+          else emgCtx.lineTo(i * dx, y);
+        }
+        emgCtx.stroke();
+
+        // Křivka Senzoru B (🟧 Oranžová - Natahovač)
+        emgCtx.strokeStyle = '#f97316';
+        emgCtx.lineWidth = 1.8;
+        emgCtx.beginPath();
+        for (let i = 0; i < historyB.length; i++) {
+          const y = midY - historyB[i] * scaleY;
+          if (i === 0) emgCtx.moveTo(0, y);
+          else emgCtx.lineTo(i * dx, y);
+        }
+        emgCtx.stroke();
+
+        // Legenda kanálů na osciloskopu
+        emgCtx.fillStyle = '#38bdf8';
+        emgCtx.font = '9px monospace';
+        emgCtx.fillText('━ Senzor A (Ohýbač)', 6, 14);
+        emgCtx.fillStyle = '#fb923c';
+        emgCtx.fillText('━ Senzor B (Natahovač)', 130, 14);
+
+        // VU metry pro oba kanály vpravo
+        const barW = 12;
+        const barX_A = w - 36;
+        const barX_B = w - 18;
+        const barMaxH = h - 30;
+
+        // Pozadí sloupců
+        emgCtx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+        emgCtx.fillRect(barX_A, 15, barW, barMaxH);
+        emgCtx.fillRect(barX_B, 15, barW, barMaxH);
+
+        // Sloupec A
+        const fillH_A = Math.min(barMaxH, (envA / maxVolt) * barMaxH);
+        emgCtx.fillStyle = envA > 150 ? '#06b6d4' : 'rgba(6, 182, 212, 0.4)';
+        emgCtx.fillRect(barX_A, 15 + barMaxH - fillH_A, barW, fillH_A);
+
+        // Sloupec B
+        const fillH_B = Math.min(barMaxH, (envB / maxVolt) * barMaxH);
+        emgCtx.fillStyle = envB > 150 ? '#f97316' : 'rgba(249, 115, 22, 0.4)';
+        emgCtx.fillRect(barX_B, 15 + barMaxH - fillH_B, barW, fillH_B);
+
+        // Popisky sloupců
+        emgCtx.fillStyle = '#38bdf8';
+        emgCtx.font = '8px monospace';
+        emgCtx.fillText('A', barX_A + 3, h - 3);
+        emgCtx.fillStyle = '#fb923c';
+        emgCtx.fillText('B', barX_B + 3, h - 3);
+
+        // 3. Rozpoznávání vzorců (Pattern Recognition - AI Klasifikace)
+        let decodedGesture = 'KLID';
+        let actionDesc = 'Svaly uvolněny – ruka v klidové poloze';
+        let badgeClass = 'tele-badge';
+        let targetFlex = { thumb: 0.15, index: 0.15, middle: 0.15, ring: 0.15, pinky: 0.15 };
+
+        const threshold = 150;
+        const activeA = envA >= threshold;
+        const activeB = envB >= threshold;
+
+        if (!activeA && !activeB) {
+          decodedGesture = 'KLID';
+          actionDesc = 'Svaly pod prahem 150 µV → ruka v pohotovosti';
+          badgeClass = 'tele-badge';
+          targetFlex = { thumb: 0.15, index: 0.15, middle: 0.15, ring: 0.15, pinky: 0.15 };
+        } else if (activeA && !activeB) {
+          decodedGesture = 'PĚST';
+          actionDesc = 'Aktivní jen ohýbač A → sevření všech 5 prstů';
+          badgeClass = 'tele-badge success';
+          targetFlex = { thumb: 1.0, index: 1.0, middle: 1.0, ring: 1.0, pinky: 1.0 };
+        } else if (!activeA && activeB) {
+          decodedGesture = 'OTEVŘENÁ DLAŇ';
+          actionDesc = 'Aktivní jen natahovač B → plné rozevření prstů';
+          badgeClass = 'tele-badge success';
+          targetFlex = { thumb: 0.0, index: 0.0, middle: 0.0, ring: 0.0, pinky: 0.0 };
+        } else {
+          // Oba senzory jsou nad prahem (kokontrakce)
+          if (envB > envA * 1.5) {
+            decodedGesture = 'UKAZOVÁK';
+            actionDesc = 'Výrazná dominance horního svalu B → ukazovák natažen!';
+            badgeClass = 'tele-badge success';
+            targetFlex = { thumb: 0.9, index: 0.0, middle: 1.0, ring: 1.0, pinky: 1.0 };
+          } else {
+            decodedGesture = 'PINZETA';
+            actionDesc = 'Rovnováha obou svalů A+B → jemný úchop palcem a ukazovákem';
+            badgeClass = 'tele-badge success';
+            targetFlex = { thumb: 0.85, index: 0.85, middle: 0.15, ring: 0.15, pinky: 0.15 };
+          }
+        }
+
+        // Aktualizace telemetrie
+        if (teleEmgA) teleEmgA.textContent = `Senzor A (Ohýbač): ${envA.toFixed(0)} µV`;
+        if (teleEmgB) teleEmgB.textContent = `Senzor B (Natahovač): ${envB.toFixed(0)} µV`;
+        if (teleEmgDecoded) {
+          teleEmgDecoded.textContent = `AI Dekodér: ${decodedGesture}`;
+          teleEmgDecoded.className = badgeClass;
+        }
+        if (emgActionStatus) {
+          emgActionStatus.textContent = actionDesc;
+          emgActionStatus.style.color = (activeA || activeB) ? '#34d399' : 'var(--text-muted)';
+        }
+
+        // Plynulý posun prstů k cílové pozici
+        const ease = 0.14;
+        fingerFlex.thumb += (targetFlex.thumb - fingerFlex.thumb) * ease;
+        fingerFlex.index += (targetFlex.index - fingerFlex.index) * ease;
+        fingerFlex.middle += (targetFlex.middle - fingerFlex.middle) * ease;
+        fingerFlex.ring += (targetFlex.ring - fingerFlex.ring) * ease;
+        fingerFlex.pinky += (targetFlex.pinky - fingerFlex.pinky) * ease;
+
+        renderBionicHandSvg(fingerFlex, decodedGesture);
+
+        requestAnimationFrame(drawEmgScopeAndHand);
+      }
+
+      function renderBionicHandSvg(flex, gesture) {
+        if (!handSvg) return;
+
+        // Vizuální výpočty zkrácení/ohnutí prstů
+        const fThumbRot = -25 + flex.thumb * 45;
+        const fThumbTransX = flex.thumb * 6;
+
+        const f1 = flex.index * 42;
+        const f2 = flex.middle * 46;
+        const f3 = flex.ring * 44;
+        const f4 = flex.pinky * 38;
+
+        const isLedActive = gesture !== 'KLID';
+
+        handSvg.innerHTML = `
+          <!-- Zápěstí a tělo dlaně -->
+          <rect x="42" y="135" width="116" height="72" rx="10" fill="#0d1424" stroke="#06b6d4" stroke-width="2"/>
+          <rect x="52" y="145" width="96" height="52" rx="6" fill="#131e36" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1"/>
+
+          <!-- LED stavový proužek protézy -->
+          <rect x="62" y="152" width="76" height="6" rx="3" fill="${isLedActive ? '#34d399' : '#334155'}"/>
+          <text x="100" y="174" fill="#38bdf8" font-size="8.5" font-family="monospace" text-anchor="middle" font-weight="bold">BIONIC HAND</text>
+          <text x="100" y="188" fill="${isLedActive ? '#34d399' : '#64748b'}" font-size="7.5" font-family="monospace" text-anchor="middle">
+            ${isLedActive ? '• MOTOR RUN •' : '• STANDBY •'}
+          </text>
+
+          <!-- Palec -->
+          <g transform="translate(${40 + fThumbTransX}, 135) rotate(${fThumbRot})">
+            <rect x="-10" y="-38" width="20" height="38" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.6"/>
+            <circle cx="0" cy="-38" r="4.5" fill="${flex.thumb > 0.5 ? '#34d399' : '#06b6d4'}"/>
+            <line x1="-7" y1="-18" x2="7" y2="-18" stroke="#334155" stroke-width="1.5"/>
+          </g>
+
+          <!-- Ukazovák -->
+          <g transform="translate(64, 135)">
+            <rect x="-7" y="${-68 + f1}" width="14" height="68" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.6"/>
+            <line x1="-5" y1="${-45 + f1 * 0.7}" x2="5" y2="${-45 + f1 * 0.7}" stroke="#334155" stroke-width="1.5"/>
+            <line x1="-5" y1="${-22 + f1 * 0.3}" x2="5" y2="${-22 + f1 * 0.3}" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="0" cy="${-68 + f1}" r="3.5" fill="${flex.index > 0.5 ? '#34d399' : '#06b6d4'}"/>
+          </g>
+
+          <!-- Prostředník -->
+          <g transform="translate(88, 135)">
+            <rect x="-7" y="${-76 + f2}" width="14" height="76" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.6"/>
+            <line x1="-5" y1="${-50 + f2 * 0.7}" x2="5" y2="${-50 + f2 * 0.7}" stroke="#334155" stroke-width="1.5"/>
+            <line x1="-5" y1="${-25 + f2 * 0.3}" x2="5" y2="${-25 + f2 * 0.3}" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="0" cy="${-76 + f2}" r="3.5" fill="${flex.middle > 0.5 ? '#34d399' : '#06b6d4'}"/>
+          </g>
+
+          <!-- Prsteník -->
+          <g transform="translate(112, 135)">
+            <rect x="-7" y="${-70 + f3}" width="14" height="70" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.6"/>
+            <line x1="-5" y1="${-46 + f3 * 0.7}" x2="5" y2="${-46 + f3 * 0.7}" stroke="#334155" stroke-width="1.5"/>
+            <line x1="-5" y1="${-23 + f3 * 0.3}" x2="5" y2="${-23 + f3 * 0.3}" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="0" cy="${-70 + f3}" r="3.5" fill="${flex.ring > 0.5 ? '#34d399' : '#06b6d4'}"/>
+          </g>
+
+          <!-- Malíček -->
+          <g transform="translate(134, 135)">
+            <rect x="-6" y="${-56 + f4}" width="12" height="56" rx="5" fill="#1e293b" stroke="#38bdf8" stroke-width="1.6"/>
+            <line x1="-4" y1="${-36 + f4 * 0.7}" x2="4" y2="${-36 + f4 * 0.7}" stroke="#334155" stroke-width="1.5"/>
+            <line x1="-4" y1="${-18 + f4 * 0.3}" x2="4" y2="${-18 + f4 * 0.3}" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="0" cy="${-56 + f4}" r="3" fill="${flex.pinky > 0.5 ? '#34d399' : '#06b6d4'}"/>
+          </g>
+
+          <!-- Vizuální kontakt pinzety (indikátor sevření konečků) -->
+          ${gesture === 'PINZETA' ? `
+            <circle cx="58" cy="72" r="7" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="2,2"/>
+            <circle cx="58" cy="72" r="3" fill="#fbbf24"/>
+          ` : ''}
+        `;
+      }
+
+      drawEmgScopeAndHand();
+
+      /* ====================================================================
+         7. SIMULÁTOR OPTICKÉ STABILIZACE (OIS) & MEMS (Slide 13)
+         ==================================================================== */
+      const oisCanvas = document.getElementById('oisCanvas');
+      const oisCtx = oisCanvas ? oisCanvas.getContext('2d') : null;
+      const teleOisState = document.getElementById('teleOisState');
+      const teleOisGyro = document.getElementById('teleOisGyro');
+      const teleOisCoil = document.getElementById('teleOisCoil');
+      const teleOisBlur = document.getElementById('teleOisBlur');
+      const oisStatusNote = document.getElementById('oisStatusNote');
+      const btnToggleOis = document.getElementById('btnToggleOis');
+      const sliderShakeAmp = document.getElementById('sliderShakeAmp');
+      const valShakeAmp = document.getElementById('valShakeAmp');
+      const btnOisImpulse = document.getElementById('btnOisImpulse');
+
+      let oisActivated = true;
+      let shakeMagnitude = 12;
+      let shakePhase = 0;
+      let impulseShock = 0;
+
+      if (btnToggleOis) {
+        btnToggleOis.addEventListener('click', () => {
+          oisActivated = !oisActivated;
+          btnToggleOis.textContent = oisActivated ? 'ZAPNUTO' : 'VYPNUTO';
+          btnToggleOis.className = `action-btn ${oisActivated ? 'active' : ''}`;
+          if (teleOisState) {
+            teleOisState.textContent = oisActivated ? 'STABILIZACE: AKTIVNÍ (OIS ZAPNUTO)' : 'STABILIZACE: VYPNUTA (OIS VYPNUTO)';
+            teleOisState.className = oisActivated ? 'tele-badge success' : 'tele-badge alert';
+          }
+        });
+      }
+
+      if (sliderShakeAmp) {
+        sliderShakeAmp.addEventListener('input', (e) => {
+          shakeMagnitude = parseInt(e.target.value, 10);
+          valShakeAmp.textContent = `±${(shakeMagnitude * 0.1).toFixed(1)}°`;
+        });
+      }
+
+      if (btnOisImpulse) {
+        btnOisImpulse.addEventListener('click', () => {
+          impulseShock = 28;
+        });
+      }
+
+      function drawOisScene() {
+        if (!oisCanvas || !oisCtx) return;
+        const w = oisCanvas.width;
+        const h = oisCanvas.height;
+        oisCtx.clearRect(0, 0, w, h);
+
+        shakePhase += 0.08;
+        impulseShock *= 0.92;
+
+        const shakeY = (Math.sin(shakePhase * 2.1) * shakeMagnitude + Math.cos(shakePhase * 3.7) * (shakeMagnitude * 0.6) + impulseShock);
+        const gyroOmegaZ = (shakeY * 2.8).toFixed(1);
+
+        let lensCompY = 0;
+        if (oisActivated) {
+          lensCompY = -shakeY * 0.92;
+        }
+
+        const spotOnSensorY = h * 0.5 + shakeY + lensCompY;
+        const blurLevel = oisActivated ? (Math.abs(shakeY + lensCompY) * 2).toFixed(0) : (Math.abs(shakeY) * 4).toFixed(0);
+
+        if (teleOisGyro) teleOisGyro.textContent = `Pohyb ruky: ${gyroOmegaZ} °/s`;
+        if (teleOisCoil) teleOisCoil.textContent = `Magnet čočky: ${oisActivated ? 'Hýbe čočkou v protisměru' : 'Vypnutý'}`;
+        if (teleOisBlur) {
+          teleOisBlur.textContent = `Rozmazání: ${blurLevel} % ${blurLevel < 15 ? '(Ostré)' : '(Rozmazané!)'}`;
+          teleOisBlur.className = blurLevel < 15 ? 'tele-badge success' : 'tele-badge alert';
+        }
+        if (oisStatusNote) {
+          oisStatusNote.textContent = oisActivated ? 'Čočka vyrovnává třes – fotka bude ostrá!' : 'Obraz skáče – fotka bude rozmazaná šmouha!';
+          oisStatusNote.style.color = oisActivated ? '#38bdf8' : '#ef4444';
+        }
+
+        const camBoxX = 50;
+        const camBoxY = h * 0.15 + shakeY * 0.3;
+        const camBoxW = 460;
+        const camBoxH = h * 0.7;
+
+        oisCtx.fillStyle = 'rgba(17, 24, 39, 0.8)';
+        oisCtx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+        oisCtx.lineWidth = 2;
+        oisCtx.strokeRect(camBoxX, camBoxY, camBoxW, camBoxH);
+
+        // Vstupní světlo
+        oisCtx.strokeStyle = '#38bdf8';
+        oisCtx.lineWidth = 3;
+        oisCtx.beginPath();
+        oisCtx.moveTo(0, h * 0.5);
+        oisCtx.lineTo(camBoxX + 90, h * 0.5 + lensCompY);
+        oisCtx.stroke();
+
+        // Čočka
+        const lensX = camBoxX + 110;
+        const lensCenterY = h * 0.5 + lensCompY;
+
+        // Magnety
+        oisCtx.fillStyle = '#f59e0b';
+        oisCtx.fillRect(lensX - 15, lensCenterY - 45, 30, 10);
+        oisCtx.fillRect(lensX - 15, lensCenterY + 35, 30, 10);
+
+        // Sklo
+        oisCtx.fillStyle = 'rgba(56, 189, 248, 0.25)';
+        oisCtx.strokeStyle = '#38bdf8';
+        oisCtx.lineWidth = 2.5;
+        oisCtx.beginPath();
+        oisCtx.ellipse(lensX, lensCenterY, 14, 32, 0, 0, Math.PI * 2);
+        oisCtx.fill();
+        oisCtx.stroke();
+
+        // Paprsek k senzoru
+        const sensorX = camBoxX + camBoxW - 40;
+        oisCtx.strokeStyle = oisActivated ? '#22c55e' : '#ef4444';
+        oisCtx.lineWidth = 2.5;
+        oisCtx.beginPath();
+        oisCtx.moveTo(lensX, lensCenterY);
+        oisCtx.lineTo(sensorX, spotOnSensorY);
+        oisCtx.stroke();
+
+        // Snímač
+        oisCtx.fillStyle = '#0f172a';
+        oisCtx.fillRect(sensorX, camBoxY + 15, 14, camBoxH - 30);
+        oisCtx.strokeStyle = '#10b981';
+        oisCtx.strokeRect(sensorX, camBoxY + 15, 14, camBoxH - 30);
+
+        // Bod dopadu
+        oisCtx.fillStyle = oisActivated ? '#34d399' : '#f87171';
+        oisCtx.beginPath();
+        oisCtx.arc(sensorX, spotOnSensorY, 5, 0, Math.PI * 2);
+        oisCtx.fill();
+        oisCtx.shadowColor = oisActivated ? '#10b981' : '#ef4444';
+        oisCtx.shadowBlur = 10;
+        oisCtx.fill();
+        oisCtx.shadowBlur = 0;
+
+        oisCtx.font = '9px monospace';
+        oisCtx.fillStyle = '#94a3b8';
+        oisCtx.fillText('ČOČKA', lensX - 15, lensCenterY - 50);
+        oisCtx.fillText('SNÍMAČ', sensorX - 15, camBoxY + camBoxH + 14);
+
+        requestAnimationFrame(drawOisScene);
+      }
+      drawOisScene();
+
+      /* ====================================================================
+         8. INTERAKTIVNÍ KVÍZ (Slide 15)
+         ==================================================================== */
+      const quizQuestions = [
+        {
+          title: 'Proč systém ABS nedovolí, aby se kola při prudkém brzdění úplně zasekla (zablokovala)?',
+          options: [
+            { text: 'A) Protože se zablokovanými koly auto klouže jako sáně a vůbec nejde zatočit volantem.', correct: true },
+            { text: 'B) Aby se neopotřebovaly brzdové destičky.', correct: false },
+            { text: 'C) Aby řidič nezapomněl zařadit neutrál.', correct: false },
+            { text: 'D) Protože by se vybila baterie v autě.', correct: false }
+          ],
+          explanation: 'Správně! Jakmile se kola úplně zastaví a kloužou, pneumatiky ztratí boční vedení. Můžete volantem točit kamkoliv, ale auto poletí rovně do překážky. ABS proto kolo stále trochu pootáčí, aby řidič mohl překážku v klidu objet.'
+        },
+        {
+          title: 'K čemu slouží skleněné optické pravítko na přesném CNC obráběcím stroji?',
+          options: [
+            { text: 'A) Aby se dělník mohl podívat, kolik je hodin.', correct: false },
+            { text: 'B) Měří skutečnou polohu stolu a okamžitě napraví odchylku, i když se šroub teplem roztáhne nebo ohne.', correct: true },
+            { text: 'C) Chrání obsluhu před odletujícími jiskrami.', correct: false },
+            { text: 'D) Zvyšuje hlasitost varovné sirény stroje.', correct: false }
+          ],
+          explanation: 'Přesně tak! Nestačí jen počítat, kolikrát se otočil motor. Když se ocelový šroub třením zahřeje a natáhne, pravítko funguje jako digitální šuplera a počítač díky němu polohu dorovná na tisícinu milimetru přesně.'
+        },
+        {
+          title: 'Jak robotický chirurg da Vinci pomáhá lékaři provádět operace bezpečněji?',
+          options: [
+            { text: 'A) Operuje úplně sám na jedno kliknutí, doktor u toho může spát.', correct: false },
+            { text: 'B) Vymaže přirozený mikrotřes prstů chirurga a zmenší jeho pohyb (např. o 1 cm pohne rukou = 2 mm posun v těle).', correct: true },
+            { text: 'C) Dává pacientovi narkózu přes reproduktory.', correct: false },
+            { text: 'D) Zchladí ruce doktora ledem, aby se netřásly.', correct: false }
+          ],
+          explanation: 'Skvěle! Robot nenahrazuje lékaře, ale dává mu nadlidskou jemnost. Žádný člověk neudrží ruce bez drobného třesu – robot ho odfiltruje a pohyb zmenší, takže lékař bezpečně operuje i ty nejjemnější cévy.'
+        },
+        {
+          title: 'Odkud bere bionická umělá ruka signál k tomu, aby sevřela prsty v pěst?',
+          options: [
+            { text: 'A) Čte slabé elektrické signály (napětí) z fungujících svalů v předloktí, když je člověk zatne.', correct: true },
+            { text: 'B) Z mikrofonu, člověk musí říct nahlas „sevři se!“.', correct: false },
+            { text: 'C) Ze solárních panelů na nehtech umělé ruky.', correct: false },
+            { text: 'D) Z teploty venkovního vzduchu.', correct: false }
+          ],
+          explanation: 'Výborně! Svaly v předloktí zůstávají funkční. Když člověk pomyslí na sevření ruky a zatne sval, vznikne na kůži slabé napětí (EMG). Čidlo ho zachytí a mikromotorky v prstech ruku sevřou.'
+        },
+        {
+          title: 'Jak funguje optická stabilizace (OIS) v mobilu, když se vám při focení večer klepe ruka?',
+          options: [
+            { text: 'A) Čip v mobilu pozná pohyb a elektromagnety okamžitě pohnou čočkou v protisměru, takže obraz na snímači stojí.', correct: true },
+            { text: 'B) Mobil vás jemně kopne elektřinou do prstu, abyste se přestali třást.', correct: false },
+            { text: 'C) Telefon automaticky smaže všechny rozmazané fotky.', correct: false },
+            { text: 'D) Uvnitř mobilu se roztočí těžké ocelové závaží.', correct: false }
+          ],
+          explanation: 'Přesně tak! Čočka foťáku visí na pružinkách. Když vám ruka ujede dolů, elektromagnet ji bleskově vytáhne nahoru. Světelný paprsek tak dopadá na stejné místo a fotka je ostrá i při chůzi nebo v šeru.'
+        }
+      ];
+
+      let currentQIndex = 0;
+      let quizScores = new Array(quizQuestions.length).fill(null);
+
+      const quizNavBtns = document.querySelectorAll('.quiz-nav-btn');
+      const quizQBadge = document.getElementById('quizQBadge');
+      const quizScoreText = document.getElementById('quizScoreText');
+      const quizQuestionTitle = document.getElementById('quizQuestionTitle');
+      const quizOptionsBox = document.getElementById('quizOptionsBox');
+      const quizFeedbackBox = document.getElementById('quizFeedbackBox');
+
+      function loadQuizQuestion(idx) {
+        currentQIndex = idx;
+        const q = quizQuestions[idx];
+
+        quizNavBtns.forEach((btn, i) => {
+          btn.classList.toggle('active', i === idx);
+        });
+
+        if (quizQBadge) quizQBadge.textContent = `Otázka ${idx + 1} z ${quizQuestions.length}`;
+        if (quizQuestionTitle) quizQuestionTitle.textContent = q.title;
+
+        if (quizOptionsBox) {
+          quizOptionsBox.innerHTML = '';
+          q.options.forEach((opt, optIdx) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-opt-btn';
+            btn.textContent = opt.text;
+
+            if (quizScores[idx] !== null) {
+              btn.disabled = true;
+              if (opt.correct) btn.classList.add('correct');
+              else if (quizScores[idx] === optIdx) btn.classList.add('wrong');
+            } else {
+              btn.addEventListener('click', () => handleQuizAnswer(idx, optIdx, opt.correct));
+            }
+
+            quizOptionsBox.appendChild(btn);
+          });
+        }
+
+        if (quizFeedbackBox) {
+          if (quizScores[idx] !== null) {
+            quizFeedbackBox.style.display = 'block';
+            const wasCorrect = q.options[quizScores[idx]] && q.options[quizScores[idx]].correct;
+            quizFeedbackBox.innerHTML = `
+              <strong style="color: ${wasCorrect ? '#34d399' : '#f87171'};">
+                ${wasCorrect ? 'Správně!' : 'Bohužel, tohle není správně.'}
+              </strong>
+              <p style="margin-top: 0.25rem; color: var(--text-secondary);">${q.explanation}</p>
+            `;
+          } else {
+            quizFeedbackBox.style.display = 'none';
+          }
+        }
+      }
+
+      function handleQuizAnswer(qIdx, optIdx, isCorrect) {
+        quizScores[qIdx] = optIdx;
+
+        const navBtn = quizNavBtns[qIdx];
+        if (navBtn) {
+          navBtn.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+          const pill = navBtn.querySelector('.quiz-status-pill');
+          if (pill) pill.textContent = isCorrect ? '✓' : '✗';
+        }
+
+        const totalCorrect = quizScores.filter((ans, i) => ans !== null && quizQuestions[i].options[ans].correct).length;
+        if (quizScoreText) quizScoreText.textContent = `Skóre: ${totalCorrect} / ${quizQuestions.length}`;
+
+        loadQuizQuestion(qIdx);
+      }
+
+      quizNavBtns.forEach((btn, i) => {
+        btn.addEventListener('click', () => loadQuizQuestion(i));
+      });
+
+      loadQuizQuestion(0);
+
+      /* ====================================================================
+         9. ACCORDION NÁPOVĚD K ZÁVĚREČNÝM OTÁZKÁM (Slide 16)
+         ==================================================================== */
+      const qaItems = document.querySelectorAll('.qa-item');
+      qaItems.forEach(item => {
+        const header = item.querySelector('.qa-header');
+        if (header) {
+          header.addEventListener('click', () => {
+            const isOpen = item.classList.contains('open');
+            qaItems.forEach(it => it.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+          });
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        drawAbsTrack();
+        renderCncSvg();
+      });
+
+    })();
+  </script>
 </body>
 
 </html>
