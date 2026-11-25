@@ -5,14 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Téma 060: Sekvenční a logické obvody | KYME &bull; SPŠ</title>
-  
+
   <link rel="stylesheet" href="../../assets/css/presentation-core.css">
-  <style>
-    :root {
-      --accent: #06b6d4;
-      --accent-glow: rgba(6, 182, 212, 0.25);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -27,7 +22,8 @@
   </div>
 
   <div class="presentation-container">
-    
+
+    <!-- Horní lišta s drobečkovou navigací -->
     <header class="presentation-header">
       <div class="header-left">
         <nav class="breadcrumb-nav" aria-label="Drobečková navigace">
@@ -38,7 +34,7 @@
           <span class="breadcrumb-separator">/</span>
           <a href="../index.html" class="breadcrumb-link" title="Předmět KYME">KYME</a>
           <span class="breadcrumb-separator">/</span>
-          <span class="breadcrumb-item">060 Logické obvody</span>
+          <span class="breadcrumb-item">060 Sekvenční obvody</span>
           <span class="breadcrumb-separator">/</span>
           <span class="breadcrumb-current" id="breadcrumbSlide">Snímek 1</span>
         </nav>
@@ -51,167 +47,921 @@
       </div>
     </header>
 
+    <!-- Hlavní prezentační plocha se snímky -->
     <main class="slide-viewport">
 
+      <!-- ==========================================
+           SNÍMEK 1: TITULNÍ SNÍMEK
+           ========================================== -->
       <section class="slide slide--title active" id="slide-1" data-title="Úvod do sekvenčních obvodů">
         <div class="slide-content">
           <div class="title-badge-group">
             <span class="badge badge-accent">Předmět KYME &bull; Téma 060</span>
-            <span class="badge">Výukový modul SPŠ</span>
+            <span class="badge">Číslicová technika SPŠ</span>
           </div>
           <h1 class="hero-title">Sekvenční a logické obvody</h1>
           <p class="hero-subtitle">
-            Obvody s vnitřní pamětí, bistabilní klopné obvody (Flip-Flops RS, D, JK, T), asynchronní a synchronní čítače a posuvné registry.
+            Jak donutit křemíkový čip, aby si pamatoval data, počítal pulzy a řídil procesy v čase. Od základní 1bitové paměti (RS, D, JK) až po čítače, posuvné registry a stavové automaty.
           </p>
           <div class="summary-grid" style="margin-top: 2rem;">
             <div class="content-card">
-              <h4>Kombinační vs. sekvenční</h4>
-              <p>Zatímco kombinační obvod reaguje jen na okamžitý vstup, sekvenční obvod si pamatuje svou historii.</p>
+              <h4>Paměť v hardwaru</h4>
+              <p>Proč nestačí samotná hradla a jak zpětná vazba dokáže udržet 1 bit informace.</p>
             </div>
             <div class="content-card">
               <h4>Klopné obvody (Flip-Flop)</h4>
-              <p>Základní 1bitové paměťové buňky: asynchronní RS obvod, synchronní D klopný obvod a univerzální JK obvod.</p>
+              <p>Interaktivní laboratoř pro obvody RS, D a JK řízené přesnou hranou hodinového signálu.</p>
             </div>
             <div class="content-card">
-              <h4>Čítače a posuvné registry</h4>
-              <p>Kaskádní zapojení klopných obvodů pro dělení kmitočtu, počítání výrobků a sério-paralelní převod dat.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="slide" id="slide-2" data-title="Kombinační vs. sekvenční">
-        <div class="slide-content">
-          <h2>Kombinační vs. Sekvenční logické obvody</h2>
-          <div class="grid-2">
-            <div class="content-card">
-              <h3>Kombinační obvod (Bez paměti)</h3>
-              <p>Výstupní stav $Y(t)$ je jednoznačně určen pouze <strong>okamžitou kombinací vstupů $X(t)$</strong>:</p>
-              <div style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent); margin: 0.5rem 0;">
-                $Y(t) = f(X(t))$
-              </div>
-              <p>Příklady: Kodéry, dekodéry, multiplexery, komparátory, sčítačky.</p>
-            </div>
-            <div class="content-card">
-              <h3 style="color: var(--accent);">Sekvenční obvod (S pamětí)</h3>
-              <p>Výstupní stav závisí na vstupech $X(t)$ i na <strong>předchozím vnitřním stavu $Q(t)$</strong>:</p>
-              <div style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent); margin: 0.5rem 0;">
-                $Y(t) = f(X(t), Q(t))$
-              </div>
-              <p>Příklady: Paměti RAM, čítače, frekvenční děličky, registry procesoru.</p>
+              <h4>Čítače, registry a automaty</h4>
+              <p>Počítání událostí v binární soustavě, sériový přenos dat (74HC595) a řízení semaforu.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="slide" id="slide-3" data-title="Klopný obvod RS">
+      <!-- ==========================================
+           SNÍMEK 2: KOMBINAČNÍ VS. SEKVENČNÍ (INTERAKTIVNÍ)
+           ========================================== -->
+      <section class="slide" id="slide-2" data-title="Kombinační vs. sekvenční obvody">
         <div class="slide-content">
-          <h2>Základní bistabilní klopný obvod RS</h2>
-          <p class="slide-lead">Sestaven ze dvou křížem propojených hradel NOR nebo NAND (zpětná vazba):</p>
-          <div class="grid-2">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Základní princip</span>
+            <span class="badge">Interaktivní srovnání</span>
+          </div>
+          <h2>Kombinační vs. sekvenční obvody: Proč potřebujeme paměť?</h2>
+          <p class="slide-lead">
+            Vyzkoušej si rozdíl na vlastní kůži: obyčejná hradla reagují jen <strong>teď a tady</strong>, zatímco sekvenční obvod si pamatuje svou minulost díky <strong>zpětné vazbě</strong>.
+          </p>
+
+          <div class="grid-2" style="margin-top: 0.9rem;">
+            <!-- Kombinační -->
+            <div class="lab-card">
+              <div>
+                <h3>Kombinační obvod (Bez paměti)</h3>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.65rem;">
+                  Výstup závisí jen na okamžitém vstupu: $Y(t) = f(X(t))$. Jako zvonek u dveří – zvoní jen dokud držíš tlačítko.
+                </p>
+                <div class="sim-toolbar" style="margin-bottom: 0.65rem;">
+                  <button class="sim-toggle-btn val-0" id="btn-comb-hold"
+                    onmousedown="window.setCombButton(true)"
+                    onmouseup="window.setCombButton(false)"
+                    onmouseleave="window.setCombButton(false)"
+                    ontouchstart="window.setCombButton(true)"
+                    ontouchend="window.setCombButton(false)">
+                    Podrž mě (0)
+                  </button>
+                  <span style="font-size: 0.8rem; color: var(--text-muted);">Drž stisknuté tlačítko</span>
+                </div>
+
+                <div class="svg-stage">
+                  <svg viewBox="0 0 320 90">
+                    <text x="16" y="49" fill="#94a3b8" font-family="monospace" font-size="11">Vstup X</text>
+                    <rect x="95" y="25" width="110" height="40" rx="6" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+                    <text x="150" y="49" fill="#cbd5e1" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Kombinační logika</text>
+                    <line id="wire-comb-out" x1="205" y1="45" x2="265" y2="45" class="sim-wire"/>
+                    <circle id="led-comb-out" cx="280" cy="45" r="11" class="sim-led"/>
+                    <text x="280" y="72" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">Y</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="sim-caption info" id="txt-comb-status">
+                Tlačítko puštěno -&gt; výstup je okamžitě 0 (žádná paměť).
+              </div>
+            </div>
+
+            <!-- Sekvenční -->
+            <div class="lab-card">
+              <div>
+                <h3 style="color: #a855f7;">Sekvenční obvod (S pamětí)</h3>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.65rem;">
+                  Výstup závisí na vstupu <strong>i na předchozím stavu $Q(t)$</strong>. Jako skóre ve hře nebo tlačítko ZAP/VYP na PC.
+                </p>
+                <div class="sim-toolbar" style="margin-bottom: 0.65rem;">
+                  <div class="sim-btn-group">
+                    <button class="sim-action-btn primary" onclick="window.triggerSeqPulse('set')">Stisknout ZAP</button>
+                    <button class="sim-action-btn" onclick="window.triggerSeqPulse('reset')">Stisknout VYP</button>
+                  </div>
+                  <span class="out-badge state-0" id="badge-seq-state">Paměť Q = 0</span>
+                </div>
+
+                <div class="svg-stage">
+                  <svg viewBox="0 0 320 90">
+                    <rect x="85" y="16" width="120" height="38" rx="6" fill="#0f172a" stroke="#06b6d4" stroke-width="2"/>
+                    <text x="145" y="39" fill="#e2e8f0" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Logika + Paměť</text>
+                    <!-- Zpětná vazba -->
+                    <path id="wire-seq-fb" d="M 235,35 L 235,74 L 55,74 L 55,35 L 85,35" class="sim-wire"/>
+                    <text x="145" y="69" fill="#fbbf24" font-family="monospace" font-size="10" text-anchor="middle">Zpětná vazba Q(t)</text>
+                    <line id="wire-seq-out" x1="205" y1="35" x2="265" y2="35" class="sim-wire"/>
+                    <circle id="led-seq-out" cx="280" cy="35" r="11" class="sim-led"/>
+                    <text x="280" y="62" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">Q</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="sim-caption info" id="txt-seq-status">
+                Stiskl jsi VYP – paměť se vynulovala na Q = 0 a zůstane tak.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 3: KLOPNÝ OBVOD RS (INTERAKTIVNÍ NOR)
+           ========================================== -->
+      <section class="slide" id="slide-3" data-title="Klopný obvod RS (Asynchronní paměť)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">1bitová paměť</span>
+            <span class="badge">Křížová zpětná vazba</span>
+          </div>
+          <h2>Základní klopný obvod RS (Set – Reset)</h2>
+          <p class="slide-lead">
+            Nejjednodušší paměťový prvek ze dvou křížem propojených hradel NOR. Pamatuje si 1 bit i po uvolnění tlačítek.
+          </p>
+
+          <div class="circuit-lab-grid">
+            <!-- Levý sloupec: Pravdivostní tabulka -->
+            <div class="lab-card">
+              <div>
+                <h3>Pravdivostní tabulka (NOR)</h3>
+                <table class="truth-table" id="rs-truth-table">
+                  <thead>
+                    <tr><th>$R$</th><th>$S$</th><th>$Q(t+1)$</th><th>Význam</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td>$Q(t)$</td><td>Paměť (drží)</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td>1</td><td>Set (nastaví 1)</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td>0</td><td>Reset (vynuluje)</td></tr>
+                    <tr data-row="1-1" class="hazard-row"><td>1</td><td>1</td><td>0 / 0</td><td>Zakázaný stav!</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="callout-tip" style="margin-top: 0;">
+                <strong>Pozor na $S=1, R=1$:</strong> Snažíš se paměť současně nastavit i smazat. Oba výstupy spadnou na 0 a obvod neví, jak má skončit.
+              </div>
+            </div>
+
+            <!-- Střední sloupec: Interaktivní SVG obvod RS -->
+            <div class="lab-card">
+              <div>
+                <div class="sim-toolbar" style="margin-bottom: 0.65rem;">
+                  <div class="sim-btn-group">
+                    <button class="sim-toggle-btn val-0" id="btn-rs-s" onclick="window.toggleRsInput('s')">S = 0</button>
+                    <button class="sim-toggle-btn val-0" id="btn-rs-r" onclick="window.toggleRsInput('r')">R = 0</button>
+                  </div>
+                  <span class="out-badge state-0" id="out-rs-q">Q = 0 | Q̄ = 1</span>
+                </div>
+
+                <div class="svg-stage">
+                  <svg viewBox="0 0 360 190">
+                    <!-- Vstup R (horní NOR -> dává Q) -->
+                    <text x="14" y="40" fill="#fb7185" font-family="monospace" font-size="13" font-weight="bold">R</text>
+                    <line id="wire-rs-r" x1="32" y1="36" x2="95" y2="36" class="sim-wire"/>
+                    <!-- Horní hradlo NOR -->
+                    <rect x="95" y="24" width="66" height="44" rx="6" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+                    <text x="128" y="51" fill="#e2e8f0" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">NOR</text>
+                    <circle cx="166" cy="46" r="4.5" fill="#0f172a" stroke="#cbd5e1" stroke-width="2"/>
+
+                    <!-- Výstup Q -->
+                    <line id="wire-rs-q" x1="171" y1="46" x2="295" y2="46" class="sim-wire"/>
+                    <circle id="led-rs-q" cx="310" cy="46" r="10" class="sim-led"/>
+                    <text id="svg-rs-q-val" x="336" y="50" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">Q=0</text>
+
+                    <!-- Vstup S (dolní NOR -> dává Q̄) -->
+                    <text x="14" y="156" fill="#34d399" font-family="monospace" font-size="13" font-weight="bold">S</text>
+                    <line id="wire-rs-s" x1="32" y1="152" x2="95" y2="152" class="sim-wire"/>
+                    <!-- Dolní hradlo NOR -->
+                    <rect x="95" y="120" width="66" height="44" rx="6" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+                    <text x="128" y="147" fill="#e2e8f0" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">NOR</text>
+                    <circle cx="166" cy="142" r="4.5" fill="#0f172a" stroke="#cbd5e1" stroke-width="2"/>
+
+                    <!-- Výstup Q̄ -->
+                    <line id="wire-rs-qb" x1="171" y1="142" x2="295" y2="142" class="sim-wire"/>
+                    <circle id="led-rs-qb" cx="310" cy="142" r="10" class="sim-led"/>
+                    <text id="svg-rs-qb-val" x="336" y="146" fill="#34d399" font-family="monospace" font-size="12" font-weight="bold">Q̄=1</text>
+
+                    <!-- Křížová zpětná vazba -->
+                    <path id="wire-rs-fb1" d="M 215,46 L 215,82 L 68,108 L 68,132 L 95,132" class="sim-wire"/>
+                    <path id="wire-rs-fb2" d="M 235,142 L 235,108 L 80,82 L 80,56 L 95,56" class="sim-wire"/>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="sim-caption info" id="caption-rs">
+                Stav PAMĚŤ (S=0, R=0): Obvod si spolehlivě drží poslední hodnotu Q = 0.
+              </div>
+            </div>
+
+            <!-- Pravý sloupec: K čemu slouží v praxi -->
+            <div class="lab-card col-practice">
+              <div>
+                <h3>K čemu se RS hodí v praxi?</h3>
+                <ul class="styled-list" style="font-size: 0.87rem;">
+                  <li><strong>Odstranění zákmitů tlačítek:</strong> Mechanické tlačítko při stisku několikrát „poskočí“. RS obvod první dotek okamžitě uloží a další zákmity ignoruje.</li>
+                  <li><strong>Bezpečnostní alarm:</strong> Senzor (S) spustí sirénu, která houká i když zloděj uteče – vypne ji až obsluha tlačítkem Reset (R).</li>
+                </ul>
+              </div>
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.22); padding: 0.65rem; border-radius: 6px; border-left: 3px solid var(--accent);">
+                <strong>Proč přidáme hodiny?</strong> Asynchronní RS reaguje ihned, což v rychlém procesoru způsobuje chaos. Proto vznikly <em>synchronní</em> obvody.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 4: HODINOVÝ SIGNÁL A HRANA (INTERAKTIVNÍ)
+           ========================================== -->
+      <section class="slide" id="slide-4" data-title="Hodinový signál (CLK) a spouštění hranou">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Synchronizace</span>
+            <span class="badge">Živý průběh signálu</span>
+          </div>
+          <h2>Hodinový signál (CLK): Dirigent celého procesoru</h2>
+          <p class="slide-lead">
+            Aby miliony obvodů v CPU pracovaly v jednom rytmu, používají společný takt <strong>CLK (Clock)</strong>. Vyzkoušej si rozdíl mezi řízením <em>úrovní</em> a <em>náběžnou hranou</em>!
+          </p>
+
+          <div class="grid-2" style="margin-top: 0.85rem; align-items: stretch;">
+            <div class="lab-card">
+              <div>
+                <h3>Vyzkoušej průběh signálů</h3>
+                <div class="sim-toolbar" style="margin-bottom: 0.7rem;">
+                  <div class="sim-btn-group">
+                    <button class="sim-toggle-btn val-0" id="btn-clkdemo-d" onclick="window.toggleClkDemoData()">Data = 0</button>
+                    <button class="sim-toggle-btn val-0" id="btn-clkdemo-c" onclick="window.toggleClkDemoClock()">CLK = 0</button>
+                  </div>
+                  <div class="sim-btn-group">
+                    <span class="out-badge state-0" id="out-clkdemo-latch">Latch Q = 0</span>
+                    <span class="out-badge state-0" id="out-clkdemo-ff">Flip-Flop Q = 0</span>
+                  </div>
+                </div>
+
+                <div class="svg-stage">
+                  <svg viewBox="0 0 475 182">
+                    <!-- Popisky os -->
+                    <text x="8" y="36" fill="#fbbf24" font-family="monospace" font-size="11" font-weight="bold">CLK</text>
+                    <text x="8" y="78" fill="#34d399" font-family="monospace" font-size="11" font-weight="bold">Data</text>
+                    <text x="8" y="120" fill="#a855f7" font-family="monospace" font-size="11" font-weight="bold">Latch</text>
+                    <text x="8" y="162" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">FlipFlop</text>
+
+                    <!-- Vodící linky -->
+                    <line x1="70" y1="42" x2="465" y2="42" stroke="#1e293b" stroke-width="1"/>
+                    <line x1="70" y1="84" x2="465" y2="84" stroke="#1e293b" stroke-width="1"/>
+                    <line x1="70" y1="126" x2="465" y2="126" stroke="#1e293b" stroke-width="1"/>
+                    <line x1="70" y1="168" x2="465" y2="168" stroke="#1e293b" stroke-width="1"/>
+
+                    <!-- Průběhy -->
+                    <path id="wave-clk" d="" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+                    <path id="wave-data" d="" fill="none" stroke="#34d399" stroke-width="2.5"/>
+                    <path id="wave-latch" d="" fill="none" stroke="#a855f7" stroke-width="2.5"/>
+                    <path id="wave-ff" d="" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="sim-caption info">
+                Tip: Nastav <strong>CLK = 1</strong> a několikrát přepni <strong>Data</strong>. Latch se okamžitě mění, zatímco Flip-Flop drží hodnotu až do dalšího přechodu CLK 0 -&gt; 1!
+              </div>
+            </div>
+
+            <div class="lab-card">
+              <div>
+                <h3>Úroveň (Latch) vs. Hrana (Flip-Flop)</h3>
+                <ul class="styled-list" style="margin-top: 0.4rem;">
+                  <li>
+                    <strong style="color: #a855f7;">Záchytný obvod (Latch – úroveň):</strong><br>
+                    Dokud je <code>CLK = 1</code>, dveře jsou otevřené a výstup sleduje každou změnu na vstupu.
+                  </li>
+                  <li>
+                    <strong style="color: #38bdf8;">Klopný obvod (Flip-Flop – hrana $\uparrow$):</strong><br>
+                    Chová se jako spoušť fotoaparátu – vyfotí vstup <strong>pouze v jediném okamžiku</strong>, kdy <code>CLK</code> skočí z 0 na 1 (náběžná hrana).
+                  </li>
+                </ul>
+              </div>
+              <div class="callout-tip">
+                <strong>Proč procesory používají hranu?</strong> Při frekvenci 4 GHz trvá jeden takt jen 0,25 nanosekundy. Hranové spouštění zaručí, že se všechny registry přepíšou naráz bez nechtěného „probliknutí“ dat.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 5: KLOPNÝ OBVOD D (INTERAKTIVNÍ)
+           ========================================== -->
+      <section class="slide" id="slide-5" data-title="Klopný obvod D (Data Flip-Flop)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Synchronní paměť</span>
+            <span class="badge">Stavební kámen RAM</span>
+          </div>
+          <h2>Klopný obvod D (Data / Delay): 1bitová paměťová buňka</h2>
+          <p class="slide-lead">
+            Odstraňuje zakázaný stav obvodu RS. Má jediný datový vstup $D$ a zkopíruje jej na výstup $Q$ přesně na náběžnou hranu hodin $CLK \uparrow$.
+          </p>
+
+          <div class="circuit-lab-grid">
+            <div class="lab-card">
+              <div>
+                <h3>Pravdivostní tabulka D</h3>
+                <table class="truth-table" id="d-truth-table">
+                  <thead>
+                    <tr><th>$CLK$</th><th>Vstup $D$</th><th>$Q(t+1)$</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0"><td>$\uparrow$ (hrana)</td><td>0</td><td>0</td></tr>
+                    <tr data-row="1"><td>$\uparrow$ (hrana)</td><td>1</td><td>1</td></tr>
+                  </tbody>
+                </table>
+                <p style="font-size: 0.83rem; color: var(--text-muted); margin-top: 0.65rem;">
+                  Mimo hranu hodin ($\uparrow$) si obvod pamatuje předchozí stav $Q(t)$ bez ohledu na to, jak se mění vstup $D$.
+                </p>
+              </div>
+              <div class="callout-tip" style="margin-top: 0;">
+                <strong>Charakteristická rovnice:</strong><br>
+                $Q(t+1) = D$ (při náběžné hraně $CLK$)
+              </div>
+            </div>
+
+            <div class="lab-card">
+              <div>
+                <div class="sim-toolbar" style="margin-bottom: 0.65rem;">
+                  <div class="sim-btn-group">
+                    <button class="sim-toggle-btn val-0" id="btn-d-in" onclick="window.toggleDInput()">D = 0</button>
+                    <button class="sim-action-btn primary" onclick="window.pulseDClock()">Pulz CLK &uarr;</button>
+                    <button class="sim-action-btn" onclick="window.resetDFlipFlop()">Reset</button>
+                  </div>
+                  <span class="out-badge state-0" id="out-d-q">Q = 0 | Q̄ = 1</span>
+                </div>
+
+                <div class="svg-stage">
+                  <svg viewBox="0 0 360 185">
+                    <!-- Vstup D -->
+                    <text id="svg-d-val" x="14" y="54" fill="#34d399" font-family="monospace" font-size="13" font-weight="bold">D=0</text>
+                    <line id="wire-d-in" x1="50" y1="50" x2="115" y2="50" class="sim-wire"/>
+
+                    <!-- Vstup CLK s trojúhelníkem hrany -->
+                    <text x="14" y="134" fill="#fbbf24" font-family="monospace" font-size="12" font-weight="bold">CLK</text>
+                    <line x1="50" y1="130" x2="115" y2="130" class="sim-wire pulse"/>
+
+                    <!-- Blok D-FF -->
+                    <rect x="115" y="25" width="120" height="135" rx="8" fill="#0f172a" stroke="#06b6d4" stroke-width="2.5"/>
+                    <text x="175" y="96" fill="#38bdf8" font-family="sans-serif" font-size="22" font-weight="bold" text-anchor="middle">D</text>
+                    <polygon points="115,122 127,130 115,138" fill="none" stroke="#fbbf24" stroke-width="2"/>
+                    <text x="132" y="55" fill="#94a3b8" font-family="monospace" font-size="12">D</text>
+                    <text x="220" y="55" fill="#94a3b8" font-family="monospace" font-size="12">Q</text>
+                    <text x="218" y="135" fill="#94a3b8" font-family="monospace" font-size="12">Q̄</text>
+
+                    <!-- Výstupy -->
+                    <line id="wire-d-q" x1="235" y1="50" x2="295" y2="50" class="sim-wire"/>
+                    <circle id="led-d-q" cx="310" cy="50" r="10" class="sim-led"/>
+                    <text id="svg-d-qval" x="334" y="54" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">Q=0</text>
+
+                    <line id="wire-d-qb" x1="235" y1="130" x2="295" y2="130" class="sim-wire"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="sim-caption info" id="caption-d">
+                Na vstupu je D = 0, ale výstup Q = 0 se nezmění, dokud nepřijde hrana CLK ↑.
+              </div>
+            </div>
+
+            <div class="lab-card col-practice">
+              <div>
+                <h3>Použití v praxi</h3>
+                <ul class="styled-list" style="font-size: 0.87rem;">
+                  <li><strong>Registry procesoru:</strong> 64bitový registr v CPU je jednoduše 64 D-klopných obvodů vedle sebe se společným signálem <code>CLK</code>.</li>
+                  <li><strong>Posuvné registry:</strong> Řetězec D-obvodů pro převod dat mezi sériovým a paralelním tvarem.</li>
+                  <li><strong>Typický čip:</strong> <strong>74HC74</strong> (2 nezávislé D obvody v jednom pouzdře).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 6: KLOPNÝ OBVOD JK A T (INTERAKTIVNÍ)
+           ========================================== -->
+      <section class="slide" id="slide-6" data-title="Klopný obvod JK a T (Přepínač)">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Univerzální paměť</span>
+            <span class="badge">Dělení frekvence</span>
+          </div>
+          <h2>Klopný obvod JK a T: Odstranění zakázaného stavu</h2>
+          <p class="slide-lead">
+            Obvod JK vylepšuje RS: při kombinaci $J=1, K=1$ nenastává chyba, ale <strong>překlopení na opačný stav (Toggle)</strong>.
+          </p>
+
+          <div class="circuit-lab-grid">
+            <div class="lab-card">
+              <div>
+                <h3>Pravdivostní tabulka JK</h3>
+                <table class="truth-table" id="jk-truth-table">
+                  <thead>
+                    <tr><th>$J$</th><th>$K$</th><th>$Q(t+1)$</th><th>Režim</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-row="0-0"><td>0</td><td>0</td><td>$Q(t)$</td><td>Paměť</td></tr>
+                    <tr data-row="0-1"><td>0</td><td>1</td><td>0</td><td>Reset</td></tr>
+                    <tr data-row="1-0"><td>1</td><td>0</td><td>1</td><td>Set</td></tr>
+                    <tr data-row="1-1"><td>1</td><td>1</td><td>$\bar{Q}(t)$</td><td>Toggle (překlop)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="callout-tip" style="margin-top: 0;">
+                <strong>Klopný obvod T:</strong> Vznikne trvalým spojením $J = K = 1$. S každým pulzem hodin se výstup překlopí (0 -&gt; 1 -&gt; 0 -&gt; 1).
+              </div>
+            </div>
+
+            <div class="lab-card">
+              <div>
+                <div class="sim-toolbar" style="margin-bottom: 0.65rem;">
+                  <div class="sim-btn-group">
+                    <button class="sim-toggle-btn val-0" id="btn-jk-j" onclick="window.toggleJkInput('j')">J = 0</button>
+                    <button class="sim-toggle-btn val-0" id="btn-jk-k" onclick="window.toggleJkInput('k')">K = 0</button>
+                    <button class="sim-action-btn primary" onclick="window.pulseJkClock()">Pulz CLK &uarr;</button>
+                  </div>
+                  <span class="out-badge state-0" id="out-jk-q">Q = 0 | Q̄ = 1</span>
+                </div>
+
+                <div class="svg-stage">
+                  <svg viewBox="0 0 360 185">
+                    <text x="16" y="49" fill="#34d399" font-family="monospace" font-size="13" font-weight="bold">J</text>
+                    <line id="wire-jk-j" x1="36" y1="45" x2="115" y2="45" class="sim-wire"/>
+
+                    <text x="12" y="96" fill="#fbbf24" font-family="monospace" font-size="11" font-weight="bold">CLK</text>
+                    <line x1="42" y1="92" x2="115" y2="92" class="sim-wire pulse"/>
+
+                    <text x="16" y="144" fill="#fb7185" font-family="monospace" font-size="13" font-weight="bold">K</text>
+                    <line id="wire-jk-k" x1="36" y1="140" x2="115" y2="140" class="sim-wire"/>
+
+                    <rect x="115" y="25" width="120" height="135" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="2.5"/>
+                    <text x="175" y="98" fill="#c084fc" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">JK</text>
+                    <polygon points="115,84 127,92 115,100" fill="none" stroke="#fbbf24" stroke-width="2"/>
+
+                    <line id="wire-jk-q" x1="235" y1="50" x2="295" y2="50" class="sim-wire"/>
+                    <circle id="led-jk-q" cx="310" cy="50" r="10" class="sim-led"/>
+                    <text id="svg-jk-qval" x="334" y="54" fill="#38bdf8" font-family="monospace" font-size="12" font-weight="bold">Q=0</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="sim-caption info" id="caption-jk">
+                Režim PAMĚŤ (0,0): Výstup drží předchozí stav.
+              </div>
+            </div>
+
+            <div class="lab-card col-practice">
+              <div>
+                <h3>Dělič frekvence dvěma ($f/2$)</h3>
+                <p style="font-size: 0.87rem; color: var(--text-secondary);">
+                  Když nastavíš $J=1, K=1$ (režim Toggle) a klikeš na <code>Pulz CLK</code>, všimneš si, že výstup $Q$ udělá jeden celý cyklus (0 -&gt; 1 -&gt; 0) až za <strong>dva pulzy hodin</strong>.
+                </p>
+                <p style="font-size: 0.87rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                  Tím jsme právě vydělili vstupní frekvenci dvěma! Spojením více T-obvodů za sebou stavíme <strong>binární čítače</strong>.
+                </p>
+              </div>
+              <div style="font-size: 0.82rem; color: var(--text-secondary); background: rgba(0,0,0,0.22); padding: 0.6rem; border-radius: 6px; border-left: 3px solid #a855f7;">
+                Typický čip: <strong>74HC73</strong> nebo <strong>74HC112</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 7: ASYNCHRONNÍ BINÁRNÍ ČÍTAČ (INTERAKTIVNÍ)
+           ========================================== -->
+      <section class="slide" id="slide-7" data-title="Asynchronní binární čítač">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Počítání v bináru</span>
+            <span class="badge">Interaktivní 4bitový čítač</span>
+          </div>
+          <h2>4bitový asynchronní binární čítač (0 až 15)</h2>
+          <p class="slide-lead">
+            Jak spočítat výrobky na pásu nebo sekundy v hodinkách? Zapojíme 4 obvody T do kaskády – výstup každého stupně pohání hodiny následujícího.
+          </p>
+
+          <div class="lab-card" style="margin-top: 0.75rem;">
+            <div class="sim-toolbar">
+              <div class="sim-btn-group">
+                <button class="sim-action-btn primary" onclick="window.stepCounter()">+1 Pulz CLK &uarr;</button>
+                <button class="sim-action-btn" id="btn-cnt-auto" onclick="window.toggleCounterAuto()">Auto čítání</button>
+                <button class="sim-action-btn" onclick="window.resetCounter()">Reset (0000)</button>
+              </div>
+
+              <div class="counter-readout-box">
+                <div class="readout-item">
+                  <span class="readout-label">Desítkově</span>
+                  <span class="readout-val" id="cnt-dec">0</span>
+                </div>
+                <div class="readout-item">
+                  <span class="readout-label">Hexa</span>
+                  <span class="readout-val" id="cnt-hex" style="color: #38bdf8;">0x0</span>
+                </div>
+                <div class="readout-item">
+                  <span class="readout-label">Binárně (Q3..Q0)</span>
+                  <span class="readout-val" id="cnt-bin" style="color: #34d399;">0000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kaskáda 4 T-obvodů v SVG -->
+            <div class="svg-stage" style="padding: 0.6rem;">
+              <svg viewBox="0 0 680 120">
+                <text x="12" y="64" fill="#fbbf24" font-family="monospace" font-size="12" font-weight="bold">CLK</text>
+                <line x1="42" y1="60" x2="80" y2="60" class="sim-wire pulse"/>
+
+                <!-- Stupeň 0 (LSB, váha 1) -->
+                <rect x="80" y="25" width="95" height="70" rx="6" fill="#0f172a" stroke="#06b6d4" stroke-width="2"/>
+                <text x="127" y="52" fill="#e2e8f0" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">T0 (f/2)</text>
+                <text x="127" y="74" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">Q0 (váha 1)</text>
+                <circle id="cnt-svg-led-0" cx="127" cy="14" r="7" class="sim-led"/>
+                <line x1="175" y1="60" x2="225" y2="60" class="sim-wire accent"/>
+
+                <!-- Stupeň 1 (váha 2) -->
+                <rect x="225" y="25" width="95" height="70" rx="6" fill="#0f172a" stroke="#06b6d4" stroke-width="2"/>
+                <text x="272" y="52" fill="#e2e8f0" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">T1 (f/4)</text>
+                <text x="272" y="74" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">Q1 (váha 2)</text>
+                <circle id="cnt-svg-led-1" cx="272" cy="14" r="7" class="sim-led"/>
+                <line x1="320" y1="60" x2="370" y2="60" class="sim-wire accent"/>
+
+                <!-- Stupeň 2 (váha 4) -->
+                <rect x="370" y="25" width="95" height="70" rx="6" fill="#0f172a" stroke="#06b6d4" stroke-width="2"/>
+                <text x="417" y="52" fill="#e2e8f0" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">T2 (f/8)</text>
+                <text x="417" y="74" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">Q2 (váha 4)</text>
+                <circle id="cnt-svg-led-2" cx="417" cy="14" r="7" class="sim-led"/>
+                <line x1="465" y1="60" x2="515" y2="60" class="sim-wire accent"/>
+
+                <!-- Stupeň 3 (MSB, váha 8) -->
+                <rect x="515" y="25" width="95" height="70" rx="6" fill="#0f172a" stroke="#06b6d4" stroke-width="2"/>
+                <text x="562" y="52" fill="#e2e8f0" font-family="monospace" font-size="13" font-weight="bold" text-anchor="middle">T3 (f/16)</text>
+                <text x="562" y="74" fill="#94a3b8" font-family="monospace" font-size="11" text-anchor="middle">Q3 (váha 8)</text>
+                <circle id="cnt-svg-led-3" cx="562" cy="14" r="7" class="sim-led"/>
+              </svg>
+            </div>
+
+            <!-- Bitové buňky MSB -> LSB -->
+            <div class="bit-cells-row">
+              <div class="bit-cell" id="cnt-cell-3">
+                <div class="bit-cell-label">Q3 (MSB)</div>
+                <div class="bit-cell-val" id="cnt-val-3">0</div>
+                <div class="bit-cell-weight">váha 8</div>
+              </div>
+              <div class="bit-cell" id="cnt-cell-2">
+                <div class="bit-cell-label">Q2</div>
+                <div class="bit-cell-val" id="cnt-val-2">0</div>
+                <div class="bit-cell-weight">váha 4</div>
+              </div>
+              <div class="bit-cell" id="cnt-cell-1">
+                <div class="bit-cell-label">Q1</div>
+                <div class="bit-cell-val" id="cnt-val-1">0</div>
+                <div class="bit-cell-weight">váha 2</div>
+              </div>
+              <div class="bit-cell" id="cnt-cell-0">
+                <div class="bit-cell-label">Q0 (LSB)</div>
+                <div class="bit-cell-val" id="cnt-val-0">0</div>
+                <div class="bit-cell-weight">váha 1</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 8: ASYNCHRONNÍ VS. SYNCHRONNÍ ČÍTAČ & MODULO N
+           ========================================== -->
+      <section class="slide" id="slide-8" data-title="Synchronní čítač a čítače modulo N">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Architektura čítačů</span>
+            <span class="badge">Dekadické počítání</span>
+          </div>
+          <h2>Asynchronní vs. synchronní čítač a čítač Modulo 10</h2>
+          <p class="slide-lead">
+            Proč u rychlých obvodů nestačí kaskáda a jak přinutit binární čítač, aby počítal jen od 0 do 9 (pro digitální hodiny)?
+          </p>
+
+          <div class="grid-2" style="margin-top: 0.9rem;">
             <div class="content-card">
-              <h3>Vstupy a chování</h3>
-              <ul class="styled-list">
-                <li><strong>S (Set):</strong> Nastavení výstupu do logické 1 ($Q = 1$).</li>
-                <li><strong>R (Reset):</strong> Nulování výstupu do logické 0 ($Q = 0$).</li>
-                <li><strong>S = 0, R = 0:</strong> Stav paměti (výstup zůstává nezměněn).</li>
-                <li><strong>S = 1, R = 1:</strong> <strong style="color: #f43f5e;">Zakázaný (hazardní) stav!</strong> Na obou výstupech je současně 0.</li>
+              <h3 style="color: #f59e0b;">Asynchronní (Ripple) čítač</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Signál se šíří z jednoho klopného obvodu do druhého jako vlna (domino).
+              </p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.86rem;">
+                <li><strong>Výhoda:</strong> Velmi jednoduché zapojení bez přídavných hradel.</li>
+                <li><strong>Nevýhoda:</strong> Zpoždění se sčítá ($t = N \cdot t_{pd}$). Při přechodu z <code>0111</code> na <code>1000</code> krátce probliknou chybné mezistavy!</li>
               </ul>
             </div>
+
             <div class="content-card">
-              <h3>Pravdivostní tabulka RS (z hradel NOR)</h3>
-              <table class="truth-table">
-                <thead>
-                  <tr><th>$R$</th><th>$S$</th><th>$Q(t+1)$</th><th>Poznámka</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>0</td><td>0</td><td class="val-1">$Q(t)$</td><td>Pamatuje předchozí stav</td></tr>
-                  <tr><td>0</td><td>1</td><td class="val-out">1</td><td>Nastavení (Set)</td></tr>
-                  <tr><td>1</td><td>0</td><td class="val-0">0</td><td>Vynulování (Reset)</td></tr>
-                  <tr><td>1</td><td>1</td><td style="color:#f43f5e; font-weight:800;">Hazard</td><td>Zakázaný stav!</td></tr>
-                </tbody>
-              </table>
+              <h3 style="color: var(--accent);">Synchronní čítač</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                Všechny klopné obvody dostávají <strong>společný hodinový signál CLK naráz</strong>.
+              </p>
+              <ul class="styled-list" style="margin-top: 0.5rem; font-size: 0.86rem;">
+                <li><strong>Výhoda:</strong> Všechny bity se přepnou přesně ve stejný okamžik – žádné chybné mezistavy a mnohem vyšší maximální frekvence.</li>
+                <li><strong>Nevýhoda:</strong> Potřebuje přídavná hradla AND před vstupy.</li>
+              </ul>
             </div>
+          </div>
+
+          <div class="content-card" style="margin-top: 1rem;">
+            <h3 style="color: #34d399;">Jak vyrobit dekadický čítač (0–9, Modulo 10)?</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+              4bitový čítač přirozeně počítá do 15 (<code>1111</code>). Pokud chceme zobrazovat číslice <strong>0 až 9</strong> na 7segmentovém displeji, stačí použít jedno hradlo <strong>NAND</strong>, které hlídá stav <strong>10</strong> (binárně <code>1010</code>, tedy $Q_3=1$ a $Q_1=1$). Jakmile čítač dosáhne čísla 10, hradlo NAND okamžitě vyšle signál na vstup <code>RESET</code> a čítač skočí zpět na <code>0000</code>!
+            </p>
           </div>
         </div>
       </section>
 
-      <section class="slide" id="slide-4" data-title="Synchronní klopné obvody D a JK">
+      <!-- ==========================================
+           SNÍMEK 9: POSUVNÝ REGISTR SIPO (INTERAKTIVNÍ)
+           ========================================== -->
+      <section class="slide" id="slide-9" data-title="Posuvné registry (Shift Registers)">
         <div class="slide-content">
-          <h2>Synchronní klopné obvody řízené hodinovým signálem (CLK)</h2>
-          <div class="grid-2">
-            <div class="content-card">
-              <h3 style="color: #06b6d4;">Klopný obvod D (Data &bull; Delay)</h3>
-              <p>Zabraňuje zakázanému stavu. Přebírá hodnotu ze vstupu $D$ přesně v okamžiku náběžné hrany hodinového pulzu $CLK$:</p>
-              <div style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent); margin: 0.5rem 0;">
-                $Q(t+1) = D$
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Přenos dat</span>
+            <span class="badge">Interaktivní registr SIPO</span>
+          </div>
+          <h2>Posuvné registry: Jak ovládat 8 LED pomocí pouhých 2 drátů</h2>
+          <p class="slide-lead">
+            Mikrokontrolér (např. Arduino) má málo pinů. Posuvný registr posílá bity jeden za druhým po jediném drátu (sériově) a pak je rozsvítí všechny najednou (paralelně).
+          </p>
+
+          <div class="lab-card" style="margin-top: 0.75rem;">
+            <div class="sim-toolbar">
+              <div class="sim-btn-group">
+                <button class="sim-toggle-btn val-1" id="btn-shift-in" onclick="window.toggleShiftDataIn()">Data In = 1</button>
+                <button class="sim-action-btn primary" onclick="window.clockShiftRegister()">Posunout bit (CLK &uarr;)</button>
+                <button class="sim-action-btn" onclick="window.loadShiftPreset()">Ukázka 1011</button>
+                <button class="sim-action-btn" onclick="window.resetShiftRegister()">Vymazat</button>
               </div>
-              <p>Základní buňka posuvných registrů a pamětí cache. Typický obvod: <strong>74HC74</strong>.</p>
+              <span class="out-badge state-1" id="shift-out-word">Paralelní výstup: 0000</span>
             </div>
-            <div class="content-card">
-              <h3 style="color: #a855f7;">Klopný obvod JK (Univerzální)</h3>
-              <p>Odstraňuje zakázaný stav obvodu RS. Při kombinaci $J=1, K=1$ dochází k <strong>negaci (překlopení stavu Toggle)</strong>:</p>
-              <div style="font-family: var(--font-mono); font-size: 1.1rem; color: #a855f7; margin: 0.5rem 0;">
-                Při $J=1, K=1 \implies Q(t+1) = \bar{Q}(t)$
+
+            <div class="bit-cells-row" style="margin: 0.75rem 0;">
+              <div class="bit-cell" id="shift-cell-0">
+                <div class="bit-cell-label">D0 -&gt; Q0</div>
+                <div class="bit-cell-val" id="shift-val-0">0</div>
+                <div class="bit-cell-weight">1. stupeň</div>
               </div>
-              <p>Základní buňka asynchronních i synchronních binárních čítačů. Obvod: <strong>74HC73</strong>.</p>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <div class="bit-cell" id="shift-cell-1">
+                <div class="bit-cell-label">D1 -&gt; Q1</div>
+                <div class="bit-cell-val" id="shift-val-1">0</div>
+                <div class="bit-cell-weight">2. stupeň</div>
+              </div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <div class="bit-cell" id="shift-cell-2">
+                <div class="bit-cell-label">D2 -&gt; Q2</div>
+                <div class="bit-cell-val" id="shift-val-2">0</div>
+                <div class="bit-cell-weight">3. stupeň</div>
+              </div>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              <div class="bit-cell" id="shift-cell-3">
+                <div class="bit-cell-label">D3 -&gt; Q3</div>
+                <div class="bit-cell-val" id="shift-val-3">0</div>
+                <div class="bit-cell-weight">4. stupeň</div>
+              </div>
+            </div>
+
+            <div class="grid-3" style="margin-top: 0.25rem;">
+              <div style="background: rgba(0,0,0,0.2); padding: 0.65rem; border-radius: 6px; border-left: 3px solid var(--accent); font-size: 0.84rem;">
+                <strong>SIPO (Serial-In, Parallel-Out):</strong><br>
+                Rozšíření výstupů pro LED pásky a displeje (např. čip <strong>74HC595</strong>).
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 0.65rem; border-radius: 6px; border-left: 3px solid #34d399; font-size: 0.84rem;">
+                <strong>PISO (Parallel-In, Serial-Out):</strong><br>
+                Načtení 8 tlačítek naráz a odeslání po 1 drátu do CPU (čip <strong>74HC165</strong>).
+              </div>
+              <div style="background: rgba(0,0,0,0.2); padding: 0.65rem; border-radius: 6px; border-left: 3px solid #a855f7; font-size: 0.84rem;">
+                <strong>SISO (Serial-In, Serial-Out):</strong><br>
+                Zpožďovací linka – bit vyjde na konci přesně za $N$ hodinových taktů.
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="slide" id="slide-5" data-title="Čítače a registry">
+      <!-- ==========================================
+           SNÍMEK 10: KONEČNÉ STAVOVÉ AUTOMATY (FSM)
+           ========================================== -->
+      <section class="slide" id="slide-10" data-title="Konečné stavové automaty (FSM)">
         <div class="slide-content">
-          <h2>Aplikace sekvenčních obvodů: Čítače a Registry</h2>
-          <div class="grid-2">
-            <div class="content-card">
-              <h3>Binární čítače impulzů</h3>
-              <p>Kaskáda JK nebo T obvodů zapojených v režimu Toggle. Každý další stupeň dělí vstupní frekvenci dvěma ($f_{out} = f_{in} / 2^N$):</p>
-              <ul class="styled-list">
-                <li><strong>Asynchronní (Rippler):</strong> Hodiny dalšího stupně jsou buzeny výstupem předchozího (vzniká kumulativní zpoždění).</li>
-                <li><strong>Synchronní:</strong> Všechny obvody jsou buzeny společným hodinovým signálem naráz.</li>
-              </ul>
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Řídicí logika</span>
+            <span class="badge">Interaktivní semafor</span>
+          </div>
+          <h2>Konečné stavové automaty (FSM) v praxi</h2>
+          <p class="slide-lead">
+            Jak funguje semafor, výtah nebo automat na kávu? Vždy má konečný počet stavů (paměť) a jasná pravidla, kdy přejde do dalšího stavu.
+          </p>
+
+          <div class="grid-2" style="margin-top: 0.85rem; align-items: stretch;">
+            <div class="lab-card">
+              <div>
+                <div class="sim-toolbar" style="margin-bottom: 0.65rem;">
+                  <div class="sim-btn-group">
+                    <button class="sim-action-btn primary" onclick="window.advanceFsm()">Další takt (Přechod)</button>
+                    <button class="sim-action-btn" onclick="window.resetFsm()">Reset (S0)</button>
+                  </div>
+                </div>
+
+                <div class="svg-stage">
+                  <svg viewBox="0 0 360 175">
+                    <!-- Přechodové šipky -->
+                    <path d="M 105,40 L 215,40" stroke="#475569" stroke-width="2" fill="none"/>
+                    <path d="M 260,65 L 260,110" stroke="#475569" stroke-width="2" fill="none"/>
+                    <path d="M 215,135 L 105,135" stroke="#475569" stroke-width="2" fill="none"/>
+                    <path d="M 65,110 L 65,65" stroke="#475569" stroke-width="2" fill="none"/>
+
+                    <!-- Uzly stavů -->
+                    <rect id="fsm-node-0" x="20" y="20" width="90" height="42" rx="8" fill="#0f172a" stroke="#64748b" stroke-width="2" class="fsm-node active"/>
+                    <text x="65" y="45" fill="#34d399" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">S0: ZELENÁ</text>
+
+                    <rect id="fsm-node-1" x="215" y="20" width="115" height="42" rx="8" fill="#0f172a" stroke="#64748b" stroke-width="2" class="fsm-node"/>
+                    <text x="272" y="45" fill="#fbbf24" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">S1: ORANŽOVÁ</text>
+
+                    <rect id="fsm-node-2" x="215" y="112" width="115" height="42" rx="8" fill="#0f172a" stroke="#64748b" stroke-width="2" class="fsm-node"/>
+                    <text x="272" y="137" fill="#fb7185" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">S2: CHODCI</text>
+
+                    <rect id="fsm-node-3" x="20" y="112" width="90" height="42" rx="8" fill="#0f172a" stroke="#64748b" stroke-width="2" class="fsm-node"/>
+                    <text x="65" y="137" fill="#fbbf24" font-family="monospace" font-size="11" font-weight="bold" text-anchor="middle">S3: PŘÍPRAVA</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="sim-caption info" id="fsm-state-label">
+                S0: Auta JEDOU (Zelená) | Chodci STŮJ
+              </div>
             </div>
-            <div class="content-card">
-              <h3>Posuvné registry (Shift Registers)</h3>
-              <p>Řada D klopných obvodů přenášející data krok za krokem:</p>
-              <ul class="styled-list">
-                <li><strong>SIPO:</strong> Sériový vstup, paralelní výstup (např. expandér portů 74HC595).</li>
-                <li><strong>SISO:</strong> Sériový vstup, sériový výstup – typicky zpožďovací člen.</li>
-                <li><strong>PISO:</strong> Paralelní vstup, sériový výstup (např. čtení maticových klávesnic).</li>
-              </ul>
+
+            <div class="lab-card">
+              <div>
+                <h3>Aktuální výstupy semaforu</h3>
+                <div class="svg-stage" style="margin-top: 0.4rem;">
+                  <svg viewBox="0 0 320 140">
+                    <!-- Semafor auta -->
+                    <rect x="45" y="15" width="54" height="110" rx="10" fill="#020617" stroke="#334155" stroke-width="2"/>
+                    <circle id="tl-car-red" cx="72" cy="38" r="12" class="sim-led"/>
+                    <circle id="tl-car-amber" cx="72" cy="70" r="12" class="sim-led"/>
+                    <circle id="tl-car-green" cx="72" cy="102" r="12" class="sim-led on-green"/>
+                    <text x="72" y="136" fill="#94a3b8" font-family="sans-serif" font-size="11" text-anchor="middle">Auta</text>
+
+                    <!-- Semafor chodci -->
+                    <rect x="205" y="30" width="54" height="80" rx="10" fill="#020617" stroke="#334155" stroke-width="2"/>
+                    <circle id="tl-ped-red" cx="232" cy="52" r="12" class="sim-led on-red"/>
+                    <circle id="tl-ped-green" cx="232" cy="88" r="12" class="sim-led"/>
+                    <text x="232" y="136" fill="#94a3b8" font-family="sans-serif" font-size="11" text-anchor="middle">Chodci</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="callout-tip" style="margin-top: 0;">
+                <strong>Stavba každého FSM:</strong> Paměť stavu (2 klopné obvody D pro 4 stavy $00, 01, 10, 11$) + kombinační logika, která podle stavu rozsvítí konkrétní světla.
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="slide" id="slide-6" data-title="Závěr a opakovací checklist">
+      <!-- ==========================================
+           SNÍMEK 11: REÁLNÉ INTEGROVANÉ OBVODY ŘADY 74HC
+           ========================================== -->
+      <section class="slide" id="slide-11" data-title="Integrované obvody řady 74HC">
         <div class="slide-content">
-          <h2>Závěrečný opakovací checklist k číslicovým obvodům</h2>
-          <div class="grid-2">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Praktický hardware</span>
+            <span class="badge">Pouzdra DIP-14 / DIP-16</span>
+          </div>
+          <h2>Sekvenční integrované obvody v dílně a laboratoři</h2>
+          <p class="slide-lead">
+            V praxi nestavíme klopné obvody z jednotlivých hradel – použijeme hotové spolehlivé čipy řady 74HC:
+          </p>
+
+          <div class="ic-pinout-grid">
+            <div class="ic-chip">
+              <div class="ic-notch"></div>
+              <div class="ic-label">74HC74</div>
+              <div class="ic-desc">2&times; D klopný obvod (DIP-14)</div>
+              <div style="font-size: 0.78rem; color: #94a3b8; border-top: 1px solid #1e293b; padding-top: 0.5rem;">
+                Každý má vstupy D, CLK i asynchronní Set a Reset. Ideální pro jednoduché paměti a děličky frekvence.
+              </div>
+            </div>
+
+            <div class="ic-chip">
+              <div class="ic-notch"></div>
+              <div class="ic-label">74HC595</div>
+              <div class="ic-desc">8bitový posuvný registr SIPO (DIP-16)</div>
+              <div style="font-size: 0.78rem; color: #94a3b8; border-top: 1px solid #1e293b; padding-top: 0.5rem;">
+                Nejznámější expandér pro Arduino/ESP32. Pomocí 3 pinů (Data, Clock, Latch) rozsvítí 8 LED diod.
+              </div>
+            </div>
+
+            <div class="ic-chip">
+              <div class="ic-notch"></div>
+              <div class="ic-label">74HC161 / 74HC93</div>
+              <div class="ic-desc">4bitový binární čítač (DIP-16 / DIP-14)</div>
+              <div style="font-size: 0.78rem; color: #94a3b8; border-top: 1px solid #1e293b; padding-top: 0.5rem;">
+                Počítá pulzy od 0 do 15 (74HC161 je synchronní s předvolbou, 74HC93 je klasický asynchronní čítač).
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top: 1rem;">
             <div class="content-card">
-              <h3>Kontrolní opakovací otázky</h3>
-              <ul class="styled-list">
-                <li>Jaký je principiální rozdíl mezi kombinačním a sekvenčním obvodem?</li>
-                <li>Nakreslete schéma a pravdivostní tabulku klopného obvodu RS.</li>
-                <li>Proč je u obvodu RS stav S=1, R=1 zakázaný a jak ho řeší obvod JK?</li>
-                <li>K čemu slouží klopný obvod D a co znamená hrana hodinového pulzu?</li>
-                <li>Vysvětlete funkci čtyřbitového asynchronního binárního čítače.</li>
-              </ul>
+              <h4 style="color: var(--accent);">Ošetření zákmitů tlačítek (Debouncing)</h4>
+              <p style="font-size: 0.87rem; color: var(--text-secondary);">
+                Když připojíš mechanické tlačítko přímo na vstup <code>CLK</code> čítače, kontakty při stisku zakmitají a čítač přičte místo +1 třeba +7! Řešením je RC filtr s hradlem <strong>74HC14</strong> nebo obvod <strong>RS</strong>.
+              </p>
             </div>
             <div class="content-card">
-              <h3>Ukončení modulu KYME</h3>
-              <p>Gratulujeme! Prošli jste všech 6 teoretických témat i interaktivní trenažér předmětu <strong>Kybernetika a mechatronika</strong>.</p>
-              <a href="../index.html" class="btn-portal" style="margin-top: 1rem; display: inline-flex;">
-                Zpět na přehled předmětu KYME &rarr;
-              </a>
+              <h4 style="color: #f59e0b;">Power-On Reset (Počáteční nulování)</h4>
+              <p style="font-size: 0.87rem; color: var(--text-secondary);">
+                Po zapnutí napájení může být v klopných obvodech náhodná 0 nebo 1. Proto se na pin <code>RESET</code> dává malý kondenzátor, který při startu vše bezpečně vynuluje do výchozího stavu.
+              </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           SNÍMEK 12: SHRNUTÍ A KONTROLNÍ OTÁZKY
+           ========================================== -->
+      <section class="slide" id="slide-12" data-title="Shrnutí a kontrolní otázky">
+        <div class="slide-content">
+          <div class="title-badge-group">
+            <span class="badge badge-accent">Závěrečné opakování</span>
+            <span class="badge">Kontrolní otázky</span>
+          </div>
+          <h2>Shrnutí tématu a kontrolní otázky</h2>
+          <p class="slide-lead">Kliknutím na otázku si ověř, zda rozumíš základům sekvenčních obvodů:</p>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>1. Jaký je hlavní rozdíl mezi kombinačním a sekvenčním obvodem?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Kombinační obvod nemá paměť – jeho výstup závisí pouze na okamžitých vstupech. Sekvenční obvod má zpětnou vazbu (vnitřní paměť), takže jeho výstup závisí jak na současných vstupech, tak na předchozím stavu $Q(t)$.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>2. Proč je u RS obvodu kombinace S=1, R=1 zakázaná a jak to řeší obvod JK?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Při $S=1, R=1$ se snažíme paměť současně nastavit i vynulovat, takže oba výstupy ($Q$ i $\bar{Q}$) klesnou na 0 a po uvolnění tlačítek není jasné, jaký stav zůstane. Obvod JK tuto kombinaci ($J=1, K=1$) mění na užitečnou funkci <strong>Toggle</strong> – překlopení na opačný stav.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>3. Co znamená „náběžná hrana hodinového pulzu“ u klopného obvodu D?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Náběžná hrana je přesný okamžik přechodu hodinového signálu <code>CLK</code> z logické 0 do logické 1. Pouze v tomto zlomku sekundy si klopný obvod D přečte hodnotu ze vstupu $D$ a uloží ji na výstup $Q$.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>4. Proč je synchronní čítač rychlejší a spolehlivější než asynchronní?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              U asynchronního čítače spouští jeden klopný obvod další v řadě, takže se zpoždění sčítají a krátce vznikají chybné mezistavy. U synchronního čítače dostávají všechny obvody společný signál <code>CLK</code> najednou a překlopí se současně.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>5. K čemu v praxi slouží posuvný registr SIPO (např. 74HC595)?</span>
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Převádí sériová data (posílaná bit po bitu po jednom drátu) na paralelní výstup (např. 8 samostatných výstupů pro LED nebo segmentový displej), čímž šetří piny mikrokontroléru.
+            </div>
+          </div>
+
+          <div style="margin-top: 1.25rem; text-align: center;">
+            <a href="../index.html" class="btn-portal" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+              Zpět na přehled předmětu KYME
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
           </div>
         </div>
       </section>
 
     </main>
 
+    <!-- Spodní ovládací lišta prezentace -->
     <nav class="controls-bar" aria-label="Ovládání prezentace">
       <a href="../050-Hradla/index.html" class="control-btn" id="prevLessonBtn" title="Předchozí téma: 050 Logická hradla">
         <svg class="icon" viewBox="0 0 24 24"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
@@ -227,7 +977,7 @@
       <div class="controls-divider"></div>
 
       <button class="control-btn" id="prevSlideBtn" title="Předchozí snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-      <span class="slide-counter" id="slideCounter">1 / 6</span>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
       <button class="control-btn btn-nav-primary" id="nextSlideBtn" title="Další snímek"><svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
 
       <div class="controls-divider"></div>
@@ -242,7 +992,7 @@
         <div class="toc-header">
           <h3 class="toc-title">
             <svg class="icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-            Osnova: Logické obvody
+            Osnova: Sekvenční obvody
           </h3>
           <button class="toc-close" id="tocCloseBtn" title="Zavřít"><svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
@@ -253,6 +1003,7 @@
   </div>
 
   <script src="../../assets/js/presentation-core.js"></script>
+  <script src="circuits-sim.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,575 @@
+/* ==========================================================================
+   Téma 060: Sekvenční a logické obvody - Lokální styly
+   ========================================================================== */
+
+:root {
+  --accent: #06b6d4;
+  --accent-glow: rgba(6, 182, 212, 0.25);
+  --sig-high: #10b981;
+  --sig-low: #64748b;
+  --sig-warn: #f43f5e;
+  --sig-gold: #fbbf24;
+  --sig-purple: #a855f7;
+}
+
+/* Mřížka interaktivního pracoviště (3 sloupce jako v 050-Hradla) */
+.circuit-lab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.45fr 1fr;
+  gap: 1.15rem;
+  margin-top: 0.85rem;
+  align-items: stretch;
+}
+
+@media (max-width: 1280px) {
+  .circuit-lab-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .circuit-lab-grid .col-practice {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 820px) {
+  .circuit-lab-grid {
+    grid-template-columns: 1fr;
+  }
+  .circuit-lab-grid .col-practice {
+    grid-column: span 1;
+  }
+}
+
+/* Karty pracoviště */
+.lab-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.lab-card h3 {
+  font-size: 1.05rem;
+  color: var(--accent);
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Ovládací lišta vstupů v simulátorech */
+.sim-toolbar {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.55rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+[data-theme="light"] .sim-toolbar {
+  background: rgba(241, 245, 249, 0.85);
+}
+
+.sim-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.sim-toggle-btn,
+.sim-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+
+[data-theme="light"] .sim-toggle-btn,
+[data-theme="light"] .sim-action-btn {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.sim-toggle-btn:hover,
+.sim-action-btn:hover {
+  background: rgba(6, 182, 212, 0.14);
+  border-color: var(--accent);
+}
+
+.sim-toggle-btn.val-1 {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--sig-high);
+  color: #34d399;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.22);
+}
+
+[data-theme="light"] .sim-toggle-btn.val-1 {
+  color: #047857;
+}
+
+.sim-toggle-btn.val-0 {
+  background: rgba(100, 116, 139, 0.18);
+  border-color: var(--sig-low);
+  color: var(--text-secondary);
+}
+
+.sim-action-btn.primary {
+  background: rgba(6, 182, 212, 0.18);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.sim-action-btn.primary:hover {
+  background: rgba(6, 182, 212, 0.3);
+}
+
+.sim-action-btn.active-run {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #f59e0b;
+  color: #fbbf24;
+}
+
+/* Výstupní indikátory */
+.out-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.out-badge.state-1 {
+  background: rgba(6, 182, 212, 0.2);
+  border-color: var(--accent);
+  color: #38bdf8;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
+}
+
+[data-theme="light"] .out-badge.state-1 {
+  color: #0284c7;
+}
+
+.out-badge.state-0 {
+  background: rgba(100, 116, 139, 0.15);
+  border-color: #475569;
+  color: var(--text-muted);
+}
+
+.out-badge.state-hazard {
+  background: rgba(244, 63, 94, 0.22);
+  border-color: var(--sig-warn);
+  color: #fb7185;
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+}
+
+/* Pravdivostní tabulka se zvýrazněním aktivního řádku */
+.truth-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  text-align: center;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.truth-table th {
+  background: rgba(0, 0, 0, 0.32);
+  color: var(--text-secondary);
+  padding: 0.45rem 0.45rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .truth-table th {
+  background: rgba(15, 23, 42, 0.08);
+}
+
+.truth-table td {
+  padding: 0.42rem 0.45rem;
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  transition: background 0.2s, color 0.2s;
+}
+
+.truth-table tr.active-row {
+  background: rgba(6, 182, 212, 0.2) !important;
+  font-weight: 700;
+}
+
+.truth-table tr.active-row td {
+  color: #38bdf8;
+}
+
+[data-theme="light"] .truth-table tr.active-row td {
+  color: #0284c7;
+}
+
+.truth-table tr.active-row.hazard-row {
+  background: rgba(244, 63, 94, 0.22) !important;
+}
+
+.truth-table tr.active-row.hazard-row td {
+  color: #fb7185;
+}
+
+/* Plátno pro SVG schémata */
+.svg-stage {
+  background: radial-gradient(circle at center, rgba(15, 23, 42, 0.92) 0%, rgba(3, 7, 18, 0.96) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+[data-theme="light"] .svg-stage {
+  background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+}
+
+.svg-stage svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Vodiče a LED v SVG */
+.sim-wire {
+  stroke: #475569;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  transition: stroke 0.25s, filter 0.25s;
+}
+
+.sim-wire.high {
+  stroke: #10b981;
+  filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.75));
+}
+
+.sim-wire.accent {
+  stroke: #06b6d4;
+  filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.75));
+}
+
+.sim-wire.warn {
+  stroke: #f43f5e;
+  filter: drop-shadow(0 0 5px rgba(244, 63, 94, 0.8));
+}
+
+.sim-wire.pulse {
+  stroke: #fbbf24;
+  filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.85));
+}
+
+.sim-led {
+  fill: rgba(100, 116, 139, 0.25);
+  stroke: #64748b;
+  stroke-width: 2;
+  transition: fill 0.25s, stroke 0.25s, filter 0.25s;
+}
+
+.sim-led.on-green {
+  fill: #10b981;
+  stroke: #6ee7b7;
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.9));
+}
+
+.sim-led.on-cyan {
+  fill: #06b6d4;
+  stroke: #67e8f9;
+  filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.9));
+}
+
+.sim-led.on-amber {
+  fill: #fbbf24;
+  stroke: #fde68a;
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.9));
+}
+
+.sim-led.on-red {
+  fill: #f43f5e;
+  stroke: #fda4af;
+  filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.9));
+}
+
+/* Stavový popisek pod simulátorem */
+.sim-caption {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.22);
+  border-left: 3px solid var(--border-color);
+  padding: 0.55rem 0.75rem;
+  border-radius: 0 6px 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.4;
+}
+
+[data-theme="light"] .sim-caption {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.sim-caption.ok {
+  border-left-color: var(--sig-high);
+  color: #34d399;
+}
+
+[data-theme="light"] .sim-caption.ok {
+  color: #047857;
+}
+
+.sim-caption.info {
+  border-left-color: var(--accent);
+  color: #38bdf8;
+}
+
+[data-theme="light"] .sim-caption.info {
+  color: #0284c7;
+}
+
+.sim-caption.warn {
+  border-left-color: var(--sig-warn);
+  color: #fb7185;
+  background: rgba(244, 63, 94, 0.1);
+}
+
+/* Čítač & Posuvný registr - bitové buňky a LED */
+.bit-cells-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0;
+}
+
+.bit-cell {
+  background: rgba(15, 23, 42, 0.75);
+  border: 2px solid #334155;
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  min-width: 78px;
+  text-align: center;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+}
+
+.bit-cell.bit-1 {
+  border-color: var(--accent);
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.35);
+}
+
+.bit-cell.ripple-flash {
+  transform: translateY(-2px);
+  border-color: var(--sig-gold);
+}
+
+.bit-cell-label {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+.bit-cell-val {
+  font-size: 1.55rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: #64748b;
+  margin: 0.15rem 0;
+}
+
+.bit-cell.bit-1 .bit-cell-val {
+  color: #38bdf8;
+}
+
+.bit-cell-weight {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+/* Digitální displej hodnoty čítače */
+.counter-readout-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(2, 6, 23, 0.85);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+}
+
+.readout-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.readout-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.readout-val {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+/* Integrované obvody DIP */
+.ic-pinout-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .ic-pinout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ic-chip {
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 10px;
+  padding: 1.15rem 1rem;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+  color: #e2e8f0;
+}
+
+.ic-notch {
+  width: 24px;
+  height: 12px;
+  background: #020617;
+  border: 2px solid #334155;
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ic-label {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin: 0.6rem 0 0.25rem 0;
+}
+
+.ic-desc {
+  text-align: center;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  margin-bottom: 0.65rem;
+}
+
+/* Rozbalovací kontrolní otázky (FAQ) */
+.faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.65rem;
+  overflow: hidden;
+}
+
+.faq-question {
+  padding: 0.8rem 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  user-select: none;
+  transition: var(--transition);
+}
+
+.faq-question:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent);
+}
+
+.faq-question svg {
+  flex-shrink: 0;
+  transition: transform 0.25s;
+}
+
+.faq-item.open .faq-question svg {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0.8rem 1.1rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  display: none;
+  line-height: 1.55;
+}
+
+.faq-item.open .faq-answer {
+  display: block;
+}
+
+/* Zvýraznění stavu u FSM semaforu */
+.fsm-node {
+  transition: fill 0.25s, stroke 0.25s, filter 0.25s;
+}
+
+.fsm-node.active {
+  stroke: #fbbf24;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.75));
+}
+
+.callout-tip {
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+}
+
+.callout-tip strong {
+  color: var(--text-primary);
+}
